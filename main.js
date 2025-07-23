@@ -1,5 +1,5 @@
 const BACKEND_URL = "https://<your-replit-unique-id>.replit.dev"; // Replace with your Replit URL
-const API_KEY = "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"; // Your backend API key
+const API_KEY = "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"; // Your backend API key
 
 const CATEGORY_OPTIONS = ["Random", "Product", "Pet", "App", "Drawing", "Brand", "Object", "Video", "New Word", "Website", "Service", "Book", "Startup", "Course", "Event", "Song", "Tool", "Game", "Podcast", "Place", "Company"];
 const STYLE_OPTIONS = ["Random", "Powerful", "Cute", "Futuristic", "Luxury", "Funny", "Elegant", "Minimal", "Bold", "Playful", "Mysterious", "Modern", "Traditional", "Edgy", "Catchy"];
