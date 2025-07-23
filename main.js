@@ -1,5 +1,5 @@
-const BACKEND_URL = "https://8184eea2-c8d9-4154-a12e-29f09aa91422-00-3skvnrkya6fio.kirk.replit.dev"; // Update with your Replit URL
-const API_KEY = "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"; // Replace with your backend API key
+const BACKEND_URL = "https://4760050f-1753-4fa4-a6d0-1c75d54d8da4-00-ownpet0g9iuq.riker.replit.dev/"; // Update with your Replit URL
+const API_KEY = "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"; // Replace with your backend API key
 
 const CATEGORY_OPTIONS = ["Random", "Product", "Pet", "App", "Drawing", "Brand", "Object", "Video", "New Word", "Website", "Service", "Book", "Startup", "Course", "Event", "Song", "Tool", "Game", "Podcast", "Place", "Company"];
 const STYLE_OPTIONS = ["Random", "Powerful", "Cute", "Futuristic", "Luxury", "Funny", "Elegant", "Minimal", "Bold", "Playful", "Mysterious", "Modern", "Traditional", "Edgy", "Catchy"];
