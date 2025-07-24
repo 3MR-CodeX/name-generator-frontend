@@ -3,73 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NameIT</title>
-    <link rel="icon" href="favicon.ico">
+    <title>Name Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="banner-col">
-        <img src="banner.png" alt="Banner" id="banner">
-    </div>
-    <h1>NameIT</h1>
-    <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
     <div class="container">
-        <div class="input-section">
-            <div class="input-column textbox-column">
-                <label for="prompt">What do you want to name?</label>
-                <textarea id="prompt" placeholder="e.g., A futuristic app for time management"></textarea>
-            </div>
-            <div class="input-column right-column">
-                <label for="category">Category</label>
-                <select id="category"></select>
-                <label for="style">Style</label>
-                <select id="style"></select>
-                <label for="language">Language</label>
-                <select id="language">
-                    <option value="English">English</option>
-                    <option value="Arabic">Arabic</option>
-                </select>
-            </div>
-        </div>
+        <img src="https://huggingface.co/spaces/3MR_CodeX/Name_Generator/resolve/main/banner.png" alt="Banner" id="banner">
+        <h1>Name Generator</h1>
+        <textarea id="prompt" placeholder="Enter your prompt here..."></textarea>
         <div class="button-section">
             <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
             <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
         </div>
-        <div id="output_container" class="output-section" style="display: none;">
+        <div class="output-container">
             <div class="output-box">
-                <label>Generated Names/Titles</label>
+                <div class="output-header">
+                    <label>Generated Names/Titles</label>
+                    <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
+                </div>
                 <pre id="names"></pre>
-                <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
             </div>
             <div class="output-box">
-                <label>Explanations</label>
+                <div class="output-header">
+                    <label>Reasons for Generated Names/Titles</label>
+                    <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
+                </div>
                 <pre id="reasons"></pre>
-                <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
-            </div>
-        </div>
-        <div id="refine_section" class="refine-section" style="display: none;">
-            <label for="edit_box">Refine the suggestions</label>
-            <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
-            <button onclick="refineNames()">🛠️ Refine Suggestions</button>
-        </div>
-        <div id="refined_outputs" class="output-section" style="display: none;">
-            <div class="output-box">
-                <label>Refined Suggestions</label>
-                <pre id="refined_names"></pre>
-                <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
             </div>
             <div class="output-box">
-                <label>Refined Explanations</label>
+                <div class="output-header">
+                    <label>Refined Generated Names/Titles</label>
+                    <button class="copy-button" onclick="copyToClipboard('refined_outputs')">📋</button>
+                </div>
+                <pre id="refined_outputs"></pre>
+            </div>
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Reasons for Refined Outputs</label>
+                    <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
+                </div>
                 <pre id="refined_reasons"></pre>
-                <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
             </div>
         </div>
-        <div id="history_section" class="history-section" style="display: none;">
+        <div class="history-section">
+            <h2>History</h2>
             <div id="history"></div>
         </div>
-        <div id="error" class="error"></div>
     </div>
-    <script src="config.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
