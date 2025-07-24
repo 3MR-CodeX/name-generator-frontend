@@ -1,101 +1,157 @@
-import { config } from './config.js';
+const BACKEND_URL = "https://4760050f-1753-4fa4-a6d0-1c75d54d8da4-00-ownpet0g9iuq.riker.replit.dev"; // Replace with your Replit URL
+const API_KEY = "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"; // Your backend API key
 
-const backendURL = config.backendURL;
-const apiKey = config.apiKey;
+const CATEGORY_OPTIONS = ["Random", "Product", "Pet", "App", "Drawing", "Brand", "Object", "Video", "New Word", "Website", "Service", "Book", "Startup", "Course", "Event", "Song", "Tool", "Game", "Podcast", "Place", "Company"];
+const STYLE_OPTIONS = ["Random", "Powerful", "Cute", "Futuristic", "Luxury", "Funny", "Elegant", "Minimal", "Bold", "Playful", "Mysterious", "Modern", "Traditional", "Edgy", "Catchy"];
+const SURPRISES = [
+    ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
+    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
+    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
+    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
+    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"]
+];
 
-// 🎯 Generate Names
-export async function generateName() {
-  const prompt = document.getElementById("prompt").value;
-  const category = document.getElementById("category").value;
-  const style = document.getElementById("style").value;
-  const language = document.getElementById("language").value;
+document.addEventListener("DOMContentLoaded", () => {
+    populateDropdown("category", CATEGORY_OPTIONS);
+    populateDropdown("style", STYLE_OPTIONS);
+    const textarea = document.getElementById("prompt");
+    textarea.addEventListener("input", adjustTextareaHeight);
+    adjustTextareaHeight();
+    fetchHistory();
+});
 
-  const resultEl = document.getElementById("names");
-  const reasonEl = document.getElementById("reasons");
-  const errorEl = document.getElementById("error");
-
-  resultEl.textContent = "Generating...";
-  reasonEl.textContent = "";
-  errorEl.textContent = "";
-
-  try {
-    const response = await fetch(`${backendURL}/generate?desc=${encodeURIComponent(prompt)}&category=${category}&style=${style}&language=${language}`, {
-      headers: {
-        'x-api-key': apiKey
-      }
+function populateDropdown(id, options) {
+    const select = document.getElementById(id);
+    options.forEach(option => {
+        const opt = document.createElement("option");
+        opt.value = option;
+        opt.textContent = option;
+        select.appendChild(opt);
     });
-
-    if (!response.ok) throw new Error(`Error ${response.status}`);
-
-    const data = await response.json();
-    resultEl.textContent = data.names.join("\n");
-    reasonEl.textContent = data.reasons.join("\n");
-  } catch (err) {
-    errorEl.textContent = "Failed to fetch. Please check your backend or API key.";
-    console.error(err);
-  }
 }
 
-// 🎲 Surprise Me
-export function surpriseMe() {
-  const examples = [
-    "A cozy coffee shop in Cairo",
-    "A futuristic time-tracking app",
-    "A sword-themed fantasy game",
-    "A minimalist fashion brand",
-    "A productivity tool for students"
-  ];
-  const random = examples[Math.floor(Math.random() * examples.length)];
-  document.getElementById("prompt").value = random;
+function adjustTextareaHeight() {
+    const textarea = document.getElementById("prompt");
+    textarea.style.height = "auto";
+    const lineHeight = 20;
+    const maxLines = 13;
+    const maxHeight = (lineHeight * maxLines) + 3;
+    const lines = textarea.value.split("\n").length;
+    textarea.style.height = lines <= maxLines ? `${Math.min(textarea.scrollHeight, maxHeight)}px` : `${textarea.scrollHeight}px`;
 }
 
-// 📋 Copy to Clipboard
-export function copyToClipboard(id) {
-  const text = document.getElementById(id).textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("Copied to clipboard!");
-  });
+async function generateName() {
+    const prompt = document.getElementById("prompt").value;
+    const category = document.getElementById("category").value;
+    const style = document.getElementById("style").value;
+    const language = document.getElementById("language").value;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/generate`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-api-key": API_KEY
+            },
+            body: JSON.stringify({ prompt, category, style, language })
+        });
+        if (!response.ok) throw new Error(await response.text());
+        const data = await response.json();
+
+        document.getElementById("names").textContent = data.names.join("\n");
+        document.getElementById("reasons").textContent = data.reasons.join("\n");
+        document.getElementById("output_container").style.display = "flex";
+        document.getElementById("refine_section").style.display = prompt ? "block" : "none";
+        document.getElementById("refined_outputs").style.display = "none";
+        document.getElementById("history_section").style.display = "block";
+        document.getElementById("error").textContent = "";
+        fetchHistory();
+    } catch (error) {
+        document.getElementById("error").textContent = error.message;
+    }
 }
 
-// 🛠️ Refine Suggestions
-export async function refineNames() {
-  const editPrompt = document.getElementById("edit_box").value;
-  const originalNames = document.getElementById("names").textContent;
+async function refineNames() {
+    const instruction = document.getElementById("edit_box").value;
+    if (!instruction) return;
 
-  const refinedNamesEl = document.getElementById("refined_names");
-  const refinedReasonsEl = document.getElementById("refined_reasons");
-  const errorEl = document.getElementById("error");
+    try {
+        const response = await fetch(`${BACKEND_URL}/refine`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-api-key": API_KEY
+            },
+            body: JSON.stringify({ instruction })
+        });
+        if (!response.ok) throw new Error(await response.text());
+        const data = await response.json();
 
-  refinedNamesEl.textContent = "Refining...";
-  refinedReasonsEl.textContent = "";
-  errorEl.textContent = "";
+        document.getElementById("refined_names").textContent = data.names.join("\n");
+        document.getElementById("refined_reasons").textContent = data.reasons.join("\n");
+        document.getElementById("refined_outputs").style.display = "flex";
+        document.getElementById("error").textContent = "";
+        fetchHistory();
+    } catch (error) {
+        document.getElementById("error").textContent = error.message;
+    }
+}
 
-  try {
-    const response = await fetch(`${backendURL}/refine`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey
-      },
-      body: JSON.stringify({
-        names: originalNames.split("\n"),
-        instruction: editPrompt
-      })
+async function fetchHistory() {
+    try {
+        const response = await fetch(`${BACKEND_URL}/history`, {
+            headers: { "x-api-key": API_KEY }
+        });
+        if (!response.ok) throw new Error(await response.text());
+        const history = await response.json();
+        renderHistory(history);
+    } catch (error) {
+        document.getElementById("error").textContent = error.message;
+    }
+}
+
+function renderHistory(history) {
+    const historyDiv = document.getElementById("history");
+    historyDiv.innerHTML = history.length ? "<h2>🕘 Recent History</h2>" : "<h2>🕘 Recent History</h2><p>*No history yet. Generate some names!*</p>";
+    history.forEach(entry => {
+        const names = entry.names.map(name => `<strong>${name}</strong>`).join(", ");
+        const tooltip = entry.category !== "Refined" ?
+            `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
+            `Refine Instruction: ${entry.prompt}`;
+        const preRefined = entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.join(", ")})</span>` : "";
+        const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
+        historyDiv.innerHTML += button;
     });
-
-    if (!response.ok) throw new Error(`Error ${response.status}`);
-
-    const data = await response.json();
-    refinedNamesEl.textContent = data.refined_names.join("\n");
-    refinedReasonsEl.textContent = data.refined_reasons.join("\n");
-  } catch (err) {
-    errorEl.textContent = "Refinement failed. Try again.";
-    console.error(err);
-  }
 }
 
-// 🧠 Attach to window for HTML buttons
-window.generateName = generateName;
-window.surpriseMe = surpriseMe;
-window.copyToClipboard = copyToClipboard;
-window.refineNames = refineNames;
+function restoreHistory(id) {
+    fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(history => {
+        const entry = history.find(e => e.id === id);
+        if (entry) {
+            document.getElementById("prompt").value = entry.prompt;
+            document.getElementById("category").value = entry.category;
+            document.getElementById("style").value = entry.style;
+            document.getElementById("language").value = entry.language;
+            document.getElementById("names").textContent = entry.names.join("\n");
+            document.getElementById("reasons").textContent = entry.reasons.join("\n");
+            document.getElementById("output_container").style.display = "flex";
+            document.getElementById("refine_section").style.display = "block";
+            document.getElementById("refined_outputs").style.display = "none";
+            document.getElementById("error").textContent = "";
+        }
+    });
+}
+
+function surpriseMe() {
+    const [prompt, category, style, language] = SURPRISES[Math.floor(Math.random() * SURPRISES.length)];
+    document.getElementById("prompt").value = prompt;
+    document.getElementById("category").value = category;
+    document.getElementById("style").value = style;
+    document.getElementById("language").value = language;
+    adjustTextareaHeight();
+}
+
+function copyToClipboard(elementId) {
+    const text = document.getElementById(elementId).textContent;
+    navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+}w
