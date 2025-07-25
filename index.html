@@ -42,7 +42,6 @@
         <div class="button-section">
             <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
             <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
-            <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
         </div>
         <div id="output_container" class="output-section">
             <div class="output-box">
@@ -63,6 +62,7 @@
         <div id="refine_section" class="refine-section">
             <label for="edit_box">Refine the suggestions</label>
             <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
+            <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
         </div>
         <div id="refined_outputs" class="output-section">
             <div class="output-box">
@@ -82,7 +82,7 @@
         </div>
         <div id="history_section" class="history-section">
             <h2>🕘 Recent History</h2>
-            <div id="history"></div>
+            <div id="history" class="history-inner"></div>
         </div>
         <div id="error" class="error"></div>
     </div>
