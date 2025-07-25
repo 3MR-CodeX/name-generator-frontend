@@ -1,5 +1,5 @@
-const BACKEND_URL = window.env.BACKEND_URL || "https://4760050f-1753-4fa4-a6d0-1c75d54d8da4-00-ownpet0g9iuq.riker.replit.dev";
-const API_KEY = window.env.BACKEND_API_KEY || "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";
+const BACKEND_URL = "https://4760050f-1753-4fa4-a6d0-1c75d54d8da4-00-ownpet0g9iuq.riker.replit.dev";
+const API_KEY = "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";
 
 const CATEGORY_OPTIONS = ["Random", "Product", "Pet", "App", "Drawing", "Brand", "Object", "Video", "New Word", "Website", "Service", "Book", "Startup", "Course", "Event", "Song", "Tool", "Game", "Podcast", "Place", "Company"];
 const STYLE_OPTIONS = ["Random", "Powerful", "Cute", "Futuristic", "Luxury", "Funny", "Elegant", "Minimal", "Bold", "Playful", "Mysterious", "Modern", "Traditional", "Edgy", "Catchy"];
