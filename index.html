@@ -19,6 +19,7 @@
             <div class="input-column textbox-column">
                 <label for="prompt">What do you want to name?</label>
                 <textarea id="prompt" placeholder="e.g., A futuristic app for time management"></textarea>
+                <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
             </div>
             <div class="input-column right-column">
                 <label for="category">Category</label>
@@ -30,11 +31,8 @@
                     <option value="English">English</option>
                     <option value="Arabic">Arabic</option>
                 </select>
+                <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
             </div>
-        </div>
-        <div class="button-section">
-            <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
-            <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
         </div>
         <div id="output_container" class="output-section">
             <div class="output-box">
