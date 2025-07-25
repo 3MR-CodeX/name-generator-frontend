@@ -7,7 +7,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: linear-gradient(to bottom, #000000, #800080);
+    background: linear-gradient(to bottom, #000000 70%, #800080 100%);
     color: #e0e0e0;
     padding: 20px;
     min-height: 100vh;
@@ -56,6 +56,9 @@ h1 {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
+    border: 1px solid #4a4a4a;
+    padding: 10px;
+    border-radius: 8px;
 }
 
 .input-column {
@@ -94,7 +97,11 @@ textarea {
 }
 
 #prompt {
-    height: 180px; /* Matches approximate height of dropdowns */
+    height: 180px;
+}
+
+.input-column button {
+    margin-top: auto;
 }
 
 button {
@@ -105,18 +112,12 @@ button {
     padding: 12px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 10px;
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 button:hover {
     background-color: #a020f0;
     box-shadow: 0 0 10px 2px #800080;
-    transform: scale(1.05);
-}
-
-.generate-btn, .surprise-btn {
-    width: 100%;
 }
 
 .output-section, .refine-section, .history-section {
@@ -126,6 +127,7 @@ button:hover {
 .output-section {
     display: flex;
     gap: 20px;
+    margin-bottom: 20px;
 }
 
 .output-box {
@@ -141,6 +143,11 @@ button:hover {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
+}
+
+.output-header label {
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .copy-button {
@@ -172,9 +179,26 @@ pre {
     border: 1px solid #4a4a4a;
 }
 
+.refine-section {
+    background-color: #2a2a2a;
+    border: 1px solid #4a4a4a;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.refine-section label {
+    font-size: 18px;
+    font-weight: 500;
+}
+
 #edit_box {
     height: 120px;
     margin-bottom: 10px;
+}
+
+.refine-section button {
+    width: 100%;
 }
 
 .history-section {
@@ -184,6 +208,11 @@ pre {
     border: 1px solid #4a4a4a;
     max-height: 350px;
     overflow-y: auto;
+}
+
+.history-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 .history-item {
