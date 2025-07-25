@@ -1,5 +1,5 @@
-const BACKEND_URL = "https://4760050f-1753-4fa4-a6d0-1c75d54d8da4-00-ownpet0g9iuq.riker.replit.dev"; // Replace with your Replit URL
-const API_KEY = "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"; // Your backend API key
+const BACKEND_URL = window.env.BACKEND_URL || "https://4760050f-1753-4fa4-a6d0-1c75d54d8da4-00-ownpet0g9iuq.riker.replit.dev";
+const API_KEY = window.env.BACKEND_API_KEY || "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";
 
 const CATEGORY_OPTIONS = ["Random", "Product", "Pet", "App", "Drawing", "Brand", "Object", "Video", "New Word", "Website", "Service", "Book", "Startup", "Course", "Event", "Song", "Tool", "Game", "Podcast", "Place", "Company"];
 const STYLE_OPTIONS = ["Random", "Powerful", "Cute", "Futuristic", "Luxury", "Funny", "Elegant", "Minimal", "Bold", "Playful", "Mysterious", "Modern", "Traditional", "Edgy", "Catchy"];
@@ -12,13 +12,19 @@ const SURPRISES = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
+    initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    const textarea = document.getElementById("prompt");
-    textarea.addEventListener("input", adjustTextareaHeight);
-    adjustTextareaHeight();
     fetchHistory();
 });
+
+function initializeUI() {
+    document.getElementById("output_container").style.display = "none";
+    document.getElementById("refine_section").style.display = "none";
+    document.getElementById("refined_outputs").style.display = "none";
+    document.getElementById("history_section").style.display = "none";
+    document.querySelector(".refine-btn").style.display = "none";
+}
 
 function populateDropdown(id, options) {
     const select = document.getElementById(id);
@@ -28,16 +34,6 @@ function populateDropdown(id, options) {
         opt.textContent = option;
         select.appendChild(opt);
     });
-}
-
-function adjustTextareaHeight() {
-    const textarea = document.getElementById("prompt");
-    textarea.style.height = "auto";
-    const lineHeight = 20;
-    const maxLines = 13;
-    const maxHeight = (lineHeight * maxLines) + 3;
-    const lines = textarea.value.split("\n").length;
-    textarea.style.height = lines <= maxLines ? `${Math.min(textarea.scrollHeight, maxHeight)}px` : `${textarea.scrollHeight}px`;
 }
 
 async function generateName() {
@@ -62,6 +58,7 @@ async function generateName() {
         document.getElementById("reasons").textContent = data.reasons.join("\n");
         document.getElementById("output_container").style.display = "flex";
         document.getElementById("refine_section").style.display = prompt ? "block" : "none";
+        document.querySelector(".refine-btn").style.display = prompt ? "block" : "none";
         document.getElementById("refined_outputs").style.display = "none";
         document.getElementById("history_section").style.display = "block";
         document.getElementById("error").textContent = "";
@@ -112,7 +109,7 @@ async function fetchHistory() {
 
 function renderHistory(history) {
     const historyDiv = document.getElementById("history");
-    historyDiv.innerHTML = history.length ? "<h2>🕘 Recent History</h2>" : "<h2>🕘 Recent History</h2><p>*No history yet. Generate some names!*</p>";
+    historyDiv.innerHTML = history.length ? "" : "<p>*No history yet. Generate some names!*</p>";
     history.forEach(entry => {
         const names = entry.names.map(name => `<strong>${name}</strong>`).join(", ");
         const tooltip = entry.category !== "Refined" ?
@@ -136,6 +133,7 @@ function restoreHistory(id) {
             document.getElementById("reasons").textContent = entry.reasons.join("\n");
             document.getElementById("output_container").style.display = "flex";
             document.getElementById("refine_section").style.display = "block";
+            document.querySelector(".refine-btn").style.display = "block";
             document.getElementById("refined_outputs").style.display = "none";
             document.getElementById("error").textContent = "";
         }
@@ -148,10 +146,9 @@ function surpriseMe() {
     document.getElementById("category").value = category;
     document.getElementById("style").value = style;
     document.getElementById("language").value = language;
-    adjustTextareaHeight();
 }
 
 function copyToClipboard(elementId) {
     const text = document.getElementById(elementId).textContent;
     navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
-}w
+}
