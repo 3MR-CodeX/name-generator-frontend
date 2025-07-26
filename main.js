@@ -93,6 +93,10 @@ function initializeUI() {
     refinedOutputs.classList.add("hidden-section");
     historySection.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
+
+    // Store original placeholders
+    promptInput.dataset.originalPlaceholder = promptInput.placeholder;
+    editBox.dataset.originalPlaceholder = editBox.placeholder;
 }
 
 function populateDropdown(id, options) {
@@ -164,14 +168,16 @@ function enableButtons() {
  * @param {string} message The error message to display.
  */
 function showTemporaryPlaceholderError(textarea, message) {
-    const originalPlaceholder = textarea.dataset.originalPlaceholder || textarea.placeholder;
-    textarea.dataset.originalPlaceholder = originalPlaceholder; // Store original placeholder
+    // Ensure original placeholder is stored only once
+    if (!textarea.dataset.originalPlaceholder) {
+        textarea.dataset.originalPlaceholder = textarea.placeholder;
+    }
     textarea.placeholder = message;
     textarea.classList.add("prompt-error-placeholder");
 
     // Clear the error after 3 seconds
     setTimeout(() => {
-        textarea.placeholder = originalPlaceholder;
+        textarea.placeholder = textarea.dataset.originalPlaceholder;
         textarea.classList.remove("prompt-error-placeholder");
     }, 3000);
 }
@@ -188,7 +194,7 @@ async function generateName() {
         return; // Stop function execution
     } else {
         // Clear error placeholder if prompt is now valid (if it was previously set)
-        promptInput.placeholder = promptInput.dataset.originalPlaceholder || "Enter a description!";
+        promptInput.placeholder = promptInput.dataset.originalPlaceholder;
         promptInput.classList.remove("prompt-error-placeholder");
     }
 
@@ -205,6 +211,12 @@ async function generateName() {
     // Clear general error message at the start of a valid attempt
     document.getElementById("error").textContent = "";
 
+    // Show output boxes and history section immediately
+    outputContainer.classList.remove("hidden-section");
+    outputContainer.classList.add("visible-section");
+    historySection.classList.remove("hidden-section");
+    historySection.classList.add("visible-section");
+
     // Show loading state for output boxes and disable buttons
     showLoading(namesPre);
     showLoading(reasonsPre);
@@ -213,6 +225,13 @@ async function generateName() {
     // Hide refined outputs when generating new names (with animation)
     refinedOutputs.classList.remove("visible-section");
     refinedOutputs.classList.add("hidden-section");
+
+    // Hide refine section and button if prompt is empty (shouldn't happen here due to initial check)
+    refineSection.classList.remove("visible-section");
+    refineSection.classList.add("hidden-section");
+    refineBtn.classList.remove("visible-section");
+    refineBtn.classList.add("hidden-section");
+
 
     try {
         const response = await fetch(`${BACKEND_URL}/generate`, {
@@ -235,12 +254,6 @@ async function generateName() {
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
 
-        // Show Generated Names/Explanations and History sections with animation
-        outputContainer.classList.remove("hidden-section");
-        outputContainer.classList.add("visible-section");
-        historySection.classList.remove("hidden-section");
-        historySection.classList.add("visible-section");
-
         // Show Refine section and button ONLY if prompt has content (which it will here due to initial check)
         refineSection.classList.remove("hidden-section");
         refineSection.classList.add("visible-section");
@@ -258,6 +271,8 @@ async function generateName() {
         refineSection.classList.add("hidden-section");
         refineBtn.classList.remove("visible-section");
         refineBtn.classList.add("hidden-section");
+        historySection.classList.remove("visible-section"); // Hide history on error as well
+        historySection.classList.add("hidden-section");
         // Clear content in case of error
         namesPre.textContent = "";
         reasonsPre.textContent = "";
@@ -279,7 +294,7 @@ async function refineNames() {
         return; // Stop function execution
     } else {
         // Clear error placeholder if instruction is now valid (if it was previously set)
-        editBox.placeholder = editBox.dataset.originalPlaceholder || "e.g., Make the names shorter and more playful";
+        editBox.placeholder = editBox.dataset.originalPlaceholder;
         editBox.classList.remove("prompt-error-placeholder");
     }
 
@@ -368,9 +383,9 @@ function restoreHistory(id) {
     // Clear any existing error messages when restoring
     document.getElementById("error").textContent = "";
     // Reset prompt and refine placeholders and remove error styling
-    promptInput.placeholder = promptInput.dataset.originalPlaceholder || "Enter a description!";
+    promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
-    editBox.placeholder = editBox.dataset.originalPlaceholder || "e.g., Make the names shorter and more playful";
+    editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
 
 
@@ -485,9 +500,9 @@ function resetUI() {
     editBox.value = "";
 
     // Reset placeholders and remove error styling
-    promptInput.placeholder = promptInput.dataset.originalPlaceholder || "Enter a description!";
+    promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
-    editBox.placeholder = editBox.dataset.originalPlaceholder || "e.g., Make the names shorter and more playful";
+    editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
 
     // Clear general error message
