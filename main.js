@@ -78,12 +78,16 @@ const editBox = document.getElementById("edit_box"); // Reference to the refine 
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 
+// Get mouse glow element
+const mouseGlow = document.getElementById("mouse-glow");
+
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory();
+    setupMouseGlow(); // Initialize mouse glow effect
 });
 
 function initializeUI() {
@@ -503,7 +507,28 @@ function resetDynamicSections() {
     document.getElementById("error").textContent = "";
 }
 
-// The original resetUI function is no longer needed as resetDynamicSections
-// handles the UI visibility and content clearing for dynamic sections.
-// The placeholders are now handled by showTemporaryPlaceholderError and by
-// explicitly setting them in initializeUI, generateName, refineNames, and restoreHistory.
+
+/**
+ * Sets up the mouse glow effect.
+ */
+function setupMouseGlow() {
+    const glowSize = mouseGlow.offsetWidth; // Get current size of the glow element
+
+    document.body.addEventListener('mousemove', (e) => {
+        // Position the glow element centered on the cursor
+        mouseGlow.style.left = `${e.clientX - glowSize / 2}px`;
+        mouseGlow.style.top = `${e.clientY - glowSize / 2}px`;
+        
+        // Ensure it's visible and scaled up when mouse is moving over the body
+        if (mouseGlow.style.opacity === '0') { // Only transition if currently hidden
+            mouseGlow.style.opacity = '1';
+            mouseGlow.style.transform = 'scale(1)';
+        }
+    });
+
+    document.body.addEventListener('mouseleave', () => {
+        // Hide and scale down the glow when mouse leaves the body
+        mouseGlow.style.opacity = '0';
+        mouseGlow.style.transform = 'scale(0)';
+    });
+}
