@@ -79,10 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    fetchHistory(); // Fetch history on load, but history section is initially hidden
+    // History is fetched on load, but the section itself remains hidden until generation.
+    fetchHistory(); 
 
-    // Add event listener to prompt input for dynamic refine section appearance
-    promptInput.addEventListener("input", handlePromptInput);
+    // Removed promptInput.addEventListener("input", handlePromptInput);
+    // The refine section/button will now only appear after a successful generation.
 });
 
 function initializeUI() {
@@ -94,24 +95,8 @@ function initializeUI() {
     refineBtn.classList.add("hidden-section");
 }
 
-function handlePromptInput() {
-    // This function controls the visibility of the "Refine the suggestions" box and button
-    // based *only* on whether the main prompt input has content.
-    if (promptInput.value.trim() !== "") {
-        refineSection.classList.remove("hidden-section");
-        refineSection.classList.add("visible-section");
-        refineBtn.classList.remove("hidden-section");
-        refineBtn.classList.add("visible-section");
-    } else {
-        refineSection.classList.remove("visible-section");
-        refineSection.classList.add("hidden-section");
-        refineBtn.classList.remove("visible-section");
-        refineBtn.classList.add("hidden-section");
-        // If prompt is cleared, also hide refined outputs
-        refinedOutputs.classList.remove("visible-section");
-        refinedOutputs.classList.add("hidden-section");
-    }
-}
+// Removed handlePromptInput() as it's no longer needed for real-time typing triggers.
+// Visibility will be managed by generateName() and refineNames() functions.
 
 function populateDropdown(id, options) {
     const select = document.getElementById(id);
@@ -133,12 +118,6 @@ async function generateName() {
     const style = document.getElementById("style").value;
     const language = document.getElementById("language").value;
 
-    if (!BACKEND_URL) {
-        document.getElementById("error").textContent = "Backend URL not set correctly.";
-        resetUI();
-        return;
-    }
-
     // Clear previous results and hide refined outputs with animation
     namesPre.textContent = "Generating...";
     reasonsPre.textContent = "Generating...";
@@ -149,6 +128,24 @@ async function generateName() {
     refinedOutputs.classList.remove("visible-section");
     refinedOutputs.classList.add("hidden-section");
 
+    // Hide refine section and button if prompt is empty
+    if (!prompt.trim()) {
+        refineSection.classList.remove("visible-section");
+        refineSection.classList.add("hidden-section");
+        refineBtn.classList.remove("visible-section");
+        refineBtn.classList.add("hidden-section");
+    }
+
+
+    if (!BACKEND_URL) {
+        document.getElementById("error").textContent = "Backend URL not set correctly.";
+        resetUI();
+        return;
+    }
+    
+    // Clear error message before new generation attempt
+    document.getElementById("error").textContent = "";
+
     try {
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
@@ -157,8 +154,17 @@ async function generateName() {
             },
             body: JSON.stringify({ prompt, category, style, language })
         });
-        if (!response.ok) throw new Error(await response.text());
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || "Unknown error during name generation.");
+        }
         const data = await response.json();
+
+        // If generation was successful, show output and history
+        outputContainer.classList.remove("hidden-section");
+        outputContainer.classList.add("visible-section");
+        historySection.classList.remove("hidden-section");
+        historySection.classList.add("visible-section");
 
         namesPre.textContent = data.names.map(cleanNames).join("\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
@@ -167,35 +173,45 @@ async function generateName() {
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
 
-        // Show Generated Names/Explanations and History sections with animation
-        outputContainer.classList.remove("hidden-section");
-        outputContainer.classList.add("visible-section");
-        historySection.classList.remove("hidden-section");
-        historySection.classList.add("visible-section");
-
-        // Conditionally show Refine section and button based on prompt content
-        handlePromptInput(); // This will correctly show/hide based on promptInput.value
-
-        document.getElementById("error").textContent = "";
-        fetchHistory();
+        // Show Refine section and button ONLY if prompt has content
+        if (prompt.trim()) {
+            refineSection.classList.remove("hidden-section");
+            refineSection.classList.add("visible-section");
+            refineBtn.classList.remove("hidden-section");
+            refineBtn.classList.add("visible-section");
+        } else {
+            // If prompt was empty, ensure refine section and button remain hidden
+            refineSection.classList.remove("visible-section");
+            refineSection.classList.add("hidden-section");
+            refineBtn.classList.remove("visible-section");
+            refineBtn.classList.add("hidden-section");
+        }
+        
+        fetchHistory(); // Refresh history after successful generation
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        resetUI();
+        // If generation fails, hide output and refine sections
+        outputContainer.classList.remove("visible-section");
+        outputContainer.classList.add("hidden-section");
+        refineSection.classList.remove("visible-section");
+        refineSection.classList.add("hidden-section");
+        refineBtn.classList.remove("visible-section");
+        refineBtn.classList.add("hidden-section");
+        // History might still be visible if it had content from previous sessions
+        // but we won't hide it here unless explicitly requested for error state.
     }
 }
 
 async function refineNames() {
-    const instruction = editBox.value; // Use editBox reference
+    const instruction = editBox.value;
     if (!instruction.trim()) { // Check if instruction is empty
         document.getElementById("error").textContent = "Please enter a refine instruction.";
-        // Do not reset UI or hide sections if instruction is empty
         return;
     }
 
     if (!BACKEND_URL) {
         document.getElementById("error").textContent = "Backend URL not set correctly.";
-        resetUI();
-        return;
+        return; // Don't resetUI for this
     }
 
     // Show loading state or clear previous results immediately
@@ -203,6 +219,8 @@ async function refineNames() {
     refinedReasonsPre.textContent = "Refining...";
     refinedNamesPre.classList.remove("fade-in-content");
     refinedReasonsPre.classList.remove("fade-in-content");
+    
+    document.getElementById("error").textContent = ""; // Clear previous error
 
     try {
         const response = await fetch(`${BACKEND_URL}/refine`, {
@@ -212,7 +230,10 @@ async function refineNames() {
             },
             body: JSON.stringify({ instruction })
         });
-        if (!response.ok) throw new Error(await response.text());
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || "Unknown error during name refinement.");
+        }
         const data = await response.json();
 
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
@@ -226,23 +247,27 @@ async function refineNames() {
         refinedOutputs.classList.remove("hidden-section");
         refinedOutputs.classList.add("visible-section");
 
-        document.getElementById("error").textContent = "";
-        fetchHistory();
+        fetchHistory(); // Refresh history after successful refinement
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        // Do not reset UI for refine errors, only show error message
+        // If refinement fails, hide refined output
+        refinedOutputs.classList.remove("visible-section");
+        refinedOutputs.classList.add("hidden-section");
     }
 }
 
 async function fetchHistory() {
     try {
         const response = await fetch(`${BACKEND_URL}/history`);
-        if (!response.ok) throw new Error(await response.text());
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || "Unknown error fetching history.");
+        }
         const history = await response.json();
         renderHistory(history);
     } catch (error) {
         document.getElementById("error").textContent = "Error fetching history: " + error.message;
-        // Do not reset UI for history fetch errors, just show error message
+        // History section visibility is managed by generateName/restoreHistory, not fetchHistory itself
     }
 }
 
@@ -261,7 +286,7 @@ function renderHistory(history) {
 }
 
 function restoreHistory(id) {
-    fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => { // Renamed history to historyData to avoid conflict
+    fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
         if (entry) {
             promptInput.value = entry.prompt;
@@ -275,22 +300,30 @@ function restoreHistory(id) {
             namesPre.classList.add("fade-in-content");
             reasonsPre.classList.add("fade-in-content");
 
-            // Show main output, refine section, refine button, and history
+            // Show main output and history sections
             outputContainer.classList.remove("hidden-section");
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
             historySection.classList.add("visible-section");
             
-            // Conditionally show refine section and button based on restored prompt
-            handlePromptInput();
+            // Show refine section and button ONLY if prompt has content
+            if (promptInput.value.trim()) {
+                refineSection.classList.remove("hidden-section");
+                refineSection.classList.add("visible-section");
+                refineBtn.classList.remove("hidden-section");
+                refineBtn.classList.add("visible-section");
+            } else {
+                refineSection.classList.remove("visible-section");
+                refineSection.classList.add("hidden-section");
+                refineBtn.classList.remove("visible-section");
+                refineBtn.classList.add("hidden-section");
+            }
 
-            // Always hide refined outputs when restoring from history (unless it was a refined entry itself,
-            // but for simplicity, we'll assume restoring means starting fresh with a base generation)
+            // Always hide refined outputs when restoring from history
             refinedOutputs.classList.remove("visible-section");
             refinedOutputs.classList.add("hidden-section");
 
             document.getElementById("error").textContent = "";
-            // No need to fetchHistory again here, as renderHistory already populated it.
         }
     });
 }
@@ -304,7 +337,6 @@ function surpriseMe() {
     
     // Call generateName directly after setting the surprise prompt
     generateName(); 
-    // handlePromptInput() is now called within generateName, so no need here.
 }
 
 function copyToClipboard(elementId) {
