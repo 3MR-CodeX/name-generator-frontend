@@ -7,18 +7,34 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: linear-gradient(to bottom, #1a1a1a 70%, #800080 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 15s ease infinite;
+    background: #1a1a1a;
     color: #e0e0e0;
     padding: 20px;
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent 0,
+        #800080 10px,
+        transparent 20px
+    );
+    animation: waveMove 8s linear infinite;
+    z-index: -1;
+}
+
+@keyframes waveMove {
+    0% { background-position: 0 0; }
+    100% { background-position: -100px 0; }
 }
 
 .banner-col {
