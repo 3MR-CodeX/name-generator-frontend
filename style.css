@@ -198,7 +198,6 @@ button:hover {
 
 .refine-btn {
     width: 100%;
-    /* display: none; -> Managed by JS classes now */
     z-index: 1;
 }
 
@@ -225,21 +224,30 @@ button:hover {
 }
 
 /* Ensure initial display properties are overridden by animation classes */
-.output-section, .refine-section, .history-section {
+/* These elements are now controlled by JS classes, but retain their default display types */
+.output-section {
     display: flex; /* Default display for flex containers */
     gap: 20px;
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
     width: 100%; /* Take full width */
 }
+.refine-section {
+    display: block; /* It's a single block, not flex */
+}
+.history-section {
+    display: block; /* It's a single block, not flex */
+}
+.refine-button-section {
+    display: flex; /* It's a flex container for the button */
+    gap: 20px; /* Maintain gap if other elements were here */
+    flex-wrap: wrap;
+    width: 100%;
+}
+
 
 .output-section .output-box {
     flex: 1;
     min-width: 300px; /* Ensure boxes don't get too small before wrapping */
-}
-
-/* Separate style for refine-section as it's a single box */
-.refine-section {
-    display: block; /* It's a single block, not flex */
 }
 
 /* Animation for content inside pre tags */
@@ -307,7 +315,6 @@ pre {
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
-    /* margin-bottom: 20px; -> Managed by animation classes */
 }
 
 .history-section {
@@ -315,15 +322,15 @@ pre {
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
-    /* margin-bottom: 20px; -> Managed by animation classes */
 }
 
+/* Reverted history-inner to original properties for scrollbar */
 .history-inner {
     background-color: #2a2a2a;
     max-height: 120px;
     overflow-y: auto;
-    overflow-x: hidden;
-    word-wrap: break-word;
+    /* Removed overflow-x: hidden; */
+    /* Removed word-wrap: break-word; */
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     padding: 10px;
@@ -365,6 +372,8 @@ pre {
     text-align: center;
 }
 
+/* Reverted scrollbar styling to default for history-inner */
+/* Keeping general scrollbar styling for other elements */
 ::-webkit-scrollbar {
     width: 8px;
 }
