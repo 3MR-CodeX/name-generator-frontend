@@ -7,7 +7,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
+    background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 40%, #ff69b4 50%, #1a1a1a 60%, #800080 65%, #1a1a1a 70%, #0000ff 80%, #1a1a1a 100%);
     background-size: 400% 400%;
     animation: gradientShift 10s ease infinite;
     color: #e0e0e0;
@@ -30,9 +30,11 @@ body::before {
 }
 
 @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
+    0% { background-position: 0% 0%; }
+    25% { background-position: 50% 100%; }
     50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    75% { background-position: 25% 75%; }
+    100% { background-position: 0% 0%; }
 }
 
 .banner-col {
