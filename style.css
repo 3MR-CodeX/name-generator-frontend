@@ -23,8 +23,8 @@ body::after {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, #1a1a1a 0%, #1a1a1a 45%, #800080 50%, #800080 55%, #1a1a1a 60%, #1a1a1a 100%);
-    background-size: 100% 100%; /* Matches app width, stops at edges */
-    animation: singleLineShift 30s ease infinite;
+    background-size: 100% 100%; /* Stops at app edges */
+    animation: lineShift 10s ease infinite;
     z-index: -2;
 }
 
@@ -41,13 +41,12 @@ body::before {
     pointer-events: none;
 }
 
-@keyframes singleLineShift {
-    0% { background-position: 0% 0%; } /* Start at left as #800080 */
-    33% { background-position: 0% 0%; } /* Pause for 10s */
-    50% { background-position: 100% 0%; } /* Move left to right */
-    67% { background-position: 100% 0%; } /* Pause for 10s, change to #a020f0 */
-    83% { background-position: 0% 0%; } /* Move right to left as #a020f0 */
-    100% { background-position: 0% 0%; } /* Pause for 3s, reset to #800080 */
+@keyframes lineShift {
+    0% { background-position: 0% 0%; } /* Start at left */
+    10% { background-position: 0% 0%; } /* Pause for 1s */
+    45% { background-position: 100% 0%; } /* Move right to left */
+    55% { background-position: 100% 0%; } /* Pause for 1s */
+    100% { background-position: 0% 0%; } /* Move back to start */
 }
 
 .container {
