@@ -1,5 +1,5 @@
-const BACKEND_URL = "https://nameit-backend-2.vercel.app";
-const API_KEY = "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";
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
+const API_KEY = process.env.REACT_APP_API_KEY
 
 const CATEGORY_OPTIONS = [
   "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
