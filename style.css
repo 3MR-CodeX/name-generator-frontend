@@ -27,50 +27,61 @@ body::before {
     z-index: -1;
 }
 
-body::after {
+body::after,
+body::after::before,
+body::after::after,
+body::before::after {
     content: '';
     position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 100px;
-    height: 100px;
-    background: transparent;
-    z-index: -2;
-}
-
-body::after::before,
-body::after::after {
-    content: '';
-    position: absolute;
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     background: #800080;
     border-radius: 50%;
-    opacity: 0.3;
+    opacity: 0.4;
+}
+
+body::after {
+    top: 20%;
+    left: 20%;
+    animation: orbit1 8s linear infinite;
 }
 
 body::after::before {
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: orbit1 6s linear infinite;
+    top: 30%;
+    left: 70%;
+    animation: orbit2 10s linear infinite;
 }
 
 body::after::after {
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: orbit2 12s linear infinite;
+    top: 60%;
+    left: 40%;
+    animation: orbit3 12s linear infinite;
+}
+
+body::before::after {
+    top: 80%;
+    left: 90%;
+    animation: orbit4 6s linear infinite;
 }
 
 @keyframes orbit1 {
-    0% { transform: translateX(-50%) rotate(0deg) translateY(-50px); }
-    100% { transform: translateX(-50%) rotate(360deg) translateY(-50px); }
+    0% { transform: translate(0, 0) rotate(0deg) translateY(60px); }
+    100% { transform: translate(0, 0) rotate(360deg) translateY(60px); }
 }
 
 @keyframes orbit2 {
-    0% { transform: translateX(-50%) rotate(0deg) translateY(-70px); }
-    100% { transform: translateX(-50%) rotate(-360deg) translateY(-70px); }
+    0% { transform: translate(0, 0) rotate(0deg) translateY(40px); }
+    100% { transform: translate(0, 0) rotate(-360deg) translateY(40px); }
+}
+
+@keyframes orbit3 {
+    0% { transform: translate(0, 0) rotate(0deg) translateY(50px); }
+    100% { transform: translate(0, 0) rotate(360deg) translateY(50px); }
+}
+
+@keyframes orbit4 {
+    0% { transform: translate(0, 0) rotate(0deg) translateY(30px); }
+    100% { transform: translate(0, 0) rotate(-360deg) translateY(30px); }
 }
 
 .banner-col {
