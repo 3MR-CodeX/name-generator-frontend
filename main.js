@@ -1,5 +1,5 @@
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
-const API_KEY = process.env.REACT_APP_API_KEY
+const API_KEY = process.env.REACT_APP_NAMEIT2
 
 const CATEGORY_OPTIONS = [
   "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
