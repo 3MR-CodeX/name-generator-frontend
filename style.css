@@ -7,9 +7,9 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2a004a 50%, #800080 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 15s ease infinite;
+    background: linear-gradient(45deg, #1a1a1a 0%, #1c2526 33%, #800080 66%, #1a1a1a 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
     color: #e0e0e0;
     padding: 20px;
     min-height: 100vh;
@@ -291,7 +291,7 @@ pre {
     background-color: #4a4a4a;
 }
 
-.pre-refined-frame {
+.pre-refined {
     font-size: 0.8em;
     color: #aaa;
     margin-left: 5px;
