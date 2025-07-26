@@ -7,12 +7,26 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a;
+    background: linear-gradient(45deg, #1a1a1a 0%, #1c2526 33%, #800080 66%, #1a1a1a 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
     color: #e0e0e0;
     padding: 20px;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect x="0" y="0" width="100" height="100" fill="none" /%3E%3Ccircle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.05)" /%3E%3C/svg%3E') repeat;
+    opacity: 0.1;
+    z-index: -1;
 }
 
 body::after {
@@ -29,7 +43,13 @@ body::after {
         transparent 20px
     );
     animation: waveMove 8s linear infinite;
-    z-index: -1;
+    z-index: -2;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 @keyframes waveMove {
