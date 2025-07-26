@@ -36,6 +36,10 @@ function populateDropdown(id, options) {
     });
 }
 
+function cleanNames(text) {
+    return text.replace(/\*\*/g, '');
+}
+
 async function generateName() {
     const prompt = document.getElementById("prompt").value;
     const category = document.getElementById("category").value;
@@ -54,8 +58,8 @@ async function generateName() {
         if (!response.ok) throw new Error(await response.text());
         const data = await response.json();
 
-        document.getElementById("names").textContent = data.names.join("\n");
-        document.getElementById("reasons").textContent = data.reasons.join("\n");
+        document.getElementById("names").textContent = data.names.map(cleanNames).join("\n");
+        document.getElementById("reasons").textContent = data.reasons.map(cleanNames).join("\n");
         document.getElementById("output_container").style.display = "flex";
         document.getElementById("refine_section").style.display = prompt ? "block" : "none";
         document.querySelector(".refine-btn").style.display = prompt ? "block" : "none";
@@ -84,8 +88,8 @@ async function refineNames() {
         if (!response.ok) throw new Error(await response.text());
         const data = await response.json();
 
-        document.getElementById("refined_names").textContent = data.names.join("\n");
-        document.getElementById("refined_reasons").textContent = data.reasons.join("\n");
+        document.getElementById("refined_names").textContent = data.names.map(cleanNames).join("\n");
+        document.getElementById("refined_reasons").textContent = data.reasons.map(cleanNames).join("\n");
         document.getElementById("refined_outputs").style.display = "flex";
         document.getElementById("error").textContent = "";
         fetchHistory();
@@ -111,11 +115,11 @@ function renderHistory(history) {
     const historyDiv = document.getElementById("history");
     historyDiv.innerHTML = history.length ? "" : "<p>*No history yet. Generate some names!*</p>";
     history.forEach(entry => {
-        const names = entry.names.map(name => `<strong>${name}</strong>`).join(", ");
+        const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
         const tooltip = entry.category !== "Refined" ?
             `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
             `Refine Instruction: ${entry.prompt}`;
-        const preRefined = entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.join(", ")})</span>` : "";
+        const preRefined = entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>` : "";
         const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
         historyDiv.innerHTML += button;
     });
@@ -129,8 +133,8 @@ function restoreHistory(id) {
             document.getElementById("category").value = entry.category;
             document.getElementById("style").value = entry.style;
             document.getElementById("language").value = entry.language;
-            document.getElementById("names").textContent = entry.names.join("\n");
-            document.getElementById("reasons").textContent = entry.reasons.join("\n");
+            document.getElementById("names").textContent = entry.names.map(cleanNames).join("\n");
+            document.getElementById("reasons").textContent = entry.reasons.map(cleanNames).join("\n");
             document.getElementById("output_container").style.display = "flex";
             document.getElementById("refine_section").style.display = "block";
             document.querySelector(".refine-btn").style.display = "block";
