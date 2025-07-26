@@ -22,9 +22,9 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, #1a1a1a 0%, #1a1a1a 45%, #800080 50%, #800080 55%, #1a1a1a 60%, #1a1a1a 45%, #a020f0 50%, #a020f0 55%, #1a1a1a 60%, #1a1a1a 100%);
-    background-size: 400% 100%;
-    animation: dualLineShift 20s ease infinite;
+    background: linear-gradient(90deg, #1a1a1a 0%, #1a1a1a 45%, #800080 50%, #800080 55%, #1a1a1a 60%, #1a1a1a 100%);
+    background-size: 100% 100%; /* Matches app width, stops at edges */
+    animation: singleLineShift 30s ease infinite;
     z-index: -2;
 }
 
@@ -41,14 +41,13 @@ body::before {
     pointer-events: none;
 }
 
-@keyframes dualLineShift {
-    0% { background-position: 0% 0%; } /* #800080 at left, #a020f0 at right */
-    20% { background-position: 0% 0%; } /* #800080 pauses for 4s */
-    50% { background-position: 100% 0%; } /* #800080 moves left to right */
-    70% { background-position: 100% 0%; } /* #800080 pauses for 4s */
-    72% { background-position: 100% 0%; } /* #a020f0 starts moving */
-    92% { background-position: 0% 0%; } /* #a020f0 moves right to left */
-    100% { background-position: 0% 0%; } /* #a020f0 pauses for 1.6s, cycle resets */
+@keyframes singleLineShift {
+    0% { background-position: 0% 0%; } /* Start at left as #800080 */
+    33% { background-position: 0% 0%; } /* Pause for 10s */
+    50% { background-position: 100% 0%; } /* Move left to right */
+    67% { background-position: 100% 0%; } /* Pause for 10s, change to #a020f0 */
+    83% { background-position: 0% 0%; } /* Move right to left as #a020f0 */
+    100% { background-position: 0% 0%; } /* Pause for 3s, reset to #800080 */
 }
 
 .container {
@@ -324,7 +323,7 @@ pre {
 }
 
 ::-webkit-scrollbar-track {
-    background: #2a2a2a;
+    background: #1a1a1a;
 }
 
 ::-webkit-scrollbar-thumb {
