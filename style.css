@@ -107,7 +107,7 @@ textarea {
 }
 
 #edit_box {
-    height: 130px; /* Extended by 10px */
+    height: 145px; /* Extended by 15px from 130px */
     margin-top: 10px;
     margin-bottom: 10px;
 }
