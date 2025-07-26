@@ -74,16 +74,16 @@ const refinedReasonsPre = document.getElementById("refined_reasons");
 const promptInput = document.getElementById("prompt");
 const editBox = document.getElementById("edit_box"); // Reference to the refine instruction textarea
 
+// Get button references for disabling
+const generateBtn = document.querySelector(".generate-btn");
+const surpriseBtn = document.querySelector(".surprise-btn");
+
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    // History is fetched on load, but the section itself remains hidden until generation.
-    fetchHistory(); 
-
-    // Removed promptInput.addEventListener("input", handlePromptInput);
-    // The refine section/button will now only appear after a successful generation.
+    fetchHistory();
 });
 
 function initializeUI() {
@@ -94,9 +94,6 @@ function initializeUI() {
     historySection.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
 }
-
-// Removed handlePromptInput() as it's no longer needed for real-time typing triggers.
-// Visibility will be managed by generateName() and refineNames() functions.
 
 function populateDropdown(id, options) {
     const select = document.getElementById(id);
@@ -112,39 +109,95 @@ function cleanNames(text) {
     return text.replace(/\*\*/g, '');
 }
 
+/**
+ * Shows a loading spinner overlay on a given element.
+ * @param {HTMLElement} targetElement The element to overlay the spinner on.
+ */
+function showLoading(targetElement) {
+    // Clear any existing content and animation classes
+    targetElement.textContent = "";
+    targetElement.classList.remove("fade-in-content");
+
+    // Create spinner overlay if it doesn't exist
+    let spinnerOverlay = targetElement.querySelector(".spinner-overlay");
+    if (!spinnerOverlay) {
+        spinnerOverlay = document.createElement("div");
+        spinnerOverlay.className = "spinner-overlay";
+        spinnerOverlay.innerHTML = '<div class="spinner"></div>';
+        targetElement.appendChild(spinnerOverlay);
+    }
+    spinnerOverlay.classList.add("show"); // Show the spinner
+}
+
+/**
+ * Hides the loading spinner overlay from a given element.
+ * @param {HTMLElement} targetElement The element to remove the spinner from.
+ */
+function hideLoading(targetElement) {
+    const spinnerOverlay = targetElement.querySelector(".spinner-overlay");
+    if (spinnerOverlay) {
+        spinnerOverlay.classList.remove("show"); // Hide the spinner
+        // Optional: Remove spinner after transition if needed, but keeping it
+        // in DOM is fine if it's reused.
+    }
+}
+
+/**
+ * Disables all relevant buttons during a loading state.
+ */
+function disableButtons() {
+    generateBtn.disabled = true;
+    surpriseBtn.disabled = true;
+    refineBtn.disabled = true;
+}
+
+/**
+ * Enables all relevant buttons after a loading state.
+ */
+function enableButtons() {
+    generateBtn.disabled = false;
+    surpriseBtn.disabled = false;
+    refineBtn.disabled = false;
+}
+
+
 async function generateName() {
-    const prompt = promptInput.value;
+    const prompt = promptInput.value.trim(); // Trim whitespace from prompt
     const category = document.getElementById("category").value;
     const style = document.getElementById("style").value;
     const language = document.getElementById("language").value;
 
-    // Clear previous results and hide refined outputs with animation
-    namesPre.textContent = "Generating...";
-    reasonsPre.textContent = "Generating...";
-    namesPre.classList.remove("fade-in-content");
-    reasonsPre.classList.remove("fade-in-content");
-
-    // Hide refined outputs when generating new names (with animation)
-    refinedOutputs.classList.remove("visible-section");
-    refinedOutputs.classList.add("hidden-section");
-
-    // Hide refine section and button if prompt is empty
-    if (!prompt.trim()) {
-        refineSection.classList.remove("visible-section");
-        refineSection.classList.add("hidden-section");
-        refineBtn.classList.remove("visible-section");
-        refineBtn.classList.add("hidden-section");
+    // --- Empty Prompt Handling ---
+    if (!prompt) {
+        promptInput.value = ""; // Ensure it's truly empty
+        promptInput.placeholder = "You cannot generate names without a description!";
+        promptInput.classList.add("prompt-error-placeholder");
+        document.getElementById("error").textContent = ""; // Clear general error message
+        resetUI(); // Hide all triggered boxes
+        return; // Stop function execution
+    } else {
+        // Clear error placeholder if prompt is now valid
+        promptInput.placeholder = "Enter a description!";
+        promptInput.classList.remove("prompt-error-placeholder");
     }
-
 
     if (!BACKEND_URL) {
         document.getElementById("error").textContent = "Backend URL not set correctly.";
         resetUI();
         return;
     }
-    
-    // Clear error message before new generation attempt
+
+    // Clear general error message at the start of a valid attempt
     document.getElementById("error").textContent = "";
+
+    // Show loading state for output boxes and disable buttons
+    showLoading(namesPre);
+    showLoading(reasonsPre);
+    disableButtons();
+
+    // Hide refined outputs when generating new names (with animation)
+    refinedOutputs.classList.remove("visible-section");
+    refinedOutputs.classList.add("hidden-section");
 
     try {
         const response = await fetch(`${BACKEND_URL}/generate`, {
@@ -155,16 +208,10 @@ async function generateName() {
             body: JSON.stringify({ prompt, category, style, language })
         });
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || "Unknown error during name generation.");
+            const errorData = await response.json(); // Assuming backend sends JSON error
+            throw new Error(errorData.error || "Unknown error during name generation.");
         }
         const data = await response.json();
-
-        // If generation was successful, show output and history
-        outputContainer.classList.remove("hidden-section");
-        outputContainer.classList.add("visible-section");
-        historySection.classList.remove("hidden-section");
-        historySection.classList.add("visible-section");
 
         namesPre.textContent = data.names.map(cleanNames).join("\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
@@ -173,21 +220,20 @@ async function generateName() {
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
 
-        // Show Refine section and button ONLY if prompt has content
-        if (prompt.trim()) {
-            refineSection.classList.remove("hidden-section");
-            refineSection.classList.add("visible-section");
-            refineBtn.classList.remove("hidden-section");
-            refineBtn.classList.add("visible-section");
-        } else {
-            // If prompt was empty, ensure refine section and button remain hidden
-            refineSection.classList.remove("visible-section");
-            refineSection.classList.add("hidden-section");
-            refineBtn.classList.remove("visible-section");
-            refineBtn.classList.add("hidden-section");
-        }
+        // Show Generated Names/Explanations and History sections with animation
+        outputContainer.classList.remove("hidden-section");
+        outputContainer.classList.add("visible-section");
+        historySection.classList.remove("hidden-section");
+        historySection.classList.add("visible-section");
+
+        // Show Refine section and button ONLY if prompt has content (which it will here due to initial check)
+        refineSection.classList.remove("hidden-section");
+        refineSection.classList.add("visible-section");
+        refineBtn.classList.remove("hidden-section");
+        refineBtn.classList.add("visible-section");
         
         fetchHistory(); // Refresh history after successful generation
+
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         // If generation fails, hide output and refine sections
@@ -197,30 +243,44 @@ async function generateName() {
         refineSection.classList.add("hidden-section");
         refineBtn.classList.remove("visible-section");
         refineBtn.classList.add("hidden-section");
-        // History might still be visible if it had content from previous sessions
-        // but we won't hide it here unless explicitly requested for error state.
+        // Clear content in case of error
+        namesPre.textContent = "";
+        reasonsPre.textContent = "";
+
+    } finally {
+        hideLoading(namesPre);
+        hideLoading(reasonsPre);
+        enableButtons();
     }
 }
 
 async function refineNames() {
-    const instruction = editBox.value;
-    if (!instruction.trim()) { // Check if instruction is empty
-        document.getElementById("error").textContent = "Please enter a refine instruction.";
-        return;
+    const instruction = editBox.value.trim(); // Trim whitespace from instruction
+
+    // --- Empty Refine Instruction Handling ---
+    if (!instruction) {
+        editBox.value = ""; // Ensure it's truly empty
+        editBox.placeholder = "Please enter a refine instruction.";
+        editBox.classList.add("prompt-error-placeholder"); // Reuse class for styling
+        document.getElementById("error").textContent = ""; // Clear general error message
+        return; // Stop function execution
+    } else {
+        // Clear error placeholder if instruction is now valid
+        editBox.placeholder = "e.g., Make the names shorter and more playful";
+        editBox.classList.remove("prompt-error-placeholder");
     }
 
     if (!BACKEND_URL) {
         document.getElementById("error").textContent = "Backend URL not set correctly.";
-        return; // Don't resetUI for this
+        return;
     }
 
-    // Show loading state or clear previous results immediately
-    refinedNamesPre.textContent = "Refining...";
-    refinedReasonsPre.textContent = "Refining...";
-    refinedNamesPre.classList.remove("fade-in-content");
-    refinedReasonsPre.classList.remove("fade-in-content");
-    
     document.getElementById("error").textContent = ""; // Clear previous error
+
+    // Show loading state for refined output boxes and disable buttons
+    showLoading(refinedNamesPre);
+    showLoading(refinedReasonsPre);
+    disableButtons();
 
     try {
         const response = await fetch(`${BACKEND_URL}/refine`, {
@@ -231,8 +291,8 @@ async function refineNames() {
             body: JSON.stringify({ instruction })
         });
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || "Unknown error during name refinement.");
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Unknown error during name refinement.");
         }
         const data = await response.json();
 
@@ -248,11 +308,18 @@ async function refineNames() {
         refinedOutputs.classList.add("visible-section");
 
         fetchHistory(); // Refresh history after successful refinement
+
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        // If refinement fails, hide refined output
+        // If refinement fails, hide refined output and clear content
         refinedOutputs.classList.remove("visible-section");
         refinedOutputs.classList.add("hidden-section");
+        refinedNamesPre.textContent = "";
+        refinedReasonsPre.textContent = "";
+    } finally {
+        hideLoading(refinedNamesPre);
+        hideLoading(refinedReasonsPre);
+        enableButtons();
     }
 }
 
@@ -260,14 +327,13 @@ async function fetchHistory() {
     try {
         const response = await fetch(`${BACKEND_URL}/history`);
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || "Unknown error fetching history.");
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Unknown error fetching history.");
         }
         const history = await response.json();
         renderHistory(history);
     } catch (error) {
         document.getElementById("error").textContent = "Error fetching history: " + error.message;
-        // History section visibility is managed by generateName/restoreHistory, not fetchHistory itself
     }
 }
 
@@ -286,6 +352,14 @@ function renderHistory(history) {
 }
 
 function restoreHistory(id) {
+    // Clear any existing error messages when restoring
+    document.getElementById("error").textContent = "";
+    promptInput.placeholder = "Enter a description!"; // Reset prompt placeholder
+    promptInput.classList.remove("prompt-error-placeholder"); // Remove error styling
+    editBox.placeholder = "e.g., Make the names shorter and more playful"; // Reset refine placeholder
+    editBox.classList.remove("prompt-error-placeholder"); // Remove error styling
+
+
     fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
         if (entry) {
@@ -323,7 +397,6 @@ function restoreHistory(id) {
             refinedOutputs.classList.remove("visible-section");
             refinedOutputs.classList.add("hidden-section");
 
-            document.getElementById("error").textContent = "";
         }
     });
 }
@@ -342,7 +415,6 @@ function surpriseMe() {
 function copyToClipboard(elementId) {
     const text = document.getElementById(elementId).textContent;
     navigator.clipboard.writeText(text).then(() => {
-        // Replace alert with a more subtle message or visual feedback
         const copyMessage = document.createElement('div');
         copyMessage.textContent = "Copied to clipboard!";
         copyMessage.style.cssText = `
@@ -397,4 +469,13 @@ function resetUI() {
     // Clear prompt and refine instruction textareas
     promptInput.value = "";
     editBox.value = "";
+
+    // Reset placeholders and remove error styling
+    promptInput.placeholder = "Enter a description!";
+    promptInput.classList.remove("prompt-error-placeholder");
+    editBox.placeholder = "e.g., Make the names shorter and more playful";
+    editBox.classList.remove("prompt-error-placeholder");
+
+    // Clear general error message
+    document.getElementById("error").textContent = "";
 }
