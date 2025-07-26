@@ -29,7 +29,7 @@ body::after {
     background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
     background-size: 400% 400%;
     animation: gradientShift 10s ease infinite;
-    z-index: -3; /* Changed: Placed under the mouse glow */
+    z-index: -2; /* Changed: Placed under mouse glow */
 }
 
 body::before {
@@ -444,17 +444,16 @@ pre {
 /* --- Mouse Glow Effect --- */
 #mouse-glow {
     position: fixed;
-    width: 150px; /* A bit bigger than 120px */
-    height: 150px; /* A bit bigger than 120px */
+    width: 150px; /* A bit bigger */
+    height: 150px; /* A bit bigger */
     border-radius: 50%;
-    /* Deep purple glow fading out */
-    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.5) 0%, transparent 70%); /* Original opacity */
-    filter: blur(30px); /* A bit more blur for a softer glow */
+    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.5) 0%, transparent 70%);
+    filter: blur(30px); /* A bit more blur */
     transform: scale(0); /* Initially hidden */
     opacity: 0; /* Initially hidden */
     transition: transform 0.2s ease-out, opacity 0.2s ease-out;
     pointer-events: none; /* Crucial: allows clicks to pass through */
-    z-index: -2; /* Placed under pattern.png (z-index: -1) and above animated gradient (z-index: -3) */
+    z-index: -2; /* Placed under pattern.png (-1) and above animated gradient (-3) */
 }
 
 
