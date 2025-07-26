@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://nameit-backend-2.vercel.app";
+const BACKEND_URL = "https://nameit-backend-2.vercel.app/";
 const API_KEY = "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";
 
 const CATEGORY_OPTIONS = [
