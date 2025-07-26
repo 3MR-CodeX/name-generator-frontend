@@ -48,8 +48,8 @@ const SURPRISES = [
     ["A mysterious name for an anonymous feedback app", "App", "Cryptic", "English"],
     ["A snappy name for a productivity browser extension", "App", "Efficient", "English"],
     ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"],
-    ["A chilling title for a horror podcast series", "Video", "Scary", "English"
-    ];
+    ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
+];
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
