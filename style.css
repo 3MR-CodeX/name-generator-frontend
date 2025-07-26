@@ -107,8 +107,8 @@ textarea {
 }
 
 #edit_box {
-    height: 145px; /* Extended by 15px from 130px */
-    margin-top: 10px;
+    height: 145px;
+    margin-top: 5px;
     margin-bottom: 10px;
 }
 
@@ -125,16 +125,17 @@ select {
 button {
     background-color: #800080;
     color: white;
-    border: none;
+    border: 2px solid #4B0082; /* Dark purple outline */
     border-radius: 8px;
     padding: 12px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 button:hover {
     background-color: #a020f0;
+    border: 2px solid #FFFFFF; /* White outline on hover */
     box-shadow: 0 0 10px 2px #800080;
 }
 
@@ -147,9 +148,9 @@ button:hover {
 }
 
 .refine-btn {
-    width: 100%; /* Match refine-section width */
-    display: none; /* Hidden initially */
-    z-index: 1; /* Above refined_outputs */
+    width: 100%;
+    display: none;
+    z-index: 1;
 }
 
 .output-section, .refine-section, .history-section {
@@ -163,7 +164,7 @@ button:hover {
 }
 
 #refined_outputs {
-    margin-top: 20px; /* Space after refine-btn */
+    margin-top: 20px;
 }
 
 .output-box {
@@ -188,6 +189,8 @@ button:hover {
 
 .copy-button {
     background-color: #800080;
+    border: 2px solid #4B0082; /* Dark purple outline */
+    color: white;
     padding: 5px;
     border-radius: 5px;
     width: 24px;
@@ -195,10 +198,13 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
 }
 
 .copy-button:hover {
     background-color: #a020f0;
+    border: 2px solid #FFFFFF; /* White outline on hover */
 }
 
 pre {
