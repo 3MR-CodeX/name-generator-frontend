@@ -72,41 +72,42 @@ const reasonsPre = document.getElementById("reasons");
 const refinedNamesPre = document.getElementById("refined_names");
 const refinedReasonsPre = document.getElementById("refined_reasons");
 const promptInput = document.getElementById("prompt");
+const editBox = document.getElementById("edit_box"); // Reference to the refine instruction textarea
 
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    fetchHistory();
+    fetchHistory(); // Fetch history on load, but history section is initially hidden
 
-    // Add event listener to prompt input for dynamic section appearance
+    // Add event listener to prompt input for dynamic refine section appearance
     promptInput.addEventListener("input", handlePromptInput);
 });
 
 function initializeUI() {
-    // Add 'hidden-section' class to elements that should be initially hidden
+    // Add 'hidden-section' class to ALL sections that should be initially hidden
     outputContainer.classList.add("hidden-section");
     refineSection.classList.add("hidden-section");
     refinedOutputs.classList.add("hidden-section");
     historySection.classList.add("hidden-section");
-    refineBtn.classList.add("hidden-section"); // Hide refine button initially
+    refineBtn.classList.add("hidden-section");
 }
 
 function handlePromptInput() {
-    // If prompt has content, show refine section and button
+    // This function controls the visibility of the "Refine the suggestions" box and button
+    // based *only* on whether the main prompt input has content.
     if (promptInput.value.trim() !== "") {
         refineSection.classList.remove("hidden-section");
         refineSection.classList.add("visible-section");
         refineBtn.classList.remove("hidden-section");
         refineBtn.classList.add("visible-section");
     } else {
-        // If prompt is empty, hide them
         refineSection.classList.remove("visible-section");
         refineSection.classList.add("hidden-section");
         refineBtn.classList.remove("visible-section");
         refineBtn.classList.add("hidden-section");
-        // Also hide refined outputs if prompt is cleared
+        // If prompt is cleared, also hide refined outputs
         refinedOutputs.classList.remove("visible-section");
         refinedOutputs.classList.add("hidden-section");
     }
@@ -138,16 +139,17 @@ async function generateName() {
         return;
     }
 
+    // Clear previous results and hide refined outputs with animation
+    namesPre.textContent = "Generating...";
+    reasonsPre.textContent = "Generating...";
+    namesPre.classList.remove("fade-in-content");
+    reasonsPre.classList.remove("fade-in-content");
+
+    // Hide refined outputs when generating new names (with animation)
+    refinedOutputs.classList.remove("visible-section");
+    refinedOutputs.classList.add("hidden-section");
+
     try {
-        // Show loading state or clear previous results immediately
-        namesPre.textContent = "Generating...";
-        reasonsPre.textContent = "Generating...";
-        namesPre.classList.remove("fade-in-content"); // Remove previous animation class
-        reasonsPre.classList.remove("fade-in-content"); // Remove previous animation class
-        refinedOutputs.classList.remove("visible-section"); // Hide refined outputs when generating new names
-        refinedOutputs.classList.add("hidden-section");
-
-
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
             headers: {
@@ -165,15 +167,14 @@ async function generateName() {
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
 
-        // Show relevant sections with animation
+        // Show Generated Names/Explanations and History sections with animation
         outputContainer.classList.remove("hidden-section");
         outputContainer.classList.add("visible-section");
-        refineSection.classList.remove("hidden-section"); // Ensure refine section is visible if prompt exists
-        refineSection.classList.add("visible-section");
-        refineBtn.classList.remove("hidden-section"); // Ensure refine button is visible if prompt exists
-        refineBtn.classList.add("visible-section");
         historySection.classList.remove("hidden-section");
         historySection.classList.add("visible-section");
+
+        // Conditionally show Refine section and button based on prompt content
+        handlePromptInput(); // This will correctly show/hide based on promptInput.value
 
         document.getElementById("error").textContent = "";
         fetchHistory();
@@ -184,20 +185,26 @@ async function generateName() {
 }
 
 async function refineNames() {
-    const instruction = document.getElementById("edit_box").value;
-    if (!instruction || !BACKEND_URL) {
-        document.getElementById("error").textContent = "Refine instruction or backend URL missing.";
+    const instruction = editBox.value; // Use editBox reference
+    if (!instruction.trim()) { // Check if instruction is empty
+        document.getElementById("error").textContent = "Please enter a refine instruction.";
+        // Do not reset UI or hide sections if instruction is empty
+        return;
+    }
+
+    if (!BACKEND_URL) {
+        document.getElementById("error").textContent = "Backend URL not set correctly.";
         resetUI();
         return;
     }
 
-    try {
-        // Show loading state or clear previous results immediately
-        refinedNamesPre.textContent = "Refining...";
-        refinedReasonsPre.textContent = "Refining...";
-        refinedNamesPre.classList.remove("fade-in-content"); // Remove previous animation class
-        refinedReasonsPre.classList.remove("fade-in-content"); // Remove previous animation class
+    // Show loading state or clear previous results immediately
+    refinedNamesPre.textContent = "Refining...";
+    refinedReasonsPre.textContent = "Refining...";
+    refinedNamesPre.classList.remove("fade-in-content");
+    refinedReasonsPre.classList.remove("fade-in-content");
 
+    try {
         const response = await fetch(`${BACKEND_URL}/refine`, {
             method: "POST",
             headers: {
@@ -218,11 +225,12 @@ async function refineNames() {
         // Show refined outputs with animation
         refinedOutputs.classList.remove("hidden-section");
         refinedOutputs.classList.add("visible-section");
+
         document.getElementById("error").textContent = "";
         fetchHistory();
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        resetUI();
+        // Do not reset UI for refine errors, only show error message
     }
 }
 
@@ -233,8 +241,8 @@ async function fetchHistory() {
         const history = await response.json();
         renderHistory(history);
     } catch (error) {
-        document.getElementById("error").textContent = "Error: " + error.message;
-        resetUI();
+        document.getElementById("error").textContent = "Error fetching history: " + error.message;
+        // Do not reset UI for history fetch errors, just show error message
     }
 }
 
@@ -253,42 +261,50 @@ function renderHistory(history) {
 }
 
 function restoreHistory(id) {
-    fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(history => {
-        const entry = history.find(e => e.id === id);
+    fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => { // Renamed history to historyData to avoid conflict
+        const entry = historyData.find(e => e.id === id);
         if (entry) {
-            promptInput.value = entry.prompt; // Use promptInput reference
+            promptInput.value = entry.prompt;
             document.getElementById("category").value = entry.category;
             document.getElementById("style").value = entry.style;
             document.getElementById("language").value = entry.language;
-            namesPre.textContent = entry.names.map(cleanNames).join("\n"); // Use namesPre reference
-            reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n"); // Use reasonsPre reference
+            namesPre.textContent = entry.names.map(cleanNames).join("\n");
+            reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
 
             // Ensure animation class is applied
             namesPre.classList.add("fade-in-content");
             reasonsPre.classList.add("fade-in-content");
 
-            // Show sections
+            // Show main output, refine section, refine button, and history
             outputContainer.classList.remove("hidden-section");
             outputContainer.classList.add("visible-section");
-            refineSection.classList.remove("hidden-section");
-            refineSection.classList.add("visible-section");
-            refineBtn.classList.remove("hidden-section");
-            refineBtn.classList.add("visible-section");
-            refinedOutputs.classList.remove("visible-section"); // Hide refined outputs when restoring
+            historySection.classList.remove("hidden-section");
+            historySection.classList.add("visible-section");
+            
+            // Conditionally show refine section and button based on restored prompt
+            handlePromptInput();
+
+            // Always hide refined outputs when restoring from history (unless it was a refined entry itself,
+            // but for simplicity, we'll assume restoring means starting fresh with a base generation)
+            refinedOutputs.classList.remove("visible-section");
             refinedOutputs.classList.add("hidden-section");
+
             document.getElementById("error").textContent = "";
+            // No need to fetchHistory again here, as renderHistory already populated it.
         }
     });
 }
 
 function surpriseMe() {
     const [prompt, category, style, language] = SURPRISES[Math.floor(Math.random() * SURPRISES.length)];
-    promptInput.value = prompt; // Use promptInput reference
+    promptInput.value = prompt;
     document.getElementById("category").value = category;
     document.getElementById("style").value = style;
     document.getElementById("language").value = language;
-    // Trigger the prompt input handler to show/hide sections based on new prompt
-    handlePromptInput();
+    
+    // Call generateName directly after setting the surprise prompt
+    generateName(); 
+    // handlePromptInput() is now called within generateName, so no need here.
 }
 
 function copyToClipboard(elementId) {
@@ -322,7 +338,7 @@ function copyToClipboard(elementId) {
 }
 
 function resetUI() {
-    // Add 'hidden-section' class to hide elements
+    // Add 'hidden-section' class to hide elements with animation
     outputContainer.classList.remove("visible-section");
     outputContainer.classList.add("hidden-section");
     refineSection.classList.remove("visible-section");
@@ -345,4 +361,8 @@ function resetUI() {
     reasonsPre.classList.remove("fade-in-content");
     refinedNamesPre.classList.remove("fade-in-content");
     refinedReasonsPre.classList.remove("fade-in-content");
+
+    // Clear prompt and refine instruction textareas
+    promptInput.value = "";
+    editBox.value = "";
 }
