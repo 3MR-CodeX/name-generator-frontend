@@ -47,7 +47,10 @@ body::before {
 
 @keyframes gradientShift {
     0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; } /* Adjusted for a smoother, continuous shift */
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 25% 75%; }
+    100% { background-position: 0% 0%; }
 }
 
 /* Main container to center content */
@@ -444,17 +447,17 @@ pre {
 /* --- Mouse Glow Effect --- */
 #mouse-glow {
     position: fixed;
-    width: 180px; /* A bit bigger than 120px */
-    height: 180px; /* A bit bigger than 120px */
+    width: 120px; /* Slightly larger glow */
+    height: 120px;
     border-radius: 50%;
     /* Deep purple glow fading out */
-    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.5) 0%, transparent 70%); /* Original opacity */
-    filter: blur(35px); /* A bit more blur for a softer glow */
+    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.5) 0%, transparent 70%);
+    filter: blur(25px); /* More blur for a softer glow */
     transform: scale(0); /* Initially hidden */
     opacity: 0; /* Initially hidden */
     transition: transform 0.2s ease-out, opacity 0.2s ease-out;
     pointer-events: none; /* Crucial: allows clicks to pass through */
-    z-index: -3; /* Placed below pattern.png (z-index: -1) and linear gradient (z-index: -2) */
+    z-index: -1; /* Place it behind the main content but above body background */
 }
 
 
