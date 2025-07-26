@@ -107,8 +107,8 @@ textarea {
 }
 
 #edit_box {
-    height: 150px; /* Increased from 120px */
-    margin-top: 10px; /* 5px more than label margin */
+    height: 150px; /* Extended by 30px */
+    margin-top: 10px; /* 5px compression from title */
     margin-bottom: 10px;
 }
 
@@ -217,7 +217,7 @@ pre {
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 20px;
-    height: 160px; /* Increased from ~130px */
+    height: 220px; /* Extended by 30px */
 }
 
 .history-section {
