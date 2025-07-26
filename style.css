@@ -454,7 +454,7 @@ pre {
     opacity: 0; /* Initially hidden */
     transition: transform 0.2s ease-out, opacity 0.2s ease-out;
     pointer-events: none; /* Crucial: allows clicks to pass through */
-    z-index: -1; /* Place it behind the main content but above body background */
+    z-index: -3; /* Placed below pattern.png (z-index: -1) and linear gradient (z-index: -2) */
 }
 
 
