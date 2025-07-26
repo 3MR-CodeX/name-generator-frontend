@@ -7,9 +7,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: linear-gradient(45deg, #1a1a1a 0%, #1c2526 33%, #800080 66%, #1a1a1a 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
+    background: #1a1a1a; /* Dark gray base */
     color: #e0e0e0;
     padding: 20px;
     min-height: 100vh;
@@ -29,10 +27,22 @@ body::before {
     z-index: -1;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #800080, transparent);
+    animation: waveFlow 8s linear infinite;
+    opacity: 0.2;
+    z-index: -2;
+}
+
+@keyframes waveFlow {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 .banner-col {
@@ -147,18 +157,17 @@ select {
 button {
     background-color: #800080;
     color: white;
-    border: 2px solid #4a004a;
+    border: none;
     border-radius: 8px;
     padding: 12px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 button:hover {
     background-color: #a020f0;
     box-shadow: 0 0 10px 2px #800080;
-    border: 2px solid #ffffff;
 }
 
 .generate-btn {
@@ -218,12 +227,11 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #4a004a;
+    border: none;
 }
 
 .copy-button:hover {
     background-color: #a020f0;
-    border: 2px solid #ffffff;
 }
 
 pre {
