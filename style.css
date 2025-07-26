@@ -34,6 +34,7 @@ body {
 }
 
 h1 {
+    font-family: 'Cinzel Decorative', serif;
     font-size: 3em;
     color: #ffffff;
     text-align: center;
@@ -107,8 +108,8 @@ textarea {
 }
 
 #edit_box {
-    height: 150px; /* Extended by 30px */
-    margin-top: 10px; /* 5px compression from title */
+    height: 150px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -148,8 +149,9 @@ button:hover {
 
 .refine-btn {
     width: 100%;
-    margin-top: 10px;
-    display: none; /* Hidden initially */
+    margin-top: 20px; /* Match gap of generate-btn */
+    display: none;
+    z-index: 1; /* Ensure above refined_outputs */
 }
 
 .output-section, .refine-section, .history-section {
@@ -160,6 +162,10 @@ button:hover {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
+}
+
+#refined_outputs {
+    margin-top: 20px; /* Space after refine-btn */
 }
 
 .output-box {
@@ -217,7 +223,7 @@ pre {
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 20px;
-    height: 220px; /* Extended by 30px */
+    height: 220px;
 }
 
 .history-section {
