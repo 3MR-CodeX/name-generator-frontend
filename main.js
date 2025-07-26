@@ -1,5 +1,5 @@
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-const API_KEY = import.meta.env.VITE_NAMEIT2;
+const BACKEND_URL = process.env.BACKEND_URL;
+const API_KEY = process.env.NAMEIT2;
 
 
 const CATEGORY_OPTIONS = [
