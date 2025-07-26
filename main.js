@@ -1,8 +1,20 @@
-const BACKEND_URL = "https://nameit-backend-2.vercel.app";
-const API_KEY = "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";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const API_KEY = import.meta.env.VITE_NAMEIT2;
 
-const CATEGORY_OPTIONS = ["Random", "Product", "Pet", "App", "Drawing", "Brand", "Object", "Video", "New Word", "Website", "Service", "Book", "Startup", "Course", "Event", "Song", "Tool", "Game", "Podcast", "Place", "Company"];
-const STYLE_OPTIONS = ["Random", "Powerful", "aggressive", "Cute", "Futuristic", "Luxury", "Funny", "Elegant", "Minimal", "Bold", "Playful", "Mysterious", "Modern", "Traditional", "Edgy", "Catchy"];
+
+const CATEGORY_OPTIONS = [
+  "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
+  "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product",
+  "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"
+];
+const STYLE_OPTIONS = [
+  "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
+  "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
+  "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
+  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful",
+  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek",
+  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen"
+];
 const SURPRISES = [
     ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
     ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
