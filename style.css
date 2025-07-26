@@ -183,9 +183,15 @@ button {
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-button:hover {
+button:hover:not(:disabled) { /* Apply hover only when not disabled */
     background-color: #a020f0;
     box-shadow: 0 0 10px 2px #800080;
+}
+
+button:disabled { /* Style for disabled buttons */
+    background-color: #5a5a5a;
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 .generate-btn {
@@ -266,6 +272,7 @@ button:hover {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
+    position: relative; /* Needed for spinner overlay positioning */
 }
 
 .output-header {
@@ -329,8 +336,8 @@ pre {
     background-color: #2a2a2a;
     max-height: 120px;
     overflow-y: auto;
-    /* Removed overflow-x: hidden; */
-    /* Removed word-wrap: break-word; */
+    /* Removed overflow-x: hidden; */ /* Reverted */
+    /* Removed word-wrap: break-word; */ /* Reverted */
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     padding: 10px;
@@ -372,24 +379,52 @@ pre {
     text-align: center;
 }
 
-/* Reverted scrollbar styling to default for history-inner */
-/* Keeping general scrollbar styling for other elements */
-::-webkit-scrollbar {
-    width: 8px;
+/* --- Loading Spinner Styles --- */
+.spinner-overlay {
+    position: absolute; /* Position relative to the parent output-box */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Above other content */
+    border-radius: 8px;
+    transition: opacity 0.3s ease-out; /* Smooth fade in/out */
+    opacity: 0; /* Initially hidden */
+    pointer-events: none; /* Allow clicks to pass through when hidden */
 }
 
-::-webkit-scrollbar-track {
-    background: #1a1a1a;
+.spinner-overlay.show {
+    opacity: 1; /* Show when 'show' class is added */
+    pointer-events: auto; /* Block clicks when visible */
 }
 
-::-webkit-scrollbar-thumb {
-    background: #800080;
-    border-radius: 4px;
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #800080; /* Purple color for the spinner */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #a020f0;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
+
+/* --- Error Placeholder Styling --- */
+.prompt-error-placeholder::placeholder {
+    color: #ff5555; /* Red color for error text */
+    opacity: 1; /* Ensure placeholder is fully visible */
+}
+.prompt-error-placeholder {
+    border-color: #ff5555 !important; /* Red border on error */
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
