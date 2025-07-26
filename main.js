@@ -1,7 +1,7 @@
 // Environment variables with logging and fallback
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://nameit-backend-2.vercel.app";
 const API_KEY = process.env.REACT_APP_NAMEIT2 || "gsk_mTSrnV9GV9cWGdyb3FYwEOLr3LPgSwSnuLw4Umytty6";
-console.log("URL:", BACKEND_URL, "API:", NAMEIT2);
+console.log("URL:", BACKEND_URL, "API:", API_KEY);
 
 const CATEGORY_OPTIONS = [
   "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
@@ -99,6 +99,12 @@ async function generateName() {
     const style = document.getElementById("style").value;
     const language = document.getElementById("language").value;
 
+    if (!BACKEND_URL || !API_KEY) {
+        document.getElementById("error").textContent = "Environment variables not set correctly.";
+        resetUI();
+        return;
+    }
+
     try {
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
@@ -121,13 +127,18 @@ async function generateName() {
         document.getElementById("error").textContent = "";
         fetchHistory();
     } catch (error) {
-        document.getElementById("error").textContent = error.message;
+        document.getElementById("error").textContent = "Error: " + error.message;
+        resetUI();
     }
 }
 
 async function refineNames() {
     const instruction = document.getElementById("edit_box").value;
-    if (!instruction) return;
+    if (!instruction || !BACKEND_URL || !API_KEY) {
+        document.getElementById("error").textContent = "Refine instruction or environment variables missing.";
+        resetUI();
+        return;
+    }
 
     try {
         const response = await fetch(`${BACKEND_URL}/refine`, {
@@ -147,7 +158,8 @@ async function refineNames() {
         document.getElementById("error").textContent = "";
         fetchHistory();
     } catch (error) {
-        document.getElementById("error").textContent = error.message;
+        document.getElementById("error").textContent = "Error: " + error.message;
+        resetUI();
     }
 }
 
@@ -160,7 +172,8 @@ async function fetchHistory() {
         const history = await response.json();
         renderHistory(history);
     } catch (error) {
-        document.getElementById("error").textContent = error.message;
+        document.getElementById("error").textContent = "Error: " + error.message;
+        resetUI();
     }
 }
 
@@ -208,4 +221,12 @@ function surpriseMe() {
 function copyToClipboard(elementId) {
     const text = document.getElementById(elementId).textContent;
     navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+}
+
+function resetUI() {
+    document.getElementById("output_container").style.display = "none";
+    document.getElementById("refine_section").style.display = "none";
+    document.getElementById("refined_outputs").style.display = "none";
+    document.querySelector(".refine-btn").style.display = "none";
+    document.getElementById("history_section").style.display = "none";
 }
