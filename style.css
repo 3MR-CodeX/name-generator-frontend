@@ -7,10 +7,32 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: linear-gradient(to bottom, #1a1a1a 50%, #660066 100%); /* Adjusted for contrast */
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a004a 50%, #800080 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
     color: #e0e0e0;
     padding: 20px;
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect x="0" y="0" width="100" height="100" fill="none" /%3E%3Ccircle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.05)" /%3E%3C/svg%3E') repeat;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .banner-col {
@@ -125,17 +147,18 @@ select {
 button {
     background-color: #800080;
     color: white;
-    border: none; /* Reverted outline */
+    border: 2px solid #4a004a;
     border-radius: 8px;
     padding: 12px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
 }
 
 button:hover {
     background-color: #a020f0;
     box-shadow: 0 0 10px 2px #800080;
+    border: 2px solid #ffffff;
 }
 
 .generate-btn {
@@ -188,7 +211,6 @@ button:hover {
 
 .copy-button {
     background-color: #800080;
-    border: none; /* Reverted outline */
     padding: 5px;
     border-radius: 5px;
     width: 24px;
@@ -196,11 +218,12 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.3s;
+    border: 2px solid #4a004a;
 }
 
 .copy-button:hover {
     background-color: #a020f0;
+    border: 2px solid #ffffff;
 }
 
 pre {
@@ -257,7 +280,7 @@ pre {
     margin: 5px;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.3s;
     display: block;
     width: 100%;
     text-align: left;
@@ -268,7 +291,7 @@ pre {
     background-color: #4a4a4a;
 }
 
-.pre-refined {
+.pre-refined-frame {
     font-size: 0.8em;
     color: #aaa;
     margin-left: 5px;
