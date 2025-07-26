@@ -94,7 +94,7 @@ function initializeUI() {
     historySection.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
 
-    // Store original placeholders
+    // Store original placeholders for error messaging
     promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     editBox.dataset.originalPlaceholder = editBox.placeholder;
 }
@@ -168,7 +168,7 @@ function enableButtons() {
  * @param {string} message The error message to display.
  */
 function showTemporaryPlaceholderError(textarea, message) {
-    // Ensure original placeholder is stored only once
+    // Store original placeholder if not already stored
     if (!textarea.dataset.originalPlaceholder) {
         textarea.dataset.originalPlaceholder = textarea.placeholder;
     }
@@ -189,8 +189,8 @@ async function generateName() {
     // --- Empty Prompt Handling ---
     if (!prompt) {
         showTemporaryPlaceholderError(promptInput, "You cannot generate names without a description!");
+        // Do NOT call resetUI() here, as it clears the placeholder immediately.
         document.getElementById("error").textContent = ""; // Clear general error message
-        resetUI(); // Hide all triggered boxes
         return; // Stop function execution
     } else {
         // Clear error placeholder if prompt is now valid (if it was previously set)
@@ -211,7 +211,7 @@ async function generateName() {
     // Clear general error message at the start of a valid attempt
     document.getElementById("error").textContent = "";
 
-    // Show output boxes and history section immediately
+    // Show output boxes and history section immediately before loading
     outputContainer.classList.remove("hidden-section");
     outputContainer.classList.add("visible-section");
     historySection.classList.remove("hidden-section");
@@ -226,7 +226,7 @@ async function generateName() {
     refinedOutputs.classList.remove("visible-section");
     refinedOutputs.classList.add("hidden-section");
 
-    // Hide refine section and button if prompt is empty (shouldn't happen here due to initial check)
+    // Hide refine section and button initially, they will be shown on success if prompt is valid
     refineSection.classList.remove("visible-section");
     refineSection.classList.add("hidden-section");
     refineBtn.classList.remove("visible-section");
@@ -320,7 +320,7 @@ async function refineNames() {
         });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || "Unknown error during name refinement.");
+            throw new new Error(errorData.error || "Unknown error during name refinement.");
         }
         const data = await response.json();
 
@@ -499,7 +499,8 @@ function resetUI() {
     promptInput.value = "";
     editBox.value = "";
 
-    // Reset placeholders and remove error styling
+    // Reset placeholders to original and remove error styling
+    // Ensure originalPlaceholder is used, as it's set in initializeUI
     promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
     editBox.placeholder = editBox.dataset.originalPlaceholder;
