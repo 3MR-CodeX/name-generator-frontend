@@ -1,5 +1,5 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app/";
-const API_KEY = "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";
+const API_KEY = "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";
 
 const CATEGORY_OPTIONS = [
   "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
