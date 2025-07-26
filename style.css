@@ -29,32 +29,10 @@ body::before {
     z-index: -1;
 }
 
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 100%;
-    background: repeating-linear-gradient(
-        45deg,
-        transparent 0,
-        #800080 10px,
-        transparent 20px
-    );
-    animation: waveMove 8s linear infinite;
-    z-index: -2;
-}
-
 @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
-}
-
-@keyframes waveMove {
-    0% { background-position: 0 0; }
-    100% { background-position: -100px 0; }
 }
 
 .banner-col {
