@@ -66,7 +66,7 @@ body::before {
 .banner-col {
     text-align: center;
     margin-bottom: 20px;
-    background-color: rgba(128, 0, 128, 0.7); /* Reduced transparency by 30% */
+    background-color: rgba(128, 0, 128, 0.7); /* Purple background, 70% opaque */
     padding: 10px;
     border-radius: 8px;
     transition: background-color 0.3s;
@@ -107,7 +107,7 @@ h1 {
 }
 
 .input-box {
-    background-color: rgba(42, 42, 42, 0.7); /* Reduced transparency by 30% */
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -139,7 +139,7 @@ label {
 }
 
 textarea, select {
-    background-color: rgba(58, 58, 58, 0.85); /* Reduced transparency by 15% */
+    background-color: rgba(58, 58, 58, 0.7); /* Grey, 70% opaque */
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -173,7 +173,7 @@ select {
 }
 
 button {
-    background-color: rgba(128, 0, 128, 0.7); /* Reduced transparency by 30% */
+    background-color: #800080; /* Solid purple, not transparent */
     color: white;
     border: none;
     border-radius: 8px;
@@ -185,7 +185,7 @@ button {
 
 button:hover:not(:disabled) { /* Apply hover only when not disabled */
     background-color: #a020f0;
-    box-shadow: 0 0 10px 2px rgba(128, 0, 128, 0.7); /* Reduced transparency by 30% */
+    box-shadow: 0 0 10px 2px rgba(128, 0, 128, 0.7); /* Purple shadow, 70% opaque */
 }
 
 button:disabled { /* Style for disabled buttons */
@@ -268,7 +268,7 @@ button:disabled { /* Style for disabled buttons */
 
 
 .output-box {
-    background-color: rgba(42, 42, 42, 0.7); /* Reduced transparency by 30% */
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
@@ -288,7 +288,7 @@ button:disabled { /* Style for disabled buttons */
 }
 
 .copy-button {
-    background-color: rgba(128, 0, 128, 0.7); /* Reduced transparency by 30% */
+    background-color: #800080; /* Solid purple, not transparent */
     padding: 5px;
     border-radius: 5px;
     width: 24px;
@@ -304,7 +304,7 @@ button:disabled { /* Style for disabled buttons */
 }
 
 pre {
-    background-color: rgba(58, 58, 58, 0.85); /* Reduced transparency by 15% */
+    background-color: rgba(58, 58, 58, 0.7); /* Grey, 70% opaque */
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -318,21 +318,21 @@ pre {
 }
 
 .refine-section {
-    background-color: rgba(42, 42, 42, 0.7); /* Reduced transparency by 30% */
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
 }
 
 .history-section {
-    background-color: rgba(42, 42, 42, 0.7); /* Reduced transparency by 30% */
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
 }
 
 .history-inner {
-    background-color: rgba(42, 42, 42, 0.7); /* Reduced transparency by 30% */
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     max-height: 120px;
     overflow-y: auto;
     overflow-x: hidden; /* Explicitly hide horizontal scrollbar */
@@ -347,7 +347,7 @@ pre {
 }
 
 .history-item {
-    background-color: rgba(58, 58, 58, 0.85); /* Reduced transparency by 15% */
+    background-color: rgba(58, 58, 58, 0.7); /* Grey, 70% opaque */
     color: #e0e0e0;
     border: none;
     padding: 8px 12px;
@@ -402,7 +402,7 @@ pre {
 
 .spinner {
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid rgba(128, 0, 128, 0.7); /* Reduced transparency by 30% */
+    border-top: 4px solid rgba(128, 0, 128, 0.7); /* Purple color for the spinner, 70% opaque */
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -442,6 +442,22 @@ pre {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #a020f0; /* Thumb color on hover */
+}
+
+/* --- Mouse Glow Effect --- */
+#mouse-glow {
+    position: fixed;
+    width: 120px; /* Slightly larger glow */
+    height: 120px;
+    border-radius: 50%;
+    /* Deep purple glow fading out */
+    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.5) 0%, transparent 70%);
+    filter: blur(25px); /* More blur for a softer glow */
+    transform: scale(0); /* Initially hidden */
+    opacity: 0; /* Initially hidden */
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    pointer-events: none; /* Crucial: allows clicks to pass through */
+    z-index: -1; /* Place it behind the main content but above body background */
 }
 
 
