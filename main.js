@@ -1,5 +1,7 @@
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
-const API_KEY = process.env.REACT_APP_NAMEIT2
+// Environment variables with logging and fallback
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://nameit-backend-2.vercel.app";
+const API_KEY = process.env.REACT_APP_NAMEIT2 || "gsk_mTSrnV9GV9cWGdyb3FYwEOLr3LPgSwSnuLw4Umytty6";
+console.log("URL:", BACKEND_URL, "API:", NAMEIT2);
 
 const CATEGORY_OPTIONS = [
   "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
