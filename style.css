@@ -331,13 +331,11 @@ pre {
     border: 1px solid #4a4a4a;
 }
 
-/* Reverted history-inner to original properties for scrollbar */
 .history-inner {
     background-color: #2a2a2a;
     max-height: 120px;
     overflow-y: auto;
-    /* Removed overflow-x: hidden; */ /* Reverted */
-    /* Removed word-wrap: break-word; */ /* Reverted */
+    overflow-x: hidden; /* Explicitly hide horizontal scrollbar */
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     padding: 10px;
@@ -423,6 +421,27 @@ pre {
 }
 .prompt-error-placeholder {
     border-color: #ff5555 !important; /* Red border on error */
+}
+
+/* --- Themed Scrollbar Styles (Reverted to original and applied globally) --- */
+/* For Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px; /* Vertical scrollbar width */
+    height: 8px; /* Horizontal scrollbar height */
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a; /* Track color */
+    border-radius: 4px; /* Rounded track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #800080; /* Thumb color */
+    border-radius: 4px; /* Rounded thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a020f0; /* Thumb color on hover */
 }
 
 
