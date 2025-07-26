@@ -1,4 +1,3 @@
-// Environment variables with logging and fallback
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 const API_KEY = "gsk_mTSrnV9GV9cWGdyb3FYwEOLr3LPgSwSnuLw4Umytty6";
 
