@@ -10,9 +10,9 @@ const STYLE_OPTIONS = [
   "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
   "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
   "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
-  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful",
-  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek",
-  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen"
+  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious",
+  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
+  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
 ];
 const SURPRISES = [
     ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
