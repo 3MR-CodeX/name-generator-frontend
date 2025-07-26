@@ -29,7 +29,7 @@ body::after {
     background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
     background-size: 400% 400%;
     animation: gradientShift 10s ease infinite;
-    z-index: -2; /* Changed: Placed under mouse glow */
+    z-index: -3; /* Changed: Placed below mouse glow */
 }
 
 body::before {
