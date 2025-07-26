@@ -78,8 +78,8 @@ const editBox = document.getElementById("edit_box"); // Reference to the refine 
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 
-// Get mouse glow element
-const mouseGlow = document.getElementById("mouse-glow");
+// Get mouse glow element (will be null until DOMContentLoaded, but declared here)
+let mouseGlow;
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -87,6 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory();
+    
+    // Initialize mouseGlow element reference after DOM is loaded
+    mouseGlow = document.getElementById("mouse-glow");
     setupMouseGlow(); // Initialize mouse glow effect
 });
 
@@ -512,6 +515,12 @@ function resetDynamicSections() {
  * Sets up the mouse glow effect.
  */
 function setupMouseGlow() {
+    // Ensure mouseGlow element is available
+    if (!mouseGlow) {
+        console.error("Mouse glow element not found. Make sure it's in index.html with id='mouse-glow'.");
+        return;
+    }
+
     const glowSize = mouseGlow.offsetWidth; // Get current size of the glow element
 
     document.body.addEventListener('mousemove', (e) => {
@@ -520,7 +529,7 @@ function setupMouseGlow() {
         mouseGlow.style.top = `${e.clientY - glowSize / 2}px`;
         
         // Ensure it's visible and scaled up when mouse is moving over the body
-        if (mouseGlow.style.opacity === '0') { // Only transition if currently hidden
+        if (mouseGlow.style.opacity === '0' || mouseGlow.style.transform === 'scale(0)') {
             mouseGlow.style.opacity = '1';
             mouseGlow.style.transform = 'scale(1)';
         }
