@@ -2,131 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Name Generator</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NameIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="banner-col">
+        <img src="banner.png" alt="Banner" id="banner">
+    </div>
+    <h1>NameIT</h1>
+    <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
     <div class="container">
-        <div class="banner-col">
-            <img id="banner" src="banner.png" alt="Banner">
-        </div>
-        <h1>Name Generator</h1>
-        <div class="description">Generate unique names with explanations.</div>
         <div class="input-section">
             <div class="input-box textbox-column">
-                <label for="edit_box">Enter Prompt</label>
-                <textarea id="edit_box" placeholder="Enter your prompt here..."></textarea>
+                <label for="prompt">What do you want to name?</label>
+                <textarea id="prompt" placeholder="Enter a description!"></textarea>
             </div>
             <div class="input-box right-column">
-                <label>Style</label>
-                <div class="dropdown-desc">Select a style for the names</div>
-                <select>
-                    <option value="fantasy">Fantasy</option>
-                    <option value="sci-fi">Sci-Fi</option>
+                <label for="category">Category</label>
+                <p class="dropdown-desc">Choose the type of item you’re naming.</p>
+                <select id="category">
+                    <option value="">Select a category</option>
+                </select>
+                <label for="style">Style</label>
+                <p class="dropdown-desc">Select the tone or vibe of the name.</p>
+                <select id="style">
+                    <option value="">Select a style</option>
+                </select>
+                <label for="language">Language</label>
+                <p class="dropdown-desc">Pick the language for the generated names.</p>
+                <select id="language">
+                    <option value="English">English</option>
+                    <option value="Arabic">Arabic</option>
                 </select>
             </div>
         </div>
         <div class="button-section">
-            <button class="generate-btn" onclick="generateName()">Generate</button>
-            <button class="surprise-btn">Surprise Me</button>
+            <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
+            <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
         </div>
         <div id="output_container" class="output-section">
             <div class="output-box">
                 <div class="output-header">
-                    <label>Generated Names</label>
-                    <button class="copy-button">📋</button>
+                    <label>Generated Names/Titles</label>
+                    <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
                 </div>
-                <pre id="generated_names"></pre>
+                <pre id="names"></pre>
             </div>
             <div class="output-box">
                 <div class="output-header">
                     <label>Explanations</label>
-                    <button class="copy-button">📋</button>
+                    <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
                 </div>
-                <pre id="explanations"></pre>
+                <pre id="reasons"></pre>
             </div>
         </div>
         <div id="refine_section" class="refine-section">
-            <div class="output-box">Refine Box 1</div>
-            <div class="output-box">Refine Box 2</div>
-            <div class="output-box">Refine Box 3</div>
+            <label for="edit_box">Refine the suggestions</label>
+            <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
         </div>
-        <button class="refine-btn">Refine</button>
+        <div class="refine-button-section">
+            <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
+        </div>
         <div id="refined_outputs" class="output-section">
             <div class="output-box">
                 <div class="output-header">
-                    <label>Refined Outputs</label>
-                    <button class="copy-button">📋</button>
+                    <label>Refined Suggestions</label>
+                    <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
                 </div>
-                <pre id="refined_output"></pre>
+                <pre id="refined_names"></pre>
+            </div>
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Refined Explanations</label>
+                    <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
+                </div>
+                <pre id="refined_reasons"></pre>
             </div>
         </div>
         <div id="history_section" class="history-section">
-            <h2>History</h2>
-            <div class="history-inner">
-                <div class="history-item">Previous Generation 1</div>
-                <div class="history-item">Previous Generation 2</div>
-            </div>
+            <h2>🕘 Recent History</h2>
+            <div id="history" class="history-inner"></div>
         </div>
+        <div id="error" class="error"></div>
     </div>
-    <div id="loading-spinner" style="display: none;">
-        <div class="spinner"></div>
-    </div>
-
-    <script>
-        function showElement(element, displayType = 'block') {
-            element.style.display = displayType;
-            element.classList.add('appear');
-            element.addEventListener('animationend', () => {
-                element.classList.remove('appear');
-            }, { once: true });
-        }
-
-        function hideElement(element) {
-            element.classList.add('disappear');
-            element.addEventListener('animationend', () => {
-                element.style.display = 'none';
-                element.classList.remove('disappear');
-            }, { once: true });
-        }
-
-        function showSpinner() {
-            document.getElementById('loading-spinner').style.display = 'block';
-        }
-
-        function hideSpinner() {
-            document.getElementById('loading-spinner').style.display = 'none';
-        }
-
-        async function generateName() {
-            const prompt = document.getElementById('edit_box').value;
-            showSpinner();
-            try {
-                // Simulate fetch (replace with your actual endpoint)
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                const data = {
-                    names: "Name1, Name2",
-                    explanations: "Explanation1, Explanation2"
-                };
-
-                document.getElementById('generated_names').textContent = data.names;
-                document.getElementById('explanations').textContent = data.explanations;
-                showElement(document.getElementById("output_container"), 'flex');
-                if (prompt) {
-                    showElement(document.getElementById("refine_section"), 'block');
-                    showElement(document.querySelector(".refine-btn"), 'block');
-                } else {
-                    hideElement(document.getElementById("refine_section"));
-                    hideElement(document.querySelector(".refine-btn"));
-                }
-                hideElement(document.getElementById("refined_outputs"));
-                showElement(document.getElementById("history_section"), 'block');
-            } catch (error) {
-                console.error('Error:', error);
-            } finally {
-                hideSpinner();
-            }
-        }
-    </script>
+    <script src="config.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
