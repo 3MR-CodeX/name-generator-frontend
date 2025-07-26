@@ -7,7 +7,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: linear-gradient(to bottom, #1a1a1a 70%, #800080 100%);
+    background: linear-gradient(to bottom, #1a1a1a 50%, #660066 100%); /* Adjusted for contrast */
     color: #e0e0e0;
     padding: 20px;
     min-height: 100vh;
@@ -108,7 +108,7 @@ textarea {
 
 #edit_box {
     height: 145px;
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -125,17 +125,16 @@ select {
 button {
     background-color: #800080;
     color: white;
-    border: 2px solid #4B0082; /* Dark purple outline */
+    border: none; /* Reverted outline */
     border-radius: 8px;
     padding: 12px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 button:hover {
     background-color: #a020f0;
-    border: 2px solid #FFFFFF; /* White outline on hover */
     box-shadow: 0 0 10px 2px #800080;
 }
 
@@ -189,8 +188,7 @@ button:hover {
 
 .copy-button {
     background-color: #800080;
-    border: 2px solid #4B0082; /* Dark purple outline */
-    color: white;
+    border: none; /* Reverted outline */
     padding: 5px;
     border-radius: 5px;
     width: 24px;
@@ -198,13 +196,11 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
+    transition: background-color 0.3s;
 }
 
 .copy-button:hover {
     background-color: #a020f0;
-    border: 2px solid #FFFFFF; /* White outline on hover */
 }
 
 pre {
