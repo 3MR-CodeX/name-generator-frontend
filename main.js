@@ -137,8 +137,6 @@ function hideLoading(targetElement) {
     const spinnerOverlay = targetElement.querySelector(".spinner-overlay");
     if (spinnerOverlay) {
         spinnerOverlay.classList.remove("show"); // Hide the spinner
-        // Optional: Remove spinner after transition if needed, but keeping it
-        // in DOM is fine if it's reused.
     }
 }
 
@@ -160,26 +158,43 @@ function enableButtons() {
     refineBtn.disabled = false;
 }
 
+/**
+ * Displays a temporary error message in a textarea's placeholder.
+ * @param {HTMLTextAreaElement} textarea The textarea element.
+ * @param {string} message The error message to display.
+ */
+function showTemporaryPlaceholderError(textarea, message) {
+    const originalPlaceholder = textarea.dataset.originalPlaceholder || textarea.placeholder;
+    textarea.dataset.originalPlaceholder = originalPlaceholder; // Store original placeholder
+    textarea.placeholder = message;
+    textarea.classList.add("prompt-error-placeholder");
+
+    // Clear the error after 3 seconds
+    setTimeout(() => {
+        textarea.placeholder = originalPlaceholder;
+        textarea.classList.remove("prompt-error-placeholder");
+    }, 3000);
+}
+
 
 async function generateName() {
     const prompt = promptInput.value.trim(); // Trim whitespace from prompt
-    const category = document.getElementById("category").value;
-    const style = document.getElementById("style").value;
-    const language = document.getElementById("language").value;
 
     // --- Empty Prompt Handling ---
     if (!prompt) {
-        promptInput.value = ""; // Ensure it's truly empty
-        promptInput.placeholder = "You cannot generate names without a description!";
-        promptInput.classList.add("prompt-error-placeholder");
+        showTemporaryPlaceholderError(promptInput, "You cannot generate names without a description!");
         document.getElementById("error").textContent = ""; // Clear general error message
         resetUI(); // Hide all triggered boxes
         return; // Stop function execution
     } else {
-        // Clear error placeholder if prompt is now valid
-        promptInput.placeholder = "Enter a description!";
+        // Clear error placeholder if prompt is now valid (if it was previously set)
+        promptInput.placeholder = promptInput.dataset.originalPlaceholder || "Enter a description!";
         promptInput.classList.remove("prompt-error-placeholder");
     }
+
+    const category = document.getElementById("category").value;
+    const style = document.getElementById("style").value;
+    const language = document.getElementById("language").value;
 
     if (!BACKEND_URL) {
         document.getElementById("error").textContent = "Backend URL not set correctly.";
@@ -259,14 +274,12 @@ async function refineNames() {
 
     // --- Empty Refine Instruction Handling ---
     if (!instruction) {
-        editBox.value = ""; // Ensure it's truly empty
-        editBox.placeholder = "Please enter a refine instruction.";
-        editBox.classList.add("prompt-error-placeholder"); // Reuse class for styling
+        showTemporaryPlaceholderError(editBox, "Please enter a refine instruction.");
         document.getElementById("error").textContent = ""; // Clear general error message
         return; // Stop function execution
     } else {
-        // Clear error placeholder if instruction is now valid
-        editBox.placeholder = "e.g., Make the names shorter and more playful";
+        // Clear error placeholder if instruction is now valid (if it was previously set)
+        editBox.placeholder = editBox.dataset.originalPlaceholder || "e.g., Make the names shorter and more playful";
         editBox.classList.remove("prompt-error-placeholder");
     }
 
@@ -354,10 +367,11 @@ function renderHistory(history) {
 function restoreHistory(id) {
     // Clear any existing error messages when restoring
     document.getElementById("error").textContent = "";
-    promptInput.placeholder = "Enter a description!"; // Reset prompt placeholder
-    promptInput.classList.remove("prompt-error-placeholder"); // Remove error styling
-    editBox.placeholder = "e.g., Make the names shorter and more playful"; // Reset refine placeholder
-    editBox.classList.remove("prompt-error-placeholder"); // Remove error styling
+    // Reset prompt and refine placeholders and remove error styling
+    promptInput.placeholder = promptInput.dataset.originalPlaceholder || "Enter a description!";
+    promptInput.classList.remove("prompt-error-placeholder");
+    editBox.placeholder = editBox.dataset.originalPlaceholder || "e.g., Make the names shorter and more playful";
+    editBox.classList.remove("prompt-error-placeholder");
 
 
     fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
@@ -471,9 +485,9 @@ function resetUI() {
     editBox.value = "";
 
     // Reset placeholders and remove error styling
-    promptInput.placeholder = "Enter a description!";
+    promptInput.placeholder = promptInput.dataset.originalPlaceholder || "Enter a description!";
     promptInput.classList.remove("prompt-error-placeholder");
-    editBox.placeholder = "e.g., Make the names shorter and more playful";
+    editBox.placeholder = editBox.dataset.originalPlaceholder || "e.g., Make the names shorter and more playful";
     editBox.classList.remove("prompt-error-placeholder");
 
     // Clear general error message
