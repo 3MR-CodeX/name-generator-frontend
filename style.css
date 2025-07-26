@@ -34,7 +34,6 @@ body {
 }
 
 h1 {
-    font-family: 'Cinzel Decorative', serif;
     font-size: 3em;
     color: #ffffff;
     text-align: center;
@@ -109,7 +108,7 @@ textarea {
 
 #edit_box {
     height: 150px; /* Increased from 120px */
-    margin-top: 5px; /* Space from title */
+    margin-top: 10px; /* 5px more than label margin */
     margin-bottom: 10px;
 }
 
@@ -148,7 +147,8 @@ button:hover {
 }
 
 .refine-btn {
-    flex: 3; /* Match generate-btn width */
+    width: 100%;
+    margin-top: 10px;
     display: none; /* Hidden initially */
 }
 
