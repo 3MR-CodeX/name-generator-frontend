@@ -95,8 +95,13 @@ function initializeUI() {
     refineBtn.classList.add("hidden-section");
 
     // Store original placeholders for error messaging
-    promptInput.dataset.originalPlaceholder = promptInput.placeholder;
-    editBox.dataset.originalPlaceholder = editBox.placeholder;
+    // Ensure these are set only once on load
+    if (!promptInput.dataset.originalPlaceholder) {
+        promptInput.dataset.originalPlaceholder = promptInput.placeholder;
+    }
+    if (!editBox.dataset.originalPlaceholder) {
+        editBox.dataset.originalPlaceholder = editBox.placeholder;
+    }
 }
 
 function populateDropdown(id, options) {
@@ -177,8 +182,11 @@ function showTemporaryPlaceholderError(textarea, message) {
 
     // Clear the error after 3 seconds
     setTimeout(() => {
-        textarea.placeholder = textarea.dataset.originalPlaceholder;
-        textarea.classList.remove("prompt-error-placeholder");
+        // Only revert if the current placeholder is still the error message
+        if (textarea.placeholder === message) {
+            textarea.placeholder = textarea.dataset.originalPlaceholder;
+            textarea.classList.remove("prompt-error-placeholder");
+        }
     }, 3000);
 }
 
@@ -189,8 +197,8 @@ async function generateName() {
     // --- Empty Prompt Handling ---
     if (!prompt) {
         showTemporaryPlaceholderError(promptInput, "You cannot generate names without a description!");
-        // Do NOT call resetUI() here, as it clears the placeholder immediately.
-        document.getElementById("error").textContent = ""; // Clear general error message
+        // Ensure all dynamic sections are hidden when there's no prompt
+        resetDynamicSections(); 
         return; // Stop function execution
     } else {
         // Clear error placeholder if prompt is now valid (if it was previously set)
@@ -204,7 +212,7 @@ async function generateName() {
 
     if (!BACKEND_URL) {
         document.getElementById("error").textContent = "Backend URL not set correctly.";
-        resetUI();
+        resetDynamicSections(); // Hide all dynamic sections on critical error
         return;
     }
 
@@ -265,14 +273,7 @@ async function generateName() {
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         // If generation fails, hide output and refine sections
-        outputContainer.classList.remove("visible-section");
-        outputContainer.classList.add("hidden-section");
-        refineSection.classList.remove("visible-section");
-        refineSection.classList.add("hidden-section");
-        refineBtn.classList.remove("visible-section");
-        refineBtn.classList.add("hidden-section");
-        historySection.classList.remove("visible-section"); // Hide history on error as well
-        historySection.classList.add("hidden-section");
+        resetDynamicSections(); // Hide all dynamic sections on error
         // Clear content in case of error
         namesPre.textContent = "";
         reasonsPre.textContent = "";
@@ -320,7 +321,7 @@ async function refineNames() {
         });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new new Error(errorData.error || "Unknown error during name refinement.");
+            throw new Error(errorData.error || "Unknown error during name refinement.");
         }
         const data = await response.json();
 
@@ -470,8 +471,11 @@ function copyToClipboard(elementId) {
     });
 }
 
-function resetUI() {
-    // Add 'hidden-section' class to hide elements with animation
+/**
+ * Resets all dynamic UI sections to their initial hidden state.
+ * This is used when an operation fails or an empty prompt is detected.
+ */
+function resetDynamicSections() {
     outputContainer.classList.remove("visible-section");
     outputContainer.classList.add("hidden-section");
     refineSection.classList.remove("visible-section");
@@ -495,17 +499,11 @@ function resetUI() {
     refinedNamesPre.classList.remove("fade-in-content");
     refinedReasonsPre.classList.remove("fade-in-content");
 
-    // Clear prompt and refine instruction textareas
-    promptInput.value = "";
-    editBox.value = "";
-
-    // Reset placeholders to original and remove error styling
-    // Ensure originalPlaceholder is used, as it's set in initializeUI
-    promptInput.placeholder = promptInput.dataset.originalPlaceholder;
-    promptInput.classList.remove("prompt-error-placeholder");
-    editBox.placeholder = editBox.dataset.originalPlaceholder;
-    editBox.classList.remove("prompt-error-placeholder");
-
     // Clear general error message
     document.getElementById("error").textContent = "";
 }
+
+// The original resetUI function is no longer needed as resetDynamicSections
+// handles the UI visibility and content clearing for dynamic sections.
+// The placeholders are now handled by showTemporaryPlaceholderError and by
+// explicitly setting them in initializeUI, generateName, refineNames, and restoreHistory.
