@@ -107,8 +107,8 @@ textarea {
 }
 
 #edit_box {
-    height: 120px;
-    margin-top: 10px; /* 5px compression from title */
+    height: 130px; /* Extended by 10px */
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -147,8 +147,7 @@ button:hover {
 }
 
 .refine-btn {
-    width: 100%;
-    max-width: calc(75% - 10px); /* Match textbox-column width */
+    width: 100%; /* Match refine-section width */
     display: none; /* Hidden initially */
     z-index: 1; /* Above refined_outputs */
 }
