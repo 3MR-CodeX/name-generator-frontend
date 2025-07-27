@@ -9,7 +9,7 @@ body {
     font-size: 16px;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding: 0; /* Removed padding from body to allow full-width header/sidebar */
+    padding: 0;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -53,48 +53,92 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
-/* New Top Bar styles */
+/* Top Bar styles */
 .top-bar {
     width: 100%;
-    height: 70px; /* Increased height for top bar as per screenshot */
-    background-color: #2a2a2a; /* Dark gray for the top bar */
+    height: 70px; /* From topbar.png */
+    background-color: #2a2a2a; /* From topbar.png */
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    position: fixed; /* Make it stick to the top */
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 50; /* Higher than main content, lower than sidebar */
+    z-index: 50; /* Below sidebar, above main content */
 }
 
 .menu-toggle-btn {
     background: none;
     border: none;
     color: #e0e0e0;
-    font-size: 2.2em; /* Slightly larger icon */
+    font-size: 2.2em; /* Adjusted for visual impact */
     cursor: pointer;
     padding: 0;
     transition: transform 0.3s ease-in-out; /* For rotation animation */
+    /* Hexagon shape */
+    width: 45px; /* Adjust size of hexagon */
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    clip-path: polygon(50% 0%, 90% 20%, 90% 80%, 50% 100%, 10% 80%, 10% 20%);
+    background-color: #800080; /* Purple background for the button */
+    color: white; /* White for the '☰' symbol */
+    font-weight: bold;
+    font-size: 1.5em; /* Size of the '☰' symbol */
+    border: 2px solid #a020f0; /* Deep purple border for the hexagon */
+}
+
+.menu-toggle-btn:hover {
+    background-color: #a020f0; /* Deep purple on hover */
+    color: white;
 }
 
 .menu-toggle-btn.rotated {
     transform: rotate(-90deg); /* Counter-clockwise rotation */
 }
 
-.menu-toggle-btn:hover {
-    color: #a020f0;
-}
-
 .user-info-section {
     display: flex;
     align-items: center;
-    gap: 15px; /* Increased gap for better spacing */
+    gap: 10px; /* Spacing between text and profile pic */
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    text-align: right; /* Align text to the right */
+    line-height: 1.2; /* Adjust line height for better spacing */
+}
+
+.user-name {
+    color: #e0e0e0; /* Matches the white-ish color in topbar.png (red line) */
+    font-weight: 500;
+    font-size: 1em; /* Adjusted to match screenshot */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-email {
+    color: #cccccc; /* Matches the lighter gray in topbar.png (blue line) */
+    font-size: 0.8em; /* Adjusted to match screenshot */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rounds-left {
+    color: #90ee90; /* Light green for rounds left, as per screenshot concept (green line) */
+    font-weight: bold;
+    font-size: 0.75em; /* Adjusted to match screenshot */
+    margin-top: 2px;
 }
 
 .profile-pic-circle {
-    width: 45px; /* Slightly larger profile pic in top bar */
+    width: 45px; /* Matches the circle size in topbar.png */
     height: 45px;
     border-radius: 50%;
     background-color: #800080; /* Default purple background */
@@ -102,49 +146,18 @@ body::before {
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 1.3em; /* Adjusted font size for initial */
+    font-size: 1.3em;
     font-weight: bold;
-    overflow: hidden; /* Hide overflow for image */
+    overflow: hidden;
     border: 2px solid #a020f0; /* Deep purple border */
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
 }
 
 .profile-pic-circle.large { /* For sidebar */
-    width: 70px; /* Larger for sidebar as per screenshot */
+    width: 70px; /* Matches sidebar.png */
     height: 70px;
-    font-size: 2.2em; /* Larger font size for initial in sidebar */
+    font-size: 2.2em;
     margin-bottom: 10px;
-}
-
-.user-details {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.9em;
-    text-align: right; /* Align text to the right within its container */
-}
-
-.user-name {
-    color: #e0e0e0; /* White-ish for name */
-    font-weight: 500;
-    font-size: 1.1em; /* Slightly larger name */
-    white-space: nowrap; /* Prevent wrapping for name */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis if too long */
-}
-
-.user-email {
-    color: #cccccc; /* Lighter gray for email */
-    font-size: 0.85em; /* Slightly larger email */
-    white-space: nowrap; /* Prevent wrapping for email */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis if too long */
-}
-
-.rounds-left {
-    color: #90ee90; /* Light green for rounds left, as per screenshot concept */
-    font-weight: bold;
-    font-size: 0.8em;
-    margin-top: 2px; /* Small margin from email */
 }
 
 /* Main App Container - to push content below fixed top bar */
@@ -159,15 +172,15 @@ body::before {
 /* Sidebar styles */
 .sidebar {
     position: fixed;
-    top: 0;
+    top: 70px; /* Starts directly below the 70px tall top bar */
     left: -280px; /* Start off-screen to the left (width of sidebar) */
     width: 280px; /* Width of the sidebar */
-    height: 100%;
+    height: calc(100% - 70px); /* Full height minus top bar height */
     background-color: #2a2a2a; /* Solid dark gray for sidebar as per screenshot */
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.7);
     transition: left 0.3s ease-in-out; /* Smooth sliding animation */
     z-index: 100; /* Ensure it's on top of everything */
-    padding-top: 20px; /* Padding from top for close button and content */
+    padding-top: 20px; /* Padding for content inside sidebar */
     display: flex;
     flex-direction: column;
 }
@@ -183,7 +196,7 @@ body::before {
     background: none;
     border: none;
     color: #e0e0e0;
-    font-size: 1.8em; /* Larger close button */
+    font-size: 1.8em;
     cursor: pointer;
     transition: color 0.3s ease;
 }
@@ -193,7 +206,7 @@ body::before {
 }
 
 .sidebar-content {
-    padding: 20px;
+    padding: 0 20px; /* Horizontal padding for content */
     display: flex;
     flex-direction: column;
     gap: 15px; /* Space between links */
@@ -208,7 +221,7 @@ body::before {
     padding: 10px 15px;
     border-radius: 6px;
     transition: background-color 0.2s, color 0.2s;
-    display: block; /* Make links block-level for full click area */
+    display: block;
 }
 
 .sidebar-link:hover {
@@ -234,7 +247,7 @@ body::before {
     padding-left: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 1px solid rgba(204, 204, 204, 0.2); /* Lighter border for section title */
+    border-bottom: 1px solid rgba(204, 204, 204, 0.2);
     padding-bottom: 5px;
 }
 
@@ -242,24 +255,24 @@ body::before {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px; /* Increased padding */
-    background-color: rgba(58, 58, 58, 0.5); /* Slightly lighter gray for account box */
+    padding: 20px;
+    background-color: rgba(58, 58, 58, 0.5); /* This approximates #3a3a3a with transparency */
     border-radius: 8px;
     margin-bottom: 20px;
     text-align: center;
 }
 
 .sidebar-account-details .user-name {
-    font-size: 1.3em; /* Larger name in sidebar account details */
+    font-size: 1.3em;
     margin-top: 10px;
     margin-bottom: 5px;
 }
 .sidebar-account-details .user-email {
-    font-size: 1em; /* Larger email in sidebar account details */
+    font-size: 1em;
     margin-bottom: 5px;
 }
 .sidebar-account-details .rounds-left {
-    font-size: 1em; /* Larger rounds left in sidebar account details */
+    font-size: 1em;
     margin-bottom: 15px;
 }
 
@@ -272,7 +285,7 @@ body::before {
     cursor: pointer;
     font-size: 0.9em;
     transition: background-color 0.3s, box-shadow 0.3s;
-    width: 100%; /* Full width within sidebar-account-details */
+    width: 100%;
     margin-top: 5px;
 }
 
@@ -304,12 +317,12 @@ body::before {
 
 /* Main content's original container (now nested inside .main-app-container) */
 .container {
-    max-width: 1200px; /* Keep its max-width */
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     position: relative;
-    z-index: 1; /* Below top bar and sidebar */
-    padding: 0; /* Remove padding here, handled by .main-app-container */
+    z-index: 1;
+    padding: 0;
 }
 
 .banner-col {
@@ -738,6 +751,131 @@ pre {
 }
 
 
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200; /* Above everything else */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: #2a2a2a; /* Dark gray background */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+}
+
+.modal-content h2 {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content select {
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+    border: 1px solid #4a4a4a;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1em;
+    width: 100%;
+}
+
+.modal-content button {
+    background-color: #800080;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.modal-content button:hover {
+    background-color: #a020f0;
+}
+
+.modal-content p {
+    text-align: center;
+    font-size: 0.9em;
+    color: #cccccc;
+}
+
+.modal-content a {
+    color: #a020f0;
+    text-decoration: none;
+}
+
+.modal-content a:hover {
+    text-decoration: underline;
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.close-modal-btn:hover {
+    color: #a020f0;
+}
+
+.modal-error {
+    color: #ff5555;
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.modal-message.success {
+    color: #90ee90;
+}
+
+.modal-message.error {
+    color: #ff5555;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.setting-item label {
+    margin-bottom: 0; /* Override default label margin */
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .input-section, .button-section, .output-section, .refine-button-section {
@@ -762,8 +900,60 @@ pre {
         padding: 0;
     }
 
-    /* New: Make prompt textarea taller on mobile */
+    /* Make prompt textarea taller on mobile */
     #prompt {
         min-height: 250px;
+    }
+
+    .top-bar {
+        height: 60px; /* Slightly smaller top bar on very small screens */
+        padding: 0 10px;
+    }
+
+    .menu-toggle-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3em;
+    }
+
+    .profile-pic-circle {
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
+    }
+
+    .user-name {
+        font-size: 0.9em;
+    }
+
+    .user-email {
+        font-size: 0.75em;
+    }
+
+    .rounds-left {
+        font-size: 0.7em;
+    }
+
+    .main-app-container {
+        padding: 70px 10px 10px; /* Adjust padding for smaller top bar */
+    }
+
+    .sidebar {
+        top: 60px; /* Adjust sidebar top to match smaller top bar */
+        height: calc(100% - 60px);
+    }
+
+    .close-sidebar-btn {
+        font-size: 1.5em;
+    }
+
+    .sidebar-account-details .user-name {
+        font-size: 1.1em;
+    }
+    .sidebar-account-details .user-email {
+        font-size: 0.9em;
+    }
+    .sidebar-account-details .rounds-left {
+        font-size: 0.9em;
     }
 }
