@@ -5,10 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NameIT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.png" type="image/png"> <!-- CHANGED THIS LINE -->
+    <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header class="main-header">
+        <button id="menu-toggle-btn" class="menu-toggle-btn" onclick="openSidebar()">
+            ☰
+        </button>
+    </header>
+
+    <!-- Sidebar menu -->
+    <nav id="sidebar" class="sidebar">
+        <button class="close-sidebar-btn" onclick="closeSidebar()">✖</button>
+        <div class="sidebar-content">
+            <a href="#" class="sidebar-link">⚙️ Settings</a>
+            <a href="#" class="sidebar-link">📊 Accounting</a>
+            <a href="#" class="sidebar-link">ℹ️ About</a>
+            <a href="#" class="sidebar-link premium-link">✨ Premium Subscription</a>
+            <div class="sidebar-section-title">App Tools & Features</div>
+            <a href="#" class="sidebar-link">Tool 1</a>
+            <a href="#" class="sidebar-link">Feature A</a>
+            <!-- Add more links here as needed -->
+        </div>
+    </nav>
+
+    <!-- Main App Content (existing structure) -->
     <div class="banner-col">
         <img src="banner.png" alt="Banner" id="banner">
     </div>
