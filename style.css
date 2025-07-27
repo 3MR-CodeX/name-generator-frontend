@@ -10,7 +10,7 @@ body {
     background: #1a1a1a;
     color: #e0e0e0;
     padding: 20px;
-    padding-top: 70px; /* Space for top bar */
+    padding-top: 60px; /* Space for top bar */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -59,25 +59,35 @@ body::before {
     top: 0;
     left: 0;
     width: 100%;
-    height: 50px;
-    background-color: #1a1a1a;
+    height: 60px;
+    background-color: #2a2a2a;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 0 20px;
     z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 #menu-button {
     background: none;
     border: none;
-    color: #e0e0e0;
+    color: #ffffff;
     font-size: 24px;
     cursor: pointer;
+    padding: 10px;
+}
+
+.user-info {
+    margin-left: auto;
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 #user-email, #rounds-left {
-    color: #e0e0e0;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .side-bar {
@@ -90,6 +100,7 @@ body::before {
     transition: left 0.3s ease;
     z-index: 1000;
     padding: 20px;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.3);
 }
 
 .side-bar.active {
@@ -99,26 +110,35 @@ body::before {
 #close-side-bar {
     background: none;
     border: none;
-    color: #e0e0e0;
+    color: #ffffff;
     font-size: 24px;
     cursor: pointer;
     margin-bottom: 20px;
+    text-align: right;
+    width: 100%;
+    padding: 10px;
 }
 
-.side-bar button {
-    display: block;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 10px;
+.side-bar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.side-bar-menu button {
     background-color: #800080;
-    color: white;
+    color: #ffffff;
     border: none;
-    padding: 10px;
+    padding: 12px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    transition: background-color 0.3s ease;
 }
 
-.side-bar button:hover {
+.side-bar-menu button:hover {
     background-color: #a020f0;
 }
 
@@ -518,7 +538,7 @@ pre {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
+    drink    0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
@@ -571,6 +591,16 @@ pre {
 
     body {
         padding: 10px;
-        padding-top: 60px;
+        padding-top: 70px;
+    }
+
+    .user-info {
+        flex-direction: column;
+        gap: 5px;
+        font-size: 12px;
+    }
+
+    .side-bar {
+        width: 200px;
     }
 }
