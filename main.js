@@ -390,44 +390,68 @@ function restoreHistory(id) {
     editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
 
-
     fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
         if (entry) {
-            promptInput.value = entry.prompt;
-            document.getElementById("category").value = entry.category;
-            document.getElementById("style").value = entry.style;
-            document.getElementById("language").value = entry.language;
-            namesPre.textContent = entry.names.map(cleanNames).join("\n");
-            reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
-
-            // Ensure animation class is applied
-            namesPre.classList.add("fade-in-content");
-            reasonsPre.classList.add("fade-in-content");
-
-            // Show main output and history sections
+            // Always show main output and history sections
             outputContainer.classList.remove("hidden-section");
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
             historySection.classList.add("visible-section");
-            
-            // Show refine section and button ONLY if prompt has content
-            if (promptInput.value.trim()) {
-                refineSection.classList.remove("hidden-section");
-                refineSection.classList.add("visible-section");
-                refineBtn.classList.remove("hidden-section");
-                refineBtn.classList.add("visible-section");
+
+            // Always show refine section and button (as you can always refine)
+            refineSection.classList.remove("hidden-section");
+            refineSection.classList.add("visible-section");
+            refineBtn.classList.remove("hidden-section");
+            refineBtn.classList.add("visible-section");
+
+            if (entry.category === "Refined") {
+                // If it's a refined entry, populate refined outputs and hide initial outputs
+                refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n");
+                refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+                editBox.value = entry.prompt; // The refine instruction for refined entries
+
+                namesPre.textContent = ""; // Clear initial names
+                reasonsPre.textContent = ""; // Clear initial reasons
+
+                // Ensure animation class is applied
+                refinedNamesPre.classList.add("fade-in-content");
+                refinedReasonsPre.classList.add("fade-in-content");
+
+                // Show refined outputs
+                refinedOutputs.classList.remove("hidden-section");
+                refinedOutputs.classList.add("visible-section");
+                
+                // Hide initial outputs
+                outputContainer.classList.remove("visible-section");
+                outputContainer.classList.add("hidden-section");
+
+
             } else {
-                refineSection.classList.remove("visible-section");
-                refineSection.classList.add("hidden-section");
-                refineBtn.classList.remove("visible-section");
-                refineBtn.classList.add("hidden-section");
+                // If it's a regular generation entry, populate initial outputs and hide refined outputs
+                promptInput.value = entry.prompt;
+                document.getElementById("category").value = entry.category;
+                document.getElementById("style").value = entry.style;
+                document.getElementById("language").value = entry.language;
+                namesPre.textContent = entry.names.map(cleanNames).join("\n");
+                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+
+                refinedNamesPre.textContent = ""; // Clear refined names
+                refinedReasonsPre.textContent = ""; // Clear refined reasons
+                editBox.value = ""; // Clear refine instruction box
+
+                // Ensure animation class is applied
+                namesPre.classList.add("fade-in-content");
+                reasonsPre.classList.add("fade-in-content");
+
+                // Show initial outputs
+                outputContainer.classList.remove("hidden-section");
+                outputContainer.classList.add("visible-section");
+
+                // Hide refined outputs
+                refinedOutputs.classList.remove("visible-section");
+                refinedOutputs.classList.add("hidden-section");
             }
-
-            // Always hide refined outputs when restoring from history
-            refinedOutputs.classList.remove("visible-section");
-            refinedOutputs.classList.add("hidden-section");
-
         }
     });
 }
