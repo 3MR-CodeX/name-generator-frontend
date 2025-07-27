@@ -173,7 +173,9 @@ label {
     color: #e0e0e0;
     padding: 8px 12px;
     border-radius: 6px;
-    white-space: nowrap; /* Prevent text wrapping */
+    /* Changed: Allow text to wrap and set max-width for thinner appearance */
+    white-space: normal; /* Allow text to wrap */
+    max-width: 150px; /* Adjust this value to control thinness */
     font-size: 14px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     opacity: 0; /* Initially hidden */
