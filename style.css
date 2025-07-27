@@ -29,7 +29,7 @@ body::after {
     background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
     background-size: 400% 400%;
     animation: gradientShift 10s ease infinite;
-    z-index: -3; /* Changed: Placed below mouse glow */
+    z-index: -3; /* Placed below mouse glow */
 }
 
 body::before {
@@ -45,9 +45,13 @@ body::before {
     pointer-events: none;
 }
 
+/* Reverted gradientShift keyframes to original multi-step loop */
 @keyframes gradientShift {
     0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; } /* Adjusted for a smoother, continuous shift */
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 25% 75%; }
+    100% { background-position: 0% 0%; }
 }
 
 /* Main container to center content */
@@ -136,7 +140,7 @@ label {
 }
 
 textarea, select {
-    background-color: rgba(58, 58, 58, 0.7); /* Grey, 70% opaque */
+    background-color: rgba(58, 58, 58, 0.65); /* Changed: Grey, 65% opaque */
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -301,7 +305,7 @@ button:disabled { /* Style for disabled buttons */
 }
 
 pre {
-    background-color: rgba(58, 58, 58, 0.7); /* Grey, 70% opaque */
+    background-color: rgba(58, 58, 58, 0.65); /* Changed: Grey, 65% opaque */
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -344,7 +348,7 @@ pre {
 }
 
 .history-item {
-    background-color: rgba(58, 58, 58, 0.7); /* Grey, 70% opaque */
+    background-color: rgba(58, 58, 58, 0.65); /* Changed: Grey, 65% opaque */
     color: #e0e0e0;
     border: none;
     padding: 8px 12px;
@@ -447,7 +451,7 @@ pre {
     width: 150px; /* A bit bigger */
     height: 150px; /* A bit bigger */
     border-radius: 50%;
-    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.5) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.7) 0%, transparent 70%); /* Changed: Brighter glow (0.7 alpha) */
     filter: blur(30px); /* A bit more blur */
     transform: scale(0); /* Initially hidden */
     opacity: 0; /* Initially hidden */
