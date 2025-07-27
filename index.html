@@ -10,16 +10,20 @@
 </head>
 <body>
     <div class="top-bar">
-        <button id="menu-button">☰</button>
-        <span id="user-email">Loading...</span>
-        <span id="rounds-left">Loading...</span>
+        <button id="menu-button" aria-label="Open menu">☰</button>
+        <div class="user-info">
+            <span id="user-email">Loading...</span>
+            <span id="rounds-left">Loading...</span>
+        </div>
     </div>
     <div class="side-bar" id="side-bar">
-        <button id="close-side-bar">✖</button>
-        <button onclick="openSettings()">Settings</button>
-        <button onclick="openAccountInfo()">Account Info</button>
-        <button onclick="signInOut()">Sign In/Out</button>
-        <button onclick="openAbout()">About</button>
+        <button id="close-side-bar" aria-label="Close menu">✖</button>
+        <div class="side-bar-menu">
+            <button onclick="openSettings()">Settings</button>
+            <button onclick="openAccountInfo()">Account Info</button>
+            <button onclick="signInOut()">Sign In/Out</button>
+            <button onclick="openAbout()">About</button>
+        </div>
     </div>
     <div class="banner-col">
         <img src="banner.png" alt="Banner" id="banner">
