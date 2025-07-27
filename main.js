@@ -1,64 +1,64 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = [
-  "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
-  "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product",
-  "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"
+  "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
+  "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product",
+  "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"
 ];
 const STYLE_OPTIONS = [
-  "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
-  "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
-  "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
-  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious",
-  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
-  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
+  "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
+  "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
+  "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
+  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious",
+  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
+  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
 ];
 const SURPRISES = [
-    ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
-    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
-    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
-    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
-    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
-    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
-    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
-    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
-    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
-    ["An edgy and futuristic name for a cyberpunk productivity app", "App", "Futuristic", "English"],
-    ["A wholesome name for a cozy coffee shop in a rainy city", "Place", "Wholesome", "English"],
-    ["A bold and cryptic name for an underground hacker forum", "Platform", "Dark", "English"],
-    ["A magical and whimsical name for a children’s toy line", "Product", "Whimsical", "English"],
-    ["A high-energy name for a viral TikTok challenge", "Trend", "Catchy", "English"],
-    ["A mysterious name for an AI-powered time travel game", "Game", "Mysterious", "English"],
-    ["A funky brand name for a retro streetwear label", "Brand", "Retro", "English"],
-    ["A futuristic name for a space-themed meditation app", "App", "Zen", "English"],
-    ["A gritty name for a post-apocalyptic survival video game", "Game", "Intense", "English"],
-    ["A dramatic title for a thriller about corporate espionage", "Video", "Suspense", "English"],
-    ["A charming name for a vintage bookstore", "Place", "Cozy", "English"],
-    ["A stylish name for a luxury sneaker brand", "Product", "Fashion", "English"],
-    ["A joyful and energetic name for a dance studio", "Place", "Cheerful", "English"],
-    ["A techy and scalable name for a SaaS startup", "App", "Professional", "English"],
-    ["An abstract name for a generative art collective", "Platform", "Creative", "English"],
-    ["A powerful name for a female-led crypto fintech brand", "Brand", "Bold", "English"],
-    ["A mystical name for a fantasy book publishing house", "Platform", "Fantasy", "English"],
-    ["An iconic name for a retro-style arcade game", "Game", "Arcade", "English"],
-    ["A hilarious name for a parody news site", "Platform", "Funny", "English"],
-    ["An ethereal name for a nature-inspired skincare line", "Product", "Organic", "English"],
-    ["A clever name for an AI assistant for writers", "App", "Smart", "English"],
-    ["A peaceful name for a forest retreat resort", "Place", "Relaxing", "English"],
-    ["An intriguing name for a tech documentary series", "Video", "Informative", "English"],
-    ["A fashionable name for a digital outfit creator", "Product", "Stylish", "English"],
-    ["A punchy name for an esports team", "Platform", "Competitive", "English"],
-    ["A quirky name for a smart pet gadget", "Product", "Playful", "English"],
-    ["A surreal name for a virtual dream simulator", "App", "Surreal", "English"],
-    ["An optimistic name for a mental health journaling app", "App", "Uplifting", "English"],
-    ["A sleek name for a futuristic transportation startup", "Brand", "Sleek", "English"],
-    ["A mythical name for a fantasy map generation tool", "App", "Mythical", "English"],
-    ["A classy name for an online wine subscription service", "Product", "Classy", "English"],
-    ["An awe-inspiring name for a photography portfolio site", "Platform", "Artistic", "English"],
-    ["A mysterious name for an anonymous feedback app", "App", "Cryptic", "English"],
-    ["A snappy name for a productivity browser extension", "App", "Efficient", "English"],
-    ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"],
-    ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
+    ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
+    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
+    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
+    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
+    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
+    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
+    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
+    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
+    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
+    ["An edgy and futuristic name for a cyberpunk productivity app", "App", "Futuristic", "English"],
+    ["A wholesome name for a cozy coffee shop in a rainy city", "Place", "Wholesome", "English"],
+    ["A bold and cryptic name for an underground hacker forum", "Platform", "Dark", "English"],
+    ["A magical and whimsical name for a children’s toy line", "Product", "Whimsical", "English"],
+    ["A high-energy name for a viral TikTok challenge", "Trend", "Catchy", "English"],
+    ["A mysterious name for an AI-powered time travel game", "Game", "Mysterious", "English"],
+    ["A funky brand name for a retro streetwear label", "Brand", "Retro", "English"],
+    ["A futuristic name for a space-themed meditation app", "App", "Zen", "English"],
+    ["A gritty name for a post-apocalyptic survival video game", "Game", "Intense", "English"],
+    ["A dramatic title for a thriller about corporate espionage", "Video", "Suspense", "English"],
+    ["A charming name for a vintage bookstore", "Place", "Cozy", "English"],
+    ["A stylish name for a luxury sneaker brand", "Product", "Fashion", "English"],
+    ["A joyful and energetic name for a dance studio", "Place", "Cheerful", "English"],
+    ["A techy and scalable name for a SaaS startup", "App", "Professional", "English"],
+    ["An abstract name for a generative art collective", "Platform", "Creative", "English"],
+    ["A powerful name for a female-led crypto fintech brand", "Brand", "Bold", "English"],
+    ["A mystical name for a fantasy book publishing house", "Platform", "Fantasy", "English"],
+    ["An iconic name for a retro-style arcade game", "Game", "Arcade", "English"],
+    ["A hilarious name for a parody news site", "Platform", "Funny", "English"],
+    ["An ethereal name for a nature-inspired skincare line", "Product", "Organic", "English"],
+    ["A clever name for an AI assistant for writers", "App", "Smart", "English"],
+    ["A peaceful name for a forest retreat resort", "Place", "Relaxing", "English"],
+    ["An intriguing name for a tech documentary series", "Video", "Informative", "English"],
+    ["A fashionable name for a digital outfit creator", "Product", "Stylish", "English"],
+    ["A punchy name for an esports team", "Platform", "Competitive", "English"],
+    ["A quirky name for a smart pet gadget", "Product", "Playful", "English"],
+    ["A surreal name for a virtual dream simulator", "App", "Surreal", "English"],
+    ["An optimistic name for a mental health journaling app", "App", "Uplifting", "English"],
+    ["A sleek name for a futuristic transportation startup", "Brand", "Sleek", "English"],
+    ["A mythical name for a fantasy map generation tool", "App", "Mythical", "English"],
+    ["A classy name for an online wine subscription service", "Product", "Classy", "English"],
+    ["An awe-inspiring name for a photography portfolio site", "Platform", "Artistic", "English"],
+    ["A mysterious name for an anonymous feedback app", "App", "Cryptic", "English"],
+    ["A snappy name for a productivity browser extension", "App", "Efficient", "English"],
+    ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"],
+    ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
 ];
 
 // Get references to key UI elements
@@ -257,7 +257,7 @@ async function generateName() {
         const data = await response.json();
 
         namesPre.textContent = data.names.map(cleanNames).join("\n");
-        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
+        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n"); // Changed: Added empty line
 
         // Add animation class after content is set
         namesPre.classList.add("fade-in-content");
@@ -327,7 +327,7 @@ async function refineNames() {
         const data = await response.json();
 
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
-        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
+        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n"); // Changed: Added empty line
 
         // Add animation class after content is set
         refinedNamesPre.classList.add("fade-in-content");
@@ -408,7 +408,7 @@ function restoreHistory(id) {
             if (entry.category === "Refined") {
                 // If it's a refined entry, populate refined outputs and hide initial outputs
                 refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n");
-                refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+                refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n"); // Changed: Added empty line
                 editBox.value = entry.prompt; // The refine instruction for refined entries
 
                 namesPre.textContent = ""; // Clear initial names
@@ -434,7 +434,7 @@ function restoreHistory(id) {
                 document.getElementById("style").value = entry.style;
                 document.getElementById("language").value = entry.language;
                 namesPre.textContent = entry.names.map(cleanNames).join("\n");
-                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n"); // Changed: Added empty line
 
                 refinedNamesPre.textContent = ""; // Clear refined names
                 refinedReasonsPre.textContent = ""; // Clear refined reasons
