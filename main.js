@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory();
-    setupTooltips(); // New: Setup tooltip hover logic
+    setupTooltips(); // Setup tooltip hover logic
 });
 
 function initializeUI() {
@@ -375,6 +375,7 @@ function renderHistory(history) {
         const tooltip = entry.category !== "Refined" ?
             `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
             `Refine Instruction: ${entry.prompt}`;
+        const preRefined = entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>` : "";
         const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
         historyDiv.innerHTML += button;
     });
