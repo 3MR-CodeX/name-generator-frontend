@@ -78,15 +78,13 @@ const editBox = document.getElementById("edit_box"); // Reference to the refine 
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 
-// Mouse glow element variable removed
-
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory();
-    // Removed mouse glow setup call
+    setupTooltips(); // New: Setup tooltip hover logic
 });
 
 function initializeUI() {
@@ -377,7 +375,6 @@ function renderHistory(history) {
         const tooltip = entry.category !== "Refined" ?
             `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
             `Refine Instruction: ${entry.prompt}`;
-        const preRefined = entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>` : "";
         const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
         historyDiv.innerHTML += button;
     });
@@ -506,4 +503,21 @@ function resetDynamicSections() {
     document.getElementById("error").textContent = "";
 }
 
-// Removed mouse glow setup function
+/**
+ * Sets up the hover functionality for tooltip icons.
+ */
+function setupTooltips() {
+    const tooltipIcons = document.querySelectorAll('.tooltip-icon');
+
+    tooltipIcons.forEach(icon => {
+        const tooltipBox = icon.nextElementSibling; // The tooltip-box is the next sibling
+        const tooltipText = icon.dataset.tooltipText;
+
+        // Set the text content of the tooltip box
+        tooltipBox.textContent = tooltipText;
+
+        // No need for explicit mouseover/mouseout JS listeners
+        // as CSS :hover handles showing/hiding with opacity/visibility.
+        // The positioning is also handled by CSS.
+    });
+}
