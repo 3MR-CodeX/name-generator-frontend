@@ -43,9 +43,9 @@ body::before {
     background-size: 400px 400px;
     z-index: -1;
     pointer-events: none;
+    opacity: 0.8; /* Changed: Added transparency to pattern.png */
 }
 
-/* Reverted gradientShift keyframes to original multi-step loop */
 @keyframes gradientShift {
     0% { background-position: 0% 0%; }
     25% { background-position: 50% 100%; }
@@ -451,7 +451,7 @@ pre {
     width: 150px; /* A bit bigger */
     height: 150px; /* A bit bigger */
     border-radius: 50%;
-    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.7) 0%, transparent 70%); /* Changed: Brighter glow (0.7 alpha) */
+    background: radial-gradient(circle at center, rgba(160, 32, 240, 0.8) 0%, transparent 70%); /* Changed: Brighter glow (0.8 alpha) */
     filter: blur(30px); /* A bit more blur */
     transform: scale(0); /* Initially hidden */
     opacity: 0; /* Initially hidden */
