@@ -197,7 +197,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, query, where, addDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, query, where, addDoc, getDocs, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         // Global Firebase variables
         window.firebaseApp = null;
@@ -277,10 +277,15 @@
         });
 
         // Expose Firebase functions to the global scope for main.js
+        window.initializeApp = initializeApp;
+        window.getAuth = getAuth;
         window.signInWithEmailAndPassword = signInWithEmailAndPassword;
         window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
         window.signOut = signOut;
         window.onAuthStateChanged = onAuthStateChanged;
+        window.signInWithCustomToken = signInWithCustomToken;
+        window.signInAnonymously = signInAnonymously;
+        window.getFirestore = getFirestore;
         window.doc = doc;
         window.getDoc = getDoc;
         window.setDoc = setDoc;
@@ -290,6 +295,7 @@
         window.addDoc = addDoc;
         window.getDocs = getDocs;
         window.onSnapshot = onSnapshot;
+        window.orderBy = orderBy; // Expose orderBy
 
         // Expose app_id globally
         window.__app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -301,8 +307,8 @@
                 const docSnap = await getDoc(userDocRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    window.currentUserData.name = data.name || user.email; // Use email if name not set
-                    window.currentUserData.email = user.email;
+                    window.currentUserData.name = data.name || window.auth.currentUser.email.split('@')[0]; // Use email prefix if name not set
+                    window.currentUserData.email = window.auth.currentUser.email;
                     window.currentUserData.roundsLeft = data.roundsLeft !== undefined ? data.roundsLeft : 5; // Default rounds
                     window.currentUserData.isPremium = data.isPremium || false;
                 } else {
