@@ -44,7 +44,7 @@ body::before {
     background-size: 400px 400px;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.8; /* Retained transparency for pattern.png to show animated layer */
+    /* Removed: opacity for pattern.png is no longer needed without mouse glow */
 }
 
 @keyframes gradientShift {
@@ -134,11 +134,60 @@ label {
     font-weight: 500;
 }
 
-.dropdown-desc {
-    font-size: 12px;
-    color: #aaaaaa;
-    margin-bottom: 10px;
+/* Tooltip styles */
+.tooltip-container {
+    position: relative; /* Needed for absolute positioning of tooltip box */
+    display: inline-flex; /* Align icon with label */
+    align-items: center;
+    margin-left: 8px; /* Space between label and icon */
+    margin-bottom: 10px; /* Match original dropdown-desc margin */
+    vertical-align: middle; /* Align with text baseline */
 }
+
+.tooltip-icon {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #800080; /* Purple hollow circle */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #800080; /* Purple text */
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tooltip-icon:hover {
+    background-color: #800080; /* Fill on hover */
+    color: white; /* White text on hover */
+}
+
+.tooltip-box {
+    position: absolute;
+    top: 50%; /* Align vertically with icon */
+    left: calc(100% + 10px); /* Position next to the icon, with some space */
+    transform: translateY(-50%); /* Center vertically */
+    background-color: #2a2a2a; /* Dark gray window */
+    color: #e0e0e0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: nowrap; /* Prevent text wrapping */
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 100; /* Ensure it's above other content */
+}
+
+/* Show tooltip on hover */
+.tooltip-icon:hover + .tooltip-box {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 textarea, select {
     background-color: rgba(58, 58, 58, 0.65); /* Grey, 65% opaque */
