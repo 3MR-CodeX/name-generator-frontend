@@ -55,6 +55,113 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
+/* New header for menu button */
+.main-header {
+    width: 100%;
+    max-width: 1200px; /* Match container width */
+    padding: 10px 0;
+    position: relative; /* For z-index */
+    z-index: 2; /* Above animated background and pattern */
+    margin-bottom: 20px; /* Space below header */
+}
+
+.menu-toggle-btn {
+    background: none;
+    border: none;
+    color: #e0e0e0; /* Light text color */
+    font-size: 2em; /* Larger icon */
+    cursor: pointer;
+    padding: 0 15px; /* Padding for click area */
+    display: block; /* Ensures it takes its own line */
+    text-align: left;
+    transition: color 0.3s ease;
+}
+
+.menu-toggle-btn:hover {
+    color: #a020f0; /* Purple on hover */
+}
+
+/* Sidebar styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px; /* Start off-screen to the left (width of sidebar) */
+    width: 280px; /* Width of the sidebar */
+    height: 100%;
+    background-color: rgba(42, 42, 42, 0.95); /* Dark grey, slightly transparent */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    transition: left 0.3s ease-in-out; /* Smooth sliding animation */
+    z-index: 100; /* Ensure it's on top of everything */
+    padding-top: 60px; /* Space for close button */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.active {
+    left: 0; /* Slide in when active */
+}
+
+.close-sidebar-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-sidebar-btn:hover {
+    color: #a020f0;
+}
+
+.sidebar-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between links */
+}
+
+.sidebar-link {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+    display: block; /* Make links block-level for full click area */
+}
+
+.sidebar-link:hover {
+    background-color: rgba(128, 0, 128, 0.4); /* Purple hover effect */
+    color: white;
+}
+
+.premium-link {
+    font-weight: bold;
+    color: #a020f0; /* Brighter purple for premium */
+}
+
+.premium-link:hover {
+    background-color: rgba(160, 32, 240, 0.4);
+    color: white;
+}
+
+.sidebar-section-title {
+    color: #cccccc;
+    font-size: 0.9em;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    padding-left: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.2);
+    padding-bottom: 5px;
+}
+
+
 /* Main container to center content */
 .container {
     max-width: 1200px;
