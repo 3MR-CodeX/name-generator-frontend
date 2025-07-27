@@ -56,7 +56,7 @@ body::before {
 /* New Top Bar styles */
 .top-bar {
     width: 100%;
-    height: 60px; /* Fixed height for the top bar */
+    height: 70px; /* Increased height for top bar as per screenshot */
     background-color: #2a2a2a; /* Dark gray for the top bar */
     display: flex;
     justify-content: space-between;
@@ -73,7 +73,7 @@ body::before {
     background: none;
     border: none;
     color: #e0e0e0;
-    font-size: 2em;
+    font-size: 2.2em; /* Slightly larger icon */
     cursor: pointer;
     padding: 0;
     transition: transform 0.3s ease-in-out; /* For rotation animation */
@@ -90,28 +90,29 @@ body::before {
 .user-info-section {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px; /* Increased gap for better spacing */
 }
 
 .profile-pic-circle {
-    width: 40px;
-    height: 40px;
+    width: 45px; /* Slightly larger profile pic in top bar */
+    height: 45px;
     border-radius: 50%;
     background-color: #800080; /* Default purple background */
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 1.2em;
+    font-size: 1.3em; /* Adjusted font size for initial */
     font-weight: bold;
     overflow: hidden; /* Hide overflow for image */
     border: 2px solid #a020f0; /* Deep purple border */
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
-.profile-pic-circle.large {
-    width: 60px;
-    height: 60px;
-    font-size: 1.8em;
+.profile-pic-circle.large { /* For sidebar */
+    width: 70px; /* Larger for sidebar as per screenshot */
+    height: 70px;
+    font-size: 2.2em; /* Larger font size for initial in sidebar */
     margin-bottom: 10px;
 }
 
@@ -119,29 +120,38 @@ body::before {
     display: flex;
     flex-direction: column;
     font-size: 0.9em;
+    text-align: right; /* Align text to the right within its container */
 }
 
 .user-name {
     color: #e0e0e0; /* White-ish for name */
     font-weight: 500;
+    font-size: 1.1em; /* Slightly larger name */
+    white-space: nowrap; /* Prevent wrapping for name */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if too long */
 }
 
 .user-email {
     color: #cccccc; /* Lighter gray for email */
-    font-size: 0.8em;
+    font-size: 0.85em; /* Slightly larger email */
+    white-space: nowrap; /* Prevent wrapping for email */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if too long */
 }
 
 .rounds-left {
     color: #90ee90; /* Light green for rounds left, as per screenshot concept */
     font-weight: bold;
     font-size: 0.8em;
+    margin-top: 2px; /* Small margin from email */
 }
 
 /* Main App Container - to push content below fixed top bar */
 .main-app-container {
     width: 100%;
     max-width: 1200px;
-    padding: 80px 20px 20px; /* Top padding to clear fixed top-bar (60px height + 20px margin) */
+    padding: 90px 20px 20px; /* Top padding to clear fixed top-bar (70px height + 20px margin) */
     box-sizing: border-box;
     z-index: 1; /* Below top bar and sidebar */
 }
@@ -153,11 +163,11 @@ body::before {
     left: -280px; /* Start off-screen to the left (width of sidebar) */
     width: 280px; /* Width of the sidebar */
     height: 100%;
-    background-color: rgba(42, 42, 42, 0.95); /* Dark grey, slightly transparent */
+    background-color: #2a2a2a; /* Solid dark gray for sidebar as per screenshot */
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.7);
     transition: left 0.3s ease-in-out; /* Smooth sliding animation */
     z-index: 100; /* Ensure it's on top of everything */
-    padding-top: 60px; /* Space for close button */
+    padding-top: 20px; /* Padding from top for close button and content */
     display: flex;
     flex-direction: column;
 }
@@ -173,7 +183,7 @@ body::before {
     background: none;
     border: none;
     color: #e0e0e0;
-    font-size: 1.5em;
+    font-size: 1.8em; /* Larger close button */
     cursor: pointer;
     transition: color 0.3s ease;
 }
@@ -224,7 +234,7 @@ body::before {
     padding-left: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 1px solid rgba(204, 204, 204, 0.2);
+    border-bottom: 1px solid rgba(204, 204, 204, 0.2); /* Lighter border for section title */
     padding-bottom: 5px;
 }
 
@@ -232,7 +242,7 @@ body::before {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px;
+    padding: 20px; /* Increased padding */
     background-color: rgba(58, 58, 58, 0.5); /* Slightly lighter gray for account box */
     border-radius: 8px;
     margin-bottom: 20px;
@@ -240,16 +250,16 @@ body::before {
 }
 
 .sidebar-account-details .user-name {
-    font-size: 1.2em;
+    font-size: 1.3em; /* Larger name in sidebar account details */
     margin-top: 10px;
     margin-bottom: 5px;
 }
 .sidebar-account-details .user-email {
-    font-size: 0.9em;
+    font-size: 1em; /* Larger email in sidebar account details */
     margin-bottom: 5px;
 }
 .sidebar-account-details .rounds-left {
-    font-size: 0.9em;
+    font-size: 1em; /* Larger rounds left in sidebar account details */
     margin-bottom: 15px;
 }
 
