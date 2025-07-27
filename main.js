@@ -138,9 +138,11 @@ function updateAuthUI(user) {
         if (user.photoURL) {
             profilePicCircle.style.backgroundImage = `url(${user.photoURL})`;
             profilePicCircle.style.backgroundSize = 'cover';
+            profilePicCircle.style.backgroundPosition = 'center';
             profilePicCircle.textContent = ''; // Clear initial
             sidebarProfilePic.style.backgroundImage = `url(${user.photoURL})`;
             sidebarProfilePic.style.backgroundSize = 'cover';
+            sidebarProfilePic.style.backgroundPosition = 'center';
             sidebarProfilePic.textContent = '';
         } else {
             const initial = (currentUserData.name || user.email || 'G').charAt(0).toUpperCase();
@@ -470,7 +472,7 @@ async function refineNames() {
 
 async function fetchHistory() {
     // Use onSnapshot for real-time updates if user is logged in, otherwise fetch once
-    if (userId && isAuthReady) {
+    if (userId && isAuthReady && db && __app_id) { // Ensure db and __app_id are available
         const q = query(collection(db, `artifacts/${__app_id}/users/${userId}/history`), orderBy("timestamp", "desc"));
         onSnapshot(q, (snapshot) => {
             const history = [];
@@ -526,13 +528,13 @@ function restoreHistory(id) {
     fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
         if (entry) {
-            // Always ensure main output and history sections are visible
+            // Always show main output and history sections
             outputContainer.classList.remove("hidden-section");
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
             historySection.classList.add("visible-section");
 
-            // Always ensure refine section and button are visible
+            // Always show refine section and button (as you can always refine)
             refineSection.classList.remove("hidden-section");
             refineSection.classList.add("visible-section");
             refineBtn.classList.remove("hidden-section");
@@ -542,13 +544,10 @@ function restoreHistory(id) {
                 // If it's a refined entry, populate refined outputs
                 refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n\n");
                 refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
-                editBox.value = entry.instruction; // Use 'instruction' for refined entries
+                editBox.value = entry.instruction; // The refine instruction for refined entries
 
-                // Clear and hide initial outputs
-                namesPre.textContent = "";
-                reasonsPre.textContent = "";
-                outputContainer.classList.remove("visible-section"); // Ensure it's hidden if refined is shown
-                outputContainer.classList.add("hidden-section"); // Ensure it's hidden if refined is shown
+                namesPre.textContent = ""; // Clear initial names
+                reasonsPre.textContent = ""; // Clear initial reasons
 
                 // Ensure animation class is applied
                 refinedNamesPre.classList.add("fade-in-content");
@@ -557,6 +556,11 @@ function restoreHistory(id) {
                 // Show refined outputs
                 refinedOutputs.classList.remove("hidden-section");
                 refinedOutputs.classList.add("visible-section");
+                
+                // Hide initial outputs
+                outputContainer.classList.remove("visible-section");
+                outputContainer.classList.add("hidden-section");
+
 
             } else {
                 // If it's a regular generation entry, populate initial outputs
@@ -567,9 +571,8 @@ function restoreHistory(id) {
                 namesPre.textContent = entry.names.map(cleanNames).join("\n\n");
                 reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
 
-                // Clear and hide refined outputs
-                refinedNamesPre.textContent = "";
-                refinedReasonsPre.textContent = "";
+                refinedNamesPre.textContent = ""; // Clear refined names
+                refinedReasonsPre.textContent = ""; // Clear refined reasons
                 editBox.value = ""; // Clear refine instruction box
                 refinedOutputs.classList.remove("visible-section");
                 refinedOutputs.classList.add("hidden-section");
@@ -742,7 +745,13 @@ async function signInUser() {
         closeLoginModal();
     } catch (error) {
         console.error("Sign-in error:", error);
-        displayModalMessage('login-error', `Sign-in failed: ${error.message}`, 'error');
+        let errorMessage = "Sign-in failed. Please check your credentials.";
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+            errorMessage = "Invalid email or password.";
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = "Invalid email format.";
+        }
+        displayModalMessage('login-error', errorMessage, 'error');
     }
 }
 
@@ -764,7 +773,15 @@ async function registerUser() {
         openLoginModal(); // Prompt to sign in after registration
     } catch (error) {
         console.error("Registration error:", error);
-        displayModalMessage('register-error', `Registration failed: ${error.message}`, 'error');
+        let errorMessage = "Registration failed. Please try again.";
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = "This email is already registered.";
+        } else if (error.code === 'auth/weak-password') {
+            errorMessage = "Password should be at least 6 characters.";
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = "Invalid email format.";
+        }
+        displayModalMessage('register-error', errorMessage, 'error');
     }
 }
 
