@@ -78,22 +78,98 @@ const editBox = document.getElementById("edit_box"); // Reference to the refine 
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 
-// Get new elements for sidebar
+// Get new elements for sidebar and top bar
 const menuToggleBtn = document.getElementById("menu-toggle-btn");
 const sidebar = document.getElementById("sidebar");
+const sidebarOverlay = document.getElementById("sidebar-overlay");
 
+// User info elements in top bar
+const profilePicCircle = document.getElementById("profile-pic-circle");
+const userNameDisplay = document.getElementById("user-name-display");
+const userEmailDisplay = document.getElementById("user-email-display");
+const roundsLeftDisplay = document.getElementById("rounds-left-display");
+
+// User info elements in sidebar
+const sidebarProfilePic = document.getElementById("sidebar-profile-pic");
+const sidebarUserName = document.getElementById("sidebar-user-name");
+const sidebarUserEmail = document.getElementById("sidebar-user-email");
+const sidebarRoundsLeft = document.getElementById("sidebar-rounds-left");
+const sidebarAuthBtn = document.getElementById("sidebar-auth-btn");
+const sidebarLogoutBtn = document.getElementById("sidebar-logout-btn");
+
+// Modal elements
+const loginModal = document.getElementById("login-modal");
+const registerModal = document.getElementById("register-modal");
+const settingsModal = document.getElementById("settings-modal");
+
+// Global Firebase variables (initialized in index.html script module)
+let firebaseApp = window.firebaseApp;
+let db = window.db;
+let auth = window.auth;
+let userId = window.userId;
+let isAuthReady = window.isAuthReady;
+let currentUserData = window.currentUserData;
+let __app_id = window.__app_id;
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    fetchHistory();
-    setupTooltips(); // Setup tooltip hover logic
-
-    // Add event listeners for sidebar
-    // menuToggleBtn.addEventListener("click", openSidebar); // Already added inline in HTML
-    // closeSidebarBtn.addEventListener("click", closeSidebar); // Already added inline in HTML
+    // History fetch and auth UI update are now handled by onAuthStateChanged listener
+    setupTooltips(); 
 });
+
+// Function to update UI based on auth state and user data
+function updateAuthUI(user) {
+    if (user) {
+        // Logged in user
+        userNameDisplay.textContent = currentUserData.name || user.email;
+        userEmailDisplay.textContent = currentUserData.email || user.email;
+        roundsLeftDisplay.textContent = `Rounds Left: ${currentUserData.roundsLeft}`;
+
+        sidebarUserName.textContent = currentUserData.name || user.email;
+        sidebarUserEmail.textContent = currentUserData.email || user.email;
+        sidebarRoundsLeft.textContent = `Rounds Left: ${currentUserData.roundsLeft}`;
+
+        sidebarAuthBtn.classList.add("hidden");
+        sidebarLogoutBtn.classList.remove("hidden");
+
+        // Set profile picture (initial or actual image if available)
+        if (user.photoURL) {
+            profilePicCircle.style.backgroundImage = `url(${user.photoURL})`;
+            profilePicCircle.style.backgroundSize = 'cover';
+            profilePicCircle.textContent = ''; // Clear initial
+            sidebarProfilePic.style.backgroundImage = `url(${user.photoURL})`;
+            sidebarProfilePic.style.backgroundSize = 'cover';
+            sidebarProfilePic.textContent = '';
+        } else {
+            const initial = (currentUserData.name || user.email || 'G').charAt(0).toUpperCase();
+            profilePicCircle.textContent = initial;
+            profilePicCircle.style.backgroundImage = 'none';
+            sidebarProfilePic.textContent = initial;
+            sidebarProfilePic.style.backgroundImage = 'none';
+        }
+
+    } else {
+        // Guest user
+        userNameDisplay.textContent = "Guest User";
+        userEmailDisplay.textContent = "guest@example.com";
+        roundsLeftDisplay.textContent = "Rounds Left: ∞";
+
+        sidebarUserName.textContent = "Guest User";
+        sidebarUserEmail.textContent = "guest@example.com";
+        sidebarRoundsLeft.textContent = "Rounds Left: ∞";
+
+        sidebarAuthBtn.classList.remove("hidden");
+        sidebarLogoutBtn.classList.add("hidden");
+
+        profilePicCircle.textContent = "G";
+        profilePicCircle.style.backgroundImage = 'none';
+        sidebarProfilePic.textContent = "G";
+        sidebarProfilePic.style.backgroundImage = 'none';
+    }
+}
+
 
 function initializeUI() {
     // Add 'hidden-section' class to ALL sections that should be initially hidden
@@ -104,13 +180,15 @@ function initializeUI() {
     refineBtn.classList.add("hidden-section");
 
     // Store original placeholders for error messaging
-    // Ensure these are set only once on load
     if (!promptInput.dataset.originalPlaceholder) {
         promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     }
     if (!editBox.dataset.originalPlaceholder) {
         editBox.dataset.originalPlaceholder = editBox.placeholder;
     }
+
+    // Initial update of auth UI (before Firebase listener fires)
+    updateAuthUI(auth.currentUser);
 }
 
 function populateDropdown(id, options) {
@@ -199,6 +277,21 @@ function showTemporaryPlaceholderError(textarea, message) {
     }, 3000);
 }
 
+/**
+ * Displays a temporary message in a modal's error/message div.
+ * @param {string} elementId The ID of the div to display the message in.
+ * @param {string} message The message to display.
+ * @param {string} type 'success' or 'error' for styling.
+ */
+function displayModalMessage(elementId, message, type) {
+    const messageDiv = document.getElementById(elementId);
+    messageDiv.textContent = message;
+    messageDiv.className = `modal-message ${type}`; // Apply class for styling
+    setTimeout(() => {
+        messageDiv.textContent = '';
+        messageDiv.className = 'modal-message';
+    }, 3000);
+}
 
 async function generateName() {
     const prompt = promptInput.value.trim(); // Trim whitespace from prompt
@@ -213,6 +306,13 @@ async function generateName() {
         // Clear error placeholder if prompt is now valid (if it was previously set)
         promptInput.placeholder = promptInput.dataset.originalPlaceholder;
         promptInput.classList.remove("prompt-error-placeholder");
+    }
+
+    // --- Rounds Left Check ---
+    if (!currentUserData.isPremium && currentUserData.roundsLeft <= 0) {
+        document.getElementById("error").textContent = "You have no rounds left! Please subscribe to Premium or wait for more rounds.";
+        resetDynamicSections();
+        return;
     }
 
     const category = document.getElementById("category").value;
@@ -266,6 +366,13 @@ async function generateName() {
 
         namesPre.textContent = data.names.map(cleanNames).join("\n\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+
+        // Decrement rounds if not premium
+        if (!currentUserData.isPremium && currentUserData.roundsLeft > 0) {
+            currentUserData.roundsLeft--;
+            await saveUserRounds(userId, currentUserData.roundsLeft);
+            updateAuthUI(auth.currentUser); // Update UI with new rounds count
+        }
 
         // Add animation class after content is set
         namesPre.classList.add("fade-in-content");
@@ -362,18 +469,35 @@ async function refineNames() {
 }
 
 async function fetchHistory() {
-    try {
-        const response = await fetch(`${BACKEND_URL}/history`);
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Unknown error fetching history.");
+    // Use onSnapshot for real-time updates if user is logged in, otherwise fetch once
+    if (userId && isAuthReady) {
+        const q = query(collection(db, `artifacts/${__app_id}/users/${userId}/history`), orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const history = [];
+            snapshot.forEach((doc) => {
+                history.push({ id: doc.id, ...doc.data() });
+            });
+            renderHistory(history);
+        }, (error) => {
+            console.error("Error fetching real-time history:", error);
+            document.getElementById("error").textContent = "Error fetching history: " + error.message;
+        });
+    } else {
+        // Fallback for anonymous users or before auth is ready (fetches from backend)
+        try {
+            const response = await fetch(`${BACKEND_URL}/history`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Unknown error fetching history.");
+            }
+            const history = await response.json();
+            renderHistory(history);
+        } catch (error) {
+            document.getElementById("error").textContent = "Error fetching history: " + error.message;
         }
-        const history = await response.json();
-        renderHistory(history);
-    } catch (error) {
-        document.getElementById("error").textContent = "Error fetching history: " + error.message;
     }
 }
+
 
 function renderHistory(history) {
     const historyDiv = document.getElementById("history");
@@ -382,8 +506,8 @@ function renderHistory(history) {
         const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
         const tooltip = entry.category !== "Refined" ?
             `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
-            `Refine Instruction: ${entry.prompt}`;
-        const preRefined = entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>` : "";
+            `Refine Instruction: ${entry.instruction}`; // Use 'instruction' for refined entries
+        const preRefined = entry.pre_refined_names && entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>` : "";
         const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
         historyDiv.innerHTML += button;
     });
@@ -398,29 +522,33 @@ function restoreHistory(id) {
     editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
 
+    // Fetch history data to find the specific entry
     fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
         if (entry) {
-            // Always show main output and history sections
+            // Always ensure main output and history sections are visible
             outputContainer.classList.remove("hidden-section");
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
             historySection.classList.add("visible-section");
 
-            // Always show refine section and button (as you can always refine)
+            // Always ensure refine section and button are visible
             refineSection.classList.remove("hidden-section");
             refineSection.classList.add("visible-section");
             refineBtn.classList.remove("hidden-section");
             refineBtn.classList.add("visible-section");
 
             if (entry.category === "Refined") {
-                // If it's a refined entry, populate refined outputs and hide initial outputs
+                // If it's a refined entry, populate refined outputs
                 refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n\n");
                 refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
-                editBox.value = entry.prompt; // The refine instruction for refined entries
+                editBox.value = entry.instruction; // Use 'instruction' for refined entries
 
-                namesPre.textContent = ""; // Clear initial names
-                reasonsPre.textContent = ""; // Clear initial reasons
+                // Clear and hide initial outputs
+                namesPre.textContent = "";
+                reasonsPre.textContent = "";
+                outputContainer.classList.remove("visible-section"); // Ensure it's hidden if refined is shown
+                outputContainer.classList.add("hidden-section"); // Ensure it's hidden if refined is shown
 
                 // Ensure animation class is applied
                 refinedNamesPre.classList.add("fade-in-content");
@@ -429,14 +557,9 @@ function restoreHistory(id) {
                 // Show refined outputs
                 refinedOutputs.classList.remove("hidden-section");
                 refinedOutputs.classList.add("visible-section");
-                
-                // Hide initial outputs
-                outputContainer.classList.remove("visible-section");
-                outputContainer.classList.add("hidden-section");
-
 
             } else {
-                // If it's a regular generation entry, populate initial outputs and hide refined outputs
+                // If it's a regular generation entry, populate initial outputs
                 promptInput.value = entry.prompt;
                 document.getElementById("category").value = entry.category;
                 document.getElementById("style").value = entry.style;
@@ -444,9 +567,12 @@ function restoreHistory(id) {
                 namesPre.textContent = entry.names.map(cleanNames).join("\n\n");
                 reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
 
-                refinedNamesPre.textContent = ""; // Clear refined names
-                refinedReasonsPre.textContent = ""; // Clear refined reasons
+                // Clear and hide refined outputs
+                refinedNamesPre.textContent = "";
+                refinedReasonsPre.textContent = "";
                 editBox.value = ""; // Clear refine instruction box
+                refinedOutputs.classList.remove("visible-section");
+                refinedOutputs.classList.add("hidden-section");
 
                 // Ensure animation class is applied
                 namesPre.classList.add("fade-in-content");
@@ -455,10 +581,6 @@ function restoreHistory(id) {
                 // Show initial outputs
                 outputContainer.classList.remove("hidden-section");
                 outputContainer.classList.add("visible-section");
-
-                // Hide refined outputs
-                refinedOutputs.classList.remove("visible-section");
-                refinedOutputs.classList.add("hidden-section");
             }
         }
     });
@@ -553,4 +675,138 @@ function setupTooltips() {
         // as CSS :hover handles showing/hiding with opacity/visibility.
         // The positioning is also handled by CSS.
     });
+}
+
+// --- Sidebar Functions ---
+function openSidebar() {
+    sidebar.classList.add("active");
+    sidebarOverlay.classList.add("active");
+    menuToggleBtn.classList.add("rotated"); // Apply rotation
+}
+
+function closeSidebar() {
+    sidebar.classList.remove("active");
+    sidebarOverlay.classList.remove("active");
+    menuToggleBtn.classList.remove("rotated"); // Remove rotation
+}
+
+// --- Modal Functions (Re-introduced) ---
+function openLoginModal() {
+    closeSidebar(); // Close sidebar if open
+    loginModal.classList.remove("hidden");
+    loginModal.classList.add("active"); // Use 'active' for modals
+}
+
+function closeLoginModal() {
+    loginModal.classList.add("hidden");
+    loginModal.classList.remove("active");
+    document.getElementById("login-error").textContent = ''; // Clear error
+    document.getElementById("login-email").value = '';
+    document.getElementById("login-password").value = '';
+}
+
+function openRegisterModal() {
+    closeLoginModal(); // Close login modal if open
+    registerModal.classList.remove("hidden");
+    registerModal.classList.add("active");
+}
+
+function closeRegisterModal() {
+    registerModal.classList.add("hidden");
+    registerModal.classList.remove("active");
+    document.getElementById("register-error").textContent = ''; // Clear error
+    document.getElementById("register-email").value = '';
+    document.getElementById("register-password").value = '';
+}
+
+function openSettingsModal() {
+    closeSidebar(); // Close sidebar if open
+    settingsModal.classList.remove("hidden");
+    settingsModal.classList.add("active");
+    loadSettings(); // Load settings when modal opens
+}
+
+function closeSettingsModal() {
+    settingsModal.classList.add("hidden");
+    settingsModal.classList.remove("active");
+    document.getElementById("settings-message").textContent = ''; // Clear message
+}
+
+// --- Firebase Auth Functions (Re-introduced) ---
+async function signInUser() {
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+    try {
+        await window.signInWithEmailAndPassword(window.auth, email, password);
+        displayModalMessage('login-error', 'Signed in successfully!', 'success');
+        closeLoginModal();
+    } catch (error) {
+        console.error("Sign-in error:", error);
+        displayModalMessage('login-error', `Sign-in failed: ${error.message}`, 'error');
+    }
+}
+
+async function registerUser() {
+    const email = document.getElementById("register-email").value;
+    const password = document.getElementById("register-password").value;
+    try {
+        const userCredential = await window.createUserWithEmailAndPassword(window.auth, email, password);
+        // Set initial user data in Firestore
+        const userDocRef = doc(window.db, `artifacts/${window.__app_id}/users/${userCredential.user.uid}/profile/data`);
+        await setDoc(userDocRef, {
+            name: email.split('@')[0], // Default name from email
+            email: email,
+            roundsLeft: 5, // Default rounds for new users
+            isPremium: false
+        });
+        displayModalMessage('register-error', 'Registration successful! Please sign in.', 'success');
+        closeRegisterModal();
+        openLoginModal(); // Prompt to sign in after registration
+    } catch (error) {
+        console.error("Registration error:", error);
+        displayModalMessage('register-error', `Registration failed: ${error.message}`, 'error');
+    }
+}
+
+async function signOutUser() {
+    try {
+        await window.signOut(window.auth);
+        closeSidebar(); // Close sidebar on sign out
+        // UI will be updated by onAuthStateChanged listener
+    } catch (error) {
+        console.error("Sign-out error:", error);
+        document.getElementById("error").textContent = `Sign-out failed: ${error.message}`;
+    }
+}
+
+// --- Sidebar Link Handlers (Placeholders) ---
+function handlePremiumClick() {
+    closeSidebar();
+    // In a real app, this would redirect to a pricing page or open a premium modal
+    alert("Premium Subscription details coming soon!");
+}
+
+function handlePlanDetailsClick() {
+    closeSidebar();
+    alert("Free Tier: Generate 5 names per day. Premium: Unlimited generations!");
+}
+
+function handleTool1Click() {
+    closeSidebar();
+    alert("Tool 1 functionality coming soon!");
+}
+
+function handleFeatureAClick() {
+    closeSidebar();
+    alert("Feature A functionality coming soon!");
+}
+
+function handleSettingsClick() {
+    closeSidebar();
+    openSettingsModal(); // Open the settings modal
+}
+
+function handleAboutClick() {
+    closeSidebar();
+    alert("NameIT App: Your ultimate naming companion!");
 }
