@@ -61,7 +61,6 @@ const SURPRISES = [
     ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
 ];
 
-// Get references to key UI elements
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -72,125 +71,33 @@ const reasonsPre = document.getElementById("reasons");
 const refinedNamesPre = document.getElementById("refined_names");
 const refinedReasonsPre = document.getElementById("refined_reasons");
 const promptInput = document.getElementById("prompt");
-const editBox = document.getElementById("edit_box"); // Reference to the refine instruction textarea
+const editBox = document.getElementById("edit_box");
 
-// Get button references for disabling
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
-
-// Get new elements for sidebar and top bar
-const menuToggleBtn = document.getElementById("menu-toggle-btn");
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.getElementById("sidebar-overlay");
-
-// User info elements in top bar
-const profilePicCircle = document.getElementById("profile-pic-circle");
-const userNameDisplay = document.getElementById("user-name-display");
-const userEmailDisplay = document.getElementById("user-email-display");
-const roundsLeftDisplay = document.getElementById("rounds-left-display");
-
-// User info elements in sidebar
-const sidebarProfilePic = document.getElementById("sidebar-profile-pic");
-const sidebarUserName = document.getElementById("sidebar-user-name");
-const sidebarUserEmail = document.getElementById("sidebar-user-email");
-const sidebarRoundsLeft = document.getElementById("sidebar-rounds-left");
-const sidebarAuthBtn = document.getElementById("sidebar-auth-btn");
-const sidebarLogoutBtn = document.getElementById("sidebar-logout-btn");
-
-// Modal elements
-const loginModal = document.getElementById("login-modal");
-const registerModal = document.getElementById("register-modal");
-const settingsModal = document.getElementById("settings-modal");
-
-// Global Firebase variables (initialized in index.html script module)
-let firebaseApp = window.firebaseApp;
-let db = window.db;
-let auth = window.auth;
-let userId = window.userId;
-let isAuthReady = window.isAuthReady;
-let currentUserData = window.currentUserData;
-let __app_id = window.__app_id;
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    // History fetch and auth UI update are now handled by onAuthStateChanged listener
-    setupTooltips(); 
+    fetchHistory();
+    setupTooltips();
+    fetchUserInfo(); // Fetch user info on load
 });
 
-// Function to update UI based on auth state and user data
-function updateAuthUI(user) {
-    if (user) {
-        // Logged in user
-        userNameDisplay.textContent = currentUserData.name || user.email;
-        userEmailDisplay.textContent = currentUserData.email || user.email;
-        roundsLeftDisplay.textContent = `Rounds Left: ${currentUserData.roundsLeft}`;
-
-        sidebarUserName.textContent = currentUserData.name || user.email;
-        sidebarUserEmail.textContent = currentUserData.email || user.email;
-        sidebarRoundsLeft.textContent = `Rounds Left: ${currentUserData.roundsLeft}`;
-
-        sidebarAuthBtn.classList.add("hidden");
-        sidebarLogoutBtn.classList.remove("hidden");
-
-        // Set profile picture (initial or actual image if available)
-        if (user.photoURL) {
-            profilePicCircle.style.backgroundImage = `url(${user.photoURL})`;
-            profilePicCircle.style.backgroundSize = 'cover';
-            profilePicCircle.style.backgroundPosition = 'center';
-            profilePicCircle.textContent = ''; // Clear initial
-            sidebarProfilePic.style.backgroundImage = `url(${user.photoURL})`;
-            sidebarProfilePic.style.backgroundSize = 'cover';
-            sidebarProfilePic.style.backgroundPosition = 'center';
-            sidebarProfilePic.textContent = '';
-        } else {
-            const initial = (currentUserData.name || user.email || 'G').charAt(0).toUpperCase();
-            profilePicCircle.textContent = initial;
-            profilePicCircle.style.backgroundImage = 'none';
-            sidebarProfilePic.textContent = initial;
-            sidebarProfilePic.style.backgroundImage = 'none';
-        }
-
-    } else {
-        // Guest user
-        userNameDisplay.textContent = "Guest User";
-        userEmailDisplay.textContent = "guest@example.com";
-        roundsLeftDisplay.textContent = "Rounds Left: ∞";
-
-        sidebarUserName.textContent = "Guest User";
-        sidebarUserEmail.textContent = "guest@example.com";
-        sidebarRoundsLeft.textContent = "Rounds Left: ∞";
-
-        sidebarAuthBtn.classList.remove("hidden");
-        sidebarLogoutBtn.classList.add("hidden");
-
-        profilePicCircle.textContent = "G";
-        profilePicCircle.style.backgroundImage = 'none';
-        sidebarProfilePic.textContent = "G";
-        sidebarProfilePic.style.backgroundImage = 'none';
-    }
-}
-
-
 function initializeUI() {
-    // Add 'hidden-section' class to ALL sections that should be initially hidden
     outputContainer.classList.add("hidden-section");
     refineSection.classList.add("hidden-section");
     refinedOutputs.classList.add("hidden-section");
     historySection.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
 
-    // Store original placeholders for error messaging
     if (!promptInput.dataset.originalPlaceholder) {
         promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     }
     if (!editBox.dataset.originalPlaceholder) {
         editBox.dataset.originalPlaceholder = editBox.placeholder;
     }
-
-    // Initial update of auth UI (before Firebase listener fires)
-    updateAuthUI(auth.currentUser);
 }
 
 function populateDropdown(id, options) {
@@ -207,16 +114,10 @@ function cleanNames(text) {
     return text.replace(/\*\*/g, '');
 }
 
-/**
- * Shows a loading spinner overlay on a given element.
- * @param {HTMLElement} targetElement The element to overlay the spinner on.
- */
 function showLoading(targetElement) {
-    // Clear any existing content and animation classes
     targetElement.textContent = "";
     targetElement.classList.remove("fade-in-content");
 
-    // Create spinner overlay if it doesn't exist
     let spinnerOverlay = targetElement.querySelector(".spinner-overlay");
     if (!spinnerOverlay) {
         spinnerOverlay = document.createElement("div");
@@ -224,54 +125,36 @@ function showLoading(targetElement) {
         spinnerOverlay.innerHTML = '<div class="spinner"></div>';
         targetElement.appendChild(spinnerOverlay);
     }
-    spinnerOverlay.classList.add("show"); // Show the spinner
+    spinnerOverlay.classList.add("show");
 }
 
-/**
- * Hides the loading spinner overlay from a given element.
- * @param {HTMLElement} targetElement The element to remove the spinner from.
- */
 function hideLoading(targetElement) {
     const spinnerOverlay = targetElement.querySelector(".spinner-overlay");
     if (spinnerOverlay) {
-        spinnerOverlay.classList.remove("show"); // Hide the spinner
+        spinnerOverlay.classList.remove("show");
     }
 }
 
-/**
- * Disables all relevant buttons during a loading state.
- */
 function disableButtons() {
     generateBtn.disabled = true;
     surpriseBtn.disabled = true;
     refineBtn.disabled = true;
 }
 
-/**
- * Enables all relevant buttons after a loading state.
- */
 function enableButtons() {
     generateBtn.disabled = false;
     surpriseBtn.disabled = false;
     refineBtn.disabled = false;
 }
 
-/**
- * Displays a temporary error message in a textarea's placeholder.
- * @param {HTMLTextAreaElement} textarea The textarea element.
- * @param {string} message The error message to display.
- */
 function showTemporaryPlaceholderError(textarea, message) {
-    // Store original placeholder if not already stored
     if (!textarea.dataset.originalPlaceholder) {
         textarea.dataset.originalPlaceholder = textarea.placeholder;
     }
     textarea.placeholder = message;
     textarea.classList.add("prompt-error-placeholder");
 
-    // Clear the error after 3 seconds
     setTimeout(() => {
-        // Only revert if the current placeholder is still the error message
         if (textarea.placeholder === message) {
             textarea.placeholder = textarea.dataset.originalPlaceholder;
             textarea.classList.remove("prompt-error-placeholder");
@@ -279,42 +162,32 @@ function showTemporaryPlaceholderError(textarea, message) {
     }, 3000);
 }
 
-/**
- * Displays a temporary message in a modal's error/message div.
- * @param {string} elementId The ID of the div to display the message in.
- * @param {string} message The message to display.
- * @param {string} type 'success' or 'error' for styling.
- */
-function displayModalMessage(elementId, message, type) {
-    const messageDiv = document.getElementById(elementId);
-    messageDiv.textContent = message;
-    messageDiv.className = `modal-message ${type}`; // Apply class for styling
-    setTimeout(() => {
-        messageDiv.textContent = '';
-        messageDiv.className = 'modal-message';
-    }, 3000);
+async function fetchUserInfo() {
+    try {
+        const response = await fetch(`${BACKEND_URL}/user`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch user info');
+        }
+        const data = await response.json();
+        document.getElementById('user-email').textContent = data.email;
+        document.getElementById('rounds-left').textContent = `Rounds left: ${data.roundsLeft}`;
+    } catch (error) {
+        console.error('Error fetching user info:', error);
+        document.getElementById('user-email').textContent = 'user@example.com'; // Placeholder
+        document.getElementById('rounds-left').textContent = 'Rounds left: 10'; // Placeholder
+    }
 }
 
 async function generateName() {
-    const prompt = promptInput.value.trim(); // Trim whitespace from prompt
+    const prompt = promptInput.value.trim();
 
-    // --- Empty Prompt Handling ---
     if (!prompt) {
         showTemporaryPlaceholderError(promptInput, "You cannot generate names without a description!");
-        // Ensure all dynamic sections are hidden when there's no prompt
-        resetDynamicSections(); 
-        return; // Stop function execution
-    } else {
-        // Clear error placeholder if prompt is now valid (if it was previously set)
-        promptInput.placeholder = promptInput.dataset.originalPlaceholder;
-        promptInput.classList.remove("prompt-error-placeholder");
-    }
-
-    // --- Rounds Left Check ---
-    if (!currentUserData.isPremium && currentUserData.roundsLeft <= 0) {
-        document.getElementById("error").textContent = "You have no rounds left! Please subscribe to Premium or wait for more rounds.";
         resetDynamicSections();
         return;
+    } else {
+        promptInput.placeholder = promptInput.dataset.originalPlaceholder;
+        promptInput.classList.remove("prompt-error-placeholder");
     }
 
     const category = document.getElementById("category").value;
@@ -323,34 +196,28 @@ async function generateName() {
 
     if (!BACKEND_URL) {
         document.getElementById("error").textContent = "Backend URL not set correctly.";
-        resetDynamicSections(); // Hide all dynamic sections on critical error
+        resetDynamicSections();
         return;
     }
 
-    // Clear general error message at the start of a valid attempt
     document.getElementById("error").textContent = "";
 
-    // Show output boxes and history section immediately before loading
     outputContainer.classList.remove("hidden-section");
     outputContainer.classList.add("visible-section");
     historySection.classList.remove("hidden-section");
     historySection.classList.add("visible-section");
 
-    // Show loading state for output boxes and disable buttons
     showLoading(namesPre);
     showLoading(reasonsPre);
     disableButtons();
 
-    // Hide refined outputs when generating new names (with animation)
     refinedOutputs.classList.remove("visible-section");
     refinedOutputs.classList.add("hidden-section");
 
-    // Hide refine section and button initially, they will be shown on success if prompt is valid
     refineSection.classList.remove("visible-section");
     refineSection.classList.add("hidden-section");
     refineBtn.classList.remove("visible-section");
     refineBtn.classList.add("hidden-section");
-
 
     try {
         const response = await fetch(`${BACKEND_URL}/generate`, {
@@ -361,41 +228,29 @@ async function generateName() {
             body: JSON.stringify({ prompt, category, style, language })
         });
         if (!response.ok) {
-            const errorData = await response.json(); // Assuming backend sends JSON error
+            const errorData = await response.json();
             throw new Error(errorData.error || "Unknown error during name generation.");
         }
         const data = await response.json();
 
-        namesPre.textContent = data.names.map(cleanNames).join("\n\n");
-        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+        namesPre.textContent = data.names.map(cleanNames).join("\n");
+        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
 
-        // Decrement rounds if not premium
-        if (!currentUserData.isPremium && currentUserData.roundsLeft > 0) {
-            currentUserData.roundsLeft--;
-            await saveUserRounds(userId, currentUserData.roundsLeft);
-            updateAuthUI(auth.currentUser); // Update UI with new rounds count
-        }
-
-        // Add animation class after content is set
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
 
-        // Show Refine section and button ONLY if prompt has content (which it will here due to initial check)
         refineSection.classList.remove("hidden-section");
         refineSection.classList.add("visible-section");
         refineBtn.classList.remove("hidden-section");
         refineBtn.classList.add("visible-section");
-        
-        fetchHistory(); // Refresh history after successful generation
+
+        fetchHistory();
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        // If generation fails, hide output and refine sections
-        resetDynamicSections(); // Hide all dynamic sections on error
-        // Clear content in case of error
+        resetDynamicSections();
         namesPre.textContent = "";
         reasonsPre.textContent = "";
-
     } finally {
         hideLoading(namesPre);
         hideLoading(reasonsPre);
@@ -404,15 +259,13 @@ async function generateName() {
 }
 
 async function refineNames() {
-    const instruction = editBox.value.trim(); // Trim whitespace from instruction
+    const instruction = editBox.value.trim();
 
-    // --- Empty Refine Instruction Handling ---
     if (!instruction) {
         showTemporaryPlaceholderError(editBox, "Please enter a refine instruction.");
-        document.getElementById("error").textContent = ""; // Clear general error message
-        return; // Stop function execution
+        document.getElementById("error").textContent = "";
+        return;
     } else {
-        // Clear error placeholder if instruction is now valid (if it was previously set)
         editBox.placeholder = editBox.dataset.originalPlaceholder;
         editBox.classList.remove("prompt-error-placeholder");
     }
@@ -422,9 +275,8 @@ async function refineNames() {
         return;
     }
 
-    document.getElementById("error").textContent = ""; // Clear previous error
+    document.getElementById("error").textContent = "";
 
-    // Show loading state for refined output boxes and disable buttons
     showLoading(refinedNamesPre);
     showLoading(refinedReasonsPre);
     disableButtons();
@@ -443,22 +295,19 @@ async function refineNames() {
         }
         const data = await response.json();
 
-        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
-        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
+        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
 
-        // Add animation class after content is set
         refinedNamesPre.classList.add("fade-in-content");
         refinedReasonsPre.classList.add("fade-in-content");
 
-        // Show refined outputs with animation
         refinedOutputs.classList.remove("hidden-section");
         refinedOutputs.classList.add("visible-section");
 
-        fetchHistory(); // Refresh history after successful refinement
+        fetchHistory();
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        // If refinement fails, hide refined output and clear content
         refinedOutputs.classList.remove("visible-section");
         refinedOutputs.classList.add("hidden-section");
         refinedNamesPre.textContent = "";
@@ -471,35 +320,18 @@ async function refineNames() {
 }
 
 async function fetchHistory() {
-    // Use onSnapshot for real-time updates if user is logged in, otherwise fetch once
-    if (userId && isAuthReady && db && __app_id) { // Ensure db and __app_id are available
-        const q = query(collection(db, `artifacts/${__app_id}/users/${userId}/history`), orderBy("timestamp", "desc"));
-        onSnapshot(q, (snapshot) => {
-            const history = [];
-            snapshot.forEach((doc) => {
-                history.push({ id: doc.id, ...doc.data() });
-            });
-            renderHistory(history);
-        }, (error) => {
-            console.error("Error fetching real-time history:", error);
-            document.getElementById("error").textContent = "Error fetching history: " + error.message;
-        });
-    } else {
-        // Fallback for anonymous users or before auth is ready (fetches from backend)
-        try {
-            const response = await fetch(`${BACKEND_URL}/history`);
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Unknown error fetching history.");
-            }
-            const history = await response.json();
-            renderHistory(history);
-        } catch (error) {
-            document.getElementById("error").textContent = "Error fetching history: " + error.message;
+    try {
+        const response = await fetch(`${BACKEND_URL}/history`);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Unknown error fetching history.");
         }
+        const history = await response.json();
+        renderHistory(history);
+    } catch (error) {
+        document.getElementById("error").textContent = "Error fetching history: " + error.message;
     }
 }
-
 
 function renderHistory(history) {
     const historyDiv = document.getElementById("history");
@@ -508,83 +340,51 @@ function renderHistory(history) {
         const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
         const tooltip = entry.category !== "Refined" ?
             `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
-            `Refine Instruction: ${entry.instruction}`; // Use 'instruction' for refined entries
-        const preRefined = entry.pre_refined_names && entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>` : "";
+            `Refine Instruction: ${entry.prompt}`;
         const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
         historyDiv.innerHTML += button;
     });
 }
 
 function restoreHistory(id) {
-    // Clear any existing error messages when restoring
     document.getElementById("error").textContent = "";
-    // Reset prompt and refine placeholders and remove error styling
     promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
     editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
 
-    // Fetch history data to find the specific entry
     fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
         if (entry) {
-            // Always show main output and history sections
+            promptInput.value = entry.prompt;
+            document.getElementById("category").value = entry.category;
+            document.getElementById("style").value = entry.style;
+            document.getElementById("language").value = entry.language;
+            namesPre.textContent = entry.names.map(cleanNames).join("\n");
+            reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+
+            namesPre.classList.add("fade-in-content");
+            reasonsPre.classList.add("fade-in-content");
+
             outputContainer.classList.remove("hidden-section");
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
             historySection.classList.add("visible-section");
 
-            // Always show refine section and button (as you can always refine)
-            refineSection.classList.remove("hidden-section");
-            refineSection.classList.add("visible-section");
-            refineBtn.classList.remove("hidden-section");
-            refineBtn.classList.add("visible-section");
-
-            if (entry.category === "Refined") {
-                // If it's a refined entry, populate refined outputs
-                refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n\n");
-                refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
-                editBox.value = entry.instruction; // The refine instruction for refined entries
-
-                namesPre.textContent = ""; // Clear initial names
-                reasonsPre.textContent = ""; // Clear initial reasons
-
-                // Ensure animation class is applied
-                refinedNamesPre.classList.add("fade-in-content");
-                refinedReasonsPre.classList.add("fade-in-content");
-
-                // Show refined outputs
-                refinedOutputs.classList.remove("hidden-section");
-                refinedOutputs.classList.add("visible-section");
-                
-                // Hide initial outputs
-                outputContainer.classList.remove("visible-section");
-                outputContainer.classList.add("hidden-section");
-
-
+            if (promptInput.value.trim()) {
+                refineSection.classList.remove("hidden-section");
+                refineSection.classList.add("visible-section");
+                refineBtn.classList.remove("hidden-section");
+                refineBtn.classList.add("visible-section");
             } else {
-                // If it's a regular generation entry, populate initial outputs
-                promptInput.value = entry.prompt;
-                document.getElementById("category").value = entry.category;
-                document.getElementById("style").value = entry.style;
-                document.getElementById("language").value = entry.language;
-                namesPre.textContent = entry.names.map(cleanNames).join("\n\n");
-                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
-
-                refinedNamesPre.textContent = ""; // Clear refined names
-                refinedReasonsPre.textContent = ""; // Clear refined reasons
-                editBox.value = ""; // Clear refine instruction box
-                refinedOutputs.classList.remove("visible-section");
-                refinedOutputs.classList.add("hidden-section");
-
-                // Ensure animation class is applied
-                namesPre.classList.add("fade-in-content");
-                reasonsPre.classList.add("fade-in-content");
-
-                // Show initial outputs
-                outputContainer.classList.remove("hidden-section");
-                outputContainer.classList.add("visible-section");
+                refineSection.classList.remove("visible-section");
+                refineSection.classList.add("hidden-section");
+                refineBtn.classList.remove("visible-section");
+                refineBtn.classList.add("hidden-section");
             }
+
+            refinedOutputs.classList.remove("visible-section");
+            refinedOutputs.classList.add("hidden-section");
         }
     });
 }
@@ -595,9 +395,8 @@ function surpriseMe() {
     document.getElementById("category").value = category;
     document.getElementById("style").value = style;
     document.getElementById("language").value = language;
-    
-    // Call generateName directly after setting the surprise prompt
-    generateName(); 
+
+    generateName();
 }
 
 function copyToClipboard(elementId) {
@@ -621,18 +420,14 @@ function copyToClipboard(elementId) {
         document.body.appendChild(copyMessage);
         setTimeout(() => {
             copyMessage.style.opacity = 1;
-        }, 10); // Small delay to trigger transition
+        }, 10);
         setTimeout(() => {
             copyMessage.style.opacity = 0;
             copyMessage.addEventListener('transitionend', () => copyMessage.remove());
-        }, 2000); // Message visible for 2 seconds
+        }, 2000);
     });
 }
 
-/**
- * Resets all dynamic UI sections to their initial hidden state.
- * This is used when an operation fails or an empty prompt is detected.
- */
 function resetDynamicSections() {
     outputContainer.classList.remove("visible-section");
     outputContainer.classList.add("hidden-section");
@@ -645,185 +440,54 @@ function resetDynamicSections() {
     historySection.classList.remove("visible-section");
     historySection.classList.add("hidden-section");
 
-    // Clear content of pre tags
     namesPre.textContent = "";
     reasonsPre.textContent = "";
     refinedNamesPre.textContent = "";
     refinedReasonsPre.textContent = "";
 
-    // Clear animation classes
     namesPre.classList.remove("fade-in-content");
     reasonsPre.classList.remove("fade-in-content");
     refinedNamesPre.classList.remove("fade-in-content");
     refinedReasonsPre.classList.remove("fade-in-content");
 
-    // Clear general error message
     document.getElementById("error").textContent = "";
 }
 
-/**
- * Sets up the hover functionality for tooltip icons.
- */
 function setupTooltips() {
     const tooltipIcons = document.querySelectorAll('.tooltip-icon');
 
     tooltipIcons.forEach(icon => {
-        const tooltipBox = icon.nextElementSibling; // The tooltip-box is the next sibling
+        const tooltipBox = icon.nextElementSibling;
         const tooltipText = icon.dataset.tooltipText;
 
-        // Set the text content of the tooltip box
         tooltipBox.textContent = tooltipText;
-
-        // No need for explicit mouseover/mouseout JS listeners
-        // as CSS :hover handles showing/hiding with opacity/visibility.
-        // The positioning is also handled by CSS.
     });
 }
 
-// --- Sidebar Functions ---
-function openSidebar() {
-    sidebar.classList.add("active");
-    sidebarOverlay.classList.add("active");
-    menuToggleBtn.classList.add("rotated"); // Apply rotation
+document.getElementById('menu-button').addEventListener('click', () => {
+    document.getElementById('side-bar').classList.toggle('active');
+});
+
+document.getElementById('close-side-bar').addEventListener('click', () => {
+    document.getElementById('side-bar').classList.remove('active');
+});
+
+function openSettings() {
+    console.log('Open settings');
+    // TODO: Implement settings page
 }
 
-function closeSidebar() {
-    sidebar.classList.remove("active");
-    sidebarOverlay.classList.remove("active");
-    menuToggleBtn.classList.remove("rotated"); // Remove rotation
+function openAccountInfo() {
+    console.log('Open account info');
+    // TODO: Implement account info page
 }
 
-// --- Modal Functions (Re-introduced) ---
-function openLoginModal() {
-    closeSidebar(); // Close sidebar if open
-    loginModal.classList.remove("hidden");
-    loginModal.classList.add("active"); // Use 'active' for modals
+function signInOut() {
+    console.log('Sign in/out');
+    // TODO: Implement sign in/out logic
 }
 
-function closeLoginModal() {
-    loginModal.classList.add("hidden");
-    loginModal.classList.remove("active");
-    document.getElementById("login-error").textContent = ''; // Clear error
-    document.getElementById("login-email").value = '';
-    document.getElementById("login-password").value = '';
-}
-
-function openRegisterModal() {
-    closeLoginModal(); // Close login modal if open
-    registerModal.classList.remove("hidden");
-    registerModal.classList.add("active");
-}
-
-function closeRegisterModal() {
-    registerModal.classList.add("hidden");
-    registerModal.classList.remove("active");
-    document.getElementById("register-error").textContent = ''; // Clear error
-    document.getElementById("register-email").value = '';
-    document.getElementById("register-password").value = '';
-}
-
-function openSettingsModal() {
-    closeSidebar(); // Close sidebar if open
-    settingsModal.classList.remove("hidden");
-    settingsModal.classList.add("active");
-    loadSettings(); // Load settings when modal opens
-}
-
-function closeSettingsModal() {
-    settingsModal.classList.add("hidden");
-    settingsModal.classList.remove("active");
-    document.getElementById("settings-message").textContent = ''; // Clear message
-}
-
-// --- Firebase Auth Functions (Re-introduced) ---
-async function signInUser() {
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-    try {
-        await window.signInWithEmailAndPassword(window.auth, email, password);
-        displayModalMessage('login-error', 'Signed in successfully!', 'success');
-        closeLoginModal();
-    } catch (error) {
-        console.error("Sign-in error:", error);
-        let errorMessage = "Sign-in failed. Please check your credentials.";
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-            errorMessage = "Invalid email or password.";
-        } else if (error.code === 'auth/invalid-email') {
-            errorMessage = "Invalid email format.";
-        }
-        displayModalMessage('login-error', errorMessage, 'error');
-    }
-}
-
-async function registerUser() {
-    const email = document.getElementById("register-email").value;
-    const password = document.getElementById("register-password").value;
-    try {
-        const userCredential = await window.createUserWithEmailAndPassword(window.auth, email, password);
-        // Set initial user data in Firestore
-        const userDocRef = doc(window.db, `artifacts/${window.__app_id}/users/${userCredential.user.uid}/profile/data`);
-        await setDoc(userDocRef, {
-            name: email.split('@')[0], // Default name from email
-            email: email,
-            roundsLeft: 5, // Default rounds for new users
-            isPremium: false
-        });
-        displayModalMessage('register-error', 'Registration successful! Please sign in.', 'success');
-        closeRegisterModal();
-        openLoginModal(); // Prompt to sign in after registration
-    } catch (error) {
-        console.error("Registration error:", error);
-        let errorMessage = "Registration failed. Please try again.";
-        if (error.code === 'auth/email-already-in-use') {
-            errorMessage = "This email is already registered.";
-        } else if (error.code === 'auth/weak-password') {
-            errorMessage = "Password should be at least 6 characters.";
-        } else if (error.code === 'auth/invalid-email') {
-            errorMessage = "Invalid email format.";
-        }
-        displayModalMessage('register-error', errorMessage, 'error');
-    }
-}
-
-async function signOutUser() {
-    try {
-        await window.signOut(window.auth);
-        closeSidebar(); // Close sidebar on sign out
-        // UI will be updated by onAuthStateChanged listener
-    } catch (error) {
-        console.error("Sign-out error:", error);
-        document.getElementById("error").textContent = `Sign-out failed: ${error.message}`;
-    }
-}
-
-// --- Sidebar Link Handlers (Placeholders) ---
-function handlePremiumClick() {
-    closeSidebar();
-    // In a real app, this would redirect to a pricing page or open a premium modal
-    alert("Premium Subscription details coming soon!");
-}
-
-function handlePlanDetailsClick() {
-    closeSidebar();
-    alert("Free Tier: Generate 5 names per day. Premium: Unlimited generations!");
-}
-
-function handleTool1Click() {
-    closeSidebar();
-    alert("Tool 1 functionality coming soon!");
-}
-
-function handleFeatureAClick() {
-    closeSidebar();
-    alert("Feature A functionality coming soon!");
-}
-
-function handleSettingsClick() {
-    closeSidebar();
-    openSettingsModal(); // Open the settings modal
-}
-
-function handleAboutClick() {
-    closeSidebar();
-    alert("NameIT App: Your ultimate naming companion!");
+function openAbout() {
+    console.log('Open about page');
+    // TODO: Implement about page
 }
