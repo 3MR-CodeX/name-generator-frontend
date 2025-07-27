@@ -256,8 +256,8 @@ async function generateName() {
         }
         const data = await response.json();
 
-        namesPre.textContent = data.names.map(cleanNames).join("\n");
-        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n"); // Changed: Added empty line
+        namesPre.textContent = data.names.map(cleanNames).join("\n\n"); // Changed: Added empty line
+        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
 
         // Add animation class after content is set
         namesPre.classList.add("fade-in-content");
@@ -326,8 +326,8 @@ async function refineNames() {
         }
         const data = await response.json();
 
-        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
-        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n"); // Changed: Added empty line
+        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n"); // Changed: Added empty line
+        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
 
         // Add animation class after content is set
         refinedNamesPre.classList.add("fade-in-content");
@@ -407,8 +407,8 @@ function restoreHistory(id) {
 
             if (entry.category === "Refined") {
                 // If it's a refined entry, populate refined outputs and hide initial outputs
-                refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n");
-                refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n"); // Changed: Added empty line
+                refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n\n"); // Changed: Added empty line
+                refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
                 editBox.value = entry.prompt; // The refine instruction for refined entries
 
                 namesPre.textContent = ""; // Clear initial names
@@ -433,8 +433,8 @@ function restoreHistory(id) {
                 document.getElementById("category").value = entry.category;
                 document.getElementById("style").value = entry.style;
                 document.getElementById("language").value = entry.language;
-                namesPre.textContent = entry.names.map(cleanNames).join("\n");
-                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n"); // Changed: Added empty line
+                namesPre.textContent = entry.names.map(cleanNames).join("\n\n"); // Changed: Added empty line
+                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
 
                 refinedNamesPre.textContent = ""; // Clear refined names
                 refinedReasonsPre.textContent = ""; // Clear refined reasons
