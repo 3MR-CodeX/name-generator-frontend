@@ -9,7 +9,8 @@ body {
     font-size: 16px;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding: 0;
+    padding: 20px;
+    padding-top: 70px; /* Space for top bar */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -53,275 +54,81 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
-/* Top Bar styles - Matched to topbar.png */
 .top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 70px; /* From topbar.png */
-    background-color: #2a2a2a; /* From topbar.png */
+    height: 50px;
+    background-color: #1a1a1a;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+#menu-button {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#user-email, #rounds-left {
+    color: #e0e0e0;
+}
+
+.side-bar {
     position: fixed;
     top: 0;
-    left: 0;
-    z-index: 50; /* Below sidebar, above main content */
-}
-
-/* Hexagon Menu Button - Matched to topbar.png */
-.menu-toggle-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out; /* For rotation animation */
-    
-    /* Hexagon shape using clip-path */
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); /* More elongated hexagon */
-    background-color: #800080; /* Purple fill */
-    color: white; /* Color of the '☰' symbol */
-    font-size: 1.5em; /* Size of the '☰' symbol */
-    border: 2px solid #a020f0; /* Deep purple border */
-    box-sizing: border-box; /* Include padding/border in element's total width and height */
-}
-
-.menu-toggle-btn:hover {
-    background-color: #a020f0; /* Deep purple on hover */
-    color: white;
-}
-
-.menu-toggle-btn.rotated {
-    transform: rotate(-90deg); /* Counter-clockwise rotation */
-}
-
-.user-info-section {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Spacing between text and profile pic */
-}
-
-.user-details {
-    display: flex;
-    flex-direction: column;
-    text-align: right; /* Align text to the right */
-    line-height: 1.2; /* Adjust line height for better spacing */
-}
-
-.user-name {
-    color: #e0e0e0; /* Matches the white-ish color in topbar.png (red line) */
-    font-weight: 500;
-    font-size: 1em; /* Adjusted to match screenshot */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.user-email {
-    color: #cccccc; /* Matches the lighter gray in topbar.png (blue line) */
-    font-size: 0.8em; /* Adjusted to match screenshot */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.rounds-left {
-    color: #90ee90; /* Light green for rounds left, as per screenshot concept (green line) */
-    font-weight: bold;
-    font-size: 0.75em; /* Adjusted to match screenshot */
-    margin-top: 2px;
-}
-
-.profile-pic-circle {
-    width: 45px; /* Matches the circle size in topbar.png */
-    height: 45px;
-    border-radius: 50%;
-    background-color: #800080; /* Default purple background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 1.3em;
-    font-weight: bold;
-    overflow: hidden;
-    border: 2px solid #a020f0; /* Deep purple border */
-    flex-shrink: 0;
-}
-
-.profile-pic-circle.large { /* For sidebar */
-    width: 70px; /* Matches sidebar.png */
-    height: 70px;
-    font-size: 2.2em;
-    margin-bottom: 10px;
-}
-
-/* Main App Container - to push content below fixed top bar */
-.main-app-container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 90px 20px 20px; /* Top padding to clear fixed top-bar (70px height + 20px margin) */
-    box-sizing: border-box;
-    z-index: 1; /* Below top bar and sidebar */
-}
-
-/* Sidebar styles - Matched to sidebar.png */
-.sidebar {
-    position: fixed;
-    top: 70px; /* Starts directly below the 70px tall top bar */
-    left: -280px; /* Start off-screen to the left (width of sidebar) */
-    width: 280px; /* Width of the sidebar */
-    height: calc(100% - 70px); /* Full height minus top bar height */
-    background-color: #2a2a2a; /* Solid dark gray for sidebar as per screenshot */
-    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.7);
-    transition: left 0.3s ease-in-out; /* Smooth sliding animation */
-    z-index: 100; /* Ensure it's on top of everything */
-    padding-top: 20px; /* Padding for content inside sidebar */
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar.active {
-    left: 0; /* Slide in when active */
-}
-
-.close-sidebar-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #e0e0e0;
-    font-size: 1.8em;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.close-sidebar-btn:hover {
-    color: #a020f0;
-}
-
-.sidebar-content {
-    padding: 0 20px; /* Horizontal padding for content */
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Space between links */
-    overflow-y: auto; /* Enable scrolling for content if it overflows */
-    flex-grow: 1; /* Allow content to take available space */
-}
-
-.sidebar-link {
-    color: #e0e0e0;
-    text-decoration: none;
-    font-size: 1.1em;
-    padding: 10px 15px;
-    border-radius: 6px;
-    transition: background-color 0.2s, color 0.2s;
-    display: block;
-}
-
-.sidebar-link:hover {
-    background-color: rgba(128, 0, 128, 0.4); /* Purple hover effect */
-    color: white;
-}
-
-.premium-link {
-    font-weight: bold;
-    color: #a020f0; /* Brighter purple for premium */
-}
-
-.premium-link:hover {
-    background-color: rgba(160, 32, 240, 0.4);
-    color: white;
-}
-
-.sidebar-section-title {
-    color: #cccccc;
-    font-size: 0.9em;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    padding-left: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 1px solid rgba(204, 204, 204, 0.2);
-    padding-bottom: 5px;
-}
-
-.sidebar-account-details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #2a2a2a;
+    transition: left 0.3s ease;
+    z-index: 1000;
     padding: 20px;
-    background-color: rgba(58, 58, 58, 0.5); /* This approximates #3a3a3a with transparency */
-    border-radius: 8px;
+}
+
+.side-bar.active {
+    left: 0;
+}
+
+#close-side-bar {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 24px;
+    cursor: pointer;
     margin-bottom: 20px;
-    text-align: center;
 }
 
-.sidebar-account-details .user-name {
-    font-size: 1.3em;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-.sidebar-account-details .user-email {
-    font-size: 1em;
-    margin-bottom: 5px;
-}
-.sidebar-account-details .rounds-left {
-    font-size: 1em;
-    margin-bottom: 15px;
-}
-
-.sidebar-btn {
+.side-bar button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
     background-color: #800080;
     color: white;
     border: none;
-    border-radius: 6px;
-    padding: 8px 15px;
+    padding: 10px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    width: 100%;
-    margin-top: 5px;
 }
 
-.sidebar-btn:hover {
+.side-bar button:hover {
     background-color: #a020f0;
-    box-shadow: 0 0 8px 1px rgba(128, 0, 128, 0.5);
 }
 
-
-/* Overlay for when sidebar is open */
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent overlay */
-    z-index: 99; /* Below sidebar, above main content */
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.sidebar-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-
-/* Main content's original container (now nested inside .main-app-container) */
 .container {
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     position: relative;
     z-index: 1;
-    padding: 0;
+    padding: 0 10px;
 }
 
 .banner-col {
@@ -332,6 +139,7 @@ body::before {
     border-radius: 8px;
     transition: background-color 0.3s;
     width: 100%;
+    max-width: 1200px;
 }
 
 .banner-col:hover {
@@ -392,7 +200,6 @@ label {
     font-weight: 500;
 }
 
-/* Tooltip styles */
 .tooltip-container {
     position: relative;
     display: inline-flex;
@@ -441,12 +248,10 @@ label {
     z-index: 100;
 }
 
-/* Show tooltip on hover */
 .tooltip-icon:hover + .tooltip-box {
     opacity: 1;
     visibility: visible;
 }
-
 
 textarea, select {
     background-color: rgba(58, 58, 58, 0.65);
@@ -517,7 +322,6 @@ button:disabled {
     z-index: 1;
 }
 
-/* --- Animation Classes for Sections --- */
 .hidden-section {
     opacity: 0;
     max-height: 0;
@@ -543,12 +347,15 @@ button:disabled {
     flex-wrap: wrap;
     width: 100%;
 }
+
 .refine-section {
     display: block;
 }
+
 .history-section {
     display: block;
 }
+
 .refine-button-section {
     display: flex;
     gap: 20px;
@@ -556,13 +363,11 @@ button:disabled {
     width: 100%;
 }
 
-
 .output-section .output-box {
     flex: 1;
     min-width: 300px;
 }
 
-/* Animation for content inside pre tags */
 @keyframes fadeInContent {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -571,7 +376,6 @@ button:disabled {
 .fade-in-content {
     animation: fadeInContent 0.6s ease-out forwards;
 }
-
 
 .output-box {
     background-color: rgba(42, 42, 42, 0.7);
@@ -682,7 +486,6 @@ pre {
     text-align: center;
 }
 
-/* --- Loading Spinner Styles --- */
 .spinner-overlay {
     position: absolute;
     top: 0;
@@ -719,17 +522,15 @@ pre {
     100% { transform: rotate(360deg); }
 }
 
-/* --- Error Placeholder Styling --- */
 .prompt-error-placeholder::placeholder {
     color: #ff5555;
     opacity: 1;
 }
+
 .prompt-error-placeholder {
     border-color: #ff5555 !important;
 }
 
-/* --- Themed Scrollbar Styles (Reverted to original and applied globally) --- */
-/* For Webkit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -749,133 +550,6 @@ pre {
     background: #a020f0;
 }
 
-
-/* Modal Styles */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 200; /* Above everything else */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease;
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.modal-content {
-    background-color: #2a2a2a; /* Dark gray background */
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    width: 90%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    position: relative;
-}
-
-.modal-content h2 {
-    color: #e0e0e0;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.modal-content input[type="email"],
-.modal-content input[type="password"],
-.modal-content select {
-    background-color: #3a3a3a;
-    color: #e0e0e0;
-    border: 1px solid #4a4a4a;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 1em;
-    width: 100%;
-}
-
-.modal-content button {
-    background-color: #800080;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s;
-}
-
-.modal-content button:hover {
-    background-color: #a020f0;
-}
-
-.modal-content p {
-    text-align: center;
-    font-size: 0.9em;
-    color: #cccccc;
-}
-
-.modal-content a {
-    color: #a020f0;
-    text-decoration: none;
-}
-
-.modal-content a:hover {
-    text-decoration: underline;
-}
-
-.close-modal-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: #e0e0e0;
-    font-size: 1.5em;
-    cursor: pointer;
-}
-
-.close-modal-btn:hover {
-    color: #a020f0;
-}
-
-.modal-error {
-    color: #ff5555;
-    text-align: center;
-    font-size: 0.9em;
-    margin-top: 10px;
-}
-
-.modal-message.success {
-    color: #90ee90;
-}
-
-.modal-message.error {
-    color: #ff5555;
-}
-
-.setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.setting-item label {
-    margin-bottom: 0; /* Override default label margin */
-}
-
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .input-section, .button-section, .output-section, .refine-button-section {
         flex-direction: column;
@@ -896,63 +570,7 @@ pre {
     }
 
     body {
-        padding: 0;
-    }
-
-    /* Make prompt textarea taller on mobile */
-    #prompt {
-        min-height: 250px;
-    }
-
-    .top-bar {
-        height: 60px; /* Slightly smaller top bar on very small screens */
-        padding: 0 10px;
-    }
-
-    .menu-toggle-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.3em;
-    }
-
-    .profile-pic-circle {
-        width: 35px;
-        height: 35px;
-        font-size: 1em;
-    }
-
-    .user-name {
-        font-size: 0.9em;
-    }
-
-    .user-email {
-        font-size: 0.75em;
-    }
-
-    .rounds-left {
-        font-size: 0.7em;
-    }
-
-    .main-app-container {
-        padding: 70px 10px 10px; /* Adjust padding for smaller top bar */
-    }
-
-    .sidebar {
-        top: 60px; /* Adjust sidebar top to match smaller top bar */
-        height: calc(100% - 60px);
-    }
-
-    .close-sidebar-btn {
-        font-size: 1.5em;
-    }
-
-    .sidebar-account-details .user-name {
-        font-size: 1.1em;
-    }
-    .sidebar-account-details .user-email {
-        font-size: 0.9em;
-    }
-    .sidebar-account-details .rounds-left {
-        font-size: 0.9em;
+        padding: 10px;
+        padding-top: 60px;
     }
 }
