@@ -6,23 +6,33 @@
     <title>NameIT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="top-bar">
-        <button id="menu-button" aria-label="Open menu">☰</button>
+        <div class="hex-button">
+            <i class="fas fa-bars"></i>
+        </div>
         <div class="user-info">
-            <span id="user-email">Loading...</span>
-            <span id="rounds-left">Loading...</span>
+            <span id="email">user@example.com</span>
+            <span id="rounds-left">Rounds left: 10</span>
         </div>
     </div>
-    <div class="side-bar" id="side-bar">
-        <button id="close-side-bar" aria-label="Close menu">✖</button>
-        <div class="side-bar-menu">
-            <button onclick="openSettings()">Settings</button>
-            <button onclick="openAccountInfo()">Account Info</button>
-            <button onclick="signInOut()">Sign In/Out</button>
-            <button onclick="openAbout()">About</button>
+    <div class="side-bar">
+        <div class="side-bar-content">
+            <button class="side-bar-button" onclick="showAccountInfo()">
+                <i class="fas fa-user"></i> Account Info
+            </button>
+            <button class="side-bar-button" onclick="showSettings()">
+                <i class="fas fa-cog"></i> Settings
+            </button>
+            <button class="side-bar-button" onclick="showAbout()">
+                <i class="fas fa-info-circle"></i> About
+            </button>
+            <button class="side-bar-button" onclick="signOut()">
+                <i class="fas fa-sign-out-alt"></i> Sign Out
+            </button>
         </div>
     </div>
     <div class="banner-col">
@@ -113,7 +123,6 @@
         </div>
         <div id="error" class="error"></div>
     </div>
-
     <script src="config.js"></script>
     <script src="main.js"></script>
 </body>
