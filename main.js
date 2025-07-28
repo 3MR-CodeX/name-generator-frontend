@@ -79,25 +79,13 @@ const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 
 
-// Global Firebase variables (initialized in index.html script module)
-let firebaseApp = window.firebaseApp;
-let db = window.db;
-let auth = window.auth;
-let userId = window.userId;
-let isAuthReady = window.isAuthReady;
-let currentUserData = window.currentUserData;
-let __app_id = window.__app_id;
-
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    // History fetch is now primarily triggered by Firebase auth listener
-    setupTooltips(); 
+    fetchHistory();
+    setupTooltips(); // New: Setup tooltip hover logic
 });
-
-// Removed updateAuthUI function as no dynamic user info elements exist in this version
-
 
 function initializeUI() {
     // Add 'hidden-section' class to ALL sections that should be initially hidden
@@ -108,6 +96,7 @@ function initializeUI() {
     refineBtn.classList.add("hidden-section");
 
     // Store original placeholders for error messaging
+    // Ensure these are set only once on load
     if (!promptInput.dataset.originalPlaceholder) {
         promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     }
@@ -202,19 +191,6 @@ function showTemporaryPlaceholderError(textarea, message) {
     }, 3000);
 }
 
-/**
- * Displays a temporary message in a modal's error/message div.
- * This function is no longer directly used as modals were removed,
- * but kept for completeness if similar temporary messages are needed.
- * @param {string} elementId The ID of the div to display the message in.
- * @param {string} message The message to display.
- * @param {string} type 'success' or 'error' for styling.
- */
-function displayModalMessage(elementId, message, type) {
-    // This function is for modals which are no longer in the HTML.
-    // Re-implement if you add new message display areas.
-    console.warn(`Attempted to display modal message for elementId: ${elementId}. Message: ${message}. Type: ${type}. Modals are currently removed.`);
-}
 
 async function generateName() {
     const prompt = promptInput.value.trim(); // Trim whitespace from prompt
@@ -229,14 +205,6 @@ async function generateName() {
         // Clear error placeholder if prompt is now valid (if it was previously set)
         promptInput.placeholder = promptInput.dataset.originalPlaceholder;
         promptInput.classList.remove("prompt-error-placeholder");
-    }
-
-    // --- Rounds Left Check ---
-    // User data is handled by Firebase script in index.html, `currentUserData` is global
-    if (!currentUserData.isPremium && currentUserData.roundsLeft !== "∞" && currentUserData.roundsLeft <= 0) {
-        document.getElementById("error").textContent = "You have no rounds left! Please subscribe to Premium or wait for more rounds.";
-        resetDynamicSections();
-        return;
     }
 
     const category = document.getElementById("category").value;
@@ -275,7 +243,7 @@ async function generateName() {
 
 
     try {
-        const response = await fetch(`${BACKEND_URL}/generate`, {
+        const response = await fetch(${BACKEND_URL}/generate, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -288,18 +256,8 @@ async function generateName() {
         }
         const data = await response.json();
 
-        namesPre.textContent = data.names.map(cleanNames).join("\n\n");
-        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
-
-        // Decrement rounds if not premium and rounds are finite
-        if (!currentUserData.isPremium && currentUserData.roundsLeft !== "∞" && currentUserData.roundsLeft > 0) {
-            currentUserData.roundsLeft--;
-            // Call the global saveUserRounds function from Firebase script
-            if (window.userId && window.saveUserRounds) {
-                await window.saveUserRounds(window.userId, currentUserData.roundsLeft);
-            }
-            // There's no UI to update for rounds left in this version
-        }
+        namesPre.textContent = data.names.map(cleanNames).join("\n");
+        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
 
         // Add animation class after content is set
         namesPre.classList.add("fade-in-content");
@@ -355,7 +313,7 @@ async function refineNames() {
     disableButtons();
 
     try {
-        const response = await fetch(`${BACKEND_URL}/refine`, {
+        const response = await fetch(${BACKEND_URL}/refine, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -368,8 +326,8 @@ async function refineNames() {
         }
         const data = await response.json();
 
-        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
-        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
+        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
 
         // Add animation class after content is set
         refinedNamesPre.classList.add("fade-in-content");
@@ -396,46 +354,28 @@ async function refineNames() {
 }
 
 async function fetchHistory() {
-    // Use onSnapshot for real-time updates if user is logged in, otherwise fetch once
-    if (userId && isAuthReady && db && __app_id) { // Ensure db and __app_id are available
-        const q = window.query(window.collection(db, `artifacts/${__app_id}/users/${userId}/history`), window.orderBy("timestamp", "desc"));
-        window.onSnapshot(q, (snapshot) => {
-            const history = [];
-            snapshot.forEach((doc) => {
-                history.push({ id: doc.id, ...doc.data() });
-            });
-            renderHistory(history);
-        }, (error) => {
-            console.error("Error fetching real-time history:", error);
-            document.getElementById("error").textContent = "Error fetching history: " + error.message;
-        });
-    } else {
-        // Fallback for anonymous users or before auth is ready (fetches from backend)
-        try {
-            const response = await fetch(`${BACKEND_URL}/history`);
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Unknown error fetching history.");
-            }
-            const history = await response.json();
-            renderHistory(history);
-        } catch (error) {
-            document.getElementById("error").textContent = "Error fetching history: " + error.message;
+    try {
+        const response = await fetch(${BACKEND_URL}/history);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Unknown error fetching history.");
         }
+        const history = await response.json();
+        renderHistory(history);
+    } catch (error) {
+        document.getElementById("error").textContent = "Error fetching history: " + error.message;
     }
 }
-
 
 function renderHistory(history) {
     const historyDiv = document.getElementById("history");
     historyDiv.innerHTML = history.length ? "" : "<p>*No history yet. Generate some names!*</p>";
     history.forEach(entry => {
-        const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
+        const names = entry.names.map(name => <strong>${cleanNames(name)}</strong>).join(", ");
         const tooltip = entry.category !== "Refined" ?
-            `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
-            `Refine Instruction: ${entry.instruction}`; // Use 'instruction' for refined entries
-        const preRefined = entry.pre_refined_names && entry.pre_refined_names.length ? ` <span class='pre-refined'>(from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>` : "";
-        const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
+            Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language} :
+            Refine Instruction: ${entry.prompt};
+        const button = <button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>;
         historyDiv.innerHTML += button;
     });
 }
@@ -449,67 +389,44 @@ function restoreHistory(id) {
     editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
 
-    // Fetch history data to find the specific entry
-    fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
+
+    fetch(${BACKEND_URL}/history).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
         if (entry) {
-            // Always show main output and history sections
+            promptInput.value = entry.prompt;
+            document.getElementById("category").value = entry.category;
+            document.getElementById("style").value = entry.style;
+            document.getElementById("language").value = entry.language;
+            namesPre.textContent = entry.names.map(cleanNames).join("\n");
+            reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+
+            // Ensure animation class is applied
+            namesPre.classList.add("fade-in-content");
+            reasonsPre.classList.add("fade-in-content");
+
+            // Show main output and history sections
             outputContainer.classList.remove("hidden-section");
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
             historySection.classList.add("visible-section");
-
-            // Always show refine section and button (as you can always refine)
-            refineSection.classList.remove("hidden-section");
-            refineSection.classList.add("visible-section");
-            refineBtn.classList.remove("hidden-section");
-            refineBtn.classList.add("visible-section");
-
-            if (entry.category === "Refined") {
-                // If it's a refined entry, populate refined outputs
-                refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n\n");
-                refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
-                editBox.value = entry.instruction; // The refine instruction for refined entries
-
-                namesPre.textContent = ""; // Clear initial names
-                reasonsPre.textContent = ""; // Clear initial reasons
-
-                // Ensure animation class is applied
-                refinedNamesPre.classList.add("fade-in-content");
-                refinedReasonsPre.classList.add("fade-in-content");
-
-                // Show refined outputs
-                refinedOutputs.classList.remove("hidden-section");
-                refinedOutputs.classList.add("visible-section");
-                
-                // Hide initial outputs
-                outputContainer.classList.remove("visible-section");
-                outputContainer.classList.add("hidden-section");
-
-
+            
+            // Show refine section and button ONLY if prompt has content
+            if (promptInput.value.trim()) {
+                refineSection.classList.remove("hidden-section");
+                refineSection.classList.add("visible-section");
+                refineBtn.classList.remove("hidden-section");
+                refineBtn.classList.add("visible-section");
             } else {
-                // If it's a regular generation entry, populate initial outputs
-                promptInput.value = entry.prompt;
-                document.getElementById("category").value = entry.category;
-                document.getElementById("style").value = entry.style;
-                document.getElementById("language").value = entry.language;
-                namesPre.textContent = entry.names.map(cleanNames).join("\n\n");
-                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
-
-                refinedNamesPre.textContent = ""; // Clear refined names
-                refinedReasonsPre.textContent = ""; // Clear refined reasons
-                editBox.value = ""; // Clear refine instruction box
-                refinedOutputs.classList.remove("visible-section");
-                refinedOutputs.classList.add("hidden-section");
-
-                // Ensure animation class is applied
-                namesPre.classList.add("fade-in-content");
-                reasonsPre.classList.add("fade-in-content");
-
-                // Show initial outputs
-                outputContainer.classList.remove("hidden-section");
-                outputContainer.classList.add("visible-section");
+                refineSection.classList.remove("visible-section");
+                refineSection.classList.add("hidden-section");
+                refineBtn.classList.remove("visible-section");
+                refineBtn.classList.add("hidden-section");
             }
+
+            // Always hide refined outputs when restoring from history
+            refinedOutputs.classList.remove("visible-section");
+            refinedOutputs.classList.add("hidden-section");
+
         }
     });
 }
@@ -530,7 +447,7 @@ function copyToClipboard(elementId) {
     navigator.clipboard.writeText(text).then(() => {
         const copyMessage = document.createElement('div');
         copyMessage.textContent = "Copied to clipboard!";
-        copyMessage.style.cssText = `
+        copyMessage.style.cssText = 
             position: fixed;
             bottom: 20px;
             left: 50%;
@@ -542,7 +459,7 @@ function copyToClipboard(elementId) {
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.5s ease-out;
-        `;
+        ;
         document.body.appendChild(copyMessage);
         setTimeout(() => {
             copyMessage.style.opacity = 1;
@@ -604,7 +521,3 @@ function setupTooltips() {
         // The positioning is also handled by CSS.
     });
 }
-
-// All sidebar and modal functions previously here have been removed.
-// If you wish to re-introduce authentication or settings, please specify how
-// you'd like them implemented without a sidebar or modals.
