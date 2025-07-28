@@ -10,7 +10,7 @@ body {
     background: #1a1a1a;
     color: #e0e0e0;
     padding: 20px;
-    padding-top: 100px; /* Space for top-bar + purple section */
+    padding-top: 100px; /* Adjusted for new top bar height (80px + 20px) */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -36,7 +36,7 @@ body {
 }
 
 .top-bar:hover {
-    box-shadow: 0 0 10px 2px #a020f0; /* Deep purple glow */
+    box-shadow: 0 0 10px 2px #a020f0;
 }
 
 .top-bar::after {
@@ -49,16 +49,6 @@ body {
     background: #d000d0;
     clip-path: polygon(0 0, 80% 0, 83% 100%, 100% 100%, 100% 0, 0 0);
     z-index: -1;
-}
-
-.account-info {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.account-placeholder {
-    opacity: 0.7; /* Subtle placeholder styling */
 }
 
 body::after {
@@ -106,7 +96,6 @@ body::before {
 
 .banner-col {
     text-align: center;
-    margin-top: 20px;
     margin-bottom: 20px;
     background-color: rgba(128, 0, 128, 0.7);
     padding: 10px;
@@ -545,7 +534,7 @@ pre {
 
     body {
         padding: 10px;
-        padding-top: 85px; /* 70px + 15px */
+        padding-top: 85px; /* Adjusted for mobile (70px + 15px) */
     }
 
     .top-bar {
@@ -556,9 +545,5 @@ pre {
     .top-bar::after {
         bottom: -15px;
         height: 15px;
-    }
-
-    .account-info {
-        font-size: 12px;
     }
 }
