@@ -515,4 +515,24 @@ pre {
     body {
         padding: 10px;
     }
+
+    #topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+    #topbar img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    
+    /* Push the rest of the page down by the height of the topbar */
+    body {
+      /* Adjust this value to match your topbar.png height (e.g. 60px) */
+      padding-top: 60px;
+
+
 }
