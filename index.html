@@ -9,21 +9,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Top Bar -->
-  <div id="top-bar">
-    <div class="top-bar__content">
-      <span class="top-bar__brand">NameIT</span>
-      <div class="top-bar__info">
-        <span id="user-email">alice@example.com</span>
-        <span id="rounds-left">5 rounds</span>
-      </div>
-    </div>
-    <div class="top-bar__underline">
-      <div class="notch"></div>
-    </div>
-  </div>
-
-  <div id="app">
+    <div class="top-bar"></div>
     <div class="banner-col">
         <img src="banner.png" alt="Banner" id="banner">
     </div>
@@ -37,6 +23,7 @@
             </div>
             <div class="input-box right-column">
                 <label for="category">Category</label>
+                <!-- Tooltip for Category -->
                 <div class="tooltip-container">
                     <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
                     <div class="tooltip-box"></div>
@@ -45,6 +32,7 @@
                     <option value="">Select a category</option>
                 </select>
                 <label for="style">Style</label>
+                <!-- Tooltip for Style -->
                 <div class="tooltip-container">
                     <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
                     <div class="tooltip-box"></div>
@@ -53,6 +41,7 @@
                     <option value="">Select a style</option>
                 </select>
                 <label for="language">Language</label>
+                <!-- Tooltip for Language -->
                 <div class="tooltip-container">
                     <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
                     <div class="tooltip-box"></div>
@@ -112,8 +101,8 @@
         </div>
         <div id="error" class="error"></div>
     </div>
+
     <script src="config.js"></script>
     <script src="main.js"></script>
-  </div>
 </body>
 </html>
