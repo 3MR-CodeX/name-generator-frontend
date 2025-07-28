@@ -9,7 +9,7 @@ body {
     font-size: 16px;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding: 0;
+    padding: 20px;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -17,6 +17,16 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px; /* Adjust based on the actual height of topbar.png */
+    z-index: 1000;
+    object-fit: cover; /* Ensures the image covers the area without distortion */
 }
 
 body::after {
@@ -53,54 +63,25 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
-/* Static Top Bar Image Styles */
-.static-top-bar {
-    position: fixed; /* Stays on screen */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 70px; /* Adjust height based on topbar.png's actual height */
-    z-index: 1000; /* Ensures it's the top layer */
-    overflow: hidden; /* Hide any overflow from the image */
-    background-color: #2a2a2a; /* Fallback background color if image fails to load */
-}
-
-.top-bar-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire div without stretching disproportionately */
-    object-position: center; /* Centers the image within the div */
-    display: block; /* Remove extra space below image */
-}
-
-
-/* Main App Container - to push content below the fixed static top bar */
-.main-app-container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 90px 20px 20px; /* Top padding to clear fixed static top-bar (70px height + 20px margin) */
-    box-sizing: border-box;
-    z-index: 1; /* Below static top bar */
-}
-
-/* Main content's original container (now nested inside .main-app-container) */
 .container {
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     position: relative;
     z-index: 1;
-    padding: 0;
+    padding: 0 10px;
 }
 
 .banner-col {
     text-align: center;
+    margin-top: 50px; /* Same as top bar height to prevent overlap */
     margin-bottom: 20px;
     background-color: rgba(128, 0, 128, 0.7);
     padding: 10px;
     border-radius: 8px;
     transition: background-color 0.3s;
     width: 100%;
+    max-width: 1200px;
 }
 
 .banner-col:hover {
@@ -161,7 +142,6 @@ label {
     font-weight: 500;
 }
 
-/* Tooltip styles */
 .tooltip-container {
     position: relative;
     display: inline-flex;
@@ -210,12 +190,10 @@ label {
     z-index: 100;
 }
 
-/* Show tooltip on hover */
 .tooltip-icon:hover + .tooltip-box {
     opacity: 1;
     visibility: visible;
 }
-
 
 textarea, select {
     background-color: rgba(58, 58, 58, 0.65);
@@ -286,7 +264,6 @@ button:disabled {
     z-index: 1;
 }
 
-/* --- Animation Classes for Sections --- */
 .hidden-section {
     opacity: 0;
     max-height: 0;
@@ -312,12 +289,15 @@ button:disabled {
     flex-wrap: wrap;
     width: 100%;
 }
+
 .refine-section {
     display: block;
 }
+
 .history-section {
     display: block;
 }
+
 .refine-button-section {
     display: flex;
     gap: 20px;
@@ -325,13 +305,11 @@ button:disabled {
     width: 100%;
 }
 
-
 .output-section .output-box {
     flex: 1;
     min-width: 300px;
 }
 
-/* Animation for content inside pre tags */
 @keyframes fadeInContent {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -340,7 +318,6 @@ button:disabled {
 .fade-in-content {
     animation: fadeInContent 0.6s ease-out forwards;
 }
-
 
 .output-box {
     background-color: rgba(42, 42, 42, 0.7);
@@ -451,7 +428,6 @@ pre {
     text-align: center;
 }
 
-/* --- Loading Spinner Styles --- */
 .spinner-overlay {
     position: absolute;
     top: 0;
@@ -488,17 +464,15 @@ pre {
     100% { transform: rotate(360deg); }
 }
 
-/* --- Error Placeholder Styling --- */
 .prompt-error-placeholder::placeholder {
     color: #ff5555;
     opacity: 1;
 }
+
 .prompt-error-placeholder {
     border-color: #ff5555 !important;
 }
 
-/* --- Themed Scrollbar Styles (Reverted to original and applied globally) --- */
-/* For Webkit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -518,8 +492,6 @@ pre {
     background: #a020f0;
 }
 
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .input-section, .button-section, .output-section, .refine-button-section {
         flex-direction: column;
@@ -540,19 +512,6 @@ pre {
     }
 
     body {
-        padding: 0;
-    }
-
-    /* Make prompt textarea taller on mobile */
-    #prompt {
-        min-height: 250px;
-    }
-
-    .static-top-bar {
-        height: 60px; /* Adjust for smaller screens if topbar.png scales */
-    }
-
-    .main-app-container {
-        padding: 70px 10px 10px; /* Adjust padding for smaller top bar */
+        padding: 10px;
     }
 }
