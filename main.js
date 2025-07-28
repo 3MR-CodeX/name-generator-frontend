@@ -446,26 +446,3 @@ function setupTooltips() {
         tooltipBox.textContent = tooltipText;
     });
 }
-
-function toggleSidebar() {
-    const sideBar = document.querySelector('.side-bar');
-    const hexButton = document.querySelector('.hex-button');
-    sideBar.classList.toggle('open');
-    hexButton.classList.toggle('rotated');
-}
-
-function showSettings() {
-    console.log("Navigate to settings");
-}
-
-function showAccountInfo() {
-    console.log("Navigate to account info");
-}
-
-function signOut() {
-    console.log("Sign out");
-}
-
-function showAbout() {
-    console.log("Navigate to about page");
-}
