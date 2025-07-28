@@ -548,3 +548,34 @@ pre {
   background-color: #000;
   border-radius: 0 0 8px 8px;
 }
+
+
+/* Reset */
+body {
+    margin: 0;
+    padding-top: 100px; /* Space for the top bar */
+    background: white;
+}
+
+/* Top black bar */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;          /* Adjust height */
+    background: #202020;   /* Black background */
+    z-index: 1000;
+}
+
+/* Purple section with angled cut */
+.top-bar::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;   /* Purple bar below black */
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #d000d0;  /* Purple color */
+    clip-path: polygon(0 0, 80% 0, 83% 100%, 100% 100%, 100% 0, 0 0);
+}
