@@ -506,112 +506,57 @@ pre {
 }
 
 /* Top Bar Base */
-#top-bar {
-  background-color: #000;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-}
-
-.top-bar__content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 64px;
-  padding: 0 24px;
-}
-
-.top-bar__brand {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.top-bar__info {
-  display: flex;
-  gap: 24px;
-  font-size: 16px;
-}
-
-/* Purple Underline with Notch */
-.top-bar__underline {
-  position: relative;
-  height: 4px;
-  background-color: #8b5cf6;
-}
-
-.notch {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 16px;
-  height: 100%;
-  background-color: #000;
-  border-radius: 0 0 8px 8px;
-}
-
-
-/* Reset */
+/* --- Reserve space for top bar --- */
 body {
-    margin: 0;
-    padding-top: 100px; /* Space for the top bar */
-    background: white;
+  padding-top: 124px; /* 90px bar + 30px angled section + 4px underline */
 }
 
-/* Top black bar */
 /* --- Top Bar --- */
-/* --- Top Bar & Effects --- */
-body {
-  margin: 0;
-  /* Reserve space = bar height (90px) + angle depth (30px) + underline (4px) */
-  padding-top: 124px;
-}
-
-/* The fixed bar */
 .top-bar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 90px;               /* ↑ Taller bar */
+  height: 90px;
   background: #2a2a2a;
   z-index: 1000;
-  cursor: pointer;            /* For hover effect */
+  cursor: pointer;
 }
 
-/* The angled “extension” below the bar */
+/* --- Angled Extension (25% width notch) --- */
 .top-bar::after {
   content: '';
   position: absolute;
-  bottom: -30px;              /* ↑ Deeper angle */
+  bottom: -30px;
   left: 0;
   width: 100%;
   height: 30px;
   background: #2a2a2a;
-  /* Angle spans 25% of width */
   clip-path: polygon(0 0, 75% 0, 78% 100%, 100% 100%, 100% 0);
-  z-index: 1000;
+  z-index: 999;
 }
 
-/* The purple underline */
+/* --- Purple Glow Underline --- */
 .top-bar::before {
   content: '';
   position: absolute;
-  bottom: -32px;              /* Just beneath the angled section */
+  bottom: -34px;
   left: 0;
   width: 100%;
   height: 4px;
   background: #9900cc;
-  z-index: 999;
+  z-index: 998;
   transition: box-shadow 0.3s ease;
 }
 
-/* Hover on the bar (anywhere) lights up the line */
 .top-bar:hover::before {
   box-shadow: 0 0 12px 4px rgba(153, 0, 204, 0.7);
 }
 
-/* --- Compress your banner-col by 15px --- */
+
+/* --- Adjust banner below bar --- */
 .banner-col {
-  padding: 5px;       /* originally you had 10px; now 5px to remove 15px total height */
-  margin-top: 20px;   /* adds a bit more gap under the bar */
+  padding: 5px;         /* reduce height by 15px */
+  margin-top: 20px;     /* increase spacing below the bar */
 }
+
