@@ -24,9 +24,10 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 50px; /* Adjust based on the actual height of topbar.png */
+    height: 50px; /* Adjust to actual height of topbar.png */
     z-index: 1000;
-    object-fit: cover; /* Ensures the image covers the area without distortion */
+    object-fit: cover;
+    background-color: #1a1a1a; /* Fallback in case image fails to load */
 }
 
 body::after {
@@ -74,7 +75,7 @@ body::before {
 
 .banner-col {
     text-align: center;
-    margin-top: 50px; /* Same as top bar height to prevent overlap */
+    margin-top: 50px; /* Match top bar height */
     margin-bottom: 20px;
     background-color: rgba(128, 0, 128, 0.7);
     padding: 10px;
