@@ -58,7 +58,7 @@ body {
 }
 
 .account-placeholder {
-    opacity: 0.7;
+    opacity: 0.7; /* Subtle placeholder styling */
 }
 
 body::after {
@@ -106,6 +106,7 @@ body::before {
 
 .banner-col {
     text-align: center;
+    margin-top: 20px;
     margin-bottom: 20px;
     background-color: rgba(128, 0, 128, 0.7);
     padding: 10px;
