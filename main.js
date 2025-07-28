@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory();
     setupTooltips();
-    setupSideBar();
 });
 
 function initializeUI() {
@@ -448,28 +447,25 @@ function setupTooltips() {
     });
 }
 
-function setupSideBar() {
-    const hexButton = document.querySelector('.hex-button');
+function toggleSidebar() {
     const sideBar = document.querySelector('.side-bar');
-
-    hexButton.addEventListener('click', () => {
-        sideBar.classList.toggle('open');
-        hexButton.classList.toggle('rotated');
-    });
-}
-
-function showAccountInfo() {
-    console.log("Show account info");
+    const hexButton = document.querySelector('.hex-button');
+    sideBar.classList.toggle('open');
+    hexButton.classList.toggle('rotated');
 }
 
 function showSettings() {
-    console.log("Show settings");
+    console.log("Navigate to settings");
 }
 
-function showAbout() {
-    console.log("Show about");
+function showAccountInfo() {
+    console.log("Navigate to account info");
 }
 
 function signOut() {
     console.log("Sign out");
+}
+
+function showAbout() {
+    console.log("Navigate to about page");
 }
