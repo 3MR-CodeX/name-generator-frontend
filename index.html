@@ -3,127 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NameIT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Your App</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-image: url('topbar.png');
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+
+        .hex-button {
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .hex-button.rotate {
+            transform: rotate(-90deg);
+        }
+
+        .user-info {
+            margin-left: auto;
+            color: white;
+        }
+
+        .side-bar {
+            position: fixed;
+            top: 60px;
+            left: -300px;
+            width: 300px;
+            height: calc(100vh - 60px);
+            background-image: url('sidebar.png');
+            background-size: cover;
+            transition: left 0.3s ease;
+            z-index: 999;
+        }
+
+        .side-bar.open {
+            left: 0;
+        }
+
+        .side-bar-content {
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            color: white;
+        }
+
+        .side-bar-button {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
     <div class="top-bar">
-        <div class="hex-button">
-            <i class="fas fa-bars"></i>
-        </div>
+        <div class="hex-button" onclick="toggleSidebar()"></div>
         <div class="user-info">
-            <span id="email">user@example.com</span>
-            <span id="rounds-left">Rounds left: 10</span>
+            <span id="user-email">user@example.com</span> | 
+            <span id="rounds-left">5 rounds left</span>
         </div>
     </div>
     <div class="side-bar">
         <div class="side-bar-content">
-            <button class="side-bar-button" onclick="showAccountInfo()">
-                <i class="fas fa-user"></i> Account Info
-            </button>
-            <button class="side-bar-button" onclick="showSettings()">
-                <i class="fas fa-cog"></i> Settings
-            </button>
-            <button class="side-bar-button" onclick="showAbout()">
-                <i class="fas fa-info-circle"></i> About
-            </button>
-            <button class="side-bar-button" onclick="signOut()">
-                <i class="fas fa-sign-out-alt"></i> Sign Out
-            </button>
+            <button class="side-bar-button">Settings</button>
+            <button class="side-bar-button">Account Info</button>
+            <button class="side-bar-button">Sign In/Out</button>
+            <button class="side-bar-button">About</button>
         </div>
     </div>
-    <div class="banner-col">
-        <img src="banner.png" alt="Banner" id="banner">
+    <div class="main-content">
+        <h1>Welcome to Your App</h1>
+        <p>This is the main content area.</p>
     </div>
-    <h1>NameIT</h1>
-    <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
-    <div class="container">
-        <div class="input-section">
-            <div class="input-box textbox-column">
-                <label for="prompt">What do you want to name?</label>
-                <textarea id="prompt" placeholder="Enter a description!"></textarea>
-            </div>
-            <div class="input-box right-column">
-                <label for="category">Category</label>
-                <div class="tooltip-container">
-                    <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
-                    <div class="tooltip-box"></div>
-                </div>
-                <select id="category">
-                    <option value="">Select a category</option>
-                </select>
-                <label for="style">Style</label>
-                <div class="tooltip-container">
-                    <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
-                    <div class="tooltip-box"></div>
-                </div>
-                <select id="style">
-                    <option value="">Select a style</option>
-                </select>
-                <label for="language">Language</label>
-                <div class="tooltip-container">
-                    <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
-                    <div class="tooltip-box"></div>
-                </div>
-                <select id="language">
-                    <option value="English">English</option>
-                    <option value="Arabic">Arabic</option>
-                </select>
-            </div>
-        </div>
-        <div class="button-section">
-            <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
-            <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
-        </div>
-        <div id="output_container" class="output-section">
-            <div class="output-box">
-                <div class="output-header">
-                    <label>Generated Names/Titles</label>
-                    <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
-                </div>
-                <pre id="names"></pre>
-            </div>
-            <div class="output-box">
-                <div class="output-header">
-                    <label>Explanations</label>
-                    <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
-                </div>
-                <pre id="reasons"></pre>
-            </div>
-        </div>
-        <div id="refine_section" class="refine-section">
-            <label for="edit_box">Refine the suggestions</label>
-            <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
-        </div>
-        <div class="refine-button-section">
-            <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
-        </div>
-        <div id="refined_outputs" class="output-section">
-            <div class="output-box">
-                <div class="output-header">
-                    <label>Refined Suggestions</label>
-                    <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
-                </div>
-                <pre id="refined_names"></pre>
-            </div>
-            <div class="output-box">
-                <div class="output-header">
-                    <label>Refined Explanations</label>
-                    <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
-                </div>
-                <pre id="refined_reasons"></pre>
-            </div>
-        </div>
-        <div id="history_section" class="history-section">
-            <h2>🕘 Recent History</h2>
-            <div id="history" class="history-inner"></div>
-        </div>
-        <div id="error" class="error"></div>
-    </div>
-    <script src="config.js"></script>
-    <script src="main.js"></script>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.side-bar');
+            const hexButton = document.querySelector('.hex-button');
+            sidebar.classList.toggle('open');
+            hexButton.classList.toggle('rotate');
+        }
+    </script>
 </body>
 </html>
