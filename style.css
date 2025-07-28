@@ -529,8 +529,10 @@ pre {
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 1000;
-        background-color: #000;
+        height: 60px; /* Adjust height as you like */
+        background: url("topbar.png") repeat-x center;
+        background-size: auto 100%;
+        z-index: 9999;
     }
     
     #topbar img {
