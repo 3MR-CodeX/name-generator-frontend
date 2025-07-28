@@ -10,6 +10,7 @@ body {
     background: #1a1a1a;
     color: #e0e0e0;
     padding: 20px;
+    padding-top: 100px; /* Space for top-bar + purple section */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -24,27 +25,30 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 50px; /* Max height with extension */
-    background-color: #2a2a2a;
-    border-bottom: 3px solid #a020f0; /* Vibrant purple base line */
+    height: 80px;
+    background: #202020;
     z-index: 1000;
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Align account info to right */
+    justify-content: flex-end;
     padding: 0 20px;
-    clip-path: polygon(
-        0 0, 75% 0, /* Top edge straight to 75% */
-        75% 20%, /* Step down to 40px height */
-        100% 0, /* Top edge straight at 50px height */
-        100% 100%, 75% 100%, /* Bottom edge at 50px */
-        75% 80%, /* Step up to 40px */
-        0 80% /* Bottom edge at 40px */
-    ); /* Right 25% extends to 50px */
-    transition: box-shadow 0.3s ease; /* Smooth hover transition */
+    transition: box-shadow 0.3s ease;
 }
 
 .top-bar:hover {
-    box-shadow: 0 0 10px 2px #a020f0; /* Deep purple glow on hover */
+    box-shadow: 0 0 10px 2px #a020f0; /* Deep purple glow */
+}
+
+.top-bar::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: #d000d0;
+    clip-path: polygon(0 0, 80% 0, 83% 100%, 100% 100%, 100% 0, 0 0);
+    z-index: -1;
 }
 
 .account-info {
@@ -54,7 +58,7 @@ body {
 }
 
 .account-placeholder {
-    opacity: 0.7; /* Subtle placeholder styling */
+    opacity: 0.7;
 }
 
 body::after {
@@ -102,7 +106,6 @@ body::before {
 
 .banner-col {
     text-align: center;
-    margin-top: 50px; /* Match top bar max height */
     margin-bottom: 20px;
     background-color: rgba(128, 0, 128, 0.7);
     padding: 10px;
@@ -541,19 +544,17 @@ pre {
 
     body {
         padding: 10px;
+        padding-top: 85px; /* 70px + 15px */
     }
 
     .top-bar {
         padding: 0 10px;
-        height: 45px; /* Adjust for mobile */
-        clip-path: polygon(
-            0 0, 75% 0, /* Top edge straight to 75% */
-            75% 22.22%, /* Step down to 35px height */
-            100% 0, /* Top edge straight at 45px height */
-            100% 100%, 75% 100%, /* Bottom edge at 45px */
-            75% 77.78%, /* Step up to 35px */
-            0 77.78% /* Bottom edge at 35px */
-        ); /* Right 25% extends to 45px */
+        height: 70px;
+    }
+
+    .top-bar::after {
+        bottom: -15px;
+        height: 15px;
     }
 
     .account-info {
