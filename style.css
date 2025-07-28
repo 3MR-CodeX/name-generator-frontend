@@ -24,7 +24,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 40px; /* Base height */
+    height: 46px; /* Account for max height with ramp */
     background-color: #2a2a2a;
     border-bottom: 3px solid #a020f0; /* Vibrant purple base line */
     z-index: 1000;
@@ -34,10 +34,10 @@ body {
     padding: 0 20px;
     clip-path: polygon(
         0 0, 75% 0, /* Top edge straight to 75% */
-        75.83% 14.42%, /* 30° down for 10px (75% + 10px, 5.77px down) */
-        100% 8.65%, /* 30° up to straight (100%, 5.77px up from 14.42%) */
+        75.83% 5.77%, /* 30° down for 10px (75% + 10px, 5.77px down) */
+        100% 5.77%, /* Straight at lower height */
         100% 100%, 0 100% /* Bottom edge */
-    ); /* Right 25% is ~5.77px higher */
+    ); /* Right 25% is ~5.77px lower */
     transition: box-shadow 0.3s ease; /* Smooth hover transition */
 }
 
@@ -100,7 +100,7 @@ body::before {
 
 .banner-col {
     text-align: center;
-    margin-top: 40px; /* Match top bar max height */
+    margin-top: 46px; /* Match top bar max height */
     margin-bottom: 20px;
     background-color: rgba(128, 0, 128, 0.7);
     padding: 10px;
@@ -543,11 +543,11 @@ pre {
 
     .top-bar {
         padding: 0 10px;
-        height: 35px; /* Adjust for mobile */
+        height: 41px; /* Adjust for mobile */
         clip-path: polygon(
             0 0, 75% 0, /* Top edge straight to 75% */
-            75.83% 16.46%, /* 30° down for 10px (5.77px down) */
-            100% 10.69%, /* 30° up to straight (5.77px up) */
+            75.83% 5.77%, /* 30° down for 10px (5.77px down) */
+            100% 5.77%, /* Straight at lower height */
             100% 100%, 0 100% /* Bottom edge */
         ); /* Maintain proportions */
     }
