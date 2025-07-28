@@ -19,6 +19,10 @@ const SURPRISES = [
     ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
     ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
     ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
+    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
+    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
+    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
+    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
     ["An edgy and futuristic name for a cyberpunk productivity app", "App", "Futuristic", "English"],
     ["A wholesome name for a cozy coffee shop in a rainy city", "Place", "Wholesome", "English"],
     ["A bold and cryptic name for an underground hacker forum", "Platform", "Dark", "English"],
@@ -78,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory();
     setupTooltips();
-    fetchUserInfo();
     setupSideBar();
 });
 
@@ -159,32 +162,6 @@ function showTemporaryPlaceholderError(textarea, message) {
     }, 3000);
 }
 
-async function fetchUserInfo() {
-    try {
-        const response = await fetch(`${BACKEND_URL}/user`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch user info');
-        }
-        const data = await response.json();
-        document.getElementById('user-email').textContent = data.email;
-        document.getElementById('rounds-left').textContent = `Rounds: ${data.roundsLeft}`;
-    } catch (error) {
-        console.error('Error fetching user info:', error);
-        document.getElementById('user-email').textContent = 'user@example.com';
-        document.getElementById('rounds-left').textContent = 'Rounds: 10';
-    }
-}
-
-function setupSideBar() {
-    document.getElementById('menu-button').addEventListener('click', () => {
-        document.getElementById('side-bar').classList.add('active');
-    });
-
-    document.getElementById('close-side-bar').addEventListener('click', () => {
-        document.getElementById('side-bar').classList.remove('active');
-    });
-}
-
 async function generateName() {
     const prompt = promptInput.value.trim();
 
@@ -252,6 +229,7 @@ async function generateName() {
         refineBtn.classList.add("visible-section");
 
         fetchHistory();
+
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         resetDynamicSections();
@@ -311,6 +289,7 @@ async function refineNames() {
         refinedOutputs.classList.add("visible-section");
 
         fetchHistory();
+
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         refinedOutputs.classList.remove("visible-section");
@@ -469,22 +448,28 @@ function setupTooltips() {
     });
 }
 
-function openSettings() {
-    console.log('Open settings');
-    // TODO: Implement settings page
+function setupSideBar() {
+    const hexButton = document.querySelector('.hex-button');
+    const sideBar = document.querySelector('.side-bar');
+
+    hexButton.addEventListener('click', () => {
+        sideBar.classList.toggle('open');
+        hexButton.classList.toggle('rotated');
+    });
 }
 
-function openAccountInfo() {
-    console.log('Open account info');
-    // TODO: Implement account info page
+function showAccountInfo() {
+    console.log("Show account info");
 }
 
-function signInOut() {
-    console.log('Sign in/out');
-    // TODO: Implement sign in/out logic
+function showSettings() {
+    console.log("Show settings");
 }
 
-function openAbout() {
-    console.log('Open about page');
-    // TODO: Implement about page
+function showAbout() {
+    console.log("Show about");
+}
+
+function signOut() {
+    console.log("Sign out");
 }
