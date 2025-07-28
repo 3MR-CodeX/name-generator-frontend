@@ -520,4 +520,22 @@ pre {
     body {
         padding: 10px;
     }
+
+
+    
+    /* Topbar */
+    #topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: #000;
+    }
+    
+    #topbar img {
+        width: 100%;
+        display: block;
+    }
+    
 }
