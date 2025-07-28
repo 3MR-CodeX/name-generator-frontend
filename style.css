@@ -508,7 +508,7 @@ pre {
 /* Top Bar Base */
 /* --- Reserve space for top bar --- */
 body {
-  padding-top: 124px; /* 90px bar + 30px angled section + 4px underline */
+  padding-top: 109px; /* 90px bar + 30px angled section + 4px underline */
 }
 
 /* --- Top Bar --- */
@@ -517,41 +517,29 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 90px;
-  background: #2a2a2a;
-  z-index: 1000;
-  cursor: pointer;
+  height: 85px; /* Reduced from 100px */
+  background-color: #2a2a2a;
+  z-index: 999;
+  clip-path: polygon(0 0, 75% 0, 85% 100%, 0% 100%);
 }
 
-/* --- Angled Extension (25% width notch) --- */
 .top-bar::after {
   content: '';
   position: absolute;
-  bottom: -30px;
+  top: 0;
   left: 0;
+  height: 100%;
   width: 100%;
-  height: 30px;
-  background: #2a2a2a;
-  clip-path: polygon(0 0, 75% 0, 78% 100%, 100% 100%, 100% 0);
-  z-index: 999;
-}
-
-/* --- Purple Glow Underline --- */
-.top-bar::before {
-  content: '';
-  position: absolute;
-  bottom: -34px;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: #9900cc;
-  z-index: 998;
+  clip-path: polygon(0 0, 75% 0, 85% 100%, 0% 100%);
+  border-bottom: 4px solid #8000ff;
   transition: box-shadow 0.3s ease;
+  pointer-events: none;
 }
 
-.top-bar:hover::before {
-  box-shadow: 0 0 12px 4px rgba(153, 0, 204, 0.7);
+.top-bar:hover::after {
+  box-shadow: 0 0 10px #8000ff, 0 0 20px #8000ff;
 }
+
 
 
 /* --- Adjust banner below bar --- */
