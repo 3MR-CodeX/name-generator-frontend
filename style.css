@@ -13,21 +13,10 @@ body {
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    display: flex;
+    display: flex; /* Use flexbox for main content centering */
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.top-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50px; /* Adjust to actual height of topbar.png */
-    z-index: 1000;
-    object-fit: cover;
-    background-color: #1a1a1a; /* Fallback in case image fails to load */
+    align-items: center; /* Center content horizontally */
+    justify-content: flex-start; /* Align content to the top */
 }
 
 body::after {
@@ -37,10 +26,11 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
+    /* Reverted: Animated background to original colors */
     background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
     background-size: 400% 400%;
     animation: gradientShift 10s ease infinite;
-    z-index: -2;
+    z-index: -2; /* Placed under pattern.png */
 }
 
 body::before {
@@ -54,6 +44,7 @@ body::before {
     background-size: 400px 400px;
     z-index: -1;
     pointer-events: none;
+    /* Removed: opacity for pattern.png is no longer needed without mouse glow */
 }
 
 @keyframes gradientShift {
@@ -64,25 +55,25 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
+/* Main container to center content */
 .container {
     max-width: 1200px;
-    width: 100%;
+    width: 100%; /* Ensure it takes full width up to max-width */
     margin: 0 auto;
     position: relative;
     z-index: 1;
-    padding: 0 10px;
+    padding: 0 10px; /* Add some horizontal padding for smaller screens */
 }
 
 .banner-col {
     text-align: center;
-    margin-top: 50px; /* Match top bar height */
     margin-bottom: 20px;
-    background-color: rgba(128, 0, 128, 0.7);
+    background-color: rgba(128, 0, 128, 0.7); /* Purple background, 70% opaque */
     padding: 10px;
     border-radius: 8px;
     transition: background-color 0.3s;
-    width: 100%;
-    max-width: 1200px;
+    width: 100%; /* Ensure banner takes full width */
+    max-width: 1200px; /* Match container max-width */
 }
 
 .banner-col:hover {
@@ -114,16 +105,16 @@ h1 {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .input-box {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
     flex: 1;
-    min-width: 300px;
+    min-width: 300px; /* Ensure boxes don't get too small before wrapping */
 }
 
 .textbox-column {
@@ -143,61 +134,65 @@ label {
     font-weight: 500;
 }
 
+/* Tooltip styles */
 .tooltip-container {
-    position: relative;
-    display: inline-flex;
+    position: relative; /* Needed for absolute positioning of tooltip box */
+    display: inline-flex; /* Align icon with label */
     align-items: center;
-    margin-left: 8px;
-    margin-bottom: 10px;
-    vertical-align: middle;
+    margin-left: 8px; /* Space between label and icon */
+    margin-bottom: 10px; /* Match original dropdown-desc margin */
+    vertical-align: middle; /* Align with text baseline */
 }
 
 .tooltip-icon {
     width: 18px;
     height: 18px;
-    border: 1px solid #800080;
+    border: 1px solid #800080; /* Purple hollow circle */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 12px;
     font-weight: bold;
-    color: #800080;
+    color: #800080; /* Purple text */
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
 }
 
 .tooltip-icon:hover {
-    background-color: #800080;
-    color: white;
+    background-color: #800080; /* Fill on hover */
+    color: white; /* White text on hover */
 }
 
 .tooltip-box {
     position: absolute;
-    top: 50%;
-    left: calc(100% + 10px);
-    transform: translateY(-50%);
-    background-color: #2a2a2a;
+    top: 50%; /* Align vertically with icon */
+    left: calc(100% + 10px); /* Position next to the icon, with some space */
+    transform: translateY(-50%); /* Center vertically */
+    background-color: #2a2a2a; /* Dark gray window */
     color: #e0e0e0;
     padding: 8px 12px;
     border-radius: 6px;
-    white-space: normal;
-    max-width: 150px;
+    /* Changed: Allow text to wrap and set max-width for thinner appearance */
+    white-space: normal; /* Allow text to wrap */
+    max-width: 150px; /* Adjust this value to control thinness */
     font-size: 14px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    z-index: 100;
+    z-index: 100; /* Ensure it's above other content */
 }
 
+/* Show tooltip on hover */
 .tooltip-icon:hover + .tooltip-box {
     opacity: 1;
     visibility: visible;
 }
 
+
 textarea, select {
-    background-color: rgba(58, 58, 58, 0.65);
+    background-color: rgba(58, 58, 58, 0.65); /* Grey, 65% opaque */
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -227,11 +222,11 @@ select {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 button {
-    background-color: #800080;
+    background-color: #800080; /* Solid purple, not transparent */
     color: white;
     border: none;
     border-radius: 8px;
@@ -241,12 +236,12 @@ button {
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-button:hover:not(:disabled) {
+button:hover:not(:disabled) { /* Apply hover only when not disabled */
     background-color: #a020f0;
-    box-shadow: 0 0 10px 2px rgba(128, 0, 128, 0.7);
+    box-shadow: 0 0 10px 2px rgba(128, 0, 128, 0.7); /* Purple shadow, 70% opaque */
 }
 
-button:disabled {
+button:disabled { /* Style for disabled buttons */
     background-color: #5a5a5a;
     cursor: not-allowed;
     opacity: 0.7;
@@ -265,52 +260,56 @@ button:disabled {
     z-index: 1;
 }
 
+/* --- Animation Classes for Sections --- */
+/* Initial hidden state for sections */
 .hidden-section {
     opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transform: translateY(20px);
+    max-height: 0; /* Collapse height */
+    overflow: hidden; /* Hide overflowing content during collapse */
+    transform: translateY(20px); /* Start slightly below */
     transition: opacity 0.5s ease-out, max-height 0.7s ease-out, transform 0.5s ease-out;
-    pointer-events: none;
-    margin-bottom: 0 !important;
+    pointer-events: none; /* Prevent interaction when hidden */
+    margin-bottom: 0 !important; /* Collapse margin when hidden */
 }
 
+/* Visible state for sections */
 .visible-section {
     opacity: 1;
-    max-height: 1000px;
+    max-height: 1000px; /* Sufficiently large to show content, adjust if content gets taller */
     transform: translateY(0);
     transition: opacity 0.5s ease-out, max-height 0.7s ease-out, transform 0.5s ease-out;
-    pointer-events: auto;
-    margin-bottom: 20px !important;
+    pointer-events: auto; /* Allow interaction when visible */
+    margin-bottom: 20px !important; /* Restore margin when visible */
 }
 
+/* Ensure initial display properties are overridden by animation classes */
+/* These elements are now controlled by JS classes, but retain their default display types */
 .output-section {
-    display: flex;
+    display: flex; /* Default display for flex containers */
     gap: 20px;
-    flex-wrap: wrap;
-    width: 100%;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    width: 100%; /* Take full width */
 }
-
 .refine-section {
-    display: block;
+    display: block; /* It's a single block, not flex */
 }
-
 .history-section {
-    display: block;
+    display: block; /* It's a single block, not flex */
 }
-
 .refine-button-section {
-    display: flex;
-    gap: 20px;
+    display: flex; /* It's a flex container for the button */
+    gap: 20px; /* Maintain gap if other elements were here */
     flex-wrap: wrap;
     width: 100%;
 }
+
 
 .output-section .output-box {
     flex: 1;
-    min-width: 300px;
+    min-width: 300px; /* Ensure boxes don't get too small before wrapping */
 }
 
+/* Animation for content inside pre tags */
 @keyframes fadeInContent {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -320,8 +319,9 @@ button:disabled {
     animation: fadeInContent 0.6s ease-out forwards;
 }
 
+
 .output-box {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
@@ -340,7 +340,7 @@ button:disabled {
 }
 
 .copy-button {
-    background-color: #800080;
+    background-color: #800080; /* Solid purple, not transparent */
     padding: 5px;
     border-radius: 5px;
     width: 24px;
@@ -356,7 +356,7 @@ button:disabled {
 }
 
 pre {
-    background-color: rgba(58, 58, 58, 0.65);
+    background-color: rgba(58, 58, 58, 0.65); /* Grey, 65% opaque */
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -370,24 +370,24 @@ pre {
 }
 
 .refine-section {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
 }
 
 .history-section {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
 }
 
 .history-inner {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey, 70% opaque */
     max-height: 120px;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Explicitly hide horizontal scrollbar */
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     padding: 10px;
@@ -399,7 +399,7 @@ pre {
 }
 
 .history-item {
-    background-color: rgba(58, 58, 58, 0.65);
+    background-color: rgba(58, 58, 58, 0.65); /* Grey, 65% opaque */
     color: #e0e0e0;
     border: none;
     padding: 8px 12px;
@@ -429,31 +429,32 @@ pre {
     text-align: center;
 }
 
+/* --- Loading Spinner Styles --- */
 .spinner-overlay {
-    position: absolute;
+    position: absolute; /* Position relative to the parent output-box */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 10; /* Above other content */
     border-radius: 8px;
-    transition: opacity 0.3s ease-out;
-    opacity: 0;
-    pointer-events: none;
+    transition: opacity 0.3s ease-out; /* Smooth fade in/out */
+    opacity: 0; /* Initially hidden */
+    pointer-events: none; /* Allow clicks to pass through when hidden */
 }
 
 .spinner-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
+    opacity: 1; /* Show when 'show' class is added */
+    pointer-events: auto; /* Block clicks when visible */
 }
 
 .spinner {
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid rgba(128, 0, 128, 0.7);
+    border-top: 4px solid rgba(128, 0, 128, 0.7); /* Purple color for the spinner, 70% opaque */
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -465,34 +466,38 @@ pre {
     100% { transform: rotate(360deg); }
 }
 
+/* --- Error Placeholder Styling --- */
 .prompt-error-placeholder::placeholder {
-    color: #ff5555;
-    opacity: 1;
+    color: #ff5555; /* Red color for error text */
+    opacity: 1; /* Ensure placeholder is fully visible */
 }
-
 .prompt-error-placeholder {
-    border-color: #ff5555 !important;
+    border-color: #ff5555 !important; /* Red border on error */
 }
 
+/* --- Themed Scrollbar Styles (Reverted to original and applied globally) --- */
+/* For Webkit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 8px; /* Vertical scrollbar width */
+    height: 8px; /* Horizontal scrollbar height */
 }
 
 ::-webkit-scrollbar-track {
-    background: #1a1a1a;
-    border-radius: 4px;
+    background: #1a1a1a; /* Track color */
+    border-radius: 4px; /* Rounded track */
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #800080;
-    border-radius: 4px;
+    background: #800080; /* Thumb color */
+    border-radius: 4px; /* Rounded thumb */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #a020f0;
+    background: #a020f0; /* Thumb color on hover */
 }
 
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .input-section, .button-section, .output-section, .refine-button-section {
         flex-direction: column;
@@ -500,7 +505,7 @@ pre {
     }
 
     .input-box, .output-box, .generate-btn, .surprise-btn, .refine-btn {
-        min-width: unset;
+        min-width: unset; /* Remove min-width to allow full flexibility */
         width: 100%;
     }
 
@@ -515,24 +520,4 @@ pre {
     body {
         padding: 10px;
     }
-
-    #topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 9999;
-    }
-    #topbar img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    
-    /* Push the rest of the page down by the height of the topbar */
-    body {
-      /* Adjust this value to match your topbar.png height (e.g. 60px) */
-      padding-top: 60px;
-
-
 }
