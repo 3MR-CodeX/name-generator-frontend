@@ -86,6 +86,14 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTooltips();
 });
 
+// Example dynamic data (replace with real auth/billing logic later)
+const userEmail = "alice@example.com";
+const roundsLeft = 5;
+
+// Insert into top bar
+document.getElementById("user-email").textContent = userEmail;
+document.getElementById("rounds-left").textContent = `${roundsLeft} ${roundsLeft === 1 ? 'round' : 'rounds'}`;
+
 function initializeUI() {
     outputContainer.classList.add("hidden-section");
     refineSection.classList.add("hidden-section");
@@ -118,6 +126,7 @@ function cleanNames(text) {
 function showLoading(targetElement) {
     targetElement.textContent = "";
     targetElement.classList.remove("fade-in-content");
+
     let spinnerOverlay = targetElement.querySelector(".spinner-overlay");
     if (!spinnerOverlay) {
         spinnerOverlay = document.createElement("div");
@@ -153,6 +162,7 @@ function showTemporaryPlaceholderError(textarea, message) {
     }
     textarea.placeholder = message;
     textarea.classList.add("prompt-error-placeholder");
+
     setTimeout(() => {
         if (textarea.placeholder === message) {
             textarea.placeholder = textarea.dataset.originalPlaceholder;
@@ -184,6 +194,7 @@ async function generateName() {
     }
 
     document.getElementById("error").textContent = "";
+
     outputContainer.classList.remove("hidden-section");
     outputContainer.classList.add("visible-section");
     historySection.classList.remove("hidden-section");
@@ -195,6 +206,7 @@ async function generateName() {
 
     refinedOutputs.classList.remove("visible-section");
     refinedOutputs.classList.add("hidden-section");
+
     refineSection.classList.remove("visible-section");
     refineSection.classList.add("hidden-section");
     refineBtn.classList.remove("visible-section");
@@ -203,8 +215,10 @@ async function generateName() {
     try {
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({prompt, category, style, language})
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ prompt, category, style, language })
         });
         if (!response.ok) {
             const errorData = await response.json();
@@ -222,8 +236,9 @@ async function generateName() {
         refineSection.classList.add("visible-section");
         refineBtn.classList.remove("hidden-section");
         refineBtn.classList.add("visible-section");
-
+        
         fetchHistory();
+
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         resetDynamicSections();
@@ -254,6 +269,7 @@ async function refineNames() {
     }
 
     document.getElementById("error").textContent = "";
+
     showLoading(refinedNamesPre);
     showLoading(refinedReasonsPre);
     disableButtons();
@@ -261,8 +277,10 @@ async function refineNames() {
     try {
         const response = await fetch(`${BACKEND_URL}/refine`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({instruction})
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ instruction })
         });
         if (!response.ok) {
             const errorData = await response.json();
@@ -280,6 +298,7 @@ async function refineNames() {
         refinedOutputs.classList.add("visible-section");
 
         fetchHistory();
+
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         refinedOutputs.classList.remove("visible-section");
@@ -344,7 +363,7 @@ function restoreHistory(id) {
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
             historySection.classList.add("visible-section");
-
+            
             if (promptInput.value.trim()) {
                 refineSection.classList.remove("hidden-section");
                 refineSection.classList.add("visible-section");
@@ -369,6 +388,7 @@ function surpriseMe() {
     document.getElementById("category").value = category;
     document.getElementById("style").value = style;
     document.getElementById("language").value = language;
+    
     generateName();
 }
 
@@ -391,7 +411,9 @@ function copyToClipboard(elementId) {
             transition: opacity 0.5s ease-out;
         `;
         document.body.appendChild(copyMessage);
-        setTimeout(() => { copyMessage.style.opacity = 1; }, 10);
+        setTimeout(() => {
+            copyMessage.style.opacity = 1;
+        }, 10);
         setTimeout(() => {
             copyMessage.style.opacity = 0;
             copyMessage.addEventListener('transitionend', () => copyMessage.remove());
@@ -426,9 +448,11 @@ function resetDynamicSections() {
 
 function setupTooltips() {
     const tooltipIcons = document.querySelectorAll('.tooltip-icon');
+
     tooltipIcons.forEach(icon => {
         const tooltipBox = icon.nextElementSibling;
         const tooltipText = icon.dataset.tooltipText;
+
         tooltipBox.textContent = tooltipText;
     });
 }
