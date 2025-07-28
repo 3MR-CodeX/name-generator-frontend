@@ -5,278 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NameIT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="static-top-bar" class="static-top-bar">
-        <img src="topbar.png" alt="Top Bar Design" class="top-bar-image">
+    <img src="topbar.png" alt="Top Bar" class="top-bar">
+    <div class="banner-col">
+        <img src="banner.png" alt="Banner" id="banner">
     </div>
-
-    <div class="main-app-container">
-        <div class="banner-col">
-            <img src="banner.png" alt="Banner" id="banner">
+    <h1>NameIT</h1>
+    <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
+    <div class="container">
+        <div class="input-section">
+            <div class="input-box textbox-column">
+                <label for="prompt">What do you want to name?</label>
+                <textarea id="prompt" placeholder="Enter a description!"></textarea>
+            </div>
+            <div class="input-box right-column">
+                <label for="category">Category</label>
+                <!-- Tooltip for Category -->
+                <div class="tooltip-container">
+                    <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
+                    <div class="tooltip-box"></div>
+                </div>
+                <select id="category">
+                    <option value="">Select a category</option>
+                </select>
+                <label for="style">Style</label>
+                <!-- Tooltip for Style -->
+                <div class="tooltip-container">
+                    <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
+                    <div class="tooltip-box"></div>
+                </div>
+                <select id="style">
+                    <option value="">Select a style</option>
+                </select>
+                <label for="language">Language</label>
+                <!-- Tooltip for Language -->
+                <div class="tooltip-container">
+                    <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
+                    <div class="tooltip-box"></div>
+                </div>
+                <select id="language">
+                    <option value="English">English</option>
+                    <option value="Arabic">Arabic</option>
+                </select>
+            </div>
         </div>
-        <h1>NameIT</h1>
-        <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
-        <div class="container">
-            <div class="input-section">
-                <div class="input-box textbox-column">
-                    <label for="prompt">What do you want to name?</label>
-                    <textarea id="prompt" placeholder="Enter a description!"></textarea>
-                </div>
-                <div class="input-box right-column">
-                    <label for="category">Category</label>
-                    <div class="tooltip-container">
-                        <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
-                        <div class="tooltip-box"></div>
-                    </div>
-                    <select id="category">
-                        <option value="">Select a category</option>
-                    </select>
-                    <label for="style">Style</label>
-                    <div class="tooltip-container">
-                        <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
-                        <div class="tooltip-box"></div>
-                    </div>
-                    <select id="style">
-                        <option value="">Select a style</option>
-                    </select>
-                    <label for="language">Language</label>
-                    <div class="tooltip-container">
-                        <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
-                        <div class="tooltip-box"></div>
-                    </div>
-                    <select id="language">
-                        <option value="English">English</option>
-                        <option value="Arabic">Arabic</option>
-                    </select>
-                </div>
-            </div>
-            <div class="button-section">
-                <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
-                <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
-            </div>
-            <div id="output_container" class="output-section">
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Generated Names/Titles</label>
-                        <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
-                    </div>
-                    <pre id="names"></pre>
-                </div>
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Explanations</label>
-                        <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
-                    </div>
-                    <pre id="reasons"></pre>
-                </div>
-            </div>
-            <div id="refine_section" class="refine-section">
-                <label for="edit_box">Refine the suggestions</label>
-                <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
-            </div>
-            <div class="refine-button-section">
-                <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
-            </div>
-            <div id="refined_outputs" class="output-section">
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Refined Suggestions</label>
-                        <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
-                    </div>
-                    <pre id="refined_names"></pre>
-                </div>
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Refined Explanations</label>
-                        <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
-                    </div>
-                    <pre id="refined_reasons"></pre>
-                </div>
-            </div>
-            <div id="history_section" class="history-section">
-                <h2>🕘 Recent History</h2>
-                <div id="history" class="history-inner"></div>
-            </div>
-            <div id="error" class="error"></div>
+        <div class="button-section">
+            <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
+            <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
         </div>
+        <div id="output_container" class="output-section">
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Generated Names/Titles</label>
+                    <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
+                </div>
+                <pre id="names"></pre>
+            </div>
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Explanations</label>
+                    <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
+                </div>
+                <pre id="reasons"></pre>
+            </div>
+        </div>
+        <div id="refine_section" class="refine-section">
+            <label for="edit_box">Refine the suggestions</label>
+            <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
+        </div>
+        <div class="refine-button-section">
+            <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
+        </div>
+        <div id="refined_outputs" class="output-section">
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Refined Suggestions</label>
+                    <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
+                </div>
+                <pre id="refined_names"></pre>
+            </div>
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Refined Explanations</label>
+                    <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
+                </div>
+                <pre id="refined_reasons"></pre>
+            </div>
+        </div>
+        <div id="history_section" class="history-section">
+            <h2>🕘 Recent History</h2>
+            <div id="history" class="history-inner"></div>
+        </div>
+        <div id="error" class="error"></div>
     </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, query, where, addDoc, getDocs, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        // Global Firebase variables
-        window.firebaseApp = null;
-        window.db = null;
-        window.auth = null;
-        window.userId = null;
-        window.isAuthReady = false; // Flag to indicate Firebase auth is ready
-        window.currentUserData = {
-            name: "Guest User",
-            email: "guest@example.com",
-            roundsLeft: "∞",
-            isPremium: false
-        }; // Initialize with guest data
-
-        // Initialize Firebase and set up auth listener
-        document.addEventListener("DOMContentLoaded", async () => {
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-            if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
-                console.warn("Firebase config is missing or incomplete. Some features may not work.");
-                // Fallback to anonymous sign-in if config is missing to allow basic app functionality
-                window.firebaseApp = initializeApp({
-                    apiKey: "YOUR_API_KEY_PLACEHOLDER", // Placeholder, replace with actual if needed
-                    authDomain: "YOUR_AUTH_DOMAIN_PLACEHOLDER",
-                    projectId: "YOUR_PROJECT_ID_PLACEHOLDER",
-                    storageBucket: "YOUR_STORAGE_BUCKET_PLACEHOLDER",
-                    messagingSenderId: "YOUR_MESSAGING_SENDER_ID_PLACEHOLDER",
-                    appId: "YOUR_APP_ID_PLACEHOLDER"
-                });
-            } else {
-                window.firebaseApp = initializeApp(firebaseConfig);
-            }
-
-            window.db = getFirestore(window.firebaseApp);
-            window.auth = getAuth(window.firebaseApp);
-
-            // Sign in with custom token if available, otherwise anonymously
-            if (initialAuthToken) {
-                try {
-                    await signInWithCustomToken(window.auth, initialAuthToken);
-                    console.log("Signed in with custom token.");
-                } catch (error) {
-                    console.error("Error signing in with custom token:", error);
-                    await signInAnonymously(window.auth);
-                    console.log("Signed in anonymously due to custom token error.");
-                }
-            } else {
-                await signInAnonymously(window.auth);
-                console.log("Signed in anonymously (no custom token).");
-            }
-
-            // Set up Auth state listener
-            onAuthStateChanged(window.auth, async (user) => {
-                window.userId = user ? user.uid : null;
-                window.isAuthReady = true; // Auth state is now known
-                console.log("Auth state changed. User ID:", window.userId);
-                
-                if (user) {
-                    // Load user data and settings from Firestore
-                    await loadUserData(user.uid);
-                    await loadSettings();
-                    window.fetchHistory(); // Fetch history for the specific user
-                } else {
-                    // Reset to guest data if logged out
-                    window.currentUserData = {
-                        name: "Guest User",
-                        email: "guest@example.com",
-                        roundsLeft: "∞",
-                        isPremium: false
-                    };
-                    document.getElementById("history").innerHTML = "<p>*Sign in to see your history!*</p>";
-                }
-                // Removed updateAuthUI calls as top/sidebar elements are removed
-            });
-        });
-
-        // Expose Firebase functions to the global scope for main.js
-        window.initializeApp = initializeApp;
-        window.getAuth = getAuth;
-        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-        window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
-        window.signOut = signOut;
-        window.onAuthStateChanged = onAuthStateChanged;
-        window.signInWithCustomToken = signInWithCustomToken;
-        window.signInAnonymously = signInAnonymously;
-        window.getFirestore = getFirestore;
-        window.doc = doc;
-        window.getDoc = getDoc;
-        window.setDoc = setDoc;
-        window.collection = collection;
-        window.query = query;
-        window.where = where;
-        window.addDoc = addDoc;
-        window.getDocs = getDocs;
-        window.onSnapshot = onSnapshot;
-        window.orderBy = orderBy; // Expose orderBy
-
-        // Expose app_id globally
-        window.__app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-        // Placeholder for user data loading/saving
-        async function loadUserData(uid) {
-            const userDocRef = doc(window.db, `artifacts/${window.__app_id}/users/${uid}/profile/data`);
-            try {
-                const docSnap = await getDoc(userDocRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    window.currentUserData.name = data.name || window.auth.currentUser.email.split('@')[0]; // Use email prefix if name not set
-                    window.currentUserData.email = window.auth.currentUser.email;
-                    window.currentUserData.roundsLeft = data.roundsLeft !== undefined ? data.roundsLeft : 5; // Default rounds
-                    window.currentUserData.isPremium = data.isPremium || false;
-                } else {
-                    // Create initial user data if it doesn't exist
-                    await setDoc(userDocRef, {
-                        name: window.auth.currentUser.email.split('@')[0], // Default name from email
-                        email: window.auth.currentUser.email,
-                        roundsLeft: 5, // Default rounds for new users
-                        isPremium: false
-                    });
-                    window.currentUserData = {
-                        name: window.auth.currentUser.email.split('@')[0],
-                        email: window.auth.currentUser.email,
-                        roundsLeft: 5,
-                        isPremium: false
-                    };
-                }
-            } catch (error) {
-                console.error("Error loading user data:", error);
-                // Fallback to guest data on error
-                window.currentUserData = {
-                    name: "Guest User",
-                    email: "guest@example.com",
-                    roundsLeft: "∞",
-                    isPremium: false
-                };
-            }
-        }
-
-        async function saveUserRounds(uid, rounds) {
-            const userDocRef = doc(window.db, `artifacts/${window.__app_id}/users/${uid}/profile/data`);
-            try {
-                await setDoc(userDocRef, { roundsLeft: rounds }, { merge: true });
-                console.log("Rounds left saved:", rounds);
-            } catch (error) {
-                console.error("Error saving rounds left:", error);
-            }
-        }
-
-        async function loadSettings() {
-            if (!window.userId) return; // Only load settings for authenticated users
-            const settingsDocRef = doc(window.db, `artifacts/${window.__app_id}/users/${window.userId}/settings/data`);
-            try {
-                const docSnap = await getDoc(settingsDocRef);
-                if (docSnap.exists()) {
-                    const settings = docSnap.data();
-                    // Removed direct UI update for settings, as no settings modal is in this HTML anymore
-                }
-            } catch (error) {
-                console.error("Error loading settings:", error);
-            }
-        }
-
-        async function saveSettings() {
-            // Functionality is removed as there is no settings modal/UI in this version
-            console.warn("Save settings functionality is currently disabled (no settings UI).");
-        }
-    </script>
 
     <script src="config.js"></script>
     <script src="main.js"></script>
