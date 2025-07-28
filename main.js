@@ -86,11 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTooltips();
 });
 
-// Example dynamic data (replace with real auth/billing logic later)
+// Populate top bar
 const userEmail = "alice@example.com";
 const roundsLeft = 5;
 
-// Insert into top bar
 document.getElementById("user-email").textContent = userEmail;
 document.getElementById("rounds-left").textContent = `${roundsLeft} ${roundsLeft === 1 ? 'round' : 'rounds'}`;
 
