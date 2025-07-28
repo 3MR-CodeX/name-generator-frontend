@@ -24,8 +24,8 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 50px; /* Adjust based on topbar.png height */
-    background-image: url('https://drive.google.com/uc?export=view&id=1I7gPHFDQ4cAcsW9-XweI_6p6uVYE2jXw');
+    height: 50px; /* Adjust based on new topbar.png height */
+    background-image: url('https://drive.google.com/uc?export=view&id=1B7N2dKx1ewhA9Jhp3m5RMuR8UI8ar-6h');
     background-size: cover;
     background-position: center;
     background-color: #800080; /* Fallback color matching app theme */
