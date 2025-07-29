@@ -53,31 +53,21 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
-#topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60px; /* or whatever your topbar image height is */
-    background-color: #000;
-    z-index: 1000;
-    /* Removed redundant border-bottom and box-shadow from here if .topbar handles it */
-}
-#topbar img {
-    height: 100%;
-    width: auto; /* Adjusted to maintain aspect ratio */
-    display: block; /* Remove extra space below image */
-}
+/* Removed #topbar styles as it's no longer needed in HTML */
 
 .topbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
-    background-color: #2a2a2a;
+    height: 60px; /* This height must match your topbar.png image height for best fit */
+    background-color: transparent; /* Make it transparent so the image background shows */
+    background-image: url('topbar.png'); /* Set your custom image as background */
+    background-size: cover; /* Cover the entire area */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-position: center bottom; /* Position image to show the bottom line */
     z-index: 1000;
-    border-bottom: 3px solid #FF00FF; /* This creates the purple line at the bottom of the top bar */
+    border-bottom: none; /* Removed the old purple border */
     box-shadow: none;
 }
 
@@ -111,7 +101,7 @@ body::before {
 
 .side-menu {
     position: fixed;
-    top: 57px; /* Matches topbar height minus border-bottom */
+    top: 57px; /* Matches topbar height minus border-bottom (if it had one) */
     left: 0;
     width: 250px;
     height: calc(100vh - 57px); /* Adjusted height to fill remaining screen */
@@ -121,17 +111,16 @@ body::before {
     z-index: 1001; /* Sidebar layer */
     box-shadow: none;
     border-radius: 0 8px 8px 0;
-    /* Add overflow hidden to contain pseudo-element correctly if needed */
-    overflow: hidden; 
+    overflow: hidden; /* Important to clip content and pseudo-elements */
 }
 
 .side-menu::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0; /* Changed to left: 0; */
-    width: 100%; /* Make it span the full width of the side-menu */
-    height: 100%; /* Make it span the full height */
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-color: #2a2a2a; /* Main background color for the sidebar */
     z-index: 1000; /* Background layer */
 }
@@ -152,19 +141,7 @@ body::before {
     z-index: 1001; /* Above ::before (background), below ::after (purple line) */
     height: 100%;
     padding: 20px 0;
-    /* The linear-gradient here was obscuring the line. 
-       If you want a gradient, ensure it's not full width or use background-clip.
-       For simplicity, I'm removing it or adjusting it to match the main side-menu background.
-       Alternatively, if you want the gradient ON the content, then the ::after should be outside this content.
-       Let's keep the content background simple, inheriting from ::before or transparent, to ensure the line is visible.
-       I will set it to transparent or a slightly different shade, so the line is definitely visible.
-       The existing background was rgba(42, 42, 42, 0.7) so let's use that for ::before.
-       Then side-menu-content can be transparent or just define padding.
-    */
     background: transparent; /* Allow the ::before background to show through */
-    /* If you still want a gradient for content, you can apply it to a child element inside side-menu-content 
-       or use a background-image that doesn't cover the full width. 
-       For now, making this transparent ensures the line is visible. */
 }
 
 .side-menu.active {
