@@ -58,11 +58,14 @@ body::before {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px; /* Increased to 60px as requested */
+    height: 60px; /* Set to 60px to ensure thickness */
+    min-height: 60px; /* Ensure it doesn't shrink */
     background-image: url('topbar.png');
-    background-size: 100% 100%;
+    background-size: cover; /* Changed to cover to ensure the image fills the height */
     background-repeat: no-repeat;
+    background-position: center; /* Center the image to avoid stretching issues */
     z-index: 1000;
+    border-bottom: 2px solid #800080; /* Added a thicker purple line to enhance visibility */
 }
 
 .container {
