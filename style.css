@@ -59,14 +59,14 @@ body::before {
     left: 0;
     width: 100%;
     height: 60px;
-    background-color: #404040; /* Darker #3a3a3a with less transparency */
+    background-color: #404040;
     z-index: 1000;
-    border-bottom: 3px solid #FF00FF; /* Vibrant purple line */
+    border-bottom: 3px solid #FF00FF;
 }
 
 .topbar:hover {
-    box-shadow: 0 3px 15px 0 #FF00FF; /* Glow effect */
-    transition: box-shadow 0.3s ease;
+    box-shadow: 0 3px 15px 0 #FF00FF;
+    transition: box-shadow 0.3s ease-in-out; /* Smooth in and out */
 }
 
 .hex-button {
@@ -75,7 +75,7 @@ body::before {
     top: 50%;
     transform: translateY(-50%);
     width: 40px;
-    height: 46px; /* Perfect hexagon height */
+    height: 46px;
     background-color: #3a3a3a;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     cursor: pointer;
@@ -83,28 +83,24 @@ body::before {
 }
 
 .hex-button:hover {
-    box-shadow: 0 0 10px 2px #FF00FF; /* Glow effect on hover */
+    box-shadow: 0 0 10px 2px #FF00FF;
 }
 
 .hex-button.open {
     transform: translateY(-50%) rotate(-90deg);
-    background-color: #800080; /* Vibrant purple when open */
-}
-
-.hex-button.animate {
-    animation: none; /* Removed default animation */
+    background-color: #800080;
 }
 
 .side-menu {
     position: fixed;
-    top: 0;
+    top: 60px; /* Start below top bar */
     left: 0;
     width: 250px;
-    height: 100%;
-    background-color: #404040; /* Darker #3a3a3a with less transparency */
+    height: calc(100vh - 60px); /* Occupy space below top bar */
+    background-color: #404040;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: 1001; /* Above top bar */
+    transition: transform 0.3s ease, box-shadow 0.3s ease-in-out; /* Added for glow transition */
+    z-index: 1001;
 }
 
 .side-menu::after {
@@ -114,13 +110,13 @@ body::before {
     right: 0;
     width: 3px;
     height: 100%;
-    background-color: #FF00FF; /* Vibrant purple line */
-    z-index: 1000; /* Below content, above top bar */
+    background-color: #FF00FF;
+    z-index: 1000;
 }
 
 .side-menu .side-menu-content {
     position: relative;
-    z-index: 1002; /* Above purple line and top bar */
+    z-index: 1002;
     height: 100%;
     padding: 20px;
     color: #e0e0e0;
@@ -131,8 +127,8 @@ body::before {
 }
 
 .side-menu:hover {
-    box-shadow: 3px 0 15px 0 #FF00FF; /* Glow effect */
-    transition: box-shadow 0.3s ease;
+    box-shadow: 3px 0 15px 0 #FF00FF;
+    transition: box-shadow 0.3s ease-in-out; /* Smooth in and out */
 }
 
 .container {
