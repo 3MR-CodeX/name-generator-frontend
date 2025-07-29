@@ -59,14 +59,14 @@ body::before {
     left: 0;
     width: 100%;
     height: 60px;
-    background-color: #2a2a2a;
+    background-color: #404040; /* Darker #3a3a3a with less transparency */
     z-index: 1000;
-    border-bottom: 3px solid #FF00FF; /* Reverted to solid line, vibrant purple */
+    border-bottom: 3px solid #FF00FF; /* Vibrant purple line */
 }
 
 .topbar:hover {
-    box-shadow: 0 3px 15px 0 #FF00FF; /* Glow effect with vibrant purple */
-    transition: box-shadow 0.3s ease; /* Smooth glow and deglow */
+    box-shadow: 0 3px 15px 0 #FF00FF; /* Glow effect */
+    transition: box-shadow 0.3s ease;
 }
 
 .hex-button {
@@ -75,34 +75,24 @@ body::before {
     top: 50%;
     transform: translateY(-50%);
     width: 40px;
-    height: 46px; /* Adjusted for perfect hexagon */
+    height: 46px; /* Perfect hexagon height */
     background-color: #3a3a3a;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Perfect hexagon */
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     cursor: pointer;
-    transition: box-shadow 0.3s ease, transform 0.1s ease;
+    transition: box-shadow 0.3s ease, transform 0.5s ease;
 }
 
 .hex-button:hover {
     box-shadow: 0 0 10px 2px #FF00FF; /* Glow effect on hover */
 }
 
-.hex-button.animate {
-    animation: roll 0.5s ease;
+.hex-button.open {
+    transform: translateY(-50%) rotate(-90deg);
+    background-color: #800080; /* Vibrant purple when open */
 }
 
-@keyframes roll {
-    0% {
-        transform: translateY(-50%) rotate(0deg);
-        background-color: #3a3a3a;
-    }
-    50% {
-        transform: translateY(-50%) rotate(-90deg);
-        background-color: #800080; /* Vibrant purple on click */
-    }
-    100% {
-        transform: translateY(-50%) rotate(-90deg);
-        background-color: #3a3a3a;
-    }
+.hex-button.animate {
+    animation: none; /* Removed default animation */
 }
 
 .side-menu {
@@ -111,10 +101,10 @@ body::before {
     left: 0;
     width: 250px;
     height: 100%;
-    background-color: #2a2a2a;
+    background-color: #404040; /* Darker #3a3a3a with less transparency */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    z-index: 999;
+    z-index: 1001; /* Above top bar */
 }
 
 .side-menu::after {
@@ -125,12 +115,12 @@ body::before {
     width: 3px;
     height: 100%;
     background-color: #FF00FF; /* Vibrant purple line */
-    z-index: 998; /* Below content */
+    z-index: 1000; /* Below content, above top bar */
 }
 
 .side-menu .side-menu-content {
     position: relative;
-    z-index: 1000; /* Above the purple line */
+    z-index: 1002; /* Above purple line and top bar */
     height: 100%;
     padding: 20px;
     color: #e0e0e0;
@@ -141,8 +131,8 @@ body::before {
 }
 
 .side-menu:hover {
-    box-shadow: 3px 0 15px 0 #FF00FF; /* Glow effect with vibrant purple */
-    transition: box-shadow 0.3s ease; /* Smooth glow and deglow */
+    box-shadow: 3px 0 15px 0 #FF00FF; /* Glow effect */
+    transition: box-shadow 0.3s ease;
 }
 
 .container {
