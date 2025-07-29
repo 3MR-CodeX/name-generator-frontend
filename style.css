@@ -69,6 +69,11 @@ body::before {
     transition: box-shadow 0.3s ease-in-out;
 }
 
+.topbar:not(:hover) {
+    box-shadow: 0 3px 15px 0 #FF00FF; /* Start with glow */
+    transition: box-shadow 0.3s ease-in-out; /* Fade out on hover off */
+}
+
 .hex-button {
     position: absolute;
     left: 10px;
@@ -79,7 +84,7 @@ body::before {
     background-color: #3a3a3a;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     cursor: pointer;
-    border: 2px solid #ffffff;
+    border: 2px solid #ffffff; /* White outline */
     transition: box-shadow 0.3s ease, transform 0.5s ease, border 0.3s ease;
 }
 
@@ -90,82 +95,6 @@ body::before {
 .hex-button.open {
     transform: translateY(-50%) rotate(-90deg);
     background-color: #800080;
-}
-
-.hex-button.unite .circle {
-    animation: unite 0.5s ease forwards;
-}
-
-.hex-button:not(.unite) .circle {
-    animation: separate 0.5s ease forwards;
-}
-
-.circle {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background-color: #ffffff;
-    border-radius: 50%;
-    transition: transform 0.5s ease;
-}
-
-.circle1 {
-    top: 20%;
-    left: 20%;
-}
-
-.circle2 {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.circle3 {
-    top: 80%;
-    left: 80%;
-}
-
-@keyframes unite {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(0);
-        opacity: 0;
-    }
-}
-
-@keyframes separate {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.hex-button.unite::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    background-color: #800080;
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    animation: grow 0.5s ease forwards;
-}
-
-@keyframes grow {
-    0% {
-        transform: translate(-50%, -50%) scale(0);
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-    }
 }
 
 .side-menu {
@@ -206,6 +135,11 @@ body::before {
 .side-menu:hover {
     box-shadow: 3px 0 15px 0 #FF00FF;
     transition: box-shadow 0.3s ease-in-out;
+}
+
+.side-menu:not(:hover) {
+    box-shadow: 3px 0 15px 0 #FF00FF; /* Start with glow */
+    transition: box-shadow 0.3s ease-in-out; /* Fade out on hover off */
 }
 
 .container {
