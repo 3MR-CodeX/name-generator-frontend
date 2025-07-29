@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="topbar"></div>
+    <div class="topbar">
+        <div class="hex-button"></div>
+    </div>
+    <div class="side-menu"></div>
     <div class="banner-col">
         <img src="banner.png" alt="Banner" id="banner">
     </div>
@@ -99,5 +102,18 @@
 
     <script src="config.js"></script>
     <script src="main.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hexButton = document.querySelector('.hex-button');
+        const sideMenu = document.querySelector('.side-menu');
+        hexButton.addEventListener('click', () => {
+            sideMenu.classList.toggle('active');
+            hexButton.classList.add('animate');
+            setTimeout(() => {
+                hexButton.classList.remove('animate');
+            }, 500);
+        });
+    });
+    </script>
 </body>
 </html>
