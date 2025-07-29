@@ -66,7 +66,7 @@ body::before {
 
 .topbar:hover {
     box-shadow: 0 3px 15px 0 #FF00FF;
-    transition: box-shadow 0.3s ease-in-out; /* Smooth in and out */
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .hex-button {
@@ -79,11 +79,12 @@ body::before {
     background-color: #3a3a3a;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     cursor: pointer;
-    transition: box-shadow 0.3s ease, transform 0.5s ease;
+    border: 2px solid #ffffff;
+    transition: box-shadow 0.3s ease, transform 0.5s ease, border 0.3s ease;
 }
 
 .hex-button:hover {
-    box-shadow: 0 0 10px 2px #FF00FF;
+    box-shadow: 0 0 10px 2px #ffffff; /* White glow on hover */
 }
 
 .hex-button.open {
@@ -91,15 +92,91 @@ body::before {
     background-color: #800080;
 }
 
+.hex-button.unite .circle {
+    animation: unite 0.5s ease forwards;
+}
+
+.hex-button:not(.unite) .circle {
+    animation: separate 0.5s ease forwards;
+}
+
+.circle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.5s ease;
+}
+
+.circle1 {
+    top: 20%;
+    left: 20%;
+}
+
+.circle2 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.circle3 {
+    top: 80%;
+    left: 80%;
+}
+
+@keyframes unite {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes separate {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.hex-button.unite::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: #800080;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: grow 0.5s ease forwards;
+}
+
+@keyframes grow {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
 .side-menu {
     position: fixed;
-    top: 60px; /* Start below top bar */
+    top: 60px;
     left: 0;
     width: 250px;
-    height: calc(100vh - 60px); /* Occupy space below top bar */
+    height: calc(100vh - 60px);
     background-color: #404040;
     transform: translateX(-100%);
-    transition: transform 0.3s ease, box-shadow 0.3s ease-in-out; /* Added for glow transition */
+    transition: transform 0.3s ease, box-shadow 0.3s ease-in-out;
     z-index: 1001;
 }
 
@@ -128,7 +205,7 @@ body::before {
 
 .side-menu:hover {
     box-shadow: 3px 0 15px 0 #FF00FF;
-    transition: box-shadow 0.3s ease-in-out; /* Smooth in and out */
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .container {
