@@ -3,136 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NameIT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.png" type="image/png">
+    <title>Top Bar Example</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Top Bar Container with direct image and hex button -->
-    <div class="topbar-container">
-        <img src="topbar.png" alt="Top Bar Design" class="topbar-image">
+    <div id="topbar"><img src="topbar.png" alt="Topbar" /></div>
+    <div class="topbar">
         <div class="hex-button"></div>
     </div>
-
-    <!-- Side Menu Container with direct image and content -->
-    <div class="side-menu-container">
-        <img src="sidebar.png" alt="Side Bar Design" class="sidebar-image">
-        <div class="side-menu-content">
-            <!-- Placeholder for actual sidebar links/content -->
-            <button class="close-sidebar-btn">✖</button>
-            <div class="sidebar-section-title">Account Info</div>
-            <div class="sidebar-account-details">
-                <!-- These elements would be dynamically populated by main.js -->
-                <div class="profile-pic-placeholder"></div>
-                <div class="user-name-placeholder">Guest User</div>
-                <div class="user-email-placeholder">guest@example.com</div>
-                <div class="rounds-left-placeholder">Rounds Left: ∞</div>
-                <button class="sidebar-auth-btn">Sign In</button>
-                <button class="sidebar-logout-btn hidden">Sign Out</button>
-            </div>
-            <div class="sidebar-section-title">Plan</div>
-            <a href="#" class="sidebar-link premium-link">✨ Premium Subscription</a>
-            <a href="#" class="sidebar-link">Free Tier Details</a>
-            <div class="sidebar-section-title">Other Functions</div>
-            <a href="#" class="sidebar-link">Tool 1 (Coming Soon)</a>
-            <a href="#" class="sidebar-link">Feature A (Coming Soon)</a>
-            <div class="sidebar-section-title">App Sections</div>
-            <a href="#" class="sidebar-link">⚙️ Settings</a>
-            <a href="#" class="sidebar-link">ℹ️ About</a>
-        </div>
+    <div class="side-menu">
+        <div class="side-menu-content"></div>
     </div>
-
-    <!-- Main App Content -->
-    <div class="main-app-container">
-        <div class="banner-col">
-            <img src="banner.png" alt="Banner" id="banner">
+    <div class="banner-col">
+        <img src="banner.png" alt="Banner" id="banner">
+    </div>
+    <h1>NameIT</h1>
+    <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
+    <div class="container">
+        <div class="input-section">
+            <div class="input-box textbox-column">
+                <label for="prompt">What do you want to name?</label>
+                <textarea id="prompt" placeholder="Enter a description!"></textarea>
+            </div>
+            <div class="input-box right-column">
+                <label for="category">Category</label>
+                <div class="tooltip-container">
+                    <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
+                    <div class="tooltip-box"></div>
+                </div>
+                <select id="category">
+                    <option value="">Select a category</option>
+                </select>
+                <label for="style">Style</label>
+                <div class="tooltip-container">
+                    <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
+                    <div class="tooltip-box"></div>
+                </div>
+                <select id="style">
+                    <option value="">Select a style</option>
+                </select>
+                <label for="language">Language</label>
+                <div class="tooltip-container">
+                    <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
+                    <div class="tooltip-box"></div>
+                </div>
+                <select id="language">
+                    <option value="English">English</option>
+                    <option value="Arabic">Arabic</option>
+                </select>
+            </div>
         </div>
-        <h1>NameIT</h1>
-        <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
-        <div class="container">
-            <div class="input-section">
-                <div class="input-box textbox-column">
-                    <label for="prompt">What do you want to name?</label>
-                    <textarea id="prompt" placeholder="Enter a description!"></textarea>
-                </div>
-                <div class="input-box right-column">
-                    <label for="category">Category</label>
-                    <div class="tooltip-container">
-                        <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
-                        <div class="tooltip-box"></div>
-                    </div>
-                    <select id="category">
-                        <option value="">Select a category</option>
-                    </select>
-                    <label for="style">Style</label>
-                    <div class="tooltip-container">
-                        <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
-                        <div class="tooltip-box"></div>
-                    </div>
-                    <select id="style">
-                        <option value="">Select a style</option>
-                    </select>
-                    <label for="language">Language</label>
-                    <div class="tooltip-container">
-                        <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
-                        <div class="tooltip-box"></div>
-                    </div>
-                    <select id="language">
-                        <option value="English">English</option>
-                        <option value="Arabic">Arabic</option>
-                    </select>
-                </div>
-            </div>
-            <div class="button-section">
-                <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
-                <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
-            </div>
-            <div id="output_container" class="output-section">
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Generated Names/Titles</label>
-                        <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
-                    </div>
-                    <pre id="names"></pre>
-                </div>
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Explanations</label>
-                        <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
-                    </div>
-                    <pre id="reasons"></pre>
-                </div>
-            </div>
-            <div id="refine_section" class="refine-section">
-                <label for="edit_box">Refine the suggestions</label>
-                <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
-            </div>
-            <div class="refine-button-section">
-                <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
-            </div>
-            <div id="refined_outputs" class="output-section">
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Refined Suggestions</label>
-                        <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
-                    </div>
-                    <pre id="refined_names"></pre>
-                </div>
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Refined Explanations</label>
-                        <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
-                    </div>
-                    <pre id="refined_reasons"></pre>
-                </div>
-            </div>
-            <div id="history_section" class="history-section">
-                <h2>🕘 Recent History</h2>
-                <div id="history" class="history-inner"></div>
-            </div>
-            <div id="error" class="error"></div>
+        <div class="button-section">
+            <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
+            <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
         </div>
+        <div id="output_container" class="output-section">
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Generated Names/Titles</label>
+                    <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
+                </div>
+                <pre id="names"></pre>
+            </div>
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Explanations</label>
+                    <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
+                </div>
+                <pre id="reasons"></pre>
+            </div>
+        </div>
+        <div id="refine_section" class="refine-section">
+            <label for="edit_box">Refine the suggestions</label>
+            <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
+        </div>
+        <div class="refine-button-section">
+            <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
+        </div>
+        <div id="refined_outputs" class="output-section">
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Refined Suggestions</label>
+                    <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
+                </div>
+                <pre id="refined_names"></pre>
+            </div>
+            <div class="output-box">
+                <div class="output-header">
+                    <label>Refined Explanations</label>
+                    <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
+                </div>
+                <pre id="refined_reasons"></pre>
+            </div>
+        </div>
+        <div id="history_section" class="history-section">
+            <h2>🕘 Recent History</h2>
+            <div id="history" class="history-inner"></div>
+        </div>
+        <div id="error" class="error"></div>
     </div>
 
     <script src="config.js"></script>
@@ -140,27 +108,19 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const hexButton = document.querySelector('.hex-button');
-        const sideMenuContainer = document.querySelector('.side-menu-container'); // Changed to container
-        const closeSidebarBtn = document.querySelector('.close-sidebar-btn'); // New close button
-        const body = document.body;
+        const sideMenu = document.querySelector('.side-menu');
+        const body = document.body; // Reference to the body element
         let isMenuOpen = false;
 
         hexButton.addEventListener('click', () => {
             isMenuOpen = !isMenuOpen;
-            sideMenuContainer.classList.toggle('active');
-            body.classList.toggle('side-menu-active', isMenuOpen);
+            sideMenu.classList.toggle('active');
+            body.classList.toggle('side-menu-active', isMenuOpen); // Toggle class on body
             if (isMenuOpen) {
                 hexButton.classList.add('open');
             } else {
                 hexButton.classList.remove('open');
             }
-        });
-
-        closeSidebarBtn.addEventListener('click', () => {
-            isMenuOpen = false;
-            sideMenuContainer.classList.remove('active');
-            body.classList.remove('side-menu-active');
-            hexButton.classList.remove('open');
         });
     });
     </script>
