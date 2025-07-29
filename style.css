@@ -66,7 +66,7 @@ body::before {
 }
 
 .topbar:hover {
-    box-shadow: none; /* Removed glow effect */
+    box-shadow: none;
     transition: none;
 }
 
@@ -101,12 +101,12 @@ body::before {
     background-color: #2a2a2a;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    z-index: 1001; /* Above topbar's z-index */
+    z-index: 1001; /* Sidebar layer */
     box-shadow: none;
     border-radius: 0 8px 8px 0;
 }
 
-.side-menu::after {
+.side-menu::before {
     content: '';
     position: absolute;
     top: 0;
@@ -114,12 +114,12 @@ body::before {
     width: 3px; /* 3-pixel thick purple line */
     height: 100%;
     background-color: #FF00FF; /* Matches top bar's purple line */
-    z-index: 1002;
+    z-index: 1000; /* Just under sidebar's z-index */
 }
 
 .side-menu .side-menu-content {
     position: relative;
-    z-index: 1003;
+    z-index: 1002;
     height: 100%;
     padding: 20px 0;
     background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
@@ -131,7 +131,7 @@ body::before {
 }
 
 .side-menu:hover {
-    box-shadow: none; /* Removed glow effect */
+    box-shadow: none;
     transition: none;
 }
 
