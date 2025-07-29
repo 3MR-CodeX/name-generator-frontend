@@ -120,7 +120,7 @@ body::before {
     transition: transform 0.3s ease;
     z-index: 1001; /* Sidebar layer */
     box-shadow: none;
-    border-radius: 0 0 8px 0;
+    border-radius: 0 0 8px 0; /* Updated for sharp top-right edge */
     /* Add overflow hidden to contain pseudo-element correctly if needed */
     overflow: hidden; 
 }
@@ -152,19 +152,7 @@ body::before {
     z-index: 1001; /* Above ::before (background), below ::after (purple line) */
     height: 100%;
     padding: 20px 0;
-    /* The linear-gradient here was obscuring the line. 
-       If you want a gradient, ensure it's not full width or use background-clip.
-       For simplicity, I'm removing it or adjusting it to match the main side-menu background.
-       Alternatively, if you want the gradient ON the content, then the ::after should be outside this content.
-       Let's keep the content background simple, inheriting from ::before or transparent, to ensure the line is visible.
-       I will set it to transparent or a slightly different shade, so the line is definitely visible.
-       The existing background was rgba(42, 42, 42, 0.7) so let's use that for ::before.
-       Then side-menu-content can be transparent or just define padding.
-    */
     background: transparent; /* Allow the ::before background to show through */
-    /* If you still want a gradient for content, you can apply it to a child element inside side-menu-content 
-       or use a background-image that doesn't cover the full width. 
-       For now, making this transparent ensures the line is visible. */
 }
 
 .side-menu.active {
@@ -176,10 +164,28 @@ body::before {
     transition: none;
 }
 
-/* Adjust body padding to account for sidebar when active */
-body.side-menu-active {
-    padding-left: 270px; /* Sidebar width + 20px additional padding */
+/* --- Side Menu Overlay for Blur and Darken --- */
+.overlay-active {
+    position: fixed;
+    top: 60px; /* Start below the top bar */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px); /* Fill the rest of the screen */
+    background-color: rgba(0, 0, 0, 0.4); /* Darken effect */
+    backdrop-filter: blur(5px); /* Blur effect */
+    z-index: 999; /* Below side-menu (1001) but above content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
+
+.overlay-active.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Removed body.side-menu-active padding */
+
 
 .container {
     max-width: 1200px;
