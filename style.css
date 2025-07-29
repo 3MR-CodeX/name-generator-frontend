@@ -9,10 +9,7 @@ body {
     font-size: 16px;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding-top: 60px; /* Padding for the fixed top bar */
-    padding-left: 20px; /* Default padding for main content */
-    padding-right: 20px;
-    padding-bottom: 20px;
+    padding: 60px 20px 20px 20px; /* Updated to match topbar height */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -56,27 +53,39 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
-/* Top Bar Container with direct image */
-.topbar-container {
+#topbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px; /* Adjust this height to match your topbar.png's actual height */
-    z-index: 1000; /* Ensures it's the top layer */
-    overflow: hidden; /* Hide any overflow from the image */
-    background-color: #2a2a2a; /* Fallback background color if image fails to load */
+    height: 60px; /* or whatever your topbar image height is */
+    background-color: #000;
+    z-index: 1000;
+    /* Removed redundant border-bottom and box-shadow from here if .topbar handles it */
 }
-
-.topbar-image {
-    width: 100%;
+#topbar img {
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire div without stretching disproportionately */
-    object-position: center; /* Centers the image within the div */
+    width: auto; /* Adjusted to maintain aspect ratio */
     display: block; /* Remove extra space below image */
 }
 
-/* Hex Button positioned on top of the topbar image */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #2a2a2a;
+    z-index: 1000;
+    border-bottom: 3px solid #FF00FF; /* This creates the purple line at the bottom of the top bar */
+    box-shadow: none;
+}
+
+.topbar:hover {
+    box-shadow: none;
+    transition: none;
+}
+
 .hex-button {
     position: absolute;
     left: 10px;
@@ -84,16 +93,11 @@ body::before {
     transform: translateY(-50%);
     width: 40px;
     height: 46.19px; /* Perfect hexagon height (sqrt(3)/2 * width) */
-    background-color: #3a3a3a; /* Default background for the button */
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Perfect hexagon */
+    background-color: #3a3a3a;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Perfect hexagon with equal angles */
     cursor: pointer;
     transition: transform 0.5s ease, background-color 0.3s ease;
-    z-index: 1001; /* Above the topbar image */
-    display: flex; /* To center the '☰' if you add it back */
-    justify-content: center;
-    align-items: center;
-    color: white; /* Color for the '☰' symbol if added */
-    font-size: 1.5em; /* Size for the '☰' symbol if added */
+    z-index: 1001; /* Ensure hex button is above the topbar background image */
 }
 
 .hex-button:hover {
@@ -102,81 +106,79 @@ body::before {
 
 .hex-button.open {
     transform: translateY(-50%) rotate(-90deg);
-    background-color: #800080; /* Color when open */
+    background-color: #800080;
 }
 
-/* Side Menu Container with direct image */
-.side-menu-container {
+.side-menu {
     position: fixed;
-    top: 60px; /* Starts directly below the top bar */
+    top: 57px; /* Matches topbar height minus border-bottom */
     left: 0;
-    width: 250px; /* Width of your sidebar image */
-    height: calc(100vh - 60px); /* Full height minus top bar height */
-    transform: translateX(-100%); /* Start off-screen */
+    width: 250px;
+    height: calc(100vh - 57px); /* Adjusted height to fill remaining screen */
+    background-color: transparent; /* Changed to transparent to allow pseudo-element background to show */
+    transform: translateX(-100%);
     transition: transform 0.3s ease;
-    z-index: 999; /* Below topbar, above main content */
-    overflow: hidden; /* Important to contain the image and content */
-    background-color: #2a2a2a; /* Fallback */
+    z-index: 1001; /* Sidebar layer */
+    box-shadow: none;
+    border-radius: 0 8px 8px 0;
+    /* Add overflow hidden to contain pseudo-element correctly if needed */
+    overflow: hidden; 
 }
 
-.sidebar-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire div */
-    object-position: center; /* Centers the image within the div */
-    display: block;
-}
-
-.side-menu-container.active {
-    transform: translateX(0); /* Slide in */
-}
-
-.side-menu-content {
-    position: absolute; /* Position content on top of the image */
-    top: 0;
-    left: 0;
-    width: 100%; /* Take full width of container */
-    height: 100%; /* Take full height of container */
-    z-index: 1000; /* Above the sidebar image */
-    padding: 20px; /* Adjust padding as needed for your content */
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Spacing for menu items */
-    overflow-y: auto; /* Enable scrolling for content */
-    background-color: rgba(0, 0, 0, 0.1); /* Slight overlay to make text more readable over image */
-}
-
-.close-sidebar-btn {
+.side-menu::before {
+    content: '';
     position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #e0e0e0;
-    font-size: 1.8em;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    z-index: 1002; /* Ensure it's on top of sidebar content */
+    top: 0;
+    left: 0; /* Changed to left: 0; */
+    width: 100%; /* Make it span the full width of the side-menu */
+    height: 100%; /* Make it span the full height */
+    background-color: #2a2a2a; /* Main background color for the sidebar */
+    z-index: 1000; /* Background layer */
 }
 
-.close-sidebar-btn:hover {
-    color: #a020f0;
+.side-menu::after { /* Using ::after for the purple line */
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0; /* Positioned on the right */
+    width: 3px; /* 3-pixel thick purple line */
+    height: 100%;
+    background-color: #FF00FF; /* Matches top bar's purple line */
+    z-index: 1002; /* Ensures it's on top of other sidebar content */
 }
 
-/* Adjust body padding when sidebar is active to prevent content overlap */
+.side-menu .side-menu-content {
+    position: relative; /* Needed for z-index to work */
+    z-index: 1001; /* Above ::before (background), below ::after (purple line) */
+    height: 100%;
+    padding: 20px 0;
+    /* The linear-gradient here was obscuring the line. 
+       If you want a gradient, ensure it's not full width or use background-clip.
+       For simplicity, I'm removing it or adjusting it to match the main side-menu background.
+       Alternatively, if you want the gradient ON the content, then the ::after should be outside this content.
+       Let's keep the content background simple, inheriting from ::before or transparent, to ensure the line is visible.
+       I will set it to transparent or a slightly different shade, so the line is definitely visible.
+       The existing background was rgba(42, 42, 42, 0.7) so let's use that for ::before.
+       Then side-menu-content can be transparent or just define padding.
+    */
+    background: transparent; /* Allow the ::before background to show through */
+    /* If you still want a gradient for content, you can apply it to a child element inside side-menu-content 
+       or use a background-image that doesn't cover the full width. 
+       For now, making this transparent ensures the line is visible. */
+}
+
+.side-menu.active {
+    transform: translateX(0);
+}
+
+.side-menu:hover {
+    box-shadow: none;
+    transition: none;
+}
+
+/* Adjust body padding to account for sidebar when active */
 body.side-menu-active {
     padding-left: 270px; /* Sidebar width + 20px additional padding */
-}
-
-
-/* Main App Container - to push content below the fixed top bar */
-.main-app-container {
-    width: 100%;
-    max-width: 1200px;
-    /* Adjust padding-top to match the height of your topbar-container */
-    padding-top: 70px; /* 60px topbar height + 10px margin/gap */
-    box-sizing: border-box;
-    z-index: 1; /* Below top bar and sidebar */
 }
 
 .container {
