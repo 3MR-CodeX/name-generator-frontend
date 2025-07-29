@@ -76,7 +76,7 @@ body::before {
     top: 50%;
     transform: translateY(-50%);
     width: 40px;
-    height: 46.19px; /* Adjusted for perfect hexagon (sqrt(3)/2 * width) */
+    height: 46.19px; /* Perfect hexagon height (sqrt(3)/2 * width) */
     background-color: #3a3a3a;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Perfect hexagon with equal angles */
     cursor: pointer;
@@ -103,46 +103,16 @@ body::before {
     transition: transform 0.3s ease;
     z-index: 1001;
     box-shadow: none;
-}
-
-.side-menu::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 4px; /* Thicker line as per typical design */
-    height: 100%;
-    background-color: #FF00FF;
-    z-index: 1002;
+    border-radius: 0 8px 8px 0; /* Rounded right edges for modern look */
 }
 
 .side-menu .side-menu-content {
     position: relative;
-    z-index: 1003;
+    z-index: 1002;
     height: 100%;
     padding: 20px 0;
-    color: #e0e0e0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.menu-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    color: #b0b0b0;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.menu-item .icon {
-    margin-right: 15px;
-    font-size: 20px;
-}
-
-.menu-item:hover {
-    background-color: #3a3a3a;
-    color: #ffffff;
+    background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%); /* Subtle gradient for depth */
+    border-right: 2px solid transparent; /* No purple line */
 }
 
 .side-menu.active {
@@ -150,7 +120,7 @@ body::before {
 }
 
 .side-menu:hover {
-    box-shadow: 3px 0 15px 0 #FF00FF;
+    box-shadow: 3px 0 15px 0 rgba(255, 0, 255, 0.3); /* Subtle hover effect */
     transition: box-shadow 0.3s ease-in-out;
 }
 
