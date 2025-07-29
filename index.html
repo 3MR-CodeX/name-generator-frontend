@@ -13,98 +13,69 @@
     <img src="topbar.png" alt="Top Bar" />
   </div>
 
-  <!-- Actual app below -->
+  <!-- Main app container -->
   <div class="container">
+    <!-- Banner section -->
     <div class="banner-col">
-      <h1>NameIT</h1>
-      <p class="description">
+      <h1 class="app-title">NameIT</h1>
+      <p class="app-description">
         Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.
       </p>
     </div>
 
+    <!-- Prompt input -->
     <div class="input-section">
-      <div class="input-box textbox-column">
-        <label for="prompt">What do you want to name?</label>
-        <textarea id="prompt" placeholder="Enter a description!"></textarea>
-      </div>
-      <div class="input-box right-column">
-        <label for="category">Category</label>
-        <div class="tooltip-container">
-          <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
-          <div class="tooltip-box"></div>
-        </div>
-        <select id="category">
-          <option value="">Select a category</option>
-        </select>
-        <label for="style">Style</label>
-        <div class="tooltip-container">
-          <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
-          <div class="tooltip-box"></div>
-        </div>
-        <select id="style">
-          <option value="">Select a style</option>
-        </select>
-        <label for="language">Language</label>
-        <div class="tooltip-container">
-          <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
-          <div class="tooltip-box"></div>
-        </div>
-        <select id="language">
-          <option value="English">English</option>
-          <option value="Arabic">Arabic</option>
-        </select>
-      </div>
+      <label for="prompt">What do you want to name?</label>
+      <input id="prompt" type="text" placeholder="A futuristic cafe for gamers" />
     </div>
-    <div class="button-section">
-      <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
-      <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
+
+    <!-- Dropdowns -->
+    <div class="dropdowns">
+      <select id="category">
+        <option value="">Category (optional)</option>
+        <option value="brand">Brand</option>
+        <option value="product">Product</option>
+        <option value="app">App</option>
+        <option value="youtube">YouTube Channel</option>
+      </select>
+
+      <select id="style">
+        <option value="">Style (optional)</option>
+        <option value="modern">Modern</option>
+        <option value="short">Short</option>
+        <option value="elegant">Elegant</option>
+        <option value="creative">Creative</option>
+      </select>
+
+      <select id="language">
+        <option value="">Language (optional)</option>
+        <option value="english">English</option>
+        <option value="arabic">Arabic</option>
+        <option value="french">French</option>
+        <option value="spanish">Spanish</option>
+      </select>
     </div>
-    <div id="output_container" class="output-section">
-      <div class="output-box">
-        <div class="output-header">
-          <label>Generated Names/Titles</label>
-          <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
-        </div>
-        <pre id="names"></pre>
-      </div>
-      <div class="output-box">
-        <div class="output-header">
-          <label>Explanations</label>
-          <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
-        </div>
-        <pre id="reasons"></pre>
-      </div>
+
+    <!-- Buttons -->
+    <div class="action-buttons">
+      <button id="generate">Generate</button>
+      <button id="refine">Refine Suggestions</button>
     </div>
-    <div id="refine_section" class="refine-section">
-      <label for="edit_box">Refine the suggestions</label>
-      <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
+
+    <!-- Output -->
+    <div id="output-section">
+      <div id="generated-names" class="output-box"></div>
+      <div id="refined-output" class="output-box"></div>
     </div>
-    <div class="refine-button-section">
-      <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
+
+    <!-- History -->
+    <div id="history-section">
+      <h3>History</h3>
+      <div id="history-list"></div>
     </div>
-    <div id="refined_outputs" class="output-section">
-      <div class="output-box">
-        <div class="output-header">
-          <label>Refined Suggestions</label>
-          <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
-        </div>
-        <pre id="refined_names"></pre>
-      </div>
-      <div class="output-box">
-        <div class="output-header">
-          <label>Refined Explanations</label>
-          <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
-        </div>
-        <pre id="refined_reasons"></pre>
-      </div>
-    </div>
-    <div id="history_section" class="history-section">
-      <h2>🕘 Recent History</h2>
-      <div id="history" class="history-inner"></div>
-    </div>
-    <div id="error" class="error"></div>
   </div>
 
+  <!-- Scripts -->
   <script src="config.js"></script>
   <script src="main.js"></script>
 </body>
