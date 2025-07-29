@@ -90,8 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
 const userEmail = "alice@example.com";
 const roundsLeft = 5;
 
-document.getElementById("user-email").textContent = userEmail;
-document.getElementById("rounds-left").textContent = `${roundsLeft} ${roundsLeft === 1 ? 'round' : 'rounds'}`;
+// These lines are not present in your index.html, so they will cause errors.
+// If you intend to add them, uncomment and ensure corresponding elements exist in HTML.
+// document.getElementById("user-email").textContent = userEmail;
+// document.getElementById("rounds-left").textContent = `${roundsLeft} ${roundsLeft === 1 ? 'round' : 'rounds'}`;
 
 function initializeUI() {
     outputContainer.classList.add("hidden-section");
