@@ -9,7 +9,7 @@ body {
     font-size: 16px;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding: 80px 20px 20px 20px; /* Adjusted for 60px topbar + 20px original padding */
+    padding: 20px; /* Reset to original padding, no extra for static topbar */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -54,18 +54,11 @@ body::before {
 }
 
 .topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: static; /* Static positioning as requested */
     width: 100%;
-    height: 60px; /* Set to 60px to ensure thickness */
-    min-height: 60px; /* Ensure it doesn't shrink */
-    background-image: url('topbar.png');
-    background-size: cover; /* Changed to cover to ensure the image fills the height */
-    background-repeat: no-repeat;
-    background-position: center; /* Center the image to avoid stretching issues */
-    z-index: 1000;
-    border-bottom: 2px solid #800080; /* Added a thicker purple line to enhance visibility */
+    height: 60px; /* 60 pixels thick */
+    background-color: #2a2a2a; /* Dark gray background */
+    border-bottom: 3px solid #800080; /* 3-pixel purple line at the bottom */
 }
 
 .container {
@@ -513,9 +506,5 @@ pre {
 
     .description {
         font-size: 1em;
-    }
-
-    body {
-        padding: 70px 10px 10px 10px; /* 60px topbar + 10px original padding */
     }
 }
