@@ -66,8 +66,8 @@ body::before {
 }
 
 .topbar:hover {
-    box-shadow: 0 3px 15px 0 #FF00FF;
-    transition: box-shadow 0.3s ease-in-out;
+    box-shadow: none; /* Removed glow effect */
+    transition: none;
 }
 
 .hex-button {
@@ -131,8 +131,8 @@ body::before {
 }
 
 .side-menu:hover {
-    box-shadow: 3px 0 15px 0 rgba(255, 0, 255, 0.3);
-    transition: box-shadow 0.3s ease-in-out;
+    box-shadow: none; /* Removed glow effect */
+    transition: none;
 }
 
 .container {
