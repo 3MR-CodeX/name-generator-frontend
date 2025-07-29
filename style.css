@@ -54,7 +54,7 @@ body::before {
 }
 
 .topbar {
-    position: fixed; /* Changed to fixed to stay at top while scrolling */
+    position: fixed; /* Remains fixed at the top */
     top: 0;
     left: 0;
     width: 100%;
@@ -65,8 +65,8 @@ body::before {
 }
 
 .topbar:hover {
-    border-bottom: 6px solid #FF00FF; /* Grows to 6px on hover */
-    transition: border-bottom-width 0.3s ease; /* Smooth transition */
+    box-shadow: 0 3px 10px 0 #FF00FF, 0 0 10px 2px #FF00FF; /* Glow effect on hover */
+    transition: box-shadow 0.3s ease; /* Smooth glow transition */
 }
 
 .container {
