@@ -9,7 +9,7 @@ body {
     font-size: 16px;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding: 60px 20px 20px 20px; /* Adjusted for topbar height */
+    padding: 80px 20px 20px 20px; /* Adjusted for 60px topbar + 20px original padding */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -59,30 +59,10 @@ body::before {
     left: 0;
     width: 100%;
     height: 60px;
+    background-image: url('topbar.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     z-index: 1000;
-}
-
-.top-section {
-    height: 36px; /* 60% of 60px */
-    background-color: #1a1a1a; /* Dark gray */
-}
-
-.bottom-section {
-    height: 24px; /* 40% of 60px */
-    background-color: #ff00ff; /* Vibrant magenta */
-    position: relative;
-    box-shadow: 2px 0 5px #cc00cc; /* Subtle 3D shadow on right */
-}
-
-/* Optional: Adding the vertical gap from description 3 */
-.bottom-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 50px; /* Adjust position as needed */
-    width: 2px;
-    height: 100%;
-    background-color: #1a1a1a; /* Matches top-section */
 }
 
 .container {
@@ -328,7 +308,7 @@ button:disabled {
 
 .output-section .output-box {
     flex: 1;
->    min-width: 300px;
+    min-width: 300px;
 }
 
 @keyframes fadeInContent {
@@ -516,7 +496,7 @@ pre {
 @media (max-width: 768px) {
     .input-section, .button-section, .output-section, .refine-button-section {
         flex-direction: column;
-        gap gratefully: 15px;
+        gap: 15px;
     }
 
     .input-box, .output-box, .generate-btn, .surprise-btn, .refine-btn {
@@ -533,6 +513,6 @@ pre {
     }
 
     body {
-        padding: 60px 10px 10px 10px;
+        padding: 70px 10px 10px 10px; /* 60px topbar + 10px original padding */
     }
 }
