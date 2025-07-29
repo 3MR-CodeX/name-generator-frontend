@@ -109,11 +109,13 @@
     document.addEventListener('DOMContentLoaded', () => {
         const hexButton = document.querySelector('.hex-button');
         const sideMenu = document.querySelector('.side-menu');
+        const body = document.body; // Reference to the body element
         let isMenuOpen = false;
 
         hexButton.addEventListener('click', () => {
             isMenuOpen = !isMenuOpen;
             sideMenu.classList.toggle('active');
+            body.classList.toggle('side-menu-active', isMenuOpen); // Toggle class on body
             if (isMenuOpen) {
                 hexButton.classList.add('open');
             } else {
