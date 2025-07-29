@@ -108,12 +108,16 @@
     document.addEventListener('DOMContentLoaded', () => {
         const hexButton = document.querySelector('.hex-button');
         const sideMenu = document.querySelector('.side-menu');
+        let isMenuOpen = false;
+
         hexButton.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
             sideMenu.classList.toggle('active');
-            hexButton.classList.add('animate');
-            setTimeout(() => {
-                hexButton.classList.remove('animate');
-            }, 500);
+            if (isMenuOpen) {
+                hexButton.classList.add('open');
+            } else {
+                hexButton.classList.remove('open');
+            }
         });
     });
     </script>
