@@ -48,7 +48,7 @@
     background-color: transparent; /* No background color */
     border: none;
     cursor: pointer;
-    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth animations */
+    transition: box-shadow 0.3s ease-in-out; /* Only box-shadow transition for hover */
     z-index: 1001; /* Ensure button is above other top bar elements if any */
     padding: 0; /* Remove default button padding */
     flex-shrink: 0; /* Prevent button from shrinking */
@@ -66,16 +66,16 @@
 /* Hamburger Line Styling */
 .hamburger-line {
     display: block;
-    width: 60%; /* Width relative to button size */
-    height: 4px; /* Thickness of the lines */
+    width: 40%; /* Smaller width relative to button size */
+    height: 3px; /* Thinner lines */
     background-color: #ffffff; /* White lines */
-    border-radius: 2px;
+    border-radius: 1.5px;
     position: absolute; /* Position lines within the button */
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .hamburger-line.line-top {
-    transform: translateY(-10px); /* Adjust position for top line */
+    transform: translateY(-8px); /* Adjust position for top line */
 }
 
 .hamburger-line.line-middle {
@@ -83,7 +83,7 @@
 }
 
 .hamburger-line.line-bottom {
-    transform: translateY(10px); /* Adjust position for bottom line */
+    transform: translateY(8px); /* Adjust position for bottom line */
 }
 
 /* Animation for lines when sidebar is open (button-rotated class is active) */
@@ -102,9 +102,8 @@
 
 /* Hover effects for hexagon button */
 #hexagon-button:hover {
-    transform: scale(1.1); /* Slightly bigger */
-    filter: brightness(1.2) saturate(1.2); /* Brighter and more saturated */
-    box-shadow: 0 0 15px 3px var(--line-purple-glow); /* Subtle glow */
+    /* Removed scale, brightness, saturate */
+    box-shadow: 0 0 0 4px var(--line-purple-glow); /* Deep purple outline glow */
 }
 
 @media (max-width: 768px) {
@@ -113,5 +112,15 @@
     }
     :root {
         --hexagon-button-size: 70px; /* Adjusted for mobile */
+    }
+    .hamburger-line {
+        width: 35%; /* Adjust for mobile */
+        height: 2px;
+    }
+    .hamburger-line.line-top {
+        transform: translateY(-6px);
+    }
+    .hamburger-line.line-bottom {
+        transform: translateY(6px);
     }
 }
