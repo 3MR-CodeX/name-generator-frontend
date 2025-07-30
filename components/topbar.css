@@ -87,8 +87,8 @@
     top: 50%;
     left: 50%;
     /* My hexagon is 75% of button size */
-    width: calc(var(--hexagon-button-size) * 0.6); 
-    height: calc(var(--hexagon-button-size) * 0.6); 
+    width: calc(var(--hexagon-button-size) * 0.65); 
+    height: calc(var(--hexagon-button-size) * 0.65); 
     transform: translate(-50%, -50%); /* Center the pseudo-element */
     background-color: transparent; /* Default transparent */
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
