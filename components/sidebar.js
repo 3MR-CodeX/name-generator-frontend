@@ -1,6 +1,7 @@
 // sidebar.js
 
-let isSidebarOpen = false; // State variable for sidebar
+// Make isSidebarOpen globally accessible
+window.isSidebarOpen = false; 
 
 // This function will be called by main.js after the HTML is loaded
 function initializeSidebar() {
@@ -9,15 +10,16 @@ function initializeSidebar() {
     const hexagonButton = document.getElementById("hexagon-button"); // Get button from topbar
 
     if (sidebar && overlay && hexagonButton) {
-        overlay.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', window.toggleSidebar);
 
         // Close sidebar if clicking anywhere outside sidebar and topbar
         document.body.addEventListener('click', (event) => {
-            if (isSidebarOpen &&
-                !sidebar.contains(event.target) &&
+            // Check if the click target is NOT within the sidebar, hexagon button, or top bar
+            if (window.isSidebarOpen && 
+                !sidebar.contains(event.target) && 
                 !hexagonButton.contains(event.target) &&
                 !document.getElementById('top-bar').contains(event.target)) {
-                toggleSidebar();
+                window.toggleSidebar();
             }
         });
     } else {
@@ -29,7 +31,7 @@ function initializeSidebar() {
  * Toggles the sidebar open/closed state and animates the hexagon button.
  * This function is made global so topbar.js can call it.
  */
-function toggleSidebar() {
+window.toggleSidebar = function() { // Attach to window for global access
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("overlay");
     const hexagonButton = document.getElementById("hexagon-button");
@@ -39,9 +41,9 @@ function toggleSidebar() {
         return;
     }
 
-    isSidebarOpen = !isSidebarOpen;
+    window.isSidebarOpen = !window.isSidebarOpen; // Update global state
 
-    if (isSidebarOpen) {
+    if (window.isSidebarOpen) {
         sidebar.classList.add('sidebar-open');
         hexagonButton.classList.add('button-rotated');
         overlay.classList.add('overlay-active');
@@ -56,7 +58,8 @@ function toggleSidebar() {
     }
 
     // After toggling, refresh history if sidebar is opening, or just ensure it's up to date
-    if (isSidebarOpen && typeof fetchHistory === 'function') {
-        fetchHistory(); // fetchHistory is defined in main.js
+    // Check if fetchHistory is defined globally (from main.js)
+    if (window.isSidebarOpen && typeof window.fetchHistory === 'function') {
+        window.fetchHistory(); 
     }
-}
+};
