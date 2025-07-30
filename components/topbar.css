@@ -71,7 +71,7 @@
     top: 50%;
     left: 50%;
     /* Move up by 4px */
-    transform: translate(-50%, calc(-50% - 4px)); 
+    transform: translate(-50%, calc(-50% - 3px)); 
     /* Made bigger, but smaller than the pseudo-element */
     width: calc(var(--hexagon-button-size) * 1); /* Changed to 73% of button size */
     height: calc(var(--hexagon-button-size) * 1); /* Changed to 73% of button size */
