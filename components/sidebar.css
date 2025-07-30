@@ -5,7 +5,7 @@
     left: calc(-1 * var(--sidebar-width)); /* Initially hidden off-screen to the left */
     width: var(--sidebar-width);
     height: calc(100vh - var(--top-bar-height)); /* Fills remaining vertical space */
-    background-image: url('sidebar.png'); /* Your sidebar image */
+    background-image: url('../sidebar.png'); /* Corrected path */
     background-size: cover;
     background-position: center;
     z-index: 999; /* Below top bar, above main content */
@@ -77,7 +77,7 @@
     visibility: visible;
 }
 
-/* History section in sidebar */
+/* History section in sidebar (for recent history) */
 .history-section {
     background-color: rgba(42, 42, 42, 0.7);
     padding: 15px;
