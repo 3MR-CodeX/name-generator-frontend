@@ -9,7 +9,7 @@ body {
     font-size: 16px;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding: 60px 20px 20px 20px; /* Updated to match topbar height */
+    padding-top: 60px; /* Adjust padding-top to the height of your new topbar.png */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -53,140 +53,91 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
-#topbar {
+/* New Top Bar styling */
+.top-bar-image {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px; /* or whatever your topbar image height is */
-    background-color: #000;
+    height: 60px; /* Assumed height for topbar.png */
+    background: url('topbar.png') no-repeat center center / cover;
     z-index: 1000;
-}
-#topbar img {
-    height: 100%;
-    width: auto; /* Adjusted to maintain aspect ratio */
-    display: block; /* Remove extra space below image */
+    /* Reduced transparency by 20% (from 100% opaque to 80%) is inherent in the image itself, if designed this way.
+       If it needs to be applied via CSS, use rgba background or filter opacity.
+       Assuming topbar.png is designed with desired transparency. */
+    box-shadow: none; /* No initial shadow */
+    transition: box-shadow 0.3s ease; /* Transition for glow */
 }
 
-.topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 45px; /* Reduced thickness by 15px (60px - 15px) */
-    background-color: rgba(42, 42, 42, 0.8); /* Reduced transparency by 20% (from 100% opaque to 80%) */
-    z-index: 1000;
-    border-bottom: 3px solid #FF00FF; /* This creates the purple line at the bottom of the top bar */
-    box-shadow: none;
-    transition: box-shadow 0.3s ease; /* Add transition for glow effect */
-}
-
-.topbar:hover {
+/* Glow effect for top bar image when hovering over its #2a2a2a color area, or the whole bar for simplicity */
+.top-bar-image:hover {
     box-shadow: 0 0 10px 2px #800080; /* Deep purple glow on hover */
-    transition: box-shadow 0.3s ease;
 }
 
+/* New Hexagon Button Styling */
 .hex-button {
     position: absolute;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 46.19px; /* Perfect hexagon height (sqrt(3)/2 * width) */
-    background-color: #3a3a3a;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Perfect hexagon with equal angles */
+    width: 40px; /* Assumed width for hexa.png */
+    height: 46.19px; /* Assumed height for hexa.png to maintain hexagon aspect ratio with width 40px */
+    background: url('hexa.png') no-repeat center center / contain; /* Use the provided PNG */
     cursor: pointer;
-    transition: transform 0.5s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow to transition */
-    z-index: 1001; /* Ensure hex button is above the topbar background image */
-    border: 2px solid white; /* White outline */
-    box-shadow: none; /* Ensure no initial shadow */
-}
-
-.hex-button:hover {
-    box-shadow: 0 0 10px 2px #800080; /* Purple glow on hover */
+    transition: transform 0.5s ease;
+    z-index: 1001; /* Ensure hex button is above the top bar */
+    border: none; /* Remove any default button borders */
+    outline: none; /* Remove any default button outlines */
 }
 
 .hex-button.open {
     transform: translateY(-50%) rotate(-90deg);
-    background-color: #800080;
 }
 
+/* New Side Menu Styling */
 .side-menu {
     position: fixed;
-    top: 42px; /* Adjusted to match new topbar height minus border-bottom (45px - 3px) */
+    top: 60px; /* Position below the top bar (height 60px) */
     left: 0;
-    width: 250px;
-    height: calc(100vh - 42px); /* Adjusted height to fill remaining screen */
-    background-color: transparent; /* Changed to transparent to allow pseudo-element background to show */
+    width: 250px; /* Assumed width for sidebar.png */
+    height: calc(100vh - 60px); /* Height to fill remaining screen below top bar */
+    background: url('sidebar.png') no-repeat left top / cover; /* Use the provided PNG as background */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 1001; /* Sidebar layer */
-    box-shadow: none;
-    border-radius: 0 0 8px 0;
-    overflow: hidden; 
+    box-shadow: none; /* No initial shadow */
+    border-radius: 0; /* No radius, as it's from the image */
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for glow effect */
 }
 
-.side-menu::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #2a2a2a; /* Reverted to original transparency */
-    z-index: 1000;
+/* The purple line on the right of the side menu from the image itself.
+   To make it glow when hovering over its body (which is the sidebar.png's #2a2a2a areas):
+   We apply the glow to the .side-menu itself, and it will appear on the image. */
+.side-menu:hover {
+    box-shadow: 0 0 10px 2px #800080; /* Deep purple glow on hover over the entire side menu image */
 }
-
-.side-menu::after { /* Using ::after for the purple line */
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 3px;
-    height: 100%;
-    background-color: #FF00FF;
-    z-index: 1002;
-    transition: box-shadow 0.3s ease; /* Add transition for glow effect */
-}
-
-/* Glow effect for side menu when hovering over its main background area */
-.side-menu:hover::before {
-    box-shadow: 0 0 10px 2px #800080; /* Deep purple glow for the background */
-    transition: box-shadow 0.3s ease;
-}
-
-/* Glow effect for the purple line on the side menu when hovering over its main background area */
-.side-menu:hover::after {
-    box-shadow: 0 0 10px 2px #800080; /* Deep purple glow for the line */
-    transition: box-shadow 0.3s ease;
-}
-
 
 .side-menu .side-menu-content {
+    /* This content div will sit on top of the background image. */
     position: relative;
-    z-index: 1001;
+    z-index: 1002; /* Ensure content is above the background image of the side menu */
     height: 100%;
     padding: 20px 0;
-    background: transparent;
+    background: transparent; /* Keep transparent to show sidebar.png */
 }
 
 .side-menu.active {
     transform: translateX(0);
 }
 
-.side-menu:hover {
-    box-shadow: none; /* No shadow on the .side-menu container itself */
-    transition: none; /* Prevent conflict with pseudo-element transitions */
-}
-
 /* --- Side Menu Overlay for Blur and Darken --- */
 .overlay-active {
     position: fixed;
-    top: 45px; /* Adjusted to new top bar height */
+    top: 60px; /* Adjusted to new top bar height */
     left: 0;
     width: 100%;
-    height: calc(100% - 45px); /* Adjusted to new top bar height */
+    height: calc(100% - 60px); /* Adjusted to new top bar height */
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(5px);
     z-index: 999;
@@ -203,7 +154,7 @@ body::before {
 .container {
     max-width: 1200px;
     width: 100%;
-    margin: 15px auto 0 auto; /* Added 15px top margin for the gap */
+    margin: 15px auto 0 auto; /* This creates the gap of 15px by pushing the container down */
     position: relative;
     z-index: 1;
     padding: 0 10px;
