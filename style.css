@@ -1,11 +1,15 @@
-/* reserve space for fixed header */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a;
+    background-color: #f9f9f9;
     color: #e0e0e0;
     padding: 20px;
-    padding-top: 60px;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -15,128 +19,99 @@ body {
     justify-content: flex-start;
 }
 
-/* --- Top bar --- */
-.top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background: rgba(26,26,26,0.95);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 1000;
+/* Top Bar */
+#top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 1000;
 }
 
-.topbar-img {
-  height: 40px;
-  object-fit: contain;
-}
-
-/* hexagon toggle button */
-.hex-btn {
-  background: none;
-  border: none;
-  width: 48px;
-  height: 48px;
-  cursor: pointer;
-  transition: transform 0.4s ease;
-}
-
-.hex-btn.rotated {
-  transform: rotate(-90deg);
-}
-
-/* --- Sidebar --- */
-.sidebar {
-  position: fixed;
-  top: 60px;
-  left: -260px;
-  width: 260px;
-  height: calc(100% - 60px);
-  background: rgba(26,26,26,0.95);
-  overflow-y: auto;
-  transition: left 0.5s ease;
-  z-index: 999;
-}
-
-.sidebar.active {
-  left: 0;
-}
-
-/* --- Click-outside overlay --- */
-#overlay {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 60px);
-  display: none;
-  z-index: 500;
-}
-
-#overlay.active {
-  display: block;
-}
-
-/* push your content back under the header */
-.main-content {
-  position: relative;
-  z-index: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 10px;
-}
-
-* {
-    margin: 0;
+/* Hexagon Menu Button */
+#menu-toggle {
+    background: none;
+    border: none;
     padding: 0;
-    box-sizing: border-box;
+    cursor: pointer;
+    outline: none;
+}
+#menu-button {
+    width: 48px;
+    transition: transform 0.3s ease;
+}
+#menu-button.active {
+    transform: rotate(-90deg);
 }
 
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
-    z-index: -2;
+/* Brand Title */
+#brand {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
 }
 
-body::before {
-    content: '';
+/* User Info */
+#user-info {
+    display: flex;
+    gap: 24px;
+    color: #fff;
+    font-size: 16px;
+}
+
+/* Side Bar */
+#side-bar {
     position: fixed;
-    top: 0;
+    top: 64px;
+    left: -260px;
+    width: 260px;
+    height: calc(100% - 64px);
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+    z-index: 999;
+}
+#side-bar.open {
     left: 0;
+}
+#sidebar-bg {
     width: 100%;
     height: 100%;
-    background: url('pattern.png') repeat;
-    background-size: 400px 400px;
-    z-index: -1;
+    object-fit: cover;
+}
+
+/* Overlay */
+#overlay {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 64px);
+    background: rgba(0,0,0,0.3);
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 998;
+}
+#overlay.show {
+    opacity: 1;
+    pointer-events: auto;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 0%; }
-    25% { background-position: 50% 100%; }
-    50% { background-position: 100% 50%; }
-    75% { background-position: 25% 75%; }
-    100% { background-position: 0% 0%; }
-}
-
-/* Main container to center content */
-.container {
+/* Main Content */
+#app {
+    padding-top: 64px;
+    position: relative;
+    z-index: 1;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
-    position: relative;
-    z-index: 1;
     padding: 0 10px;
 }
 
@@ -162,16 +137,9 @@ body::before {
     object-fit: contain;
 }
 
-h1 {
-    font-size: 3em;
-    color: #ffffff;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
 .description {
     font-size: 1.2em;
-    color: #cccccc;
+    color: #333333;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -203,13 +171,12 @@ h1 {
 }
 
 label {
-    color: #cccccc;
+    color: #333333;
     margin-bottom: 5px;
     font-size: 18px;
     font-weight: 500;
 }
 
-/* Tooltip styles */
 .tooltip-container {
     position: relative;
     display: inline-flex;
@@ -271,7 +238,7 @@ textarea, select {
     padding: 10px;
     font-size: 16px;
     width: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', 'Roboto', sans-serif;
 }
 
 textarea {
@@ -332,7 +299,6 @@ button:disabled {
     z-index: 1;
 }
 
-/* --- Animation Classes for Sections --- */
 .hidden-section {
     opacity: 0;
     max-height: 0;
@@ -452,7 +418,7 @@ pre {
 }
 
 .history-inner {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(58, 58, 58, 0.65);
     max-height: 120px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -497,7 +463,6 @@ pre {
     text-align: center;
 }
 
-/* --- Loading Spinner Styles --- */
 .spinner-overlay {
     position: absolute;
     top: 0;
@@ -534,7 +499,6 @@ pre {
     100% { transform: rotate(360deg); }
 }
 
-/* --- Error Placeholder Styling --- */
 .prompt-error-placeholder::placeholder {
     color: #ff5555;
     opacity: 1;
@@ -543,7 +507,6 @@ pre {
     border-color: #ff5555 !important;
 }
 
-/* --- Themed Scrollbar Styles --- */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -563,7 +526,6 @@ pre {
     background: #a020f0;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .input-section, .button-section, .output-section, .refine-button-section {
         flex-direction: column;
@@ -575,16 +537,11 @@ pre {
         width: 100%;
     }
 
-    h1 {
-        font-size: 2.5em;
-    }
-
     .description {
         font-size: 1em;
     }
 
     body {
         padding: 10px;
-        padding-top: 60px;
     }
 }
