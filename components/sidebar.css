@@ -1,0 +1,121 @@
+/* Side Bar Styling */
+#sidebar {
+    position: fixed;
+    top: var(--top-bar-height); /* Starts right below the top bar */
+    left: calc(-1 * var(--sidebar-width)); /* Initially hidden off-screen to the left */
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--top-bar-height)); /* Fills remaining vertical space */
+    background-image: url('sidebar.png'); /* Your sidebar image */
+    background-size: cover;
+    background-position: center;
+    z-index: 999; /* Below top bar, above main content */
+    transition: left 0.5s ease-in-out; /* Smooth sliding animation */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enable scrolling for sidebar content */
+}
+
+#sidebar.sidebar-open {
+    left: 0; /* Slide into view */
+}
+
+.sidebar-content {
+    color: #e0e0e0;
+}
+
+.sidebar-content h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.sidebar-content ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.sidebar-content ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar-content ul li a {
+    display: block;
+    padding: 10px 15px;
+    background-color: rgba(128, 0, 128, 0.7); /* Purple background */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 1.1em;
+}
+
+.sidebar-content ul li a:hover {
+    background-color: #a020f0;
+    transform: translateX(5px);
+}
+
+/* Overlay for closing sidebar */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 998; /* Below sidebar, above main content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+#overlay.overlay-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* History section in sidebar */
+.history-section {
+    background-color: rgba(42, 42, 42, 0.7);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #4a4a4a;
+    margin-top: 20px; /* Space from sidebar menu */
+}
+
+.history-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.history-inner {
+    background-color: rgba(42, 42, 42, 0.7);
+    max-height: 200px; /* Increased height for sidebar history */
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.history-item {
+    background-color: rgba(58, 58, 58, 0.65);
+    color: #e0e0e0;
+    border: none;
+    padding: 8px 12px;
+    margin: 5px 0; /* Adjusted margin for sidebar list */
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+}
+
+.history-item:hover {
+    background-color: #4a4a4a;
+}
