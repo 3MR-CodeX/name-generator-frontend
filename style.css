@@ -125,7 +125,7 @@ h1 {
 }
 
 .input-box {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.85); /* Less transparent */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -204,7 +204,7 @@ label {
 }
 
 textarea, select {
-    background-color: rgba(58, 58, 58, 0.65);
+    background-color: rgba(58, 58, 58, 0.85); /* Less transparent */
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -322,7 +322,7 @@ button:disabled {
 }
 
 .output-box {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.85); /* Less transparent */
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
@@ -357,7 +357,7 @@ button:disabled {
 }
 
 pre {
-    background-color: rgba(58, 58, 58, 0.65);
+    background-color: rgba(58, 58, 58, 0.85); /* Less transparent */
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -371,7 +371,7 @@ pre {
 }
 
 .refine-section {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.85); /* Less transparent */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -571,7 +571,7 @@ pre {
 
 /* Daily history container within the modal */
 .daily-history-container {
-    background-color: #4c4c4c; /* Lighter gray background */
+    background-color: rgba(76, 76, 76, 0.85); /* Lighter gray background, less transparent */
     border-radius: 8px;
     padding: 10px;
     margin-bottom: 15px; /* Space between daily containers */
@@ -590,7 +590,7 @@ pre {
 
 /* Recent History section moved back to main content */
 .history-section {
-    background-color: rgba(42, 42, 42, 0.7);
+    background-color: rgba(42, 42, 42, 0.85); /* Less transparent */
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
@@ -605,7 +605,7 @@ pre {
 }
 
 .history-inner {
-    background-color: rgba(58, 58, 58, 0.65);
+    background-color: rgba(58, 58, 58, 0.85); /* Less transparent */
     max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -615,7 +615,7 @@ pre {
 }
 
 .history-item {
-    background-color: rgba(58, 58, 58, 0.65);
+    background-color: rgba(58, 58, 58, 0.85); /* Less transparent */
     color: #e0e0e0;
     border: none;
     padding: 8px 12px;
@@ -647,7 +647,7 @@ pre {
     color: var(--line-purple-default);
 }
 #details-content pre {
-    background-color: rgba(58, 58, 58, 0.65);
+    background-color: rgba(58, 58, 58, 0.85); /* Less transparent */
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
