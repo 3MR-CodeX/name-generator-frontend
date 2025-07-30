@@ -77,10 +77,15 @@ const editBox = document.getElementById("edit_box");
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 
-// New UI elements for history modal
-const historyModal = document.getElementById("history-modal");
-const closeButton = document.querySelector("#history-modal .close-button");
+// New UI elements for history modals
+const historyModal = document.getElementById("history-modal"); // Full history list modal
+const closeButtonHistoryModal = document.querySelector("#history-modal .close-button");
 const fullHistoryList = document.getElementById("full-history-list");
+
+const historyDetailsModal = document.getElementById("history-details-modal"); // History details modal
+const closeButtonDetailsModal = document.querySelector("#history-details-modal .close-button");
+const detailsContent = document.getElementById("details-content"); // Content area for details modal
+
 const recentHistorySection = document.getElementById("history_section"); // Reference to the recent history section
 const recentHistoryDiv = document.getElementById("history"); // Reference to the recent history div inside the section
 
@@ -105,12 +110,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     // No initial fetch for history here, it will be fetched on first generation
     setupTooltips();
 
-    // Event listeners for history modal
-    if (historyModal && closeButton) {
-        closeButton.addEventListener('click', closeHistoryModal);
+    // Event listeners for full history list modal
+    if (historyModal && closeButtonHistoryModal) {
+        closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
         window.addEventListener('click', (event) => {
             if (event.target == historyModal) {
                 closeHistoryModal();
+            }
+        });
+    }
+
+    // Event listeners for history details modal
+    if (historyDetailsModal && closeButtonDetailsModal) {
+        closeButtonDetailsModal.addEventListener('click', closeHistoryDetailsModal);
+        window.addEventListener('click', (event) => {
+            if (event.target == historyDetailsModal) {
+                closeHistoryDetailsModal();
             }
         });
     }
@@ -320,7 +335,7 @@ async function generateName() {
         // Show recent history section after successful generation
         recentHistorySection.classList.remove("hidden-section");
         recentHistorySection.classList.add("visible-section");
-        fetchHistory(); // Refresh history after successful generation
+        fetchHistory(false); // Refresh recent history after successful generation
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
@@ -388,7 +403,7 @@ async function refineNames() {
         refinedOutputs.classList.remove("hidden-section");
         refinedOutputs.classList.add("visible-section");
 
-        fetchHistory(); // Refresh history after successful refinement
+        fetchHistory(false); // Refresh recent history after successful refinement
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
@@ -430,35 +445,64 @@ function renderHistory(history, renderToModal = false) {
 
     targetDiv.innerHTML = ""; // Clear previous content
 
-    if (history.length === 0) {
+    let historyToRender = history;
+    if (!renderToModal) {
+        // For recent history, only show the last 100 entries
+        historyToRender = history.slice(0, 100);
+    }
+
+    if (historyToRender.length === 0) {
         targetDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
         return;
     }
 
-    // Group history by date
-    const groupedHistory = history.reduce((acc, entry) => {
-        const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-        if (!acc[date]) {
-            acc[date] = [];
+    // Group history by date for modal, or just render directly for recent history
+    if (renderToModal) {
+        const groupedHistory = historyToRender.reduce((acc, entry) => {
+            const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            if (!acc[date]) {
+                acc[date] = [];
+            }
+            acc[date].push(entry);
+            return acc;
+        }, {});
+
+        for (const date in groupedHistory) {
+            const dailyContainer = document.createElement('div');
+            dailyContainer.className = 'daily-history-container';
+
+            const dateHeading = document.createElement('h3');
+            dateHeading.textContent = date;
+            dailyContainer.appendChild(dateHeading);
+
+            groupedHistory[date].forEach(entry => {
+                const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
+                const tooltip = entry.category !== "Refined" ?
+                    `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
+                    `Refine Instruction: ${entry.prompt}`;
+                
+                let preRefined = '';
+                if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
+                    preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
+                }
+
+                const button = document.createElement('button');
+                button.className = 'history-item';
+                button.title = tooltip;
+                button.innerHTML = `${names}${preRefined}`;
+                // For full history, clicking opens details modal
+                button.onclick = () => showHistoryDetails(entry.id); 
+                dailyContainer.appendChild(button);
+            });
+            targetDiv.appendChild(dailyContainer);
         }
-        acc[date].push(entry);
-        return acc;
-    }, {});
-
-    // Render grouped history
-    for (const date in groupedHistory) {
-        const dailyContainer = document.createElement('div');
-        dailyContainer.className = 'daily-history-container';
-
-        const dateHeading = document.createElement('h3');
-        dateHeading.textContent = date;
-        dailyContainer.appendChild(dateHeading);
-
-        groupedHistory[date].forEach(entry => {
+    } else {
+        // For recent history, just append items directly
+        historyToRender.forEach(entry => {
             const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
             const tooltip = entry.category !== "Refined" ?
                 `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
@@ -473,10 +517,10 @@ function renderHistory(history, renderToModal = false) {
             button.className = 'history-item';
             button.title = tooltip;
             button.innerHTML = `${names}${preRefined}`;
-            button.onclick = () => restoreHistory(entry.id);
-            dailyContainer.appendChild(button);
+            // For recent history, clicking restores to main form
+            button.onclick = () => restoreHistory(entry.id); 
+            targetDiv.appendChild(button);
         });
-        targetDiv.appendChild(dailyContainer);
     }
 }
 
@@ -490,8 +534,9 @@ function restoreHistory(id) {
     editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
 
-    // Close modal if open
+    // Close any open modals
     closeHistoryModal();
+    closeHistoryDetailsModal();
 
     fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
@@ -512,7 +557,7 @@ function restoreHistory(id) {
             outputContainer.classList.add("visible-section");
             
             // Show refine section and button ONLY if prompt has content
-            if (promptInput.value.trim()) {
+            if (entry.category !== "Refined" && promptInput.value.trim()) { // Only show refine for non-refined entries
                 refineSection.classList.remove("hidden-section");
                 refineSection.classList.add("visible-section");
                 refineBtn.classList.remove("hidden-section");
@@ -553,7 +598,7 @@ function restoreHistory(id) {
                 outputContainer.classList.remove("hidden-section");
                 outputContainer.classList.add("visible-section");
                 
-                if (promptInput.value.trim()) {
+                if (latestEntry.category !== "Refined" && promptInput.value.trim()) {
                     refineSection.classList.remove("hidden-section");
                     refineSection.classList.add("visible-section");
                     refineBtn.classList.remove("hidden-section");
@@ -671,12 +716,12 @@ function setupTooltips() {
 }
 
 /**
- * Opens the full history modal.
+ * Opens the full history list modal.
  */
 function openHistoryModal() {
     if (historyModal) {
         historyModal.classList.add('active');
-        fetchHistory(true); // Fetch and render history directly to the modal
+        fetchHistory(true); // Fetch and render ALL history to the modal
     }
     // Close sidebar if it's open when modal is opened
     if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
@@ -685,10 +730,72 @@ function openHistoryModal() {
 }
 
 /**
- * Closes the full history modal.
+ * Closes the full history list modal.
  */
 function closeHistoryModal() {
     if (historyModal) {
         historyModal.classList.remove('active');
+    }
+}
+
+/**
+ * Opens the history details modal and populates it with specific entry data.
+ * @param {string} id The ID of the history entry to display.
+ */
+async function showHistoryDetails(id) {
+    if (!historyDetailsModal || !detailsContent) {
+        console.error("History details modal elements not found.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/history`);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Unknown error fetching history for details.");
+        }
+        const historyData = await response.json();
+        const entry = historyData.find(e => e.id === id);
+
+        if (entry) {
+            let contentHtml = '';
+            contentHtml += `<p><strong>Timestamp:</strong> ${new Date(entry.timestamp).toLocaleString()}</p>`;
+
+            if (entry.category === "Refined") {
+                contentHtml += `<p><strong>Refine Instruction:</strong> ${entry.prompt}</p>`;
+                contentHtml += `<p><strong>Refined Names:</strong></p><pre>${entry.names.map(cleanNames).join("\n")}</pre>`;
+                contentHtml += `<p><strong>Refined Explanations:</strong></p><pre>${entry.reasons.map(cleanNames).join("\n")}</pre>`;
+                if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
+                    contentHtml += `<p><strong>Original Names (Pre-Refined):</strong></p><pre>${entry.pre_refined_names.map(cleanNames).join("\n")}</pre>`;
+                }
+            } else {
+                contentHtml += `<p><strong>Prompt:</strong> ${entry.prompt}</p>`;
+                contentHtml += `<p><strong>Category:</strong> ${entry.category}</p>`;
+                contentHtml += `<p><strong>Style:</strong> ${entry.style}</p>`;
+                contentHtml += `<p><strong>Language:</strong> ${entry.language}</p>`;
+                contentHtml += `<p><strong>Generated Names:</strong></p><pre>${entry.names.map(cleanNames).join("\n")}</pre>`;
+                contentHtml += `<p><strong>Explanations:</strong></p><pre>${entry.reasons.map(cleanNames).join("\n")}</pre>`;
+            }
+            
+            detailsContent.innerHTML = contentHtml;
+            historyDetailsModal.classList.add('active');
+            closeHistoryModal(); // Close the list modal when opening details
+        } else {
+            console.error("History entry not found for ID:", id);
+            document.getElementById("error").textContent = "Error: History entry not found.";
+        }
+    } catch (error) {
+        console.error("Error displaying history details:", error);
+        document.getElementById("error").textContent = "Error displaying history details: " + error.message;
+    }
+}
+
+/**
+ * Closes the history details modal.
+ */
+function closeHistoryDetailsModal() {
+    if (historyDetailsModal) {
+        historyDetailsModal.classList.remove('active');
+        detailsContent.innerHTML = ''; // Clear content when closing
     }
 }
