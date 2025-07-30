@@ -511,10 +511,10 @@ pre {
 }
 
 .modal-content {
-    background-color: rgba(42, 42, 42, 0.9); /* Dark grey, slightly opaque */
+    background-color: #333333; /* Dark grey background */
     margin: auto;
     padding: 20px;
-    border: 1px solid var(--line-purple-glow); /* Purple border */
+    border: 2px solid var(--line-purple-default); /* 2px vibrant purple border */
     border-radius: 12px;
     width: 90%;
     max-width: 700px; /* Max width for the modal */
@@ -560,15 +560,33 @@ pre {
 #full-history-list {
     max-height: 500px; /* Max height for modal history list */
     overflow-y: auto;
-    background-color: rgba(58, 58, 58, 0.65); /* Grey, 65% opaque */
-    border: 1px solid #4a4a4a;
-    border-radius: 8px;
-    padding: 10px;
+    background-color: transparent; /* Changed to transparent for daily containers */
+    border: none; /* Removed border from here */
+    padding: 0; /* Removed padding from here */
 }
 
 #full-history-list .history-item {
     margin: 5px 0; /* Adjust margin for items in modal */
 }
+
+/* Daily history container within the modal */
+.daily-history-container {
+    background-color: #4c4c4c; /* Lighter gray background */
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px; /* Space between daily containers */
+    border: 1px solid #5a5a5a; /* Subtle border for definition */
+}
+
+.daily-history-container h3 {
+    color: #ffffff;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Separator line */
+}
+
 
 /* Recent History section moved back to main content */
 .history-section {
