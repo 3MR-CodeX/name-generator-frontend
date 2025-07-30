@@ -4,7 +4,8 @@
 function initializeTopbar() {
     const hexagonButton = document.getElementById("hexagon-button");
     if (hexagonButton) {
-        hexagonButton.addEventListener('click', toggleSidebar); // toggleSidebar is defined in sidebar.js
+        // Ensure toggleSidebar is globally accessible (defined in sidebar.js and attached to window)
+        hexagonButton.addEventListener('click', window.toggleSidebar); 
     } else {
         console.error("Hexagon button not found in topbar.html");
     }
