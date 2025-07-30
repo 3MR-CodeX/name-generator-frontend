@@ -73,8 +73,8 @@
     /* Move up by 4px */
     transform: translate(-50%, calc(-50% - 4px)); 
     /* Made bigger, but smaller than the pseudo-element */
-    width: calc(var(--hexagon-button-size) * 0.65); /* 65% of button size */
-    height: calc(var(--hexagon-button-size) * 0.65); /* 65% of button size */
+    width: calc(var(--hexagon-button-size) * 0.70); /* 70% of button size */
+    height: calc(var(--hexagon-button-size) * 0.70); /* 70% of button size */
     object-fit: contain; /* Ensure the image fits */
     z-index: 2; /* On top of the pseudo-element, below lines */
     transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Add transition for size/position */
@@ -111,8 +111,8 @@
 /* Hamburger Dot Styling (replaces lines) */
 .hamburger-line { /* Renamed to hamburger-line for consistency with HTML structure */
     display: block;
-    width: 4px; /* Smaller Dot size */
-    height: 4px; /* Smaller Dot size */
+    width: 6px; /* Reverted to original Dot size */
+    height: 6px; /* Reverted to original Dot size */
     border-radius: 50%; /* Make it a circle */
     background-color: #ffffff; /* White dots */
     position: absolute; /* Position dots within the button */
@@ -124,7 +124,7 @@
 
 /* Initial Dot Positions (Vertically stacked, middle dot exactly in center) */
 .hamburger-line.line-top {
-    transform: translateX(-50%) translateY(-6px); /* Adjusted for 1px down, and dot spacing */
+    transform: translateX(-50%) translateY(-8px); /* Adjusted for dot spacing */
 }
 
 .hamburger-line.line-middle {
@@ -132,7 +132,7 @@
 }
 
 .hamburger-line.line-bottom {
-    transform: translateX(-50%) translateY(6px); /* Adjusted for 1px down, and dot spacing */
+    transform: translateX(-50%) translateY(8px); /* Adjusted for dot spacing */
 }
 
 /* Bounce animation on hover for dots */
@@ -146,9 +146,9 @@
 }
 
 /* Set initial-y custom property for each dot */
-.hamburger-line.line-top { --initial-y: -6px; }
+.hamburger-line.line-top { --initial-y: -8px; }
 .hamburger-line.line-middle { --initial-y: 0px; }
-.hamburger-line.line-bottom { --initial-y: 6px; }
+.hamburger-line.line-bottom { --initial-y: 8px; }
 
 
 /* Animation for dots when sidebar is open (button-rotated class is active) */
@@ -167,8 +167,8 @@
 
 #hexagon-button.button-rotated .line-middle {
     transform: translateX(-50%) translateY(0px); /* Keep middle dot in center */
-    width: 16px; /* Make it smaller */
-    height: 16px; /* Make it smaller */
+    width: 10px; /* Make it just a little bigger */
+    height: 10px; /* Make it just a little bigger */
     background-color: var(--line-purple-glow); /* Change color to purple */
 }
 
@@ -181,26 +181,26 @@
         --hexagon-button-size: 60px; /* Adjusted for mobile */
     }
     .hexagon-image {
-        width: calc(var(--hexagon-button-size) * 0.65); /* 65% of button size for mobile */
-        height: calc(var(--hexagon-button-size) * 0.65); /* 65% of button size for mobile */
+        width: calc(var(--hexagon-button-size) * 0.70); /* 70% of button size for mobile */
+        height: calc(var(--hexagon-button-size) * 0.70); /* 70% of button size for mobile */
     }
     .hamburger-line {
-        width: 3px; /* Smaller dots for mobile */
-        height: 3px; /* Smaller dots for mobile */
+        width: 4px; /* Smaller dots for mobile */
+        height: 4px; /* Smaller dots for mobile */
     }
     .hamburger-line.line-top {
-        transform: translateX(-50%) translateY(-4px); /* Adjusted for mobile dots */
+        transform: translateX(-50%) translateY(-6px); /* Adjusted for mobile dots */
     }
     .hamburger-line.line-middle {
         transform: translateX(-50%) translateY(0px); /* Adjusted for mobile dots */
     }
     .hamburger-line.line-bottom {
-        transform: translateX(-50%) translateY(4px); /* Adjusted for mobile dots */
+        transform: translateX(-50%) translateY(6px); /* Adjusted for mobile dots */
     }
 
     /* Mobile Merged Ball */
     #hexagon-button.button-rotated .line-middle {
-        width: 12px; /* Smaller merged ball for mobile */
-        height: 12px; /* Smaller merged ball for mobile */
+        width: 8px; /* Smaller merged ball for mobile */
+        height: 8px; /* Smaller merged ball for mobile */
     }
 }
