@@ -75,7 +75,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 60px;
-    background-color: #2a2a2a;
+    background-color: rgba(42, 42, 42, 0.85); /* Adjusted transparency */
     z-index: 1000;
     border-bottom: 3px solid #FF00FF; /* This creates the purple line at the bottom of the top bar */
     box-shadow: none;
@@ -120,7 +120,7 @@ body::before {
     transition: transform 0.3s ease;
     z-index: 1001; /* Sidebar layer */
     box-shadow: none;
-    border-radius: 0 0 8px 0; /* Updated for sharp top-right edge */
+    border-radius: 0 0 8px 0;
     /* Add overflow hidden to contain pseudo-element correctly if needed */
     overflow: hidden; 
 }
@@ -132,7 +132,7 @@ body::before {
     left: 0; /* Changed to left: 0; */
     width: 100%; /* Make it span the full width of the side-menu */
     height: 100%; /* Make it span the full height */
-    background-color: #2a2a2a; /* Main background color for the sidebar */
+    background-color: rgba(42, 42, 42, 0.85); /* Adjusted transparency */
     z-index: 1000; /* Background layer */
 }
 
@@ -183,9 +183,6 @@ body::before {
     opacity: 1;
     visibility: visible;
 }
-
-/* Removed body.side-menu-active padding */
-
 
 .container {
     max-width: 1200px;
