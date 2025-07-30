@@ -1,0 +1,53 @@
+/* Top Bar Styling */
+#top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--top-bar-height);
+    background-image: url('topbar.png'); /* Your top bar image */
+    background-size: cover;
+    background-position: center;
+    z-index: 1000; /* Ensure it's on top of everything */
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+#top-bar h1 {
+    font-size: 2.5em; /* Adjusted for top bar */
+    color: #ffffff;
+    margin: 0 auto; /* Center the title */
+    position: absolute; /* Allow centering regardless of button */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+/* Hexagon Button Styling */
+#hexagon-button {
+    position: relative; /* Positioned within the flex container of top-bar */
+    width: var(--hexagon-button-size);
+    height: var(--hexagon-button-size);
+    background-image: url('hexa.png'); /* Your hexagon button image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent; /* No background color */
+    border: none;
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out; /* Smooth rotation animation */
+    z-index: 1001; /* Ensure button is above other top bar elements if any */
+    padding: 0; /* Remove default button padding */
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+#hexagon-button.button-rotated {
+    transform: rotate(-90deg); /* Rotate 90 degrees counter-clockwise */
+}
+
+@media (max-width: 768px) {
+    #top-bar h1 {
+        font-size: 1.8em;
+    }
+}
