@@ -463,7 +463,7 @@ function renderHistory(history, renderToModal = false) {
 
     // Group history by date for modal, or just render directly for recent history
     if (renderToModal) {
-        const groupedHistory = historyToRender.reduce((acc, entry) => {
+        const groupedHistory = historyToToRender.reduce((acc, entry) => { // Use historyToRender here
             const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
@@ -521,7 +521,7 @@ function renderHistory(history, renderToModal = false) {
             let preRefined = '';
             if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
                 preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
-            }
+                }
 
             const button = document.createElement('button');
             button.className = 'history-item';
@@ -739,6 +739,7 @@ function openHistoryModal() {
     }
 }
 
+/**
 /**
  * Closes the full history list modal.
  */
