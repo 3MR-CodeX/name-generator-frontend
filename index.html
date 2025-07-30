@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Bar Example</title>
+    <title>NameIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="top-bar-image">
-        <div class="hex-button"></div>
+    <!-- Top Bar -->
+    <div class="topbar">
+        <button class="hexa-btn" onclick="toggleSidebar()">
+            <img src="hexa.png" alt="Menu Button" class="hexa-img">
+        </button>
     </div>
-    
-    <div class="side-menu">
-        <div class="side-menu-content"></div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-content">
+            <!-- Sidebar content can be added here -->
+            <p>Sidebar Menu</p>
+        </div>
     </div>
-
-    <div id="sidebar-overlay" class="overlay-active"></div>
-
     <div class="banner-col">
         <img src="banner.png" alt="Banner" id="banner">
     </div>
@@ -108,21 +113,5 @@
 
     <script src="config.js"></script>
     <script src="main.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const hexButton = document.querySelector('.hex-button');
-        const sideMenu = document.querySelector('.side-menu');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-        let isMenuOpen = false;
-
-        hexButton.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            sideMenu.classList.toggle('active');
-            hexButton.classList.toggle('open', isMenuOpen);
-
-            sidebarOverlay.classList.toggle('show', isMenuOpen);
-        });
-    });
-    </script>
 </body>
 </html>
