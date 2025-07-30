@@ -5,9 +5,11 @@
     left: calc(-1 * var(--sidebar-width)); /* Initially hidden off-screen to the left */
     width: var(--sidebar-width);
     height: calc(100vh - var(--top-bar-height)); /* Fills remaining vertical space */
-    background-image: url('../sidebar.png'); /* Corrected path */
+    background-image: url('../sidebar.png'); /* Corrected path: one level up from components folder */
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat; /* Ensure image doesn't repeat */
+    background-color: #222; /* Fallback color */
     z-index: 999; /* Below top bar, above main content */
     transition: left 0.5s ease-in-out; /* Smooth sliding animation */
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
