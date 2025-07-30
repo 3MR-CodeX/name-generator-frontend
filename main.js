@@ -81,7 +81,8 @@ const surpriseBtn = document.querySelector(".surprise-btn");
 const historyModal = document.getElementById("history-modal");
 const closeButton = document.querySelector("#history-modal .close-button");
 const fullHistoryList = document.getElementById("full-history-list");
-const recentHistoryDiv = document.getElementById("history"); // Reference to the recent history div in main content
+const recentHistorySection = document.getElementById("history_section"); // Reference to the recent history section
+const recentHistoryDiv = document.getElementById("history"); // Reference to the recent history div inside the section
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    fetchHistory(); // Initial fetch for recent history in main content
+    // No initial fetch for history here, it will be fetched on first generation
     setupTooltips();
 
     // Event listeners for history modal
@@ -141,6 +142,9 @@ function initializeUI() {
     refineSection.classList.add("hidden-section");
     refinedOutputs.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
+    // Ensure history section is hidden initially
+    recentHistorySection.classList.add("hidden-section");
+
 
     // Store original placeholders for error messaging
     if (!promptInput.dataset.originalPlaceholder) {
@@ -313,6 +317,9 @@ async function generateName() {
         refineBtn.classList.remove("hidden-section");
         refineBtn.classList.add("visible-section");
         
+        // Show recent history section after successful generation
+        recentHistorySection.classList.remove("hidden-section");
+        recentHistorySection.classList.add("visible-section");
         fetchHistory(); // Refresh history after successful generation
 
     } catch (error) {
@@ -486,6 +493,10 @@ function restoreHistory(id) {
             refinedOutputs.classList.remove("visible-section");
             refinedOutputs.classList.add("hidden-section");
 
+            // Show recent history section
+            recentHistorySection.classList.remove("hidden-section");
+            recentHistorySection.classList.add("visible-section");
+
             // Close sidebar if it's open after restoring history
             if (typeof toggleSidebar === 'function' && window.isSidebarOpen) { // Access isSidebarOpen globally
                 toggleSidebar();
@@ -521,6 +532,10 @@ function restoreHistory(id) {
                 refinedOutputs.classList.remove("visible-section");
                 refinedOutputs.classList.add("hidden-section");
 
+                // Show recent history section
+                recentHistorySection.classList.remove("hidden-section");
+                recentHistorySection.classList.add("visible-section");
+
                 if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
                     toggleSidebar();
                 }
@@ -552,7 +567,7 @@ function copyToClipboard(elementId) {
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #800080;
+            background-color: var(--button-purple);
             color: white;
             padding: 10px 20px;
             border-radius: 8px;
@@ -584,6 +599,10 @@ function resetDynamicSections() {
     refinedOutputs.classList.add("hidden-section");
     refineBtn.classList.remove("visible-section");
     refineBtn.classList.add("hidden-section");
+    // Ensure recent history section is hidden
+    recentHistorySection.classList.remove("visible-section");
+    recentHistorySection.classList.add("hidden-section");
+
 
     // Clear content of pre tags
     namesPre.textContent = "";
