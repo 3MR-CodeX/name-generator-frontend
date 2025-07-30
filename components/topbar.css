@@ -73,8 +73,8 @@
     /* Move up by 4px */
     transform: translate(-50%, calc(-50% - 3px)); 
     /* Made bigger, but smaller than the pseudo-element */
-    width: calc(var(--hexagon-button-size) * 1.25); /* Changed to 73% of button size */
-    height: calc(var(--hexagon-button-size) * 1.25); /* Changed to 73% of button size */
+    width: calc(var(--hexagon-button-size) * 1.15); /* Changed to 73% of button size */
+    height: calc(var(--hexagon-button-size) * 1.15); /* Changed to 73% of button size */
     object-fit: contain; /* Ensure the image fits */
     z-index: 2; /* On top of the pseudo-element, below lines */
     transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Add transition for size/position */
@@ -87,8 +87,8 @@
     top: 50%;
     left: 50%;
     /* My hexagon is 75% of button size */
-    width: calc(var(--hexagon-button-size) * 0.7); 
-    height: calc(var(--hexagon-button-size) * 0.7); 
+    width: calc(var(--hexagon-button-size) * 0.6); 
+    height: calc(var(--hexagon-button-size) * 0.6); 
     transform: translate(-50%, -50%); /* Center the pseudo-element */
     background-color: transparent; /* Default transparent */
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
