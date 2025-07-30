@@ -62,6 +62,7 @@
 
     /* Move the entire button container (and its contents) 5 pixels to the left */
     transform: translateX(-5px);
+    transform-origin: center center; /* Ensure rotation is around the center */
 }
 
 /* My hexagonV2.png image inside the button */
@@ -83,8 +84,8 @@
     top: 50%;
     left: 50%;
     /* Adjust size to be slightly bigger than the button, and center it */
-    width: calc(var(--hexagon-button-size) + 2px); /* Made smaller frame */
-    height: calc(var(--hexagon-button-size) + 2px); /* Made smaller frame */
+    width: calc(var(--hexagon-button-size) + 1px); /* Made smaller by half (from +2px to +1px) */
+    height: calc(var(--hexagon-button-size) + 1px); /* Made smaller by half */
     transform: translate(-50%, -50%); /* Center the pseudo-element */
     background-color: transparent; /* Default transparent */
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
@@ -117,15 +118,15 @@
 }
 
 .hamburger-line.line-top {
-    transform: translateY(-3.5px); /* Adjusted position for top line */
+    transform: translateY(-2.5px); /* Adjusted position for top line (down by 1px from -3.5px) */
 }
 
 .hamburger-line.line-middle {
-    transform: translateY(2px); /* Adjusted position for middle line */
+    transform: translateY(3px); /* Adjusted position for middle line (down by 1px from 2px) */
 }
 
 .hamburger-line.line-bottom {
-    transform: translateY(7.5px); /* Adjusted position for bottom line */
+    transform: translateY(8.5px); /* Adjusted position for bottom line (down by 1px from 7.5px) */
 }
 
 /* Animation for lines when sidebar is open (button-rotated class is active) */
@@ -134,7 +135,7 @@
 }
 
 #hexagon-button.button-rotated .line-top {
-    transform: translateY(2px) rotate(45deg); /* Adjusted for new base translateY */
+    transform: translateY(0) rotate(45deg); /* Adjusted to ensure perfect X alignment at center */
 }
 
 #hexagon-button.button-rotated .line-middle {
@@ -142,7 +143,7 @@
 }
 
 #hexagon-button.button-rotated .line-bottom {
-    transform: translateY(2px) rotate(-45deg); /* Adjusted for new base translateY */
+    transform: translateY(0) rotate(-45deg); /* Adjusted to ensure perfect X alignment at center */
 }
 
 
@@ -158,12 +159,12 @@
         height: 1px;
     }
     .hamburger-line.line-top {
-        transform: translateY(-2.5px); /* Adjusted for mobile */
+        transform: translateY(-2px); /* Adjusted for mobile */
     }
     .hamburger-line.line-middle {
-        transform: translateY(1.5px); /* Adjusted for mobile */
+        transform: translateY(1px); /* Adjusted for mobile */
     }
     .hamburger-line.line-bottom {
-        transform: translateY(5.5px); /* Adjusted for mobile */
+        transform: translateY(4px); /* Adjusted for mobile */
     }
 }
