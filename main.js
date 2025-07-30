@@ -463,7 +463,7 @@ function renderHistory(history, renderToModal = false) {
 
     // Group history by date for modal, or just render directly for recent history
     if (renderToModal) {
-        const groupedHistory = historyToToRender.reduce((acc, entry) => { // Use historyToRender here
+        const groupedHistory = historyToRender.reduce((acc, entry) => {
             const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
