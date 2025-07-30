@@ -9,7 +9,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat; /* Ensure image doesn't repeat */
-    background-color: rgba(51, 51, 51, 0.85); /* Less transparent */
+    background-color: rgba(51, 51, 51, 0.95); /* Less transparent */
     z-index: 1000; /* Ensure it's on top of everything */
     display: flex;
     align-items: center;
@@ -42,7 +42,7 @@
     position: relative; /* Needed for pseudo-element positioning */
     width: var(--hexagon-button-size); /* Bigger hexagon button */
     height: var(--hexagon-button-size); /* Bigger hexagon button */
-    background-image: url('../hexagon.png'); /* Using the empty hexagon image */
+    background-image: url('../hexagonV2.png'); /* Using the renamed empty hexagon image */
     background-size: contain;
     background-repeat: no-repeat;
     background-color: transparent; /* No background color for the button itself */
@@ -62,17 +62,21 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    /* Move my hexagon.png 5 pixels to the left */
+    transform: translateX(-5px);
 }
 
-/* Pseudo-element for the glowing hexagon frame */
+/* Pseudo-element for the glowing hexagon frame (my hexagon) */
 #hexagon-button::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
+    /* Adjust size to be slightly bigger, and center it */
+    width: calc(var(--hexagon-button-size) + 8px); /* A little bigger than button */
+    height: calc(var(--hexagon-button-size) + 8px); /* A little bigger than button */
     transform: translate(-50%, -50%); /* Center the pseudo-element */
-    width: calc(var(--hexagon-button-size) + 10px); /* Slightly larger */
-    height: calc(var(--hexagon-button-size) + 10px); /* Slightly larger */
     background-color: transparent; /* Default transparent */
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
     -webkit-clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
@@ -82,13 +86,19 @@
 
 /* Glow effect on hover for the pseudo-element */
 #hexagon-button:hover::before {
-    background-color: var(--line-purple-glow); /* Deep purple glow */
+    background-color: var(--line-purple-default); /* Glow in #ff00ff on hover */
 }
+
+/* Color change animation for pseudo-element when sidebar is open */
+#hexagon-button.button-rotated::before {
+    background-color: var(--line-purple-glow); /* Change to #a500ff when sidebar open */
+}
+
 
 /* Hamburger Line Styling */
 .hamburger-line {
     display: block;
-    width: 30%; /* Smaller width relative to button size */
+    width: 25%; /* Smaller width relative to button size */
     height: 2px; /* Thinner lines */
     background-color: #ffffff; /* White lines */
     border-radius: 1px;
@@ -97,24 +107,24 @@
 }
 
 .hamburger-line.line-top {
-    transform: translateY(-3px); /* Adjusted position for top line (moved down 2px) */
+    transform: translateY(-4px); /* Adjusted position for top line (moved down 2px) */
 }
 
 .hamburger-line.line-middle {
-    /* Stays in center for initial state */
+    transform: translateY(2px); /* Moved down 2px */
 }
 
 .hamburger-line.line-bottom {
-    transform: translateY(11px); /* Adjusted position for bottom line (moved down 2px) */
+    transform: translateY(8px); /* Adjusted position for bottom line (moved down 2px) */
 }
 
 /* Animation for lines when sidebar is open (button-rotated class is active) */
 #hexagon-button.button-rotated {
-    transform: rotate(-90deg); /* Rotate 90 degrees counter-clockwise for both button and pseudo-element */
+    transform: translateX(-5px) rotate(-90deg); /* Apply both translation and rotation */
 }
 
 #hexagon-button.button-rotated .line-top {
-    transform: translateY(0) rotate(45deg);
+    transform: translateY(2px) rotate(45deg); /* Adjusted for new base translateY */
 }
 
 #hexagon-button.button-rotated .line-middle {
@@ -122,7 +132,7 @@
 }
 
 #hexagon-button.button-rotated .line-bottom {
-    transform: translateY(0) rotate(-45deg);
+    transform: translateY(2px) rotate(-45deg); /* Adjusted for new base translateY */
 }
 
 
@@ -134,13 +144,16 @@
         --hexagon-button-size: 70px; /* Adjusted for mobile */
     }
     .hamburger-line {
-        width: 25%; /* Adjust for mobile */
+        width: 20%; /* Adjust for mobile */
         height: 1.5px;
     }
     .hamburger-line.line-top {
-        transform: translateY(-2px); /* Adjusted for mobile */
+        transform: translateY(-3px); /* Adjusted for mobile */
+    }
+    .hamburger-line.line-middle {
+        transform: translateY(1px); /* Adjusted for mobile */
     }
     .hamburger-line.line-bottom {
-        transform: translateY(10px); /* Adjusted for mobile */
+        transform: translateY(7px); /* Adjusted for mobile */
     }
 }
