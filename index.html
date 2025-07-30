@@ -9,19 +9,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Top Bar -->
-    <div class="topbar">
-        <button class="hexa-btn" onclick="toggleSidebar()">
-            <img src="hexa.png" alt="Menu Button" class="hexa-img">
-        </button>
-    </div>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-content">
-            <!-- Sidebar content can be added here -->
-            <p>Sidebar Menu</p>
-        </div>
-    </div>
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <img src="topbar.png" alt="Top Bar" class="topbar-img">
+    <button id="toggle-sidebar" class="hex-btn">
+      <img src="hexa.png" alt="Menu">
+    </button>
+  </header>
+
+  <!-- Sidebar (hidden by default) -->
+  <nav id="sidebar" class="sidebar">
+    <img src="sidebar.png" alt="Sidebar" class="sidebar-img">
+    <!-- add your sidebar links here -->
+  </nav>
+
+  <!-- Overlay to catch outside clicks -->
+  <div id="overlay"></div>
+
+  <!-- Existing content -->
+  <div class="main-content">
     <div class="banner-col">
         <img src="banner.png" alt="Banner" id="banner">
     </div>
@@ -35,6 +41,7 @@
             </div>
             <div class="input-box right-column">
                 <label for="category">Category</label>
+                <!-- Tooltip for Category -->
                 <div class="tooltip-container">
                     <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
                     <div class="tooltip-box"></div>
@@ -43,6 +50,7 @@
                     <option value="">Select a category</option>
                 </select>
                 <label for="style">Style</label>
+                <!-- Tooltip for Style -->
                 <div class="tooltip-container">
                     <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
                     <div class="tooltip-box"></div>
@@ -51,6 +59,7 @@
                     <option value="">Select a style</option>
                 </select>
                 <label for="language">Language</label>
+                <!-- Tooltip for Language -->
                 <div class="tooltip-container">
                     <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
                     <div class="tooltip-box"></div>
@@ -110,6 +119,7 @@
         </div>
         <div id="error" class="error"></div>
     </div>
+  </div>
 
     <script src="config.js"></script>
     <script src="main.js"></script>
