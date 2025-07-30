@@ -34,7 +34,7 @@
 }
 
 .sidebar-content h2 {
-    font-size: 1.5em; /* Reverted to smaller size */
+    font-size: 1.2em; /* Reverted to smaller size */
     margin-bottom: 15px;
     color: #ffffff;
     text-align: center;
@@ -58,7 +58,7 @@
     text-decoration: none;
     border-radius: 8px;
     transition: background-color 0.3s, transform 0.2s;
-    font-size: 1em; /* Reverted to smaller font size */
+    font-size: 0.95em; /* Reverted to smaller font size */
 }
 
 .sidebar-content ul li a:hover {
