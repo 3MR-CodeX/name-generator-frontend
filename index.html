@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="topbar"><img src="topbar.png" alt="Topbar" /></div>
-    <div class="topbar">
+    <div class="top-bar-image">
         <div class="hex-button"></div>
     </div>
+    
     <div class="side-menu">
         <div class="side-menu-content"></div>
     </div>
@@ -112,16 +112,14 @@
     document.addEventListener('DOMContentLoaded', () => {
         const hexButton = document.querySelector('.hex-button');
         const sideMenu = document.querySelector('.side-menu');
-        const sidebarOverlay = document.getElementById('sidebar-overlay'); // Get the new overlay element
-        // Removed `const body = document.body;` as it's no longer needed for `side-menu-active` class
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
         let isMenuOpen = false;
 
         hexButton.addEventListener('click', () => {
             isMenuOpen = !isMenuOpen;
             sideMenu.classList.toggle('active');
-            hexButton.classList.toggle('open', isMenuOpen); // Simplified toggle for hex button
+            hexButton.classList.toggle('open', isMenuOpen);
 
-            // Toggle the 'show' class on the new overlay
             sidebarOverlay.classList.toggle('show', isMenuOpen);
         });
     });
