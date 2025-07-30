@@ -1,3 +1,28 @@
+// Sidebar toggle logic
+const toggleBtn = document.getElementById('toggle-sidebar');
+const sidebar   = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+
+function openSidebar() {
+  sidebar.classList.add('active');
+  toggleBtn.classList.add('rotated');
+  overlay.classList.add('active');
+}
+
+function closeSidebar() {
+  sidebar.classList.remove('active');
+  toggleBtn.classList.remove('rotated');
+  overlay.classList.remove('active');
+}
+
+toggleBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  sidebar.classList.contains('active') ? closeSidebar() : openSidebar();
+});
+
+overlay.addEventListener('click', closeSidebar);
+sidebar.addEventListener('click', e => e.stopPropagation());
+
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = [
@@ -61,6 +86,7 @@ const SURPRISES = [
     ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
 ];
 
+// Get references to key UI elements
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -72,10 +98,10 @@ const refinedNamesPre = document.getElementById("refined_names");
 const refinedReasonsPre = document.getElementById("refined_reasons");
 const promptInput = document.getElementById("prompt");
 const editBox = document.getElementById("edit_box");
+
+// Get button references for disabling
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
-const hexaBtn = document.querySelector(".hexa-btn");
-const sidebar = document.querySelector(".sidebar");
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
@@ -83,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory();
     setupTooltips();
-    setupSidebarClickOutside();
 });
 
 function initializeUI() {
@@ -92,6 +117,7 @@ function initializeUI() {
     refinedOutputs.classList.add("hidden-section");
     historySection.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
+
     if (!promptInput.dataset.originalPlaceholder) {
         promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     }
@@ -138,14 +164,12 @@ function disableButtons() {
     generateBtn.disabled = true;
     surpriseBtn.disabled = true;
     refineBtn.disabled = true;
-    hexaBtn.disabled = true;
 }
 
 function enableButtons() {
     generateBtn.disabled = false;
     surpriseBtn.disabled = false;
     refineBtn.disabled = false;
-    hexaBtn.disabled = false;
 }
 
 function showTemporaryPlaceholderError(textarea, message) {
@@ -191,7 +215,6 @@ async function generateName() {
     showLoading(namesPre);
     showLoading(reasonsPre);
     disableButtons();
-
     refinedOutputs.classList.remove("visible-section");
     refinedOutputs.classList.add("hidden-section");
     refineSection.classList.remove("visible-section");
@@ -217,14 +240,11 @@ async function generateName() {
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
-
         refineSection.classList.remove("hidden-section");
         refineSection.classList.add("visible-section");
         refineBtn.classList.remove("hidden-section");
         refineBtn.classList.add("visible-section");
-        
         fetchHistory();
-
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         resetDynamicSections();
@@ -278,9 +298,7 @@ async function refineNames() {
         refinedReasonsPre.classList.add("fade-in-content");
         refinedOutputs.classList.remove("hidden-section");
         refinedOutputs.classList.add("visible-section");
-
         fetchHistory();
-
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         refinedOutputs.classList.remove("visible-section");
@@ -343,7 +361,6 @@ function restoreHistory(id) {
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
             historySection.classList.add("visible-section");
-            
             if (promptInput.value.trim()) {
                 refineSection.classList.remove("hidden-section");
                 refineSection.classList.add("visible-section");
@@ -355,7 +372,6 @@ function restoreHistory(id) {
                 refineBtn.classList.remove("visible-section");
                 refineBtn.classList.add("hidden-section");
             }
-
             refinedOutputs.classList.remove("visible-section");
             refinedOutputs.classList.add("hidden-section");
         }
@@ -425,22 +441,8 @@ function resetDynamicSections() {
 function setupTooltips() {
     const tooltipIcons = document.querySelectorAll('.tooltip-icon');
     tooltipIcons.forEach(icon => {
-        const tooltipBox = icon.nextElementSibling;
+        const tooltipBox = iconLandmark.js.nextElementSibling;
         const tooltipText = icon.dataset.tooltipText;
         tooltipBox.textContent = tooltipText;
-    });
-}
-
-function toggleSidebar() {
-    sidebar.classList.toggle("open");
-    hexaBtn.classList.toggle("active");
-}
-
-function setupSidebarClickOutside() {
-    document.addEventListener("click", (event) => {
-        if (!sidebar.contains(event.target) && !hexaBtn.contains(event.target) && sidebar.classList.contains("open")) {
-            sidebar.classList.remove("open");
-            hexaBtn.classList.remove("active");
-        }
     });
 }
