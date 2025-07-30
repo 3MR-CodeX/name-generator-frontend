@@ -23,13 +23,24 @@
     <!-- Overlay for closing sidebar when clicking outside -->
     <div id="overlay"></div>
 
-    <!-- History Modal -->
+    <!-- Full History List Modal -->
     <div id="history-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>Full History</h2>
             <div id="full-history-list" class="history-inner">
-                <!-- Full history items will be loaded here -->
+                <!-- Full history items will be loaded here, grouped by date -->
+            </div>
+        </div>
+    </div>
+
+    <!-- History Details Modal (NEW) -->
+    <div id="history-details-modal" class="modal">
+        <div class="modal-content history-details-content">
+            <span class="close-button">&times;</span>
+            <h2>History Entry Details</h2>
+            <div id="details-content">
+                <!-- Details of a specific history entry will be loaded here -->
             </div>
         </div>
     </div>
