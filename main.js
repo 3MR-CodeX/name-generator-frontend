@@ -398,7 +398,7 @@ async function refineNames() {
         const data = await response.json();
 
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
-        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
+        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
 
         // Add animation class after content is set
         refinedNamesPre.classList.add("fade-in-content");
