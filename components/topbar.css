@@ -66,16 +66,16 @@
 /* Hamburger Line Styling */
 .hamburger-line {
     display: block;
-    width: 40%; /* Smaller width relative to button size */
-    height: 3px; /* Thinner lines */
+    width: 35%; /* Smaller width relative to button size */
+    height: 2px; /* Thinner lines */
     background-color: #ffffff; /* White lines */
-    border-radius: 1.5px;
+    border-radius: 1px;
     position: absolute; /* Position lines within the button */
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .hamburger-line.line-top {
-    transform: translateY(-8px); /* Adjust position for top line */
+    transform: translateY(-7px); /* Adjusted position for top line (moved down 1px) */
 }
 
 .hamburger-line.line-middle {
@@ -83,7 +83,7 @@
 }
 
 .hamburger-line.line-bottom {
-    transform: translateY(8px); /* Adjust position for bottom line */
+    transform: translateY(7px); /* Adjusted position for bottom line (moved down 1px) */
 }
 
 /* Animation for lines when sidebar is open (button-rotated class is active) */
@@ -114,13 +114,13 @@
         --hexagon-button-size: 70px; /* Adjusted for mobile */
     }
     .hamburger-line {
-        width: 35%; /* Adjust for mobile */
-        height: 2px;
+        width: 30%; /* Adjust for mobile */
+        height: 1.5px;
     }
     .hamburger-line.line-top {
-        transform: translateY(-6px);
+        transform: translateY(-5px);
     }
     .hamburger-line.line-bottom {
-        transform: translateY(6px);
+        transform: translateY(5px);
     }
 }
