@@ -70,11 +70,14 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the image */
-    width: 100%; /* Fill the button's size */
-    height: 100%; /* Fill the button's size */
+    /* Move up by 4px */
+    transform: translate(-50%, calc(-50% - 4px)); 
+    /* Made bigger, but smaller than the pseudo-element */
+    width: calc(var(--hexagon-button-size) * 0.65); /* 65% of button size */
+    height: calc(var(--hexagon-button-size) * 0.65); /* 65% of button size */
     object-fit: contain; /* Ensure the image fits */
     z-index: 2; /* On top of the pseudo-element, below lines */
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Add transition for size/position */
 }
 
 /* Pseudo-element for the glowing hexagon frame (your hexagon) */
@@ -83,9 +86,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    /* Made smaller by 50% relative to the button size */
-    width: calc(var(--hexagon-button-size) * 0.75); /* Made larger than 0.5, now 75% of button size */
-    height: calc(var(--hexagon-button-size) * 0.75); /* Made larger */
+    /* My hexagon is 75% of button size */
+    width: calc(var(--hexagon-button-size) * 0.75); 
+    height: calc(var(--hexagon-button-size) * 0.75); 
     transform: translate(-50%, -50%); /* Center the pseudo-element */
     background-color: transparent; /* Default transparent */
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
@@ -164,8 +167,8 @@
 
 #hexagon-button.button-rotated .line-middle {
     transform: translateX(-50%) translateY(0px); /* Keep middle dot in center */
-    width: 20px; /* Make it bigger */
-    height: 20px; /* Make it bigger */
+    width: 16px; /* Make it smaller */
+    height: 16px; /* Make it smaller */
     background-color: var(--line-purple-glow); /* Change color to purple */
 }
 
@@ -176,6 +179,10 @@
     }
     :root {
         --hexagon-button-size: 60px; /* Adjusted for mobile */
+    }
+    .hexagon-image {
+        width: calc(var(--hexagon-button-size) * 0.65); /* 65% of button size for mobile */
+        height: calc(var(--hexagon-button-size) * 0.65); /* 65% of button size for mobile */
     }
     .hamburger-line {
         width: 3px; /* Smaller dots for mobile */
@@ -193,7 +200,7 @@
 
     /* Mobile Merged Ball */
     #hexagon-button.button-rotated .line-middle {
-        width: 15px; /* Smaller merged ball for mobile */
-        height: 15px; /* Smaller merged ball for mobile */
+        width: 12px; /* Smaller merged ball for mobile */
+        height: 12px; /* Smaller merged ball for mobile */
     }
 }
