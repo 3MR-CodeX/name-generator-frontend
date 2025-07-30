@@ -83,9 +83,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    /* Adjust size to be slightly bigger than the button, and center it */
-    width: calc(var(--hexagon-button-size) + 0.5px); /* Made smaller by half (from +1px to +0.5px) */
-    height: calc(var(--hexagon-button-size) + 0.5px); /* Made smaller by half */
+    /* Made smaller by 50% relative to the button size */
+    width: calc(var(--hexagon-button-size) * 0.5);
+    height: calc(var(--hexagon-button-size) * 0.5);
     transform: translate(-50%, -50%); /* Center the pseudo-element */
     background-color: transparent; /* Default transparent */
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
@@ -105,47 +105,49 @@
 }
 
 
-/* Hamburger Line Styling */
-.hamburger-line {
+/* Hamburger Dot Styling (replaces lines) */
+.hamburger-line { /* Renamed to hamburger-line for consistency with HTML structure */
     display: block;
-    width: 20%; /* Smaller width relative to button size */
-    height: 1.5px; /* Thinner lines */
-    background-color: #ffffff; /* White lines */
-    border-radius: 1px;
-    position: absolute; /* Position lines within the button */
+    width: 6px; /* Dot size */
+    height: 6px; /* Dot size */
+    border-radius: 50%; /* Make it a circle */
+    background-color: #ffffff; /* White dots */
+    position: absolute; /* Position dots within the button */
     left: 50%; /* Center horizontally */
     transform: translateX(-50%); /* Center horizontally */
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    z-index: 3; /* On top of hexagonV2.png */
+    z-index: 3; /* On top of hexagonV2.png and your hexagon */
 }
 
+/* Initial Dot Positions (Vertically stacked, moved down by 1px) */
 .hamburger-line.line-top {
-    transform: translateX(-50%) translateY(-1.5px); /* Adjusted position for top line (down by 1px) */
+    transform: translateX(-50%) translateY(-8px); /* Adjusted for 1px down, and dot spacing */
 }
 
 .hamburger-line.line-middle {
-    transform: translateX(-50%) translateY(4px); /* Adjusted position for middle line (down by 1px) */
+    transform: translateX(-50%) translateY(0px); /* Center dot, adjusted for 1px down */
 }
 
 .hamburger-line.line-bottom {
-    transform: translateX(-50%) translateY(8.5px); /* Adjusted position for bottom line (down by 1px) */
+    transform: translateX(-50%) translateY(8px); /* Adjusted for 1px down, and dot spacing */
 }
 
-/* Animation for lines when sidebar is open (button-rotated class is active) */
+/* Animation for dots when sidebar is open (button-rotated class is active) */
 #hexagon-button.button-rotated {
-    transform: translateX(-8px) rotate(-90deg); /* Adjusted translateX to compensate for perceived shift */
+    transform: translateX(-5px) rotate(-90deg); /* Apply both translation and rotation, fixed shift */
 }
 
+/* Triangle Formation for Dots */
 #hexagon-button.button-rotated .line-top {
-    transform: translateX(-50%) translateY(0) rotate(45deg); /* Adjusted to ensure perfect X alignment at center */
+    transform: translateX(-50%) translateY(-20px); /* Top point of triangle */
 }
 
 #hexagon-button.button-rotated .line-middle {
-    opacity: 0; /* Fade out middle line */
+    transform: translateX(-50%) translateY(10px) translateX(-15px); /* Bottom-left point */
 }
 
 #hexagon-button.button-rotated .line-bottom {
-    transform: translateX(-50%) translateY(0) rotate(-45deg); /* Adjusted to ensure perfect X alignment at center */
+    transform: translateX(-50%) translateY(10px) translateX(15px); /* Bottom-right point */
 }
 
 
@@ -157,16 +159,29 @@
         --hexagon-button-size: 60px; /* Adjusted for mobile */
     }
     .hamburger-line {
-        width: 15%; /* Adjust for mobile */
-        height: 1px;
+        width: 4px; /* Smaller dots for mobile */
+        height: 4px; /* Smaller dots for mobile */
     }
     .hamburger-line.line-top {
-        transform: translateX(-50%) translateY(-2px); /* Adjusted for mobile */
+        transform: translateX(-50%) translateY(-6px); /* Adjusted for mobile dots */
     }
     .hamburger-line.line-middle {
-        transform: translateX(-50%) translateY(1px); /* Adjusted for mobile */
+        transform: translateX(-50%) translateY(0px); /* Adjusted for mobile dots */
     }
     .hamburger-line.line-bottom {
-        transform: translateX(-50%) translateY(4px); /* Adjusted for mobile */
+        transform: translateX(-50%) translateY(6px); /* Adjusted for mobile dots */
+    }
+
+    /* Mobile Triangle Formation */
+    #hexagon-button.button-rotated .line-top {
+        transform: translateX(-50%) translateY(-15px); /* Top point of triangle for mobile */
+    }
+
+    #hexagon-button.button-rotated .line-middle {
+        transform: translateX(-50%) translateY(7px) translateX(-10px); /* Bottom-left point for mobile */
+    }
+
+    #hexagon-button.button-rotated .line-bottom {
+        transform: translateX(-50%) translateY(7px) translateX(10px); /* Bottom-right point for mobile */
     }
 }
