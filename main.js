@@ -122,10 +122,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Event listeners for history details modal
     if (historyDetailsModal && closeButtonDetailsModal) {
-        closeButtonDetailsModal.addEventListener('click', closeHistoryDetailsModal);
+        // When closing details modal, go back to full history list modal
+        closeButtonDetailsModal.addEventListener('click', () => {
+            closeHistoryDetailsModal();
+            openHistoryModal(); // Re-open the full history list
+        });
         window.addEventListener('click', (event) => {
             if (event.target == historyDetailsModal) {
                 closeHistoryDetailsModal();
+                openHistoryModal(); // Re-open the full history list
             }
         });
     }
@@ -471,7 +476,10 @@ function renderHistory(history, renderToModal = false) {
             return acc;
         }, {});
 
-        for (const date in groupedHistory) {
+        // Sort dates in descending order (most recent first)
+        const sortedDates = Object.keys(groupedHistory).sort((a, b) => new Date(b) - new Date(a));
+
+        sortedDates.forEach(date => {
             const dailyContainer = document.createElement('div');
             dailyContainer.className = 'daily-history-container';
 
@@ -479,7 +487,8 @@ function renderHistory(history, renderToModal = false) {
             dateHeading.textContent = date;
             dailyContainer.appendChild(dateHeading);
 
-            groupedHistory[date].forEach(entry => {
+            // Sort entries within each day by timestamp (most recent first)
+            groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
                 const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
                 const tooltip = entry.category !== "Refined" ?
                     `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
@@ -499,10 +508,11 @@ function renderHistory(history, renderToModal = false) {
                 dailyContainer.appendChild(button);
             });
             targetDiv.appendChild(dailyContainer);
-        }
+        });
     } else {
-        // For recent history, just append items directly
-        historyToRender.forEach(entry => {
+        // For recent history, just append items directly (already sliced to 100)
+        // Sort entries by timestamp (most recent first) for recent history
+        historyToRender.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
             const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
             const tooltip = entry.category !== "Refined" ?
                 `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
