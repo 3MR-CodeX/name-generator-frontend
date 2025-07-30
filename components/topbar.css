@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: var(--top-bar-height);
+    height: var(--top-bar-height); /* Thinner top bar */
     background-image: url('../topbar.png'); /* Corrected path: one level up from components folder */
     background-size: cover;
     background-position: center;
@@ -14,24 +14,27 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    /* Vibrant purple line at the bottom */
+    box-shadow: 0 2px 0 0 var(--vibrant-purple), 0 2px 10px rgba(0, 0, 0, 0.5); /* Line + original shadow */
 }
 
 #top-bar h1 {
-    font-size: 2.5em; /* Adjusted for top bar */
+    /* This h1 is now removed from topbar.html */
+    /* Keeping the style here just in case, but it won't apply */
+    font-size: 2.5em;
     color: #ffffff;
-    margin: 0 auto; /* Center the title */
-    position: absolute; /* Allow centering regardless of button */
+    margin: 0 auto;
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    white-space: nowrap; /* Prevent wrapping */
+    white-space: nowrap;
 }
 
 /* Hexagon Button Styling */
 #hexagon-button {
     position: relative; /* Positioned within the flex container of top-bar */
-    width: var(--hexagon-button-size);
-    height: var(--hexagon-button-size);
+    width: var(--hexagon-button-size); /* Bigger hexagon button */
+    height: var(--hexagon-button-size); /* Bigger hexagon button */
     background-image: url('../hexa.png'); /* Corrected path: one level up from components folder */
     background-size: contain;
     background-repeat: no-repeat;
