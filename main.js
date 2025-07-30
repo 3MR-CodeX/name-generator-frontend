@@ -61,7 +61,6 @@ const SURPRISES = [
     ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
 ];
 
-// Get references to key UI elements
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -73,10 +72,10 @@ const refinedNamesPre = document.getElementById("refined_names");
 const refinedReasonsPre = document.getElementById("refined_reasons");
 const promptInput = document.getElementById("prompt");
 const editBox = document.getElementById("edit_box");
-
-// Get button references for disabling
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
+const hexaBtn = document.querySelector(".hexa-btn");
+const sidebar = document.querySelector(".sidebar");
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
@@ -84,16 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory();
     setupTooltips();
+    setupSidebarClickOutside();
 });
-
-// Populate top bar
-const userEmail = "alice@example.com";
-const roundsLeft = 5;
-
-// These lines are not present in your index.html, so they will cause errors.
-// If you intend to add them, uncomment and ensure corresponding elements exist in HTML.
-// document.getElementById("user-email").textContent = userEmail;
-// document.getElementById("rounds-left").textContent = `${roundsLeft} ${roundsLeft === 1 ? 'round' : 'rounds'}`;
 
 function initializeUI() {
     outputContainer.classList.add("hidden-section");
@@ -101,7 +92,6 @@ function initializeUI() {
     refinedOutputs.classList.add("hidden-section");
     historySection.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
-
     if (!promptInput.dataset.originalPlaceholder) {
         promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     }
@@ -127,7 +117,6 @@ function cleanNames(text) {
 function showLoading(targetElement) {
     targetElement.textContent = "";
     targetElement.classList.remove("fade-in-content");
-
     let spinnerOverlay = targetElement.querySelector(".spinner-overlay");
     if (!spinnerOverlay) {
         spinnerOverlay = document.createElement("div");
@@ -149,12 +138,14 @@ function disableButtons() {
     generateBtn.disabled = true;
     surpriseBtn.disabled = true;
     refineBtn.disabled = true;
+    hexaBtn.disabled = true;
 }
 
 function enableButtons() {
     generateBtn.disabled = false;
     surpriseBtn.disabled = false;
     refineBtn.disabled = false;
+    hexaBtn.disabled = false;
 }
 
 function showTemporaryPlaceholderError(textarea, message) {
@@ -163,7 +154,6 @@ function showTemporaryPlaceholderError(textarea, message) {
     }
     textarea.placeholder = message;
     textarea.classList.add("prompt-error-placeholder");
-
     setTimeout(() => {
         if (textarea.placeholder === message) {
             textarea.placeholder = textarea.dataset.originalPlaceholder;
@@ -174,7 +164,6 @@ function showTemporaryPlaceholderError(textarea, message) {
 
 async function generateName() {
     const prompt = promptInput.value.trim();
-
     if (!prompt) {
         showTemporaryPlaceholderError(promptInput, "You cannot generate names without a description!");
         resetDynamicSections();
@@ -195,19 +184,16 @@ async function generateName() {
     }
 
     document.getElementById("error").textContent = "";
-
     outputContainer.classList.remove("hidden-section");
     outputContainer.classList.add("visible-section");
     historySection.classList.remove("hidden-section");
     historySection.classList.add("visible-section");
-
     showLoading(namesPre);
     showLoading(reasonsPre);
     disableButtons();
 
     refinedOutputs.classList.remove("visible-section");
     refinedOutputs.classList.add("hidden-section");
-
     refineSection.classList.remove("visible-section");
     refineSection.classList.add("hidden-section");
     refineBtn.classList.remove("visible-section");
@@ -229,7 +215,6 @@ async function generateName() {
 
         namesPre.textContent = data.names.map(cleanNames).join("\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
-
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
 
@@ -254,7 +239,6 @@ async function generateName() {
 
 async function refineNames() {
     const instruction = editBox.value.trim();
-
     if (!instruction) {
         showTemporaryPlaceholderError(editBox, "Please enter a refine instruction.");
         document.getElementById("error").textContent = "";
@@ -270,7 +254,6 @@ async function refineNames() {
     }
 
     document.getElementById("error").textContent = "";
-
     showLoading(refinedNamesPre);
     showLoading(refinedReasonsPre);
     disableButtons();
@@ -291,10 +274,8 @@ async function refineNames() {
 
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
         refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
-
         refinedNamesPre.classList.add("fade-in-content");
         refinedReasonsPre.classList.add("fade-in-content");
-
         refinedOutputs.classList.remove("hidden-section");
         refinedOutputs.classList.add("visible-section");
 
@@ -335,7 +316,7 @@ function renderHistory(history) {
         const tooltip = entry.category !== "Refined" ?
             `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
             `Refine Instruction: ${entry.prompt}`;
-        const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}</button>`;
+        const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
         historyDiv.innerHTML += button;
     });
 }
@@ -356,10 +337,8 @@ function restoreHistory(id) {
             document.getElementById("language").value = entry.language;
             namesPre.textContent = entry.names.map(cleanNames).join("\n");
             reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
-
             namesPre.classList.add("fade-in-content");
             reasonsPre.classList.add("fade-in-content");
-
             outputContainer.classList.remove("hidden-section");
             outputContainer.classList.add("visible-section");
             historySection.classList.remove("hidden-section");
@@ -389,7 +368,6 @@ function surpriseMe() {
     document.getElementById("category").value = category;
     document.getElementById("style").value = style;
     document.getElementById("language").value = language;
-    
     generateName();
 }
 
@@ -433,27 +411,36 @@ function resetDynamicSections() {
     refineBtn.classList.add("hidden-section");
     historySection.classList.remove("visible-section");
     historySection.classList.add("hidden-section");
-
     namesPre.textContent = "";
     reasonsPre.textContent = "";
     refinedNamesPre.textContent = "";
     refinedReasonsPre.textContent = "";
-
     namesPre.classList.remove("fade-in-content");
     reasonsPre.classList.remove("fade-in-content");
     refinedNamesPre.classList.remove("fade-in-content");
     refinedReasonsPre.classList.remove("fade-in-content");
-
     document.getElementById("error").textContent = "";
 }
 
 function setupTooltips() {
     const tooltipIcons = document.querySelectorAll('.tooltip-icon');
-
     tooltipIcons.forEach(icon => {
         const tooltipBox = icon.nextElementSibling;
         const tooltipText = icon.dataset.tooltipText;
-
         tooltipBox.textContent = tooltipText;
+    });
+}
+
+function toggleSidebar() {
+    sidebar.classList.toggle("open");
+    hexaBtn.classList.toggle("active");
+}
+
+function setupSidebarClickOutside() {
+    document.addEventListener("click", (event) => {
+        if (!sidebar.contains(event.target) && !hexaBtn.contains(event.target) && sidebar.classList.contains("open")) {
+            sidebar.classList.remove("open");
+            hexaBtn.classList.remove("active");
+        }
     });
 }
