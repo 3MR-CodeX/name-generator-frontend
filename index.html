@@ -6,34 +6,25 @@
     <title>NameIT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico">
+    
+    <!-- Core App Styles -->
     <link rel="stylesheet" href="style.css">
+    <!-- Component Specific Styles -->
+    <link rel="stylesheet" href="components/topbar.css">
+    <link rel="stylesheet" href="components/sidebar.css">
 </head>
 <body>
-    <!-- Top Bar -->
-    <div id="top-bar">
-        <!-- Hexagon Menu Button -->
-        <button id="menu-toggle">
-            <img src="hexa.png" alt="Menu" id="menu-button">
-        </button>
-        <!-- Brand or Title -->
-        <div id="brand">NameIT</div>
-        <!-- User Info -->
-        <div id="user-info">
-            <span id="user-email">Loading…</span>
-            <span id="rounds-left">Loading…</span>
-        </div>
-    </div>
-    <!-- Side Bar -->
-    <div id="side-bar">
-        <img src="sidebar.png" alt="Sidebar" id="sidebar-bg">
-    </div>
-    <!-- Click-catcher Overlay -->
+    <!-- Placeholder for Top Bar -->
+    <div id="top-bar-placeholder"></div>
+
+    <!-- Placeholder for Side Bar -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Overlay for closing sidebar when clicking outside -->
     <div id="overlay"></div>
-    <!-- Main App Content -->
-    <div id="app">
-        <div class="banner-col">
-            <img src="banner.png" alt="Banner" id="banner">
-        </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper">
         <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
         <div class="container">
             <div class="input-section">
@@ -43,6 +34,7 @@
                 </div>
                 <div class="input-box right-column">
                     <label for="category">Category</label>
+                    <!-- Tooltip for Category -->
                     <div class="tooltip-container">
                         <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
                         <div class="tooltip-box"></div>
@@ -51,6 +43,7 @@
                         <option value="">Select a category</option>
                     </select>
                     <label for="style">Style</label>
+                    <!-- Tooltip for Style -->
                     <div class="tooltip-container">
                         <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
                         <div class="tooltip-box"></div>
@@ -59,6 +52,7 @@
                         <option value="">Select a style</option>
                     </select>
                     <label for="language">Language</label>
+                    <!-- Tooltip for Language -->
                     <div class="tooltip-container">
                         <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
                         <div class="tooltip-box"></div>
@@ -112,14 +106,15 @@
                     <pre id="refined_reasons"></pre>
                 </div>
             </div>
-            <div id="history_section" class="history-section">
-                <h2>🕘 Recent History</h2>
-                <div id="history" class="history-inner"></div>
-            </div>
             <div id="error" class="error"></div>
         </div>
     </div>
+
     <script src="config.js"></script>
+    <!-- Component Specific JavaScript -->
+    <script src="components/topbar.js"></script>
+    <script src="components/sidebar.js"></script>
+    <!-- Core App JavaScript -->
     <script src="main.js"></script>
 </body>
 </html>
