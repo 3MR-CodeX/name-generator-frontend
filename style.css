@@ -61,7 +61,6 @@ body::before {
     height: 60px; /* or whatever your topbar image height is */
     background-color: #000;
     z-index: 1000;
-    /* Removed redundant border-bottom and box-shadow from here if .topbar handles it */
 }
 #topbar img {
     height: 100%;
@@ -74,16 +73,17 @@ body::before {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
-    background-color: rgba(42, 42, 42, 0.85); /* Adjusted transparency */
+    height: 45px; /* Reduced thickness by 15px (60px - 15px) */
+    background-color: rgba(42, 42, 42, 0.8); /* Reduced transparency by 20% (from 100% opaque to 80%) */
     z-index: 1000;
     border-bottom: 3px solid #FF00FF; /* This creates the purple line at the bottom of the top bar */
     box-shadow: none;
+    transition: box-shadow 0.3s ease; /* Add transition for glow effect */
 }
 
 .topbar:hover {
-    box-shadow: none;
-    transition: none;
+    box-shadow: 0 0 10px 2px #800080; /* Deep purple glow on hover */
+    transition: box-shadow 0.3s ease;
 }
 
 .hex-button {
@@ -96,12 +96,14 @@ body::before {
     background-color: #3a3a3a;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Perfect hexagon with equal angles */
     cursor: pointer;
-    transition: transform 0.5s ease, background-color 0.3s ease;
+    transition: transform 0.5s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow to transition */
     z-index: 1001; /* Ensure hex button is above the topbar background image */
+    border: 2px solid white; /* White outline */
+    box-shadow: none; /* Ensure no initial shadow */
 }
 
 .hex-button:hover {
-    box-shadow: 0 0 10px 2px #ffffff;
+    box-shadow: 0 0 10px 2px #800080; /* Purple glow on hover */
 }
 
 .hex-button.open {
@@ -111,48 +113,62 @@ body::before {
 
 .side-menu {
     position: fixed;
-    top: 57px; /* Matches topbar height minus border-bottom */
+    top: 42px; /* Adjusted to match new topbar height minus border-bottom (45px - 3px) */
     left: 0;
     width: 250px;
-    height: calc(100vh - 57px); /* Adjusted height to fill remaining screen */
+    height: calc(100vh - 42px); /* Adjusted height to fill remaining screen */
     background-color: transparent; /* Changed to transparent to allow pseudo-element background to show */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 1001; /* Sidebar layer */
     box-shadow: none;
     border-radius: 0 0 8px 0;
-    /* Add overflow hidden to contain pseudo-element correctly if needed */
     overflow: hidden; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for glow effect */
 }
 
 .side-menu::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0; /* Changed to left: 0; */
-    width: 100%; /* Make it span the full width of the side-menu */
-    height: 100%; /* Make it span the full height */
-    background-color: rgba(42, 42, 42, 0.85); /* Adjusted transparency */
-    z-index: 1000; /* Background layer */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2a2a2a; /* Reverted to original transparency */
+    z-index: 1000;
 }
 
 .side-menu::after { /* Using ::after for the purple line */
     content: '';
     position: absolute;
     top: 0;
-    right: 0; /* Positioned on the right */
-    width: 3px; /* 3-pixel thick purple line */
+    right: 0;
+    width: 3px;
     height: 100%;
-    background-color: #FF00FF; /* Matches top bar's purple line */
-    z-index: 1002; /* Ensures it's on top of other sidebar content */
+    background-color: #FF00FF;
+    z-index: 1002;
+    transition: box-shadow 0.3s ease; /* Add transition for glow effect */
 }
 
+/* Glow effect for side menu when hovering over its main background area */
+.side-menu:hover::before {
+    box-shadow: 0 0 10px 2px #800080; /* Deep purple glow for the background */
+    transition: box-shadow 0.3s ease;
+}
+
+/* Glow effect for the purple line on the side menu when hovering over its main background area */
+.side-menu:hover::after {
+    box-shadow: 0 0 10px 2px #800080; /* Deep purple glow for the line */
+    transition: box-shadow 0.3s ease;
+}
+
+
 .side-menu .side-menu-content {
-    position: relative; /* Needed for z-index to work */
-    z-index: 1001; /* Above ::before (background), below ::after (purple line) */
+    position: relative;
+    z-index: 1001;
     height: 100%;
     padding: 20px 0;
-    background: transparent; /* Allow the ::before background to show through */
+    background: transparent;
 }
 
 .side-menu.active {
@@ -160,20 +176,20 @@ body::before {
 }
 
 .side-menu:hover {
-    box-shadow: none;
-    transition: none;
+    box-shadow: none; /* No shadow on the .side-menu container itself */
+    transition: none; /* Prevent conflict with pseudo-element transitions */
 }
 
 /* --- Side Menu Overlay for Blur and Darken --- */
 .overlay-active {
     position: fixed;
-    top: 60px; /* Start below the top bar */
+    top: 45px; /* Adjusted to new top bar height */
     left: 0;
     width: 100%;
-    height: calc(100% - 60px); /* Fill the rest of the screen */
-    background-color: rgba(0, 0, 0, 0.4); /* Darken effect */
-    backdrop-filter: blur(5px); /* Blur effect */
-    z-index: 999; /* Below side-menu (1001) but above content */
+    height: calc(100% - 45px); /* Adjusted to new top bar height */
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 999;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -187,7 +203,7 @@ body::before {
 .container {
     max-width: 1200px;
     width: 100%;
-    margin: 0 auto;
+    margin: 15px auto 0 auto; /* Added 15px top margin for the gap */
     position: relative;
     z-index: 1;
     padding: 0 10px;
