@@ -47,7 +47,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('pattern.png') repeat;
+    background: url('pattern.png') repeat; /* Corrected path, assuming pattern.png is in root */
     background-size: 400px 400px;
     z-index: -1;
     pointer-events: none;
@@ -69,6 +69,36 @@ body::before {
     padding: 20px 10px; /* Add some horizontal padding */
     position: relative; /* Needed for z-index */
     z-index: 1; /* Ensure it's above the body background, below overlay/sidebar */
+}
+
+/* Re-added Banner Section Styles */
+.banner-col {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: rgba(128, 0, 128, 0.7); /* Purple background, 70% opaque */
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    width: 100%; /* Ensure banner takes full width */
+    max-width: 1200px; /* Match container max-width */
+}
+
+.banner-col:hover {
+    background-color: #a020f0;
+}
+
+#banner {
+    width: 100%;
+    max-width: 800px;
+    height: 120px;
+    object-fit: contain;
+}
+
+h1 {
+    font-size: 3em; /* Original h1 style, for the main page title */
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .description {
@@ -267,7 +297,6 @@ button:disabled {
 .refine-section {
     display: block;
 }
-/* Removed history-section styling from here, it's now in sidebar.css */
 .refine-button-section {
     display: flex;
     gap: 20px;
@@ -428,6 +457,10 @@ pre {
         --hexagon-button-size: 40px;
     }
 
+    h1 { /* Adjusted for main page h1 on mobile */
+        font-size: 2.5em;
+    }
+
     .description {
         font-size: 1em;
     }
@@ -445,5 +478,106 @@ pre {
     .input-box, .output-box, .generate-btn, .surprise-btn, .refine-btn {
         min-width: unset;
         width: 100%;
+    }
+}
+
+/* History Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity and blur */
+    backdrop-filter: blur(5px); /* Blur effect */
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.modal.active {
+    display: flex; /* Show flex container */
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: rgba(42, 42, 42, 0.9); /* Dark grey, slightly opaque */
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #800080; /* Purple border */
+    border-radius: 12px;
+    width: 90%;
+    max-width: 700px; /* Max width for the modal */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+    position: relative;
+    transform: translateY(-50px); /* Start slightly above */
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0); /* Slide into place */
+    opacity: 1;
+}
+
+.modal-content h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #800080;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* History list inside modal */
+#full-history-list {
+    max-height: 500px; /* Max height for modal history list */
+    overflow-y: auto;
+    background-color: rgba(58, 58, 58, 0.65); /* Grey, 65% opaque */
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+#full-history-list .history-item {
+    margin: 5px 0; /* Adjust margin for items in modal */
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    .modal-content h2 {
+        font-size: 1.5em;
+    }
+    .close-button {
+        font-size: 24px;
+        top: 5px;
+        right: 15px;
     }
 }
