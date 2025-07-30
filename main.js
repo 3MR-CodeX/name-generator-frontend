@@ -1,42 +1,17 @@
-// Sidebar toggle logic
-const toggleBtn = document.getElementById('toggle-sidebar');
-const sidebar   = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-
-function openSidebar() {
-  sidebar.classList.add('active');
-  toggleBtn.classList.add('rotated');
-  overlay.classList.add('active');
-}
-
-function closeSidebar() {
-  sidebar.classList.remove('active');
-  toggleBtn.classList.remove('rotated');
-  overlay.classList.remove('active');
-}
-
-toggleBtn.addEventListener('click', e => {
-  e.stopPropagation();
-  sidebar.classList.contains('active') ? closeSidebar() : openSidebar();
-});
-
-overlay.addEventListener('click', closeSidebar);
-sidebar.addEventListener('click', e => e.stopPropagation());
-
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = [
-  "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
-  "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product",
-  "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"
+    "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
+    "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product",
+    "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"
 ];
 const STYLE_OPTIONS = [
-  "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
-  "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
-  "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
-  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious",
-  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
-  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
+    "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
+    "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
+    "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
+    "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious",
+    "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
+    "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
 ];
 const SURPRISES = [
     ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
@@ -86,7 +61,17 @@ const SURPRISES = [
     ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
 ];
 
-// Get references to key UI elements
+// -- MOCK DATA (replace with real auth/billing calls) --
+const userEmail   = "alice@example.com";
+const roundsLeft  = 5;
+
+// -- ELEMENT REFS --
+const menuButton  = document.getElementById("menu-button");
+const menuToggle  = document.getElementById("menu-toggle");
+const sideBar     = document.getElementById("side-bar");
+const overlay     = document.getElementById("overlay");
+const emailSpan   = document.getElementById("user-email");
+const roundsSpan  = document.getElementById("rounds-left");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -99,9 +84,32 @@ const refinedReasonsPre = document.getElementById("refined_reasons");
 const promptInput = document.getElementById("prompt");
 const editBox = document.getElementById("edit_box");
 
-// Get button references for disabling
-const generateBtn = document.querySelector(".generate-btn");
-const surpriseBtn = document.querySelector(".surprise-btn");
+// -- INITIALIZE USER INFO --
+emailSpan.textContent  = userEmail;
+roundsSpan.textContent = `${roundsLeft} ${roundsLeft === 1 ? 'round' : 'rounds'}`;
+
+// -- TOGGLE SIDEBAR OPEN/CLOSE --
+function toggleSidebar() {
+    const isOpen = sideBar.classList.toggle("open");
+    overlay.classList.toggle("show", isOpen);
+    menuButton.classList.toggle("active", isOpen);
+}
+
+// -- EVENT LISTENERS --
+menuToggle.addEventListener("click", e => {
+    e.stopPropagation();
+    toggleSidebar();
+});
+
+overlay.addEventListener("click", toggleSidebar);
+
+document.body.addEventListener("click", e => {
+    if (sideBar.classList.contains("open") &&
+        !sideBar.contains(e.target) &&
+        e.target !== menuButton) {
+        toggleSidebar();
+    }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
@@ -441,7 +449,7 @@ function resetDynamicSections() {
 function setupTooltips() {
     const tooltipIcons = document.querySelectorAll('.tooltip-icon');
     tooltipIcons.forEach(icon => {
-        const tooltipBox = iconLandmark.js.nextElementSibling;
+        const tooltipBox = icon.nextElementSibling;
         const tooltipText = icon.dataset.tooltipText;
         tooltipBox.textContent = tooltipText;
     });
