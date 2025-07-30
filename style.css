@@ -1,15 +1,22 @@
+:root {
+    --top-bar-height: 80px; /* Height of the top bar */
+    --sidebar-width: 280px; /* Width of the sidebar */
+    --hexagon-button-size: 50px; /* Size of the hexagon button */
+}
+
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Inter', 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background-color: #f9f9f9;
+    background: #1a1a1a;
     color: #e0e0e0;
-    padding: 20px;
+    padding-top: var(--top-bar-height); /* Space for the fixed top bar */
+    padding-left: 0; /* Will be adjusted by JS when sidebar opens */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -17,131 +24,64 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    transition: padding-left 0.5s ease-in-out; /* Smooth transition for content shift */
 }
 
-/* Top Bar */
-#top-bar {
+body::after {
+    content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 64px;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    z-index: 1000;
+    height: 100%;
+    background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
+    z-index: -2;
 }
 
-/* Hexagon Menu Button */
-#menu-toggle {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    outline: none;
-}
-#menu-button {
-    width: 48px;
-    transition: transform 0.3s ease;
-}
-#menu-button.active {
-    transform: rotate(-90deg);
-}
-
-/* Brand Title */
-#brand {
-    color: #fff;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-/* User Info */
-#user-info {
-    display: flex;
-    gap: 24px;
-    color: #fff;
-    font-size: 16px;
-}
-
-/* Side Bar */
-#side-bar {
+body::before {
+    content: '';
     position: fixed;
-    top: 64px;
-    left: -260px;
-    width: 260px;
-    height: calc(100% - 64px);
-    background: #fff;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-    transition: left 0.3s ease;
-    z-index: 999;
-}
-#side-bar.open {
+    top: 0;
     left: 0;
-}
-#sidebar-bg {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-}
-
-/* Overlay */
-#overlay {
-    position: fixed;
-    top: 64px;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 64px);
-    background: rgba(0,0,0,0.3);
-    opacity: 0;
+    background: url('pattern.png') repeat;
+    background-size: 400px 400px;
+    z-index: -1;
     pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 998;
-}
-#overlay.show {
-    opacity: 1;
-    pointer-events: auto;
 }
 
-/* Main Content */
-#app {
-    padding-top: 64px;
-    position: relative;
-    z-index: 1;
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 10px;
+@keyframes gradientShift {
+    0% { background-position: 0% 0%; }
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 25% 75%; }
+    100% { background-position: 0% 0%; }
 }
 
-.banner-col {
-    text-align: center;
-    margin-bottom: 20px;
-    background-color: rgba(128, 0, 128, 0.7);
-    padding: 10px;
-    border-radius: 8px;
-    transition: background-color 0.3s;
+/* Main Content Wrapper */
+.main-content-wrapper {
     width: 100%;
     max-width: 1200px;
-}
-
-.banner-col:hover {
-    background-color: #a020f0;
-}
-
-#banner {
-    width: 100%;
-    max-width: 800px;
-    height: 120px;
-    object-fit: contain;
+    margin: 0 auto; /* Center the content */
+    padding: 20px 10px; /* Add some horizontal padding */
+    position: relative; /* Needed for z-index */
+    z-index: 1; /* Ensure it's above the body background, below overlay/sidebar */
 }
 
 .description {
     font-size: 1.2em;
-    color: #333333;
+    color: #cccccc;
     text-align: center;
     margin-bottom: 20px;
+}
+
+.container {
+    width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .input-section {
@@ -171,7 +111,7 @@ body {
 }
 
 label {
-    color: #333333;
+    color: #cccccc;
     margin-bottom: 5px;
     font-size: 18px;
     font-weight: 500;
@@ -238,7 +178,7 @@ textarea, select {
     padding: 10px;
     font-size: 16px;
     width: 100%;
-    font-family: 'Inter', 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 textarea {
@@ -324,15 +264,10 @@ button:disabled {
     flex-wrap: wrap;
     width: 100%;
 }
-
 .refine-section {
     display: block;
 }
-
-.history-section {
-    display: block;
-}
-
+/* Removed history-section styling from here, it's now in sidebar.css */
 .refine-button-section {
     display: flex;
     gap: 20px;
@@ -410,47 +345,6 @@ pre {
     border-radius: 8px;
 }
 
-.history-section {
-    background-color: rgba(42, 42, 42, 0.7);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #4a4a4a;
-}
-
-.history-inner {
-    background-color: rgba(58, 58, 58, 0.65);
-    max-height: 120px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border: 1px solid #4a4a4a;
-    border-radius: 8px;
-    padding: 10px;
-}
-
-.history-section h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.history-item {
-    background-color: rgba(58, 58, 58, 0.65);
-    color: #e0e0e0;
-    border: none;
-    padding: 8px 12px;
-    margin: 5px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: block;
-    width: 100%;
-    text-align: left;
-    white-space: normal;
-}
-
-.history-item:hover {
-    background-color: #4a4a4a;
-}
-
 .pre-refined {
     font-size: 0.8em;
     color: #aaa;
@@ -526,15 +420,12 @@ pre {
     background: #a020f0;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .input-section, .button-section, .output-section, .refine-button-section {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .input-box, .output-box, .generate-btn, .surprise-btn, .refine-btn {
-        min-width: unset;
-        width: 100%;
+    :root {
+        --top-bar-height: 60px; /* Smaller top bar on mobile */
+        --sidebar-width: 220px; /* Smaller sidebar on mobile */
+        --hexagon-button-size: 40px;
     }
 
     .description {
@@ -543,5 +434,16 @@ pre {
 
     body {
         padding: 10px;
+        padding-top: var(--top-bar-height); /* Maintain top padding */
+    }
+
+    .input-section, .button-section, .output-section, .refine-button-section {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .input-box, .output-box, .generate-btn, .surprise-btn, .refine-btn {
+        min-width: unset;
+        width: 100%;
     }
 }
