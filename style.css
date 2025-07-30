@@ -484,7 +484,7 @@ pre {
     }
 }
 
-/* History Modal Styles */
+/* Base Modal Styles */
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -632,6 +632,32 @@ pre {
 .history-item:hover {
     background-color: #4a4a4a;
 }
+
+/* History Details Modal Specific Styles */
+.history-details-content {
+    max-width: 600px; /* Slightly smaller for details */
+}
+
+#details-content p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+#details-content strong {
+    color: var(--line-purple-default);
+}
+#details-content pre {
+    background-color: rgba(58, 58, 58, 0.65);
+    color: #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    white-space: pre-wrap;
+    max-height: 150px; /* Limit height for detail pre-tags */
+    overflow-y: auto;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
 
 @media (max-width: 600px) {
     .modal-content {
