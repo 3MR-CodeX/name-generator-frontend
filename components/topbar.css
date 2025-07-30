@@ -84,8 +84,8 @@
     top: 50%;
     left: 50%;
     /* Adjust size to be slightly bigger than the button, and center it */
-    width: calc(var(--hexagon-button-size) + 1px); /* Made smaller by half (from +2px to +1px) */
-    height: calc(var(--hexagon-button-size) + 1px); /* Made smaller by half */
+    width: calc(var(--hexagon-button-size) + 0.5px); /* Made smaller by half (from +1px to +0.5px) */
+    height: calc(var(--hexagon-button-size) + 0.5px); /* Made smaller by half */
     transform: translate(-50%, -50%); /* Center the pseudo-element */
     background-color: transparent; /* Default transparent */
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
@@ -113,29 +113,31 @@
     background-color: #ffffff; /* White lines */
     border-radius: 1px;
     position: absolute; /* Position lines within the button */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center horizontally */
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     z-index: 3; /* On top of hexagonV2.png */
 }
 
 .hamburger-line.line-top {
-    transform: translateY(-2.5px); /* Adjusted position for top line (down by 1px from -3.5px) */
+    transform: translateX(-50%) translateY(-1.5px); /* Adjusted position for top line (down by 1px) */
 }
 
 .hamburger-line.line-middle {
-    transform: translateY(3px); /* Adjusted position for middle line (down by 1px from 2px) */
+    transform: translateX(-50%) translateY(4px); /* Adjusted position for middle line (down by 1px) */
 }
 
 .hamburger-line.line-bottom {
-    transform: translateY(8.5px); /* Adjusted position for bottom line (down by 1px from 7.5px) */
+    transform: translateX(-50%) translateY(8.5px); /* Adjusted position for bottom line (down by 1px) */
 }
 
 /* Animation for lines when sidebar is open (button-rotated class is active) */
 #hexagon-button.button-rotated {
-    transform: translateX(-5px) rotate(-90deg); /* Apply both translation and rotation */
+    transform: translateX(-8px) rotate(-90deg); /* Adjusted translateX to compensate for perceived shift */
 }
 
 #hexagon-button.button-rotated .line-top {
-    transform: translateY(0) rotate(45deg); /* Adjusted to ensure perfect X alignment at center */
+    transform: translateX(-50%) translateY(0) rotate(45deg); /* Adjusted to ensure perfect X alignment at center */
 }
 
 #hexagon-button.button-rotated .line-middle {
@@ -143,7 +145,7 @@
 }
 
 #hexagon-button.button-rotated .line-bottom {
-    transform: translateY(0) rotate(-45deg); /* Adjusted to ensure perfect X alignment at center */
+    transform: translateX(-50%) translateY(0) rotate(-45deg); /* Adjusted to ensure perfect X alignment at center */
 }
 
 
@@ -159,12 +161,12 @@
         height: 1px;
     }
     .hamburger-line.line-top {
-        transform: translateY(-2px); /* Adjusted for mobile */
+        transform: translateX(-50%) translateY(-2px); /* Adjusted for mobile */
     }
     .hamburger-line.line-middle {
-        transform: translateY(1px); /* Adjusted for mobile */
+        transform: translateX(-50%) translateY(1px); /* Adjusted for mobile */
     }
     .hamburger-line.line-bottom {
-        transform: translateY(4px); /* Adjusted for mobile */
+        transform: translateX(-50%) translateY(4px); /* Adjusted for mobile */
     }
 }
