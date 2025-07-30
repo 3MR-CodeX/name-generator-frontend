@@ -11,13 +11,14 @@
     background-repeat: no-repeat; /* Ensure image doesn't repeat */
     background-color: #222; /* Fallback color */
     z-index: 999; /* Below top bar, above main content */
-    transition: left 0.5s ease-in-out; /* Smooth sliding animation */
+    transition: left 0.5s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth sliding and glow transition */
     /* Vibrant purple line on the right */
-    box-shadow: 2px 0 0 0 var(--vibrant-purple), 2px 0 10px rgba(0, 0, 0, 0.5); /* Line + original shadow */
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto; /* Enable scrolling for sidebar content */
+    box-shadow: 2px 0 0 0 var(--line-purple-default), 2px 0 10px rgba(0, 0, 0, 0.5); /* Line + original shadow */
+}
+
+/* Glow effect on hover for the entire sidebar */
+#sidebar:hover {
+    box-shadow: 2px 0 0 0 var(--line-purple-glow), 0 0 15px 5px var(--line-purple-glow), 2px 0 10px rgba(0, 0, 0, 0.5);
 }
 
 #sidebar.sidebar-open {
