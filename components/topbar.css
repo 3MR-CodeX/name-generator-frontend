@@ -5,9 +5,11 @@
     left: 0;
     width: 100%;
     height: var(--top-bar-height);
-    background-image: url('../topbar.png'); /* Corrected path */
+    background-image: url('../topbar.png'); /* Corrected path: one level up from components folder */
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat; /* Ensure image doesn't repeat */
+    background-color: #333; /* Fallback color */
     z-index: 1000; /* Ensure it's on top of everything */
     display: flex;
     align-items: center;
@@ -30,7 +32,7 @@
     position: relative; /* Positioned within the flex container of top-bar */
     width: var(--hexagon-button-size);
     height: var(--hexagon-button-size);
-    background-image: url('../hexa.png'); /* Corrected path */
+    background-image: url('../hexa.png'); /* Corrected path: one level up from components folder */
     background-size: contain;
     background-repeat: no-repeat;
     background-color: transparent; /* No background color */
