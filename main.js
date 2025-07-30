@@ -77,6 +77,11 @@ const editBox = document.getElementById("edit_box");
 const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 
+// New UI elements for history modal
+const historyModal = document.getElementById("history-modal");
+const closeButton = document.querySelector("#history-modal .close-button");
+const fullHistoryList = document.getElementById("full-history-list");
+
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Load top bar HTML
@@ -97,6 +102,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateDropdown("style", STYLE_OPTIONS);
     fetchHistory(); // Initial fetch for sidebar history
     setupTooltips();
+
+    // Event listeners for history modal
+    if (historyModal && closeButton) {
+        closeButton.addEventListener('click', closeHistoryModal);
+        window.addEventListener('click', (event) => {
+            if (event.target == historyModal) {
+                closeHistoryModal();
+            }
+        });
+    }
 });
 
 /**
@@ -381,8 +396,8 @@ async function refineNames() {
     }
 }
 
-// Made global so sidebar.js can call it
-async function fetchHistory() {
+// Made global so sidebar.js can call it, and now handles rendering to sidebar or modal
+async function fetchHistory(renderToModal = false) {
     try {
         const response = await fetch(`${BACKEND_URL}/history`);
         if (!response.ok) {
@@ -390,35 +405,36 @@ async function fetchHistory() {
             throw new Error(errorData.error || "Unknown error fetching history.");
         }
         const history = await response.json();
-        renderHistory(history);
+        renderHistory(history, renderToModal);
     } catch (error) {
         document.getElementById("error").textContent = "Error fetching history: " + error.message;
     }
 }
 
 // Made global so sidebar.js can call it
-function renderHistory(history) {
-    // Render history in the sidebar
-    const historyDiv = document.getElementById("history");
-    if (historyDiv) {
-        historyDiv.innerHTML = history.length ? "" : "<p>*No history yet. Generate some names!*</p>";
-        history.forEach(entry => {
-            const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
-            const tooltip = entry.category !== "Refined" ?
-                `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
-                `Refine Instruction: ${entry.prompt}`;
-            
-            let preRefined = '';
-            if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
-                preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
-            }
-
-            const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
-            historyDiv.innerHTML += button;
-        });
-    } else {
-        console.warn("History div not found in sidebar. Make sure sidebar.html is loaded.");
+function renderHistory(history, renderToModal = false) {
+    const targetDiv = renderToModal ? fullHistoryList : document.getElementById("history"); // 'history' is for sidebar
+    
+    if (!targetDiv) {
+        console.warn(`Target history div not found. renderToModal: ${renderToModal}`);
+        return;
     }
+
+    targetDiv.innerHTML = history.length ? "" : "<p>*No history yet. Generate some names!*</p>";
+    history.forEach(entry => {
+        const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
+        const tooltip = entry.category !== "Refined" ?
+            `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
+            `Refine Instruction: ${entry.prompt}`;
+        
+        let preRefined = '';
+        if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
+            preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
+        }
+
+        const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
+        targetDiv.innerHTML += button;
+    });
 }
 
 // Made global so sidebar.js can call it
@@ -431,6 +447,8 @@ function restoreHistory(id) {
     editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
 
+    // Close modal if open
+    closeHistoryModal();
 
     fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
         const entry = historyData.find(e => e.id === id);
@@ -468,7 +486,7 @@ function restoreHistory(id) {
             refinedOutputs.classList.add("hidden-section");
 
             // Close sidebar if it's open after restoring history
-            if (typeof toggleSidebar === 'function' && isSidebarOpen) { // Check if isSidebarOpen is defined and true
+            if (typeof toggleSidebar === 'function' && window.isSidebarOpen) { // Access isSidebarOpen globally
                 toggleSidebar();
             }
 
@@ -502,7 +520,7 @@ function restoreHistory(id) {
                 refinedOutputs.classList.remove("visible-section");
                 refinedOutputs.classList.add("hidden-section");
 
-                if (typeof toggleSidebar === 'function' && isSidebarOpen) {
+                if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
                     toggleSidebar();
                 }
             } else {
@@ -554,7 +572,7 @@ function copyToClipboard(elementId) {
 
 /**
  * Resets all dynamic UI sections to their initial hidden state.
- * This is used when an operation fails or an empty prompt is detected.
+ * This is used when an an operation fails or an empty prompt is detected.
  */
 function resetDynamicSections() {
     outputContainer.classList.remove("visible-section");
@@ -595,4 +613,27 @@ function setupTooltips() {
         // Set the text content of the tooltip box
         tooltipBox.textContent = tooltipText;
     });
+}
+
+/**
+ * Opens the full history modal.
+ */
+function openHistoryModal() {
+    if (historyModal) {
+        historyModal.classList.add('active');
+        fetchHistory(true); // Fetch and render history directly to the modal
+    }
+    // Close sidebar if it's open when modal is opened
+    if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
+        toggleSidebar();
+    }
+}
+
+/**
+ * Closes the full history modal.
+ */
+function closeHistoryModal() {
+    if (historyModal) {
+        historyModal.classList.remove('active');
+    }
 }
