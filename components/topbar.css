@@ -42,7 +42,7 @@
     position: relative; /* Positioned within the flex container of top-bar */
     width: var(--hexagon-button-size); /* Bigger hexagon button */
     height: var(--hexagon-button-size); /* Bigger hexagon button */
-    background-image: url('../hexa.png'); /* Corrected path: one level up from components folder */
+    background-image: url('../hexagon.png'); /* Using the empty hexagon image */
     background-size: contain;
     background-repeat: no-repeat;
     background-color: transparent; /* No background color */
@@ -56,11 +56,49 @@
     /* Hexagon shape using clip-path */
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
     -webkit-clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+
+    display: flex; /* Enable flexbox for positioning lines */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-#hexagon-button.button-rotated {
-    transform: rotate(-90deg); /* Rotate 90 degrees counter-clockwise */
+/* Hamburger Line Styling */
+.hamburger-line {
+    display: block;
+    width: 60%; /* Width relative to button size */
+    height: 4px; /* Thickness of the lines */
+    background-color: #ffffff; /* White lines */
+    border-radius: 2px;
+    position: absolute; /* Position lines within the button */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
+
+.hamburger-line.line-top {
+    transform: translateY(-10px); /* Adjust position for top line */
+}
+
+.hamburger-line.line-middle {
+    /* Stays in center for initial state */
+}
+
+.hamburger-line.line-bottom {
+    transform: translateY(10px); /* Adjust position for bottom line */
+}
+
+/* Animation for lines when sidebar is open (button-rotated class is active) */
+#hexagon-button.button-rotated .line-top {
+    transform: translateY(0) rotate(45deg);
+}
+
+#hexagon-button.button-rotated .line-middle {
+    opacity: 0; /* Fade out middle line */
+}
+
+#hexagon-button.button-rotated .line-bottom {
+    transform: translateY(0) rotate(-45deg);
+}
+
 
 /* Hover effects for hexagon button */
 #hexagon-button:hover {
@@ -72,5 +110,8 @@
 @media (max-width: 768px) {
     #top-bar h1 {
         font-size: 1.8em;
+    }
+    :root {
+        --hexagon-button-size: 70px; /* Adjusted for mobile */
     }
 }
