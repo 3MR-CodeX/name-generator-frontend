@@ -1,8 +1,10 @@
 :root {
     --top-bar-height: 60px; /* Thinner top bar */
     --sidebar-width: 280px; /* Width of the sidebar */
-    --hexagon-button-size: 60px; /* Bigger hexagon button */
-    --vibrant-purple: #9933FF; /* Consistent vibrant purple color */
+    --hexagon-button-size: 70px; /* Even Bigger hexagon button */
+    --button-purple: #800080; /* Original button color */
+    --line-purple-default: #A020F0; /* More vibrant than button, less than glow */
+    --line-purple-glow: #9933FF; /* Deep, vibrant purple for glow */
 }
 
 * {
@@ -160,20 +162,20 @@ label {
 .tooltip-icon {
     width: 18px;
     height: 18px;
-    border: 1px solid #800080;
+    border: 1px solid var(--button-purple);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 12px;
     font-weight: bold;
-    color: #800080;
+    color: var(--button-purple);
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
 }
 
 .tooltip-icon:hover {
-    background-color: #800080;
+    background-color: var(--button-purple);
     color: white;
 }
 
@@ -236,7 +238,7 @@ select {
 }
 
 button {
-    background-color: #800080;
+    background-color: var(--button-purple);
     color: white;
     border: none;
     border-radius: 8px;
@@ -247,7 +249,7 @@ button {
 }
 
 button:hover:not(:disabled) {
-    background-color: #a020f0;
+    background-color: #a020f0; /* Keeping this specific hover color for general buttons */
     box-shadow: 0 0 10px 2px rgba(128, 0, 128, 0.7);
 }
 
@@ -339,7 +341,7 @@ button:disabled {
 }
 
 .copy-button {
-    background-color: #800080;
+    background-color: var(--button-purple);
     padding: 5px;
     border-radius: 5px;
     width: 24px;
@@ -411,7 +413,7 @@ pre {
 
 .spinner {
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid rgba(128, 0, 128, 0.7);
+    border-top: 4px solid var(--button-purple);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -442,7 +444,7 @@ pre {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #800080;
+    background: var(--button-purple);
     border-radius: 4px;
 }
 
@@ -455,7 +457,7 @@ pre {
     :root {
         --top-bar-height: 60px; /* Smaller top bar on mobile */
         --sidebar-width: 220px; /* Smaller sidebar on mobile */
-        --hexagon-button-size: 40px;
+        --hexagon-button-size: 50px; /* Adjusted for mobile */
     }
 
     h1 { /* Adjusted for main page h1 on mobile */
@@ -512,7 +514,7 @@ pre {
     background-color: rgba(42, 42, 42, 0.9); /* Dark grey, slightly opaque */
     margin: auto;
     padding: 20px;
-    border: 1px solid var(--vibrant-purple); /* Purple border */
+    border: 1px solid var(--line-purple-glow); /* Purple border */
     border-radius: 12px;
     width: 90%;
     max-width: 700px; /* Max width for the modal */
@@ -549,7 +551,7 @@ pre {
 
 .close-button:hover,
 .close-button:focus {
-    color: var(--vibrant-purple);
+    color: var(--line-purple-glow);
     text-decoration: none;
     cursor: pointer;
 }
@@ -570,7 +572,6 @@ pre {
 
 /* Recent History section moved back to main content */
 .history-section {
-    display: block; /* Ensure it's visible by default */
     background-color: rgba(42, 42, 42, 0.7);
     padding: 15px;
     border-radius: 8px;
