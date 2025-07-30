@@ -9,7 +9,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat; /* Ensure image doesn't repeat */
-    background-color: #222; /* Fallback color */
+    background-color: rgba(34, 34, 34, 0.85); /* Less transparent */
     z-index: 999; /* Below top bar, above main content */
     transition: left 0.5s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth sliding and glow transition */
     /* Vibrant purple line on the right */
