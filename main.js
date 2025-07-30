@@ -81,6 +81,7 @@ const surpriseBtn = document.querySelector(".surprise-btn");
 const historyModal = document.getElementById("history-modal");
 const closeButton = document.querySelector("#history-modal .close-button");
 const fullHistoryList = document.getElementById("full-history-list");
+const recentHistoryDiv = document.getElementById("history"); // Reference to the recent history div in main content
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -100,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    fetchHistory(); // Initial fetch for sidebar history
+    fetchHistory(); // Initial fetch for recent history in main content
     setupTooltips();
 
     // Event listeners for history modal
@@ -413,7 +414,7 @@ async function fetchHistory(renderToModal = false) {
 
 // Made global so sidebar.js can call it
 function renderHistory(history, renderToModal = false) {
-    const targetDiv = renderToModal ? fullHistoryList : document.getElementById("history"); // 'history' is for sidebar
+    const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv; // 'history' is for sidebar
     
     if (!targetDiv) {
         console.warn(`Target history div not found. renderToModal: ${renderToModal}`);
