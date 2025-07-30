@@ -1,10 +1,10 @@
 :root {
     --top-bar-height: 60px; /* Thinner top bar */
     --sidebar-width: 280px; /* Width of the sidebar */
-    --hexagon-button-size: 70px; /* Even Bigger hexagon button */
+    --hexagon-button-size: 80px; /* Even Bigger hexagon button */
     --button-purple: #800080; /* Original button color */
-    --line-purple-default: #A020F0; /* More vibrant than button, less than glow */
-    --line-purple-glow: #9933FF; /* Deep, vibrant purple for glow */
+    --line-purple-default: #ff00ff; /* Normal purple for lines */
+    --line-purple-glow: #a500ff; /* Deep purple for glow */
 }
 
 * {
@@ -457,7 +457,7 @@ pre {
     :root {
         --top-bar-height: 60px; /* Smaller top bar on mobile */
         --sidebar-width: 220px; /* Smaller sidebar on mobile */
-        --hexagon-button-size: 50px; /* Adjusted for mobile */
+        --hexagon-button-size: 60px; /* Adjusted for mobile */
     }
 
     h1 { /* Adjusted for main page h1 on mobile */
