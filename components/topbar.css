@@ -48,6 +48,10 @@
     background-color: transparent; /* No background color */
     border: none;
     cursor: pointer;
+    /* Default precise outline */
+    box-shadow: 
+        0 0 0 2px var(--line-purple-default), /* Main outline */
+        inset 0 0 0 2px var(--line-purple-default); /* Inner outline for better fill */
     transition: box-shadow 0.3s ease-in-out; /* Only box-shadow transition for hover */
     z-index: 1001; /* Ensure button is above other top bar elements if any */
     padding: 0; /* Remove default button padding */
@@ -75,7 +79,7 @@
 }
 
 .hamburger-line.line-top {
-    transform: translateY(-7px); /* Adjusted position for top line (moved down 1px) */
+    transform: translateY(-5px); /* Adjusted position for top line (moved down 2px from prev -7px) */
 }
 
 .hamburger-line.line-middle {
@@ -83,7 +87,7 @@
 }
 
 .hamburger-line.line-bottom {
-    transform: translateY(7px); /* Adjusted position for bottom line (moved down 1px) */
+    transform: translateY(9px); /* Adjusted position for bottom line (moved down 2px from prev 7px) */
 }
 
 /* Animation for lines when sidebar is open (button-rotated class is active) */
@@ -102,8 +106,11 @@
 
 /* Hover effects for hexagon button */
 #hexagon-button:hover {
-    /* Removed scale, brightness, saturate */
-    box-shadow: 0 0 0 4px var(--line-purple-glow); /* Deep purple outline glow */
+    /* Glow effect for the outline */
+    box-shadow: 
+        0 0 0 2px var(--line-purple-glow), /* Main glow outline */
+        0 0 15px 5px var(--line-purple-glow), /* Outer glow spread */
+        inset 0 0 0 2px var(--line-purple-glow); /* Inner glow for better fill */
 }
 
 @media (max-width: 768px) {
@@ -118,9 +125,9 @@
         height: 1.5px;
     }
     .hamburger-line.line-top {
-        transform: translateY(-5px);
+        transform: translateY(-4px); /* Adjusted for mobile */
     }
     .hamburger-line.line-bottom {
-        transform: translateY(5px);
+        transform: translateY(8px); /* Adjusted for mobile */
     }
 }
