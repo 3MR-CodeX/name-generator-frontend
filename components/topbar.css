@@ -169,7 +169,7 @@
     transform: translateX(-50%) translateY(0px); /* Keep middle dot in center */
     width: 10px; /* Make it just a little bigger */
     height: 10px; /* Make it just a little bigger */
-    background-color: var(--line-purple-glow); /* Change color to purple */
+    /* Removed background-color: var(--line-purple-glow); to keep it white */
 }
 
 
@@ -181,8 +181,8 @@
         --hexagon-button-size: 60px; /* Adjusted for mobile */
     }
     .hexagon-image {
-        width: calc(var(--hexagon-button-size) * 0.73); /* 73% of button size for mobile */
-        height: calc(var(--hexagon-button-size) * 0.73); /* 73% of button size for mobile */
+        width: calc(var(--hexagon-button-size) * 1.15); /* 73% of button size for mobile */
+        height: calc(var(--hexagon-button-size) * 1.15); /* 73% of button size for mobile */
     }
     .hamburger-line {
         width: 4px; /* Smaller dots for mobile */
