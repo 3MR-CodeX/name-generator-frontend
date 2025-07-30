@@ -1,7 +1,8 @@
 :root {
-    --top-bar-height: 80px; /* Height of the top bar */
+    --top-bar-height: 60px; /* Thinner top bar */
     --sidebar-width: 280px; /* Width of the sidebar */
-    --hexagon-button-size: 50px; /* Size of the hexagon button */
+    --hexagon-button-size: 60px; /* Bigger hexagon button */
+    --vibrant-purple: #9933FF; /* Consistent vibrant purple color */
 }
 
 * {
@@ -511,7 +512,7 @@ pre {
     background-color: rgba(42, 42, 42, 0.9); /* Dark grey, slightly opaque */
     margin: auto;
     padding: 20px;
-    border: 1px solid #800080; /* Purple border */
+    border: 1px solid var(--vibrant-purple); /* Purple border */
     border-radius: 12px;
     width: 90%;
     max-width: 700px; /* Max width for the modal */
@@ -548,7 +549,7 @@ pre {
 
 .close-button:hover,
 .close-button:focus {
-    color: #800080;
+    color: var(--vibrant-purple);
     text-decoration: none;
     cursor: pointer;
 }
@@ -565,6 +566,52 @@ pre {
 
 #full-history-list .history-item {
     margin: 5px 0; /* Adjust margin for items in modal */
+}
+
+/* Recent History section moved back to main content */
+.history-section {
+    display: block; /* Ensure it's visible by default */
+    background-color: rgba(42, 42, 42, 0.7);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #4a4a4a;
+    margin-top: 20px; /* Space from other sections */
+}
+
+.history-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #ffffff; /* Ensure title is visible */
+    text-align: center;
+}
+
+.history-inner {
+    background-color: rgba(58, 58, 58, 0.65);
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.history-item {
+    background-color: rgba(58, 58, 58, 0.65);
+    color: #e0e0e0;
+    border: none;
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+}
+
+.history-item:hover {
+    background-color: #4a4a4a;
 }
 
 @media (max-width: 600px) {
