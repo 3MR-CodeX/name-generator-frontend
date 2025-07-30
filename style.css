@@ -62,11 +62,10 @@ body::before {
     height: 60px; /* Assumed height for topbar.png */
     background: url('topbar.png') no-repeat center center / cover;
     z-index: 1000;
-    /* Reduced transparency by 20% (from 100% opaque to 80%) is inherent in the image itself, if designed this way.
-       If it needs to be applied via CSS, use rgba background or filter opacity.
-       Assuming topbar.png is designed with desired transparency. */
     box-shadow: none; /* No initial shadow */
     transition: box-shadow 0.3s ease; /* Transition for glow */
+    /* Ensuring visibility. If it's a transparency issue with the PNG, 
+       you might need to adjust the PNG itself or apply a semi-transparent overlay */
 }
 
 /* Glow effect for top bar image when hovering over its #2a2a2a color area, or the whole bar for simplicity */
@@ -80,8 +79,8 @@ body::before {
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px; /* Assumed width for hexa.png */
-    height: 46.19px; /* Assumed height for hexa.png to maintain hexagon aspect ratio with width 40px */
+    width: 55px; /* Increased size */
+    height: 63.51px; /* Maintain hexagon aspect ratio for 55px width (55 * sqrt(3)/2) */
     background: url('hexa.png') no-repeat center center / contain; /* Use the provided PNG */
     cursor: pointer;
     transition: transform 0.5s ease;
@@ -97,10 +96,10 @@ body::before {
 /* New Side Menu Styling */
 .side-menu {
     position: fixed;
-    top: 60px; /* Position below the top bar (height 60px) */
+    top: 0; /* Changed to start from the very top */
     left: 0;
     width: 250px; /* Assumed width for sidebar.png */
-    height: calc(100vh - 60px); /* Height to fill remaining screen below top bar */
+    height: 100vh; /* Make it full height of the viewport */
     background: url('sidebar.png') no-repeat left top / cover; /* Use the provided PNG as background */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
@@ -125,6 +124,7 @@ body::before {
     height: 100%;
     padding: 20px 0;
     background: transparent; /* Keep transparent to show sidebar.png */
+    margin-top: 100px; /* Extend content from the top by 100px */
 }
 
 .side-menu.active {
