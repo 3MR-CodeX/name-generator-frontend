@@ -421,28 +421,63 @@ async function fetchHistory(renderToModal = false) {
 
 // Made global so sidebar.js can call it
 function renderHistory(history, renderToModal = false) {
-    const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv; // 'history' is for sidebar
+    const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
     
     if (!targetDiv) {
         console.warn(`Target history div not found. renderToModal: ${renderToModal}`);
         return;
     }
 
-    targetDiv.innerHTML = history.length ? "" : "<p>*No history yet. Generate some names!*</p>";
-    history.forEach(entry => {
-        const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
-        const tooltip = entry.category !== "Refined" ?
-            `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
-            `Refine Instruction: ${entry.prompt}`;
-        
-        let preRefined = '';
-        if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
-            preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
-        }
+    targetDiv.innerHTML = ""; // Clear previous content
 
-        const button = `<button class='history-item' title='${tooltip}' onclick='restoreHistory("${entry.id}")'>${names}${preRefined}</button>`;
-        targetDiv.innerHTML += button;
-    });
+    if (history.length === 0) {
+        targetDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
+        return;
+    }
+
+    // Group history by date
+    const groupedHistory = history.reduce((acc, entry) => {
+        const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        if (!acc[date]) {
+            acc[date] = [];
+        }
+        acc[date].push(entry);
+        return acc;
+    }, {});
+
+    // Render grouped history
+    for (const date in groupedHistory) {
+        const dailyContainer = document.createElement('div');
+        dailyContainer.className = 'daily-history-container';
+
+        const dateHeading = document.createElement('h3');
+        dateHeading.textContent = date;
+        dailyContainer.appendChild(dateHeading);
+
+        groupedHistory[date].forEach(entry => {
+            const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
+            const tooltip = entry.category !== "Refined" ?
+                `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
+                `Refine Instruction: ${entry.prompt}`;
+            
+            let preRefined = '';
+            if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
+                preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
+            }
+
+            const button = document.createElement('button');
+            button.className = 'history-item';
+            button.title = tooltip;
+            button.innerHTML = `${names}${preRefined}`;
+            button.onclick = () => restoreHistory(entry.id);
+            dailyContainer.appendChild(button);
+        });
+        targetDiv.appendChild(dailyContainer);
+    }
 }
 
 // Made global so sidebar.js can call it
