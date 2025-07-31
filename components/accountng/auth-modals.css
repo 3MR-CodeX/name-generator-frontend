@@ -1,0 +1,20 @@
+/* This file contains styles specific to the authentication modals */
+
+/* Inherit base modal styles from style.css */
+/* .modal, .modal.active, .modal-content, .modal.active .modal-content, .modal-content h2, .close-button, .close-button:hover, .close-button:focus are defined in style.css */
+
+/* Specific styles for auth modal content */
+#signup-modal .modal-content,
+#signin-modal .modal-content {
+    max-width: 450px; /* Slightly narrower for auth forms */
+    padding: 30px;
+}
+
+#signup-modal .modal-content h2,
+#signin-modal .modal-content h2 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+}
+
+/* Input groups and buttons are styled in style.css for reusability */
+
