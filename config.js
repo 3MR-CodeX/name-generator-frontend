@@ -1,6 +1,6 @@
 window.env = {
-  BACKEND_URL: process.env.BACKEND_URL || "http://localhost:8000",
-  BACKEND_API_KEY: process.env.BACKEND_API_KEY || "fallback-key-for-local-testing",
+  BACKEND_URL: "https://nameit-backend-2.vercel.app", // Use your deployed backend URL
+  BACKEND_API_KEY: "fallback-key-for-local-testing", // Replace with actual key if needed
   FIREBASE_CONFIG: {
     apiKey: "AIzaSyDT7kkBgflIKI432uxY_piFueCzmqmPD6U",
     authDomain: "nameit-app-nit.firebaseapp.com",
