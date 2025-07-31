@@ -1,10 +1,10 @@
 :root {
-    --top-bar-height: 60px;
-    --sidebar-width: 280px;
-    --hexagon-button-size: 80px;
-    --button-purple: #800080;
-    --line-purple-default: #ff00ff;
-    --line-purple-glow: #a500ff;
+    --top-bar-height: 60px; /* Thinner top bar */
+    --sidebar-width: 280px; /* Width of the sidebar */
+    --hexagon-button-size: 80px; /* Even Bigger hexagon button */
+    --button-purple: #800080; /* Original button color */
+    --line-purple-default: #ff00ff; /* Normal purple for lines */
+    --line-purple-glow: #a500ff; /* Deep purple for glow */
 }
 
 * {
@@ -18,8 +18,8 @@ body {
     font-size: 16px;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding-top: var(--top-bar-height);
-    padding-left: 0;
+    padding-top: var(--top-bar-height); /* Space for the fixed top bar */
+    padding-left: 0; /* Will be adjusted by JS when sidebar opens */
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -27,7 +27,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    transition: padding-left 0.5s ease-in-out;
+    transition: padding-left 0.5s ease-in-out; /* Smooth transition for content shift */
 }
 
 body::after {
@@ -50,7 +50,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('pattern.png') repeat;
+    background: url('pattern.png') repeat; /* Path relative to style.css */
     background-size: 400px 400px;
     z-index: -1;
     pointer-events: none;
@@ -64,24 +64,26 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
+/* Main Content Wrapper */
 .main-content-wrapper {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 10px;
-    position: relative;
-    z-index: 1;
+    margin: 0 auto; /* Center the content */
+    padding: 20px 10px; /* Add some horizontal padding */
+    position: relative; /* Needed for z-index */
+    z-index: 1; /* Ensure it's above the body background, below overlay/sidebar */
 }
 
+/* Re-added Banner Section Styles */
 .banner-col {
     text-align: center;
     margin-bottom: 20px;
-    background-color: rgba(128, 0, 128, 0.7);
+    background-color: rgba(128, 0, 128, 0.7); /* Purple background, 70% opaque */
     padding: 10px;
     border-radius: 8px;
     transition: background-color 0.3s;
-    width: 100%;
-    max-width: 1200px;
+    width: 100%; /* Ensure banner takes full width */
+    max-width: 1200px; /* Match container max-width */
 }
 
 .banner-col:hover {
@@ -96,7 +98,7 @@ body::before {
 }
 
 h1 {
-    font-size: 3em;
+    font-size: 3em; /* Original h1 style, for the main page title */
     color: #ffffff;
     text-align: center;
     margin-bottom: 10px;
@@ -123,7 +125,7 @@ h1 {
 }
 
 .input-box {
-    background-color: rgba(42, 42, 42, 0.75);
+    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -202,7 +204,7 @@ label {
 }
 
 textarea, select {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -247,7 +249,7 @@ button {
 }
 
 button:hover:not(:disabled) {
-    background-color: #a020f0;
+    background-color: #a020f0; /* Keeping this specific hover color for general buttons */
     box-shadow: 0 0 10px 2px rgba(128, 0, 128, 0.7);
 }
 
@@ -295,11 +297,9 @@ button:disabled {
     flex-wrap: wrap;
     width: 100%;
 }
-
 .refine-section {
     display: block;
 }
-
 .refine-button-section {
     display: flex;
     gap: 20px;
@@ -322,7 +322,7 @@ button:disabled {
 }
 
 .output-box {
-    background-color: rgba(42, 42, 42, 0.75);
+    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
@@ -357,7 +357,7 @@ button:disabled {
 }
 
 pre {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -371,7 +371,7 @@ pre {
 }
 
 .refine-section {
-    background-color: rgba(42, 42, 42, 0.75);
+    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -453,14 +453,15 @@ pre {
     background: #a020f0;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
     :root {
-        --top-bar-height: 60px;
-        --sidebar-width: 220px;
-        --hexagon-button-size: 60px;
+        --top-bar-height: 60px; /* Smaller top bar on mobile */
+        --sidebar-width: 220px; /* Smaller sidebar on mobile */
+        --hexagon-button-size: 60px; /* Adjusted for mobile */
     }
 
-    h1 {
+    h1 { /* Adjusted for main page h1 on mobile */
         font-size: 2.5em;
     }
 
@@ -470,7 +471,7 @@ pre {
 
     body {
         padding: 10px;
-        padding-top: var(--top-bar-height);
+        padding-top: var(--top-bar-height); /* Maintain top padding */
     }
 
     .input-section, .button-section, .output-section, .refine-button-section {
@@ -484,18 +485,19 @@ pre {
     }
 }
 
+/* Base Modal Styles */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.7);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity and blur */
+    backdrop-filter: blur(5px); /* Blur effect */
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
     justify-content: center;
     align-items: center;
     opacity: 0;
@@ -504,28 +506,28 @@ pre {
 }
 
 .modal.active {
-    display: flex;
+    display: flex; /* Show flex container */
     opacity: 1;
     visibility: visible;
 }
 
 .modal-content {
-    background-color: #333333;
+    background-color: #333333; /* Dark grey background */
     margin: auto;
     padding: 20px;
-    border: 2px solid var(--line-purple-default);
+    border: 2px solid var(--line-purple-default); /* 2px vibrant purple border */
     border-radius: 12px;
     width: 90%;
-    max-width: 700px;
+    max-width: 700px; /* Max width for the modal */
     box-shadow: 0 5px 15px rgba(0,0,0,0.8);
     position: relative;
-    transform: translateY(-50px);
+    transform: translateY(-50px); /* Start slightly above */
     opacity: 0;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .modal.active .modal-content {
-    transform: translateY(0);
+    transform: translateY(0); /* Slide into place */
     opacity: 1;
 }
 
@@ -548,31 +550,32 @@ pre {
     transition: color 0.3s;
 }
 
-.close-button:hover,
-.close-button:focus {
+.close-button:hover, .close-button:focus {
     color: var(--line-purple-glow);
     text-decoration: none;
     cursor: pointer;
 }
 
+/* History list inside modal */
 #full-history-list {
-    max-height: 500px;
+    max-height: 500px; /* Max height for modal history list */
     overflow-y: auto;
-    background-color: transparent;
-    border: none;
-    padding: 0;
+    background-color: transparent; /* Changed to transparent for daily containers */
+    border: none; /* Removed border from here */
+    padding: 0; /* Removed padding from here */
 }
 
 #full-history-list .history-item {
-    margin: 5px 0;
+    margin: 5px 0; /* Adjust margin for items in modal */
 }
 
+/* Daily history container within the modal */
 .daily-history-container {
-    background-color: rgba(76, 76, 76, 0.75);
+    background-color: rgba(76, 76, 76, 0.75); /* Lighter gray background, less transparent */
     border-radius: 8px;
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #5a5a5a;
+    margin-bottom: 15px; /* Space between daily containers */
+    border: 1px solid #5a5a5a; /* Subtle border for definition */
 }
 
 .daily-history-container h3 {
@@ -581,114 +584,250 @@ pre {
     margin-bottom: 10px;
     text-align: center;
     padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Separator line */
 }
 
+/* Recent History section moved back to main content */
 .history-section {
-    background-color: rgba(42, 42, 42, 0.75);
+    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
-    margin-top: 20px;
+    margin-top: 20px; /* Space from other sections */
 }
 
 .history-section h2 {
     font-size: 20px;
     margin-bottom: 10px;
-    color: #ffffff;
+    color: #ffffff; /* Ensure title is visible */
     text-align: center;
 }
 
 .history-inner {
-    background-color: rgba(58, 58, 58, 0.75);
-    max-height: 200px;
+    max-height: 250px; /* Max height for recent history */
     overflow-y: auto;
-    overflow-x: hidden;
-    border: 1px solid #4a4a4a;
-    border-radius: 8px;
-    padding: 10px;
+    padding: 0 10px;
 }
 
 .history-item {
-    background-color: rgba(58, 58, 58, 0.75);
-    color: #e0e0e0;
-    border: none;
-    padding: 8px 12px;
-    margin: 5px 0;
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
+    padding: 10px;
+    margin-bottom: 10px;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    display: block;
-    width: 100%;
-    text-align: left;
-    white-space: normal;
+    transition: background-color 0.2s, transform 0.2s;
+    border: 1px solid #4a4a4a;
 }
 
 .history-item:hover {
     background-color: #4a4a4a;
+    transform: translateY(-2px);
 }
 
+.history-item p {
+    margin: 0;
+}
+
+.history-item .history-date {
+    font-size: 0.8em;
+    color: #aaa;
+    text-align: right;
+}
+
+/* Styles for history details in modal */
 .history-details-content {
-    max-width: 600px;
+    background-color: #2a2a2a;
+    border-color: var(--line-purple-glow);
+}
+
+#details-content {
+    padding-top: 10px;
 }
 
 #details-content p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+#details-content h3 {
+    font-size: 1.4em;
+    color: #ffffff;
     margin-bottom: 10px;
+    border-bottom: 1px solid #4a4a4a;
+    padding-bottom: 5px;
+}
+
+#details-content ul {
+    margin-left: 20px;
+    list-style-type: '⚡ '; /* Custom list marker */
+}
+
+#details-content ul li {
+    margin-bottom: 8px;
+    font-size: 1.1em;
     line-height: 1.5;
 }
 
-#details-content strong {
-    color: var(--line-purple-default);
+/* ------------------------------------------- */
+/* --- NEW AUTHENTICATION SYSTEM STYLES --- */
+/* ------------------------------------------- */
+
+/* Authentication modal specific styles */
+.auth-modal-content {
+    max-width: 450px;
 }
 
-#details-content pre {
-    background-color: rgba(58, 58, 58, 0.75);
-    color: #e0e0e0;
-    border-radius: 8px;
-    padding: 10px;
-    white-space: pre-wrap;
-    max-height: 150px;
-    overflow-y: auto;
-    margin-top: 5px;
-    font-size: 0.9em;
-}
-
-.auth-form {
+.auth-form-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.auth-form input {
-    background-color: rgba(58, 58, 58, 0.75);
+.auth-form-container input {
+    background-color: #2a2a2a;
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
+    width: 100%;
 }
 
-.auth-form button {
-    margin-top: 10px;
+.auth-form-container input:focus {
+    outline: none;
+    border-color: var(--button-purple);
+    box-shadow: 0 0 5px var(--button-purple);
 }
 
-.auth-form p {
+.auth-btn {
+    width: 100%;
+    background-color: var(--button-purple);
+    font-weight: 500;
+}
+
+.auth-google-btn {
+    width: 100%;
+    background-color: #4285F4; /* Google Blue */
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 12px;
+}
+
+.auth-google-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
     text-align: center;
-    color: #cccccc;
-    margin: 10px 0;
+    color: #aaa;
 }
 
-@media (max-width: 600px) {
-    .modal-content {
-        width: 95%;
-        padding: 15px;
-    }
-    .modal-content h2 {
-        font-size: 1.5em;
-    }
-    .close-button {
-        font-size: 24px;
-        top: 5px;
-        right: 15px;
-    }
+.auth-divider hr {
+    flex: 1;
+    border: none;
+    height: 1px;
+    background-color: #5a5a5a;
+}
+
+.auth-divider span {
+    padding: 0 10px;
+}
+
+.auth-form-container p {
+    text-align: center;
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 5px;
+}
+
+.auth-form-container p a {
+    color: var(--line-purple-default);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.auth-form-container p a:hover {
+    color: var(--line-purple-glow);
+    text-decoration: underline;
+}
+
+/* Styles for topbar user info (signed in state) */
+#user-info-container {
+    display: none; /* Hidden by default */
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#user-info-container.signed-in {
+    display: flex;
+}
+
+#user-info-container:hover {
+    opacity: 0.8;
+}
+
+#user-pfp {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--button-purple);
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+#user-name {
+    font-size: 1em;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0;
+}
+
+#user-email {
+    font-size: 0.8em;
+    font-weight: 400;
+    color: #cccccc;
+    margin: 0;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: calc(var(--top-bar-height) - 10px);
+    right: 20px;
+    background-color: #2a2a2a;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+}
+
+.profile-dropdown button {
+    width: 100%;
+    background-color: transparent;
+    color: #e0e0e0;
+    text-align: left;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.profile-dropdown button:hover {
+    background-color: #4a4a4a;
 }
