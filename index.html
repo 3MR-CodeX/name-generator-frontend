@@ -9,11 +9,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="components/topbar.css">
     <link rel="stylesheet" href="components/sidebar.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div id="top-bar-placeholder"></div>
     <div id="sidebar-placeholder"></div>
     <div id="overlay"></div>
+
+    <!-- Full History List Modal -->
     <div id="history-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -21,6 +24,8 @@
             <div id="full-history-list" class="history-inner"></div>
         </div>
     </div>
+
+    <!-- History Details Modal -->
     <div id="history-details-modal" class="modal">
         <div class="modal-content history-details-content">
             <span class="close-button">&times;</span>
@@ -28,34 +33,43 @@
             <div id="details-content"></div>
         </div>
     </div>
-    <div id="sign-up-modal" class="modal">
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>Sign Up</h2>
-            <form id="sign-up-form">
-                <label for="sign-up-email">Email or Name</label>
-                <input type="text" id="sign-up-email" required>
-                <label for="sign-up-password">Password</label>
-                <input type="password" id="sign-up-password" required>
-                <button type="submit">Create Account</button>
-            </form>
-            <button id="sign-up-google">Sign Up with Google</button>
+            <div class="auth-form">
+                <label for="signup-name">Name</label>
+                <input type="text" id="signup-name" required>
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" required>
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" required>
+                <button id="signup-submit">Create Account</button>
+                <p>Or</p>
+                <button id="signup-google">Sign Up with Google</button>
+            </div>
         </div>
     </div>
-    <div id="sign-in-modal" class="modal">
+
+    <!-- Sign In Modal -->
+    <div id="signin-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>Sign In</h2>
-            <form id="sign-in-form">
-                <label for="sign-in-email">Email or Name</label>
-                <input type="text" id="sign-in-email" required>
-                <label for="sign-in-password">Password</label>
-                <input type="password" id="sign-in-password" required>
-                <button type="submit">Sign In</button>
-            </form>
-            <button id="sign-in-google">Sign In with Google</button>
+            <div class="auth-form">
+                <label for="signin-email">Email</label>
+                <input type="email" id="signin-email" required>
+                <label for="signin-password">Password</label>
+                <input type="password" id="signin-password" required>
+                <button id="signin-submit">Sign In</button>
+                <p>Or</p>
+                <button id="signin-google">Sign In with Google</button>
+            </div>
         </div>
     </div>
+
     <div class="main-content-wrapper">
         <div class="banner-col">
             <img src="banner.png" alt="Banner" id="banner">
@@ -146,11 +160,7 @@
             <div id="error" class="error"></div>
         </div>
     </div>
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js';
-        window.firebase = { initializeApp, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut };
-    </script>
+
     <script src="config.js"></script>
     <script src="components/topbar.js"></script>
     <script src="components/sidebar.js"></script>
