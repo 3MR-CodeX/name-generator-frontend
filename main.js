@@ -113,8 +113,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Load sidebar HTML
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
     // Load auth modals HTML (NEW)
-    await loadComponent('signup-modal', 'components/auth/signup-modal.html');
-    await loadComponent('signin-modal', 'components/auth/signin-modal.html');
+    await loadComponent('signup-modal', 'components/Accounting/signup-modal.html');
+    await loadComponent('signin-modal', 'components/Accounting/signin-modal.html');
 
 
     // Initialize component-specific JS AFTER their HTML is loaded
