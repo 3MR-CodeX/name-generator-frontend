@@ -1,17 +1,7 @@
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDT7kkBgflIKI432uxY_piFueCzmqmPD6U",
-  authDomain: "nameit-app-nit.firebaseapp.com",
-  projectId: "nameit-app-nit",
-  storageBucket: "nameit-app-nit.firebasestorage.app",
-  messagingSenderId: "255958152641",
-  appId: "1:255958152641:web:d56fa5b2c95945bac5ab40",
-  measurementId: "G-J9XGX5BVFR"
-};
-
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.getAuth(app);
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js';
+import { firebaseConfig } from './config.js';
 
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
@@ -75,6 +65,12 @@ const SURPRISES = [
     ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"],
     ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
 ];
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const analytics = getAnalytics(app);
+const googleProvider = new GoogleAuthProvider();
 
 // Get references to key UI elements
 const outputContainer = document.getElementById("output_container");
@@ -153,11 +149,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     showSignInSignUpButtons(); // Show sign-in/up buttons by default
 });
 
-/**
- * Dynamically loads an HTML component into a placeholder.
- * @param {string} placeholderId The ID of the div to load the HTML into.
- * @param {string} componentUrl The URL of the HTML file to load.
- */
 async function loadComponent(placeholderId, componentUrl) {
     try {
         const response = await fetch(componentUrl);
@@ -204,10 +195,6 @@ function cleanNames(text) {
     return text.replace(/\*\*/g, '');
 }
 
-/**
- * Shows a loading spinner overlay on a given element.
- * @param {HTMLElement} targetElement The element to overlay the spinner on.
- */
 function showLoading(targetElement) {
     // Clear any existing content and animation classes
     targetElement.textContent = "";
@@ -224,10 +211,6 @@ function showLoading(targetElement) {
     spinnerOverlay.classList.add("show"); // Show the spinner
 }
 
-/**
- * Hides the loading spinner overlay from a given element.
- * @param {HTMLElement} targetElement The element to remove the spinner from.
- */
 function hideLoading(targetElement) {
     const spinnerOverlay = targetElement.querySelector(".spinner-overlay");
     if (spinnerOverlay) {
@@ -235,29 +218,18 @@ function hideLoading(targetElement) {
     }
 }
 
-/**
- * Disables all relevant buttons during a loading state.
- */
 function disableButtons() {
     generateBtn.disabled = true;
     surpriseBtn.disabled = true;
     refineBtn.disabled = true;
 }
 
-/**
- * Enables all relevant buttons after a loading state.
- */
 function enableButtons() {
     generateBtn.disabled = false;
     surpriseBtn.disabled = false;
     refineBtn.disabled = false;
 }
 
-/**
- * Displays a temporary error message in a textarea's placeholder.
- * @param {HTMLTextAreaElement} textarea The textarea element.
- * @param {string} message The error message to display.
- */
 function showTemporaryPlaceholderError(textarea, message) {
     // Store original placeholder if not already stored
     if (!textarea.dataset.originalPlaceholder) {
@@ -437,7 +409,6 @@ async function refineNames() {
     }
 }
 
-// Made global so sidebar.js can call it, and now handles rendering to sidebar or modal
 async function fetchHistory(renderToModal = false) {
     try {
         const response = await fetch(`${BACKEND_URL}/history`);
@@ -452,7 +423,6 @@ async function fetchHistory(renderToModal = false) {
     }
 }
 
-// Made global so sidebar.js can call it
 function renderHistory(history, renderToModal = false) {
     const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
     
@@ -547,7 +517,6 @@ function renderHistory(history, renderToModal = false) {
     }
 }
 
-// Made global so sidebar.js can call it
 function restoreHistory(id) {
     // Clear any existing error messages when restoring
     document.getElementById("error").textContent = "";
@@ -689,10 +658,6 @@ function copyToClipboard(elementId) {
     });
 }
 
-/**
- * Resets all dynamic UI sections to their initial hidden state.
- * This is used when an an operation fails or an empty prompt is detected.
- */
 function resetDynamicSections() {
     outputContainer.classList.remove("visible-section");
     outputContainer.classList.add("hidden-section");
@@ -722,9 +687,6 @@ function resetDynamicSections() {
     document.getElementById("error").textContent = "";
 }
 
-/**
- * Sets up the hover functionality for tooltip icons.
- */
 function setupTooltips() {
     const tooltipIcons = document.querySelectorAll('.tooltip-icon');
 
@@ -737,9 +699,6 @@ function setupTooltips() {
     });
 }
 
-/**
- * Opens the full history list modal.
- */
 function openHistoryModal() {
     if (historyModal) {
         historyModal.classList.add('active');
@@ -751,19 +710,12 @@ function openHistoryModal() {
     }
 }
 
-/**
- * Closes the full history list modal.
- */
 function closeHistoryModal() {
     if (historyModal) {
         historyModal.classList.remove('active');
     }
 }
 
-/**
- * Opens the history details modal and populates it with specific entry data.
- * @param {string} id The ID of the history entry to display.
- */
 async function showHistoryDetails(id) {
     if (!historyDetailsModal || !detailsContent) {
         console.error("History details modal elements not found.");
@@ -812,9 +764,6 @@ async function showHistoryDetails(id) {
     }
 }
 
-/**
- * Closes the history details modal.
- */
 function closeHistoryDetailsModal() {
     if (historyDetailsModal) {
         historyDetailsModal.classList.remove('active');
@@ -822,11 +771,7 @@ function closeHistoryDetailsModal() {
     }
 }
 
-/**
- * Authentication Functions
- */
-
-// Show sign-in and sign-up buttons when not signed in
+// Authentication Functions
 function showSignInSignUpButtons() {
     const authSection = document.getElementById('auth-section');
     authSection.innerHTML = `
@@ -837,7 +782,6 @@ function showSignInSignUpButtons() {
     document.getElementById('sign-in-btn').addEventListener('click', openSignInPage);
 }
 
-// Show user profile when signed in
 function showUserProfile(user) {
     const authSection = document.getElementById('auth-section');
     const photoURL = user.photoURL || 'https://via.placeholder.com/40'; // Fallback image
@@ -852,21 +796,18 @@ function showUserProfile(user) {
         </div>
     `;
     document.getElementById('sign-out-btn').addEventListener('click', () => {
-        firebase.signOut(auth);
+        signOut(auth);
     });
 }
 
-// Open sign-up modal
 function openSignUpPage() {
     document.getElementById('sign-up-modal').classList.add('active');
 }
 
-// Open sign-in modal
 function openSignInPage() {
     document.getElementById('sign-in-modal').classList.add('active');
 }
 
-// Handle modal closing
 document.querySelectorAll('.modal .close-button').forEach(button => {
     button.addEventListener('click', () => {
         button.closest('.modal').classList.remove('active');
@@ -879,12 +820,11 @@ window.addEventListener('click', (event) => {
     }
 });
 
-// Handle sign-up form submission
 document.getElementById('sign-up-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const email = document.getElementById('sign-up-email').value;
     const password = document.getElementById('sign-up-password').value;
-    firebase.createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
             document.getElementById('sign-up-modal').classList.remove('active');
         })
@@ -894,12 +834,11 @@ document.getElementById('sign-up-form').addEventListener('submit', (e) => {
         });
 });
 
-// Handle sign-in form submission
 document.getElementById('sign-in-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const email = document.getElementById('sign-in-email').value;
     const password = document.getElementById('sign-in-password').value;
-    firebase.signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             document.getElementById('sign-in-modal').classList.remove('active');
         })
@@ -909,10 +848,8 @@ document.getElementById('sign-in-form').addEventListener('submit', (e) => {
         });
 });
 
-// Google sign-in
-const googleProvider = new firebase.GoogleAuthProvider();
 function signInWithGoogle() {
-    firebase.signInWithPopup(auth, googleProvider)
+    signInWithPopup(auth, googleProvider)
         .then(() => {
             document.querySelectorAll('.modal.active').forEach(modal => modal.classList.remove('active'));
         })
@@ -925,8 +862,7 @@ function signInWithGoogle() {
 document.getElementById('sign-up-google').addEventListener('click', signInWithGoogle);
 document.getElementById('sign-in-google').addEventListener('click', signInWithGoogle);
 
-// Handle authentication state changes
-firebase.onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, (user) => {
     if (user) {
         showUserProfile(user);
     } else {
@@ -934,7 +870,6 @@ firebase.onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Show temporary error message in input field
 function showTemporaryError(input, message) {
     const originalPlaceholder = input.placeholder;
     input.placeholder = message;
