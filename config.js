@@ -1,4 +1,3 @@
-// frontend/config.js
 const firebaseConfig = {
   apiKey: "AIzaSyDT7kkBgflIKI432uxY_piFueCzmqmPD6U",
   authDomain: "nameit-app-nit.firebaseapp.com",
@@ -9,4 +8,5 @@ const firebaseConfig = {
   measurementId: "G-J9XGX5BVFR"
 };
 
-export default firebaseConfig;
+// Assign to global window object to avoid export syntax
+window.firebaseConfig = firebaseConfig;
