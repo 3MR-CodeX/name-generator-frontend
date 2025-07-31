@@ -89,12 +89,33 @@ const detailsContent = document.getElementById("details-content"); // Content ar
 const recentHistorySection = document.getElementById("history_section"); // Reference to the recent history section
 const recentHistoryDiv = document.getElementById("history"); // Reference to the recent history div inside the section
 
+// Auth UI Elements (NEW)
+const authButtonsDiv = document.getElementById("auth-buttons");
+const userProfileInfoDiv = document.getElementById("user-profile-info");
+const userPfpImg = document.getElementById("user-pfp");
+const userNameSpan = document.getElementById("user-name");
+const userEmailSpan = document.getElementById("user-email");
+const creditBalanceSpan = document.getElementById("credit-balance");
+
+// Auth Modals (NEW)
+const signupModal = document.getElementById("signup-modal");
+const signinModal = document.getElementById("signin-modal");
+
+// Global Firebase variables (initialized in index.html script)
+window.auth = null;
+window.db = null;
+window.currentUser = null; // Stores the Firebase User object
+window.currentUserId = null; // Stores the UID (Firebase UID or anonymous UUID)
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Load top bar HTML
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     // Load sidebar HTML
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
+    // Load auth modals HTML (NEW)
+    await loadComponent('signup-modal', 'components/auth/signup-modal.html');
+    await loadComponent('signin-modal', 'components/auth/signin-modal.html');
+
 
     // Initialize component-specific JS AFTER their HTML is loaded
     if (typeof initializeTopbar === 'function') {
@@ -107,7 +128,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    // No initial fetch for history here, it will be fetched on first generation
     setupTooltips();
 
     // Event listeners for full history list modal
@@ -122,7 +142,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Event listeners for history details modal
     if (historyDetailsModal && closeButtonDetailsModal) {
-        // When closing details modal, go back to full history list modal
         closeButtonDetailsModal.addEventListener('click', () => {
             closeHistoryDetailsModal();
             openHistoryModal(); // Re-open the full history list
@@ -131,6 +150,22 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (event.target == historyDetailsModal) {
                 closeHistoryDetailsModal();
                 openHistoryModal(); // Re-open the full history list
+            }
+        });
+    }
+
+    // Event listeners for auth modals (NEW)
+    if (signupModal) {
+        window.addEventListener('click', (event) => {
+            if (event.target == signupModal) {
+                closeSignUpModal();
+            }
+        });
+    }
+    if (signinModal) {
+        window.addEventListener('click', (event) => {
+            if (event.target == signinModal) {
+                closeSignInModal();
             }
         });
     }
@@ -309,18 +344,44 @@ async function generateName() {
     refineBtn.classList.remove("visible-section");
     refineBtn.classList.add("hidden-section");
 
+    let idToken = null;
+    if (window.auth && window.auth.currentUser) {
+        try {
+            idToken = await window.auth.currentUser.getIdToken();
+        } catch (error) {
+            console.error("Error getting ID token:", error);
+            document.getElementById("error").textContent = "Error getting authentication token. Please try again.";
+            hideLoading(namesPre);
+            hideLoading(reasonsPre);
+            enableButtons();
+            return;
+        }
+    }
 
     try {
+        const headers = {
+            "Content-Type": "application/json",
+        };
+        if (idToken) {
+            headers["Authorization"] = `Bearer ${idToken}`;
+        } else if (window.currentUserId) { // For anonymous users
+            headers["X-Anonymous-ID"] = window.currentUserId;
+        }
+
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: headers,
             body: JSON.stringify({ prompt, category, style, language })
         });
         if (!response.ok) {
             const errorData = await response.json(); // Assuming backend sends JSON error
-            throw new Error(errorData.error || "Unknown error during name generation.");
+            if (response.status === 403) {
+                document.getElementById("error").textContent = errorData.detail || "Insufficient credits. Please sign in or top up.";
+            } else {
+                document.getElementById("error").textContent = errorData.detail || "Unknown error during name generation.";
+            }
+            resetDynamicSections();
+            return;
         }
         const data = await response.json();
 
@@ -340,6 +401,11 @@ async function generateName() {
         // Show recent history section after successful generation
         recentHistorySection.classList.remove("hidden-section");
         recentHistorySection.classList.add("visible-section");
+        
+        // Refresh credits after successful generation
+        if (typeof window.fetchCredits === 'function') {
+            window.fetchCredits();
+        }
         fetchHistory(false); // Refresh recent history after successful generation
 
     } catch (error) {
@@ -383,17 +449,48 @@ async function refineNames() {
     showLoading(refinedReasonsPre);
     disableButtons();
 
+    let idToken = null;
+    if (window.auth && window.auth.currentUser) {
+        try {
+            idToken = await window.auth.currentUser.getIdToken();
+        } catch (error) {
+            console.error("Error getting ID token:", error);
+            document.getElementById("error").textContent = "Error getting authentication token. Please try again.";
+            hideLoading(refinedNamesPre);
+            hideLoading(refinedReasonsPre);
+            enableButtons();
+            return;
+        }
+    }
+
     try {
+        const headers = {
+            "Content-Type": "application/json",
+        };
+        if (idToken) {
+            headers["Authorization"] = `Bearer ${idToken}`;
+        } else if (window.currentUserId) { // For anonymous users
+            headers["X-Anonymous-ID"] = window.currentUserId;
+        }
+
         const response = await fetch(`${BACKEND_URL}/refine`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: headers,
             body: JSON.stringify({ instruction })
         });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || "Unknown error during name refinement.");
+            if (response.status === 403) {
+                document.getElementById("error").textContent = errorData.detail || "Insufficient credits. Please sign in or top up.";
+            } else {
+                document.getElementById("error").textContent = errorData.detail || "Unknown error during name refinement.";
+            }
+            // If refinement fails, hide refined output and clear content
+            refinedOutputs.classList.remove("visible-section");
+            refinedOutputs.classList.add("hidden-section");
+            refinedNamesPre.textContent = "";
+            refinedReasonsPre.textContent = "";
+            return;
         }
         const data = await response.json();
 
@@ -408,6 +505,10 @@ async function refineNames() {
         refinedOutputs.classList.remove("hidden-section");
         refinedOutputs.classList.add("visible-section");
 
+        // Refresh credits after successful refinement
+        if (typeof window.fetchCredits === 'function') {
+            window.fetchCredits();
+        }
         fetchHistory(false); // Refresh recent history after successful refinement
 
     } catch (error) {
@@ -426,11 +527,34 @@ async function refineNames() {
 
 // Made global so sidebar.js can call it, and now handles rendering to sidebar or modal
 async function fetchHistory(renderToModal = false) {
+    if (!window.currentUserId) {
+        console.warn("No user ID available to fetch history.");
+        return;
+    }
+
+    let idToken = null;
+    if (window.auth && window.auth.currentUser) {
+        try {
+            idToken = await window.auth.currentUser.getIdToken();
+        } catch (error) {
+            console.error("Error getting ID token for history:", error);
+            document.getElementById("error").textContent = "Error getting authentication token for history. Please try again.";
+            return;
+        }
+    }
+
     try {
-        const response = await fetch(`${BACKEND_URL}/history`);
+        const headers = {};
+        if (idToken) {
+            headers["Authorization"] = `Bearer ${idToken}`;
+        } else { // For anonymous users
+            headers["X-Anonymous-ID"] = window.currentUserId;
+        }
+
+        const response = await fetch(`${BACKEND_URL}/history`, { headers: headers });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || "Unknown error fetching history.");
+            throw new Error(errorData.detail || "Unknown error fetching history.");
         }
         const history = await response.json();
         renderHistory(history, renderToModal);
@@ -535,7 +659,7 @@ function renderHistory(history, renderToModal = false) {
 }
 
 // Made global so sidebar.js can call it
-function restoreHistory(id) {
+async function restoreHistory(id) {
     // Clear any existing error messages when restoring
     document.getElementById("error").textContent = "";
     // Reset prompt and refine placeholders and remove error styling
@@ -548,8 +672,38 @@ function restoreHistory(id) {
     closeHistoryModal();
     closeHistoryDetailsModal();
 
-    fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
+    if (!window.currentUserId) {
+        console.warn("No user ID available to restore history.");
+        return;
+    }
+
+    let idToken = null;
+    if (window.auth && window.auth.currentUser) {
+        try {
+            idToken = await window.auth.currentUser.getIdToken();
+        } catch (error) {
+            console.error("Error getting ID token for restore history:", error);
+            document.getElementById("error").textContent = "Error getting authentication token for history. Please try again.";
+            return;
+        }
+    }
+
+    try {
+        const headers = {};
+        if (idToken) {
+            headers["Authorization"] = `Bearer ${idToken}`;
+        } else { // For anonymous users
+            headers["X-Anonymous-ID"] = window.currentUserId;
+        }
+
+        const response = await fetch(`${BACKEND_URL}/history`, { headers: headers });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "Unknown error fetching history for restore.");
+        }
+        const historyData = await response.json();
         const entry = historyData.find(e => e.id === id);
+
         if (entry) {
             promptInput.value = entry.prompt;
             document.getElementById("category").value = entry.category;
@@ -633,7 +787,9 @@ function restoreHistory(id) {
                 document.getElementById("error").textContent = "No history available to restore.";
             }
         }
-    });
+    } catch (error) {
+        document.getElementById("error").textContent = "Error fetching history for restore: " + error.message;
+    }
 }
 
 function surpriseMe() {
@@ -759,11 +915,38 @@ async function showHistoryDetails(id) {
         return;
     }
 
+    // Clear previous details
+    detailsContent.innerHTML = '';
+    
+    if (!window.currentUserId) {
+        console.warn("No user ID available to fetch history details.");
+        document.getElementById("error").textContent = "Please sign in to view history details.";
+        return;
+    }
+
+    let idToken = null;
+    if (window.auth && window.auth.currentUser) {
+        try {
+            idToken = await window.auth.currentUser.getIdToken();
+        } catch (error) {
+            console.error("Error getting ID token for history details:", error);
+            document.getElementById("error").textContent = "Error getting authentication token for history details. Please try again.";
+            return;
+        }
+    }
+
     try {
-        const response = await fetch(`${BACKEND_URL}/history`);
+        const headers = {};
+        if (idToken) {
+            headers["Authorization"] = `Bearer ${idToken}`;
+        } else { // For anonymous users
+            headers["X-Anonymous-ID"] = window.currentUserId;
+        }
+
+        const response = await fetch(`${BACKEND_URL}/history`, { headers: headers });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || "Unknown error fetching history for details.");
+            throw new Error(errorData.detail || "Unknown error fetching history for details.");
         }
         const historyData = await response.json();
         const entry = historyData.find(e => e.id === id);
@@ -810,3 +993,265 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = ''; // Clear content when closing
     }
 }
+
+// --- NEW AUTHENTICATION FUNCTIONS (Made Global) ---
+
+/**
+ * Updates the top bar UI based on authentication state.
+ * @param {firebase.User | null} user The Firebase User object or null if signed out.
+ */
+window.updateAuthUI = function(user) {
+    if (user) {
+        authButtonsDiv.classList.remove('show-flex');
+        authButtonsDiv.classList.add('hidden');
+        userProfileInfoDiv.classList.remove('hidden');
+        userProfileInfoDiv.classList.add('show-flex');
+
+        userNameSpan.textContent = user.displayName || (user.email ? user.email.split('@')[0] : 'Guest');
+        userEmailSpan.textContent = user.email || 'Anonymous User';
+        userPfpImg.src = user.photoURL || `https://placehold.co/40x40/800080/FFFFFF?text=${userNameSpan.textContent.charAt(0).toUpperCase()}`;
+        
+        // Fetch credits for the signed-in user
+        if (typeof window.fetchCredits === 'function') {
+            window.fetchCredits();
+        }
+    } else {
+        authButtonsDiv.classList.remove('hidden');
+        authButtonsDiv.classList.add('show-flex');
+        userProfileInfoDiv.classList.remove('show-flex');
+        userProfileInfoDiv.classList.add('hidden');
+        creditBalanceSpan.textContent = '--'; // Clear credits when logged out
+    }
+};
+
+/**
+ * Fetches and displays the current user's credit balance.
+ */
+window.fetchCredits = async function() {
+    if (!window.currentUserId) {
+        creditBalanceSpan.textContent = '--';
+        return;
+    }
+
+    let idToken = null;
+    if (window.auth && window.auth.currentUser) {
+        try {
+            idToken = await window.auth.currentUser.getIdToken();
+        } catch (error) {
+            console.error("Error getting ID token for credits:", error);
+            creditBalanceSpan.textContent = 'Error';
+            return;
+        }
+    }
+
+    try {
+        const headers = {};
+        if (idToken) {
+            headers["Authorization"] = `Bearer ${idToken}`;
+        } else { // For anonymous users
+            headers["X-Anonymous-ID"] = window.currentUserId;
+        }
+
+        const response = await fetch(`${BACKEND_URL}/credits`, { headers: headers });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "Failed to fetch credits.");
+        }
+        const data = await response.json();
+        creditBalanceSpan.textContent = data.current_credits;
+    } catch (error) {
+        console.error("Error fetching credits:", error);
+        creditBalanceSpan.textContent = 'Error';
+    }
+};
+
+
+/**
+ * Opens the Sign Up modal.
+ */
+window.openSignUpModal = function() {
+    if (signupModal) {
+        signupModal.classList.add('active');
+        // Clear any previous errors
+        document.getElementById('signup-error').textContent = '';
+        document.getElementById('signup-spinner').classList.remove('show');
+    }
+    // Close sidebar if open
+    if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
+        toggleSidebar();
+    }
+};
+
+/**
+ * Closes the Sign Up modal.
+ */
+window.closeSignUpModal = function() {
+    if (signupModal) {
+        signupModal.classList.remove('active');
+        // Clear input fields
+        document.getElementById('signup-email').value = '';
+        document.getElementById('signup-password').value = '';
+    }
+};
+
+/**
+ * Handles email/password sign up.
+ */
+window.handleSignUpEmailPassword = async function() {
+    const emailInput = document.getElementById('signup-email');
+    const passwordInput = document.getElementById('signup-password');
+    const errorDisplay = document.getElementById('signup-error');
+    const spinner = document.getElementById('signup-spinner');
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    errorDisplay.textContent = ''; // Clear previous errors
+    spinner.classList.remove('show'); // Hide spinner initially
+
+    if (!email || !password) {
+        errorDisplay.textContent = 'Please enter both email and password.';
+        return;
+    }
+    if (password.length < 6) {
+        errorDisplay.textContent = 'Password should be at least 6 characters.';
+        return;
+    }
+
+    spinner.classList.add('show'); // Show spinner
+
+    try {
+        const userCredential = await window.createUserWithEmailAndPassword(window.auth, email, password);
+        console.log("User signed up:", userCredential.user.uid);
+        // User is automatically signed in after creation
+        closeSignUpModal();
+        // updateAuthUI will be called by onAuthStateChanged listener
+    } catch (error) {
+        console.error("Sign up error:", error);
+        let errorMessage = "An error occurred during sign up.";
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = 'This email address is already in use.';
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = 'Please enter a valid email address.';
+        } else if (error.code === 'auth/weak-password') {
+            errorMessage = 'The password is too weak.';
+        }
+        errorDisplay.textContent = errorMessage;
+    } finally {
+        spinner.classList.remove('show'); // Hide spinner
+    }
+};
+
+/**
+ * Opens the Sign In modal.
+ */
+window.openSignInModal = function() {
+    if (signinModal) {
+        signinModal.classList.add('active');
+        // Clear any previous errors
+        document.getElementById('signin-error').textContent = '';
+        document.getElementById('signin-spinner').classList.remove('show');
+    }
+    // Close sidebar if open
+    if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
+        toggleSidebar();
+    }
+};
+
+/**
+ * Closes the Sign In modal.
+ */
+window.closeSignInModal = function() {
+    if (signinModal) {
+        signinModal.classList.remove('active');
+        // Clear input fields
+        document.getElementById('signin-email').value = '';
+        document.getElementById('signin-password').value = '';
+    }
+};
+
+/**
+ * Handles email/password sign in.
+ */
+window.handleSignInEmailPassword = async function() {
+    const emailInput = document.getElementById('signin-email');
+    const passwordInput = document.getElementById('signin-password');
+    const errorDisplay = document.getElementById('signin-error');
+    const spinner = document.getElementById('signin-spinner');
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    errorDisplay.textContent = ''; // Clear previous errors
+    spinner.classList.remove('show'); // Hide spinner initially
+
+    if (!email || !password) {
+        errorDisplay.textContent = 'Please enter both email and password.';
+        return;
+    }
+
+    spinner.classList.add('show'); // Show spinner
+
+    try {
+        const userCredential = await window.signInWithEmailAndPassword(window.auth, email, password);
+        console.log("User signed in:", userCredential.user.uid);
+        closeSignInModal();
+        // updateAuthUI will be called by onAuthStateChanged listener
+    } catch (error) {
+        console.error("Sign in error:", error);
+        let errorMessage = "Invalid email or password.";
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+            errorMessage = 'Invalid email or password.';
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = 'Please enter a valid email address.';
+        }
+        errorDisplay.textContent = errorMessage;
+    } finally {
+        spinner.classList.remove('show'); // Hide spinner
+    }
+};
+
+/**
+ * Handles Google Sign-In.
+ */
+window.handleGoogleSignIn = async function() {
+    const provider = new window.GoogleAuthProvider();
+    const currentModalError = document.getElementById('signup-error') || document.getElementById('signin-error');
+    const currentModalSpinner = document.getElementById('signup-spinner') || document.getElementById('signin-spinner');
+
+    if (currentModalError) currentModalError.textContent = '';
+    if (currentModalSpinner) currentModalSpinner.classList.add('show');
+
+    try {
+        const result = await window.signInWithPopup(window.auth, provider);
+        console.log("Google Sign-In successful:", result.user.uid);
+        closeSignUpModal(); // Close both if open
+        closeSignInModal();
+        // updateAuthUI will be called by onAuthStateChanged listener
+    } catch (error) {
+        console.error("Google Sign-In error:", error);
+        let errorMessage = "Google Sign-In failed.";
+        if (error.code === 'auth/popup-closed-by-user') {
+            errorMessage = 'Sign-in window closed.';
+        } else if (error.code === 'auth/cancelled-popup-request') {
+            errorMessage = 'Sign-in already in progress.';
+        }
+        if (currentModalError) currentModalError.textContent = errorMessage;
+    } finally {
+        if (currentModalSpinner) currentModalSpinner.classList.remove('show');
+    }
+};
+
+/**
+ * Handles user sign out.
+ */
+window.handleSignOut = async function() {
+    try {
+        await window.signOut(window.auth);
+        console.log("User signed out.");
+        // onAuthStateChanged listener will handle UI update
+    } catch (error) {
+        console.error("Sign out error:", error);
+        document.getElementById("error").textContent = "Error signing out: " + error.message;
+    }
+};
