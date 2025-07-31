@@ -1,4 +1,6 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
+firebase.initializeApp(window.env.firebaseConfig);
+const auth = firebase.auth();
 
 const CATEGORY_OPTIONS = [
   "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
@@ -80,11 +82,6 @@ const recentHistoryDiv = document.getElementById("history");
 const signupModal = document.getElementById("signup-modal");
 const signinModal = document.getElementById("signin-modal");
 
-// Initialize Firebase
-const firebaseConfig = window.env.FIREBASE_CONFIG;
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
@@ -98,17 +95,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     setupAuthListeners();
     setupTooltips();
 
-    closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
+    closeButtonHistoryModal.addEventListener('click', () => {
+        console.log("Close button clicked for modal: history-modal");
+        closeHistoryModal();
+    });
     window.addEventListener('click', (event) => {
-        if (event.target == historyModal) closeHistoryModal();
+        if (event.target == historyModal) {
+            console.log("Clicked outside modal: history-modal");
+            closeHistoryModal();
+        }
     });
 
     closeButtonDetailsModal.addEventListener('click', () => {
+        console.log("Close button clicked for modal: history-details-modal");
         closeHistoryDetailsModal();
         openHistoryModal();
     });
     window.addEventListener('click', (event) => {
         if (event.target == historyDetailsModal) {
+            console.log("Clicked outside modal: history-details-modal");
             closeHistoryDetailsModal();
             openHistoryModal();
         }
@@ -116,12 +121,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.querySelectorAll(".modal .close-button").forEach(button => {
         button.addEventListener('click', () => {
+            console.log("Close button clicked for modal:", button.closest('.modal').id);
             button.closest('.modal').classList.remove('active');
         });
     });
 
     window.addEventListener('click', (event) => {
         if (event.target.classList.contains('modal')) {
+            console.log("Clicked outside modal:", event.target.id);
             event.target.classList.remove('active');
         }
     });
@@ -130,18 +137,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         const name = document.getElementById("signup-name").value;
         const email = document.getElementById("signup-email").value;
         const password = document.getElementById("signup-password").value;
+        console.log("Signup attempt:", { name, email, password });
         try {
+            console.log("Creating Firebase user...");
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            console.log("Updating profile...");
             await userCredential.user.updateProfile({ displayName: name });
-            await fetch(`${BACKEND_URL}/register`, {
+            console.log("Sending to backend...");
+            const response = await fetch(`${BACKEND_URL}/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, password }),
             });
+            console.log("Backend response:", response.status, await response.text());
+            if (!response.ok) throw new Error("Backend registration failed");
             signupModal.classList.remove('active');
             alert("Registration successful. Please sign in.");
             signinModal.classList.add('active');
         } catch (error) {
+            console.error("Signup error:", error.message);
             alert(error.message);
         }
     });
@@ -149,23 +163,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("signin-submit").addEventListener('click', async () => {
         const email = document.getElementById("signin-email").value;
         const password = document.getElementById("signin-password").value;
+        console.log("Signin attempt:", { email, password });
         try {
+            console.log("Signing in with Firebase...");
             const userCredential = await auth.signInWithEmailAndPassword(email, password);
             const idToken = await userCredential.user.getIdToken();
+            console.log("Sending to backend...");
             const response = await fetch(`${BACKEND_URL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
+            console.log("Backend response:", response.status, await response.text());
             if (!response.ok) throw new Error("Backend login failed");
             const data = await response.json();
             localStorage.setItem("access_token", data.access_token);
             signinModal.classList.remove('active');
             updateAuthSection();
         } catch (error) {
+            console.error("Signin error:", error.message);
             alert(error.message);
         }
     });
+
+    generateBtn.addEventListener('click', generateName);
+    refineBtn.addEventListener('click', refineNames);
+    surpriseBtn.addEventListener('click', surpriseMe);
 });
 
 function setupAuthListeners() {
@@ -180,6 +203,8 @@ function setupAuthListeners() {
         }
     });
 
+    // Google Sign-In listeners commented out to avoid null errors
+    /*
     document.getElementById("signup-google").addEventListener('click', async () => {
         try {
             const provider = new firebase.auth.GoogleAuthProvider();
@@ -196,6 +221,7 @@ function setupAuthListeners() {
             signupModal.classList.remove('active');
             updateAuthSection();
         } catch (error) {
+            console.error("Google signup error:", error.message);
             alert(error.message);
         }
     });
@@ -216,9 +242,11 @@ function setupAuthListeners() {
             signinModal.classList.remove('active');
             updateAuthSection();
         } catch (error) {
+            console.error("Google signin error:", error.message);
             alert(error.message);
         }
     });
+    */
 }
 
 async function loadComponent(placeholderId, componentUrl) {
@@ -308,6 +336,7 @@ function showTemporaryPlaceholderError(textarea, message) {
 
 async function generateName() {
     const prompt = promptInput.value.trim();
+    console.log("Generate name attempt:", { prompt });
     if (!prompt) {
         showTemporaryPlaceholderError(promptInput, "You cannot generate names without a description!");
         resetDynamicSections();
@@ -321,6 +350,7 @@ async function generateName() {
     const style = document.getElementById("style").value;
     const language = document.getElementById("language").value;
     const token = localStorage.getItem("access_token");
+    console.log("Request data:", { prompt, category, style, language, token });
 
     if (!BACKEND_URL) {
         document.getElementById("error").textContent = "Backend URL not set correctly.";
@@ -342,6 +372,7 @@ async function generateName() {
     refineBtn.classList.add("hidden-section");
 
     try {
+        console.log("Sending request to backend...");
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
             headers: {
@@ -350,6 +381,7 @@ async function generateName() {
             },
             body: JSON.stringify({ prompt, category, style, language })
         });
+        console.log("Response status:", response.status);
         if (!response.ok) {
             if (response.status === 401) {
                 localStorage.removeItem("access_token");
@@ -361,6 +393,7 @@ async function generateName() {
             throw new Error(errorData.error || "Unknown error during name generation.");
         }
         const data = await response.json();
+        console.log("Response data:", data);
         namesPre.textContent = data.names.map(cleanNames).join("\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
         namesPre.classList.add("fade-in-content");
@@ -373,6 +406,7 @@ async function generateName() {
         recentHistorySection.classList.add("visible-section");
         fetchHistory(false);
     } catch (error) {
+        console.error("Generate error:", error.message);
         document.getElementById("error").textContent = "Error: " + error.message;
         resetDynamicSections();
         namesPre.textContent = "";
@@ -384,8 +418,9 @@ async function generateName() {
     }
 }
 
-async function refineNames() {
+async(and) refineNames() {
     const instruction = editBox.value.trim();
+    console.log("Refine attempt:", { instruction });
     if (!instruction) {
         showTemporaryPlaceholderError(editBox, "Please enter a refine instruction.");
         document.getElementById("error").textContent = "";
@@ -396,6 +431,7 @@ async function refineNames() {
     }
 
     const token = localStorage.getItem("access_token");
+    console.log("Refine request data:", { instruction, token });
     if (!BACKEND_URL) {
         document.getElementById("error").textContent = "Backend URL not set correctly.";
         return;
@@ -407,6 +443,7 @@ async function refineNames() {
     disableButtons();
 
     try {
+        console.log("Sending refine request to backend...");
         const response = await fetch(`${BACKEND_URL}/refine`, {
             method: "POST",
             headers: {
@@ -415,6 +452,7 @@ async function refineNames() {
             },
             body: JSON.stringify({ instruction })
         });
+        console.log("Refine response status:", response.status);
         if (!response.ok) {
             if (response.status === 401) {
                 localStorage.removeItem("access_token");
@@ -426,6 +464,7 @@ async function refineNames() {
             throw new Error(errorData.error || "Unknown error during name refinement.");
         }
         const data = await response.json();
+        console.log("Refine response data:", data);
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
         refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
         refinedNamesPre.classList.add("fade-in-content");
@@ -434,6 +473,7 @@ async function refineNames() {
         refinedOutputs.classList.add("visible-section");
         fetchHistory(false);
     } catch (error) {
+        console.error("Refine error:", error.message);
         document.getElementById("error").textContent = "Error: " + error.message;
         refinedOutputs.classList.remove("visible-section");
         refinedOutputs.classList.add("hidden-section");
@@ -450,9 +490,11 @@ async function fetchHistory(renderToModal = false) {
     const token = localStorage.getItem("access_token");
     if (!token) return;
     try {
+        console.log("Fetching history...");
         const response = await fetch(`${BACKEND_URL}/history`, {
             headers: { "Authorization": `Bearer ${token}` },
         });
+        console.log("History response status:", response.status);
         if (!response.ok) {
             if (response.status === 401) {
                 localStorage.removeItem("access_token");
@@ -464,8 +506,10 @@ async function fetchHistory(renderToModal = false) {
             throw new Error(errorData.error || "Unknown error fetching history.");
         }
         const history = await response.json();
+        console.log("History data:", history);
         renderHistory(history, renderToModal);
     } catch (error) {
+        console.error("History error:", error.message);
         document.getElementById("error").textContent = "Error fetching history: " + error.message;
     }
 }
@@ -663,9 +707,11 @@ function closeHistoryModal() {
 async function showHistoryDetails(id) {
     if (!historyDetailsModal || !detailsContent) return;
     try {
+        console.log("Fetching history details for ID:", id);
         const response = await fetch(`${BACKEND_URL}/history`, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("access_token")}` }
         });
+        console.log("History details response status:", response.status);
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || "Unknown error fetching history for details.");
@@ -673,6 +719,7 @@ async function showHistoryDetails(id) {
         const historyData = await response.json();
         const entry = historyData.find(e => e.id === id);
         if (entry) {
+            console.log("History details data:", entry);
             let contentHtml = `<p><strong>Timestamp:</strong> ${new Date(entry.timestamp).toLocaleString()}</p>`;
             if (entry.category === "Refined") {
                 contentHtml += `<p><strong>Refine Instruction:</strong> ${entry.prompt}</p>`;
@@ -693,9 +740,11 @@ async function showHistoryDetails(id) {
             historyDetailsModal.classList.add('active');
             closeHistoryModal();
         } else {
+            console.error("History entry not found for ID:", id);
             document.getElementById("error").textContent = "Error: History entry not found.";
         }
     } catch (error) {
+        console.error("History details error:", error.message);
         document.getElementById("error").textContent = "Error displaying history details: " + error.message;
     }
 }
