@@ -85,10 +85,6 @@ const firebaseConfig = window.env.FIREBASE_CONFIG;
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
