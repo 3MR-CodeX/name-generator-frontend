@@ -12,6 +12,8 @@
     <!-- Component Specific Styles -->
     <link rel="stylesheet" href="components/topbar.css">
     <link rel="stylesheet" href="components/sidebar.css">
+    <!-- Auth Component Styles (NEW) -->
+    <link rel="stylesheet" href="components/auth/auth-modals.css">
 </head>
 <body>
     <!-- Placeholder for Top Bar -->
@@ -26,7 +28,7 @@
     <!-- Full History List Modal -->
     <div id="history-modal" class="modal">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
+            <span class="close-button" onclick="closeHistoryModal()">&times;</span>
             <h2>Full History</h2>
             <div id="full-history-list" class="history-inner">
                 <!-- Full history items will be loaded here, grouped by date -->
@@ -37,12 +39,22 @@
     <!-- History Details Modal (NEW) -->
     <div id="history-details-modal" class="modal">
         <div class="modal-content history-details-content">
-            <span class="close-button">&times;</span>
+            <span class="close-button" onclick="closeHistoryDetailsModal(); openHistoryModal();">&times;</span>
             <h2>History Entry Details</h2>
             <div id="details-content">
                 <!-- Details of a specific history entry will be loaded here -->
             </div>
         </div>
+    </div>
+
+    <!-- Sign Up Modal (NEW) -->
+    <div id="signup-modal" class="modal">
+        <!-- Content will be loaded dynamically -->
+    </div>
+
+    <!-- Sign In Modal (NEW) -->
+    <div id="signin-modal" class="modal">
+        <!-- Content will be loaded dynamically -->
     </div>
 
     <!-- Main Content Wrapper -->
@@ -143,6 +155,97 @@
     </div>
 
     <script src="config.js"></script>
+    <!-- Firebase SDKs (NEW) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, orderBy, limit, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Initialize Firebase
+        const firebaseConfig = JSON.parse(window.__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app); // Make auth globally accessible
+        window.db = getFirestore(app); // Make db globally accessible
+
+        // Sign in anonymously or with custom token
+        onAuthStateChanged(window.auth, async (user) => {
+            if (user) {
+                // User is signed in.
+                window.currentUser = user;
+                window.currentUserId = user.uid;
+                console.log("Firebase: User is signed in:", user.uid);
+                // Fetch credits for the signed-in user
+                if (typeof window.fetchCredits === 'function') {
+                    window.fetchCredits();
+                }
+                // Update UI for logged-in state
+                if (typeof window.updateAuthUI === 'function') {
+                    window.updateAuthUI(user);
+                }
+            } else {
+                // User is signed out.
+                window.currentUser = null;
+                console.log("Firebase: User is signed out.");
+                // Try to sign in with custom token if available (for Canvas environment)
+                if (typeof window.__initial_auth_token !== 'undefined' && window.__initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(window.auth, window.__initial_auth_token);
+                        console.log("Firebase: Signed in with custom token.");
+                    } catch (error) {
+                        console.error("Firebase: Error signing in with custom token:", error);
+                        // Fallback to anonymous if custom token fails
+                        try {
+                            const anonUser = await signInAnonymously(window.auth);
+                            window.currentUserId = anonUser.user.uid;
+                            console.log("Firebase: Signed in anonymously:", anonUser.user.uid);
+                            // Store anonymous ID in localStorage for persistence
+                            localStorage.setItem('anonymousUserId', anonUser.user.uid);
+                            if (typeof window.fetchCredits === 'function') {
+                                window.fetchCredits();
+                            }
+                            if (typeof window.updateAuthUI === 'function') {
+                                window.updateAuthUI(anonUser.user);
+                            }
+                        } catch (anonError) {
+                            console.error("Firebase: Error signing in anonymously:", anonError);
+                            // If anonymous sign-in also fails, use a fallback UUID
+                            window.currentUserId = localStorage.getItem('anonymousUserId') || crypto.randomUUID();
+                            localStorage.setItem('anonymousUserId', window.currentUserId);
+                            console.warn("Firebase: Fallback to localStorage anonymous ID:", window.currentUserId);
+                            if (typeof window.updateAuthUI === 'function') {
+                                window.updateAuthUI(null); // Ensure UI shows logged out
+                            }
+                        }
+                    }
+                } else {
+                    // If no custom token, try to retrieve or generate anonymous ID
+                    window.currentUserId = localStorage.getItem('anonymousUserId') || crypto.randomUUID();
+                    localStorage.setItem('anonymousUserId', window.currentUserId);
+                    console.log("Firebase: Using localStorage anonymous ID:", window.currentUserId);
+                    if (typeof window.updateAuthUI === 'function') {
+                        window.updateAuthUI(null); // Ensure UI shows logged out
+                    }
+                }
+            }
+        });
+
+        // Make Firebase Auth methods globally accessible
+        window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+        window.GoogleAuthProvider = GoogleAuthProvider;
+        window.signInWithPopup = signInWithPopup;
+        window.signOut = signOut;
+        window.doc = doc;
+        window.getDoc = getDoc;
+        window.setDoc = setDoc;
+        window.updateDoc = updateDoc;
+        window.collection = collection;
+        window.query = query;
+        window.orderBy = orderBy;
+        window.limit = limit;
+        window.addDoc = addDoc;
+        window.getDocs = getDocs;
+    </script>
     <!-- Component Specific JavaScript -->
     <script src="components/topbar.js"></script>
     <script src="components/sidebar.js"></script>
