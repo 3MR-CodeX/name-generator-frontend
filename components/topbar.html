@@ -8,5 +8,30 @@
         <span class="hamburger-line line-middle"></span>
         <span class="hamburger-line line-bottom"></span>
     </button>
-    <!-- Removed h1 NameIT from here -->
+
+    <!-- App Title (NEW) -->
+    <div id="app-title">
+        <h1>NameIT</h1>
+    </div>
+
+    <!-- Auth Buttons (Initially visible when not signed in) -->
+    <div id="auth-buttons" class="auth-group show-flex">
+        <button id="signup-btn" class="auth-btn" onclick="openSignUpModal()">Sign Up</button>
+        <button id="signin-btn" class="auth-btn" onclick="openSignInModal()">Sign In</button>
+    </div>
+
+    <!-- User Profile Info (Initially hidden, shown when signed in) -->
+    <div id="user-profile-info" class="user-profile-group hidden">
+        <div class="user-credits">
+            Credits: <span id="credit-balance">--</span>
+        </div>
+        <div class="user-avatar-container">
+            <img id="user-pfp" src="https://placehold.co/40x40/800080/FFFFFF?text=U" alt="User Profile Picture" class="user-pfp-circle">
+            <div class="user-text-info">
+                <span id="user-name" class="user-name">Guest</span>
+                <span id="user-email" class="user-email">guest@example.com</span>
+            </div>
+        </div>
+        <button id="signout-btn" class="auth-btn sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+    </div>
 </div>
