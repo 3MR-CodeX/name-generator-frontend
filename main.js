@@ -113,8 +113,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Load sidebar HTML
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
     // Load auth modals HTML (NEW)
-    await loadComponent('signup-modal', 'components/Accounting/signup-modal.html');
-    await loadComponent('signin-modal', 'components/Accounting/signin-modal.html');
+    await loadComponent('signup-modal', 'components/accounting/signup-modal.html'); // Corrected path to lowercase 'accounting'
+    await loadComponent('signin-modal', 'components/accounting/signin-modal.html'); // Corrected path to lowercase 'accounting'
 
 
     // Initialize component-specific JS AFTER their HTML is loaded
@@ -884,32 +884,32 @@ function setupTooltips() {
 /**
  * Opens the full history list modal.
  */
-function openHistoryModal() {
+window.openHistoryModal = function() {
     if (historyModal) {
         historyModal.classList.add('active');
         fetchHistory(true); // Fetch and render ALL history to the modal
     }
-    // Close sidebar if it's open when modal is opened
+    // Close sidebar if open
     if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
         toggleSidebar();
     }
-}
+};
 
 /**
 /**
  * Closes the full history list modal.
  */
-function closeHistoryModal() {
+window.closeHistoryModal = function() {
     if (historyModal) {
         historyModal.classList.remove('active');
     }
-}
+};
 
 /**
  * Opens the history details modal and populates it with specific entry data.
  * @param {string} id The ID of the history entry to display.
  */
-async function showHistoryDetails(id) {
+window.showHistoryDetails = async function(id) {
     if (!historyDetailsModal || !detailsContent) {
         console.error("History details modal elements not found.");
         return;
@@ -982,17 +982,17 @@ async function showHistoryDetails(id) {
         console.error("Error displaying history details:", error);
         document.getElementById("error").textContent = "Error displaying history details: " + error.message;
     }
-}
+};
 
 /**
  * Closes the history details modal.
  */
-function closeHistoryDetailsModal() {
+window.closeHistoryDetailsModal = function() {
     if (historyDetailsModal) {
         historyDetailsModal.classList.remove('active');
         detailsContent.innerHTML = ''; // Clear content when closing
     }
-}
+};
 
 // --- NEW AUTHENTICATION FUNCTIONS (Made Global) ---
 
