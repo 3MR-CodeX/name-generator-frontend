@@ -1,3 +1,18 @@
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDT7kkBgflIKI432uxY_piFueCzmqmPD6U",
+  authDomain: "nameit-app-nit.firebaseapp.com",
+  projectId: "nameit-app-nit",
+  storageBucket: "nameit-app-nit.firebasestorage.app",
+  messagingSenderId: "255958152641",
+  appId: "1:255958152641:web:d56fa5b2c95945bac5ab40",
+  measurementId: "G-J9XGX5BVFR"
+};
+
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.getAuth(app);
+
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = [
@@ -89,7 +104,6 @@ const detailsContent = document.getElementById("details-content"); // Content ar
 const recentHistorySection = document.getElementById("history_section"); // Reference to the recent history section
 const recentHistoryDiv = document.getElementById("history"); // Reference to the recent history div inside the section
 
-
 document.addEventListener("DOMContentLoaded", async () => {
     // Load top bar HTML
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
@@ -134,6 +148,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     }
+
+    // Initialize authentication UI
+    showSignInSignUpButtons(); // Show sign-in/up buttons by default
 });
 
 /**
@@ -155,7 +172,6 @@ async function loadComponent(placeholderId, componentUrl) {
     }
 }
 
-
 function initializeUI() {
     // Add 'hidden-section' class to ALL sections that should be initially hidden
     outputContainer.classList.add("hidden-section");
@@ -164,7 +180,6 @@ function initializeUI() {
     refineBtn.classList.add("hidden-section");
     // Ensure history section is hidden initially
     recentHistorySection.classList.add("hidden-section");
-
 
     // Store original placeholders for error messaging
     if (!promptInput.dataset.originalPlaceholder) {
@@ -261,7 +276,6 @@ function showTemporaryPlaceholderError(textarea, message) {
     }, 3000);
 }
 
-
 async function generateName() {
     const prompt = promptInput.value.trim(); // Trim whitespace from prompt
 
@@ -308,7 +322,6 @@ async function generateName() {
     refineSection.classList.add("hidden-section");
     refineBtn.classList.remove("visible-section");
     refineBtn.classList.add("hidden-section");
-
 
     try {
         const response = await fetch(`${BACKEND_URL}/generate`, {
@@ -521,7 +534,7 @@ function renderHistory(history, renderToModal = false) {
             let preRefined = '';
             if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
                 preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
-                }
+            }
 
             const button = document.createElement('button');
             button.className = 'history-item';
@@ -693,7 +706,6 @@ function resetDynamicSections() {
     recentHistorySection.classList.remove("visible-section");
     recentHistorySection.classList.add("hidden-section");
 
-
     // Clear content of pre tags
     namesPre.textContent = "";
     reasonsPre.textContent = "";
@@ -739,7 +751,6 @@ function openHistoryModal() {
     }
 }
 
-/**
 /**
  * Closes the full history list modal.
  */
@@ -809,4 +820,129 @@ function closeHistoryDetailsModal() {
         historyDetailsModal.classList.remove('active');
         detailsContent.innerHTML = ''; // Clear content when closing
     }
+}
+
+/**
+ * Authentication Functions
+ */
+
+// Show sign-in and sign-up buttons when not signed in
+function showSignInSignUpButtons() {
+    const authSection = document.getElementById('auth-section');
+    authSection.innerHTML = `
+        <button id="sign-up-btn">Sign Up</button>
+        <button id="sign-in-btn">Sign In</button>
+    `;
+    document.getElementById('sign-up-btn').addEventListener('click', openSignUpPage);
+    document.getElementById('sign-in-btn').addEventListener('click', openSignInPage);
+}
+
+// Show user profile when signed in
+function showUserProfile(user) {
+    const authSection = document.getElementById('auth-section');
+    const photoURL = user.photoURL || 'https://via.placeholder.com/40'; // Fallback image
+    authSection.innerHTML = `
+        <div class="user-profile">
+            <img src="${photoURL}" alt="Profile Picture" class="profile-pic">
+            <div class="user-info">
+                <div class="user-name">${user.displayName || 'User'}</div>
+                <div class="user-email">${user.email}</div>
+            </div>
+            <button id="sign-out-btn">Sign Out</button>
+        </div>
+    `;
+    document.getElementById('sign-out-btn').addEventListener('click', () => {
+        firebase.signOut(auth);
+    });
+}
+
+// Open sign-up modal
+function openSignUpPage() {
+    document.getElementById('sign-up-modal').classList.add('active');
+}
+
+// Open sign-in modal
+function openSignInPage() {
+    document.getElementById('sign-in-modal').classList.add('active');
+}
+
+// Handle modal closing
+document.querySelectorAll('.modal .close-button').forEach(button => {
+    button.addEventListener('click', () => {
+        button.closest('.modal').classList.remove('active');
+    });
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target.classList.contains('modal')) {
+        event.target.classList.remove('active');
+    }
+});
+
+// Handle sign-up form submission
+document.getElementById('sign-up-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('sign-up-email').value;
+    const password = document.getElementById('sign-up-password').value;
+    firebase.createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+            document.getElementById('sign-up-modal').classList.remove('active');
+        })
+        .catch((error) => {
+            console.error(error);
+            showTemporaryError(document.getElementById('sign-up-email'), error.message);
+        });
+});
+
+// Handle sign-in form submission
+document.getElementById('sign-in-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('sign-in-email').value;
+    const password = document.getElementById('sign-in-password').value;
+    firebase.signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+            document.getElementById('sign-in-modal').classList.remove('active');
+        })
+        .catch((error) => {
+            console.error(error);
+            showTemporaryError(document.getElementById('sign-in-email'), error.message);
+        });
+});
+
+// Google sign-in
+const googleProvider = new firebase.GoogleAuthProvider();
+function signInWithGoogle() {
+    firebase.signInWithPopup(auth, googleProvider)
+        .then(() => {
+            document.querySelectorAll('.modal.active').forEach(modal => modal.classList.remove('active'));
+        })
+        .catch((error) => {
+            console.error(error);
+            showTemporaryError(document.getElementById('sign-in-email') || document.getElementById('sign-up-email'), error.message);
+        });
+}
+
+document.getElementById('sign-up-google').addEventListener('click', signInWithGoogle);
+document.getElementById('sign-in-google').addEventListener('click', signInWithGoogle);
+
+// Handle authentication state changes
+firebase.onAuthStateChanged(auth, (user) => {
+    if (user) {
+        showUserProfile(user);
+    } else {
+        showSignInSignUpButtons();
+    }
+});
+
+// Show temporary error message in input field
+function showTemporaryError(input, message) {
+    const originalPlaceholder = input.placeholder;
+    input.placeholder = message;
+    input.classList.add('prompt-error-placeholder');
+    setTimeout(() => {
+        if (input.placeholder === message) {
+            input.placeholder = originalPlaceholder;
+            input.classList.remove('prompt-error-placeholder');
+        }
+    }, 3000);
 }
