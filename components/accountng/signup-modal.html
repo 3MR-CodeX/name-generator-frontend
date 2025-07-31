@@ -1,0 +1,22 @@
+<!-- This content will be dynamically loaded into #signup-modal -->
+<div class="modal-content">
+    <span class="close-button" onclick="closeSignUpModal()">&times;</span>
+    <h2>Create Account</h2>
+    <div class="modal-input-group">
+        <label for="signup-email">Email Address</label>
+        <input type="email" id="signup-email" placeholder="Enter your email">
+    </div>
+    <div class="modal-input-group">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" placeholder="Enter your password">
+    </div>
+    <div class="modal-button-group">
+        <button class="primary" onclick="handleSignUpEmailPassword()">Create Account</button>
+        <button class="google" onclick="handleGoogleSignIn()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google icon">
+            Sign up with Google
+        </button>
+    </div>
+    <div id="signup-error" class="modal-error"></div>
+    <div id="signup-spinner" class="modal-spinner"></div>
+</div>
