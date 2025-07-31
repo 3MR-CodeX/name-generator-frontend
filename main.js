@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://nameit-backend-2.vercel.app";
+const BACKEND_URL = "https://api.vercel.com/v1/integrations/deploy/prj_ZQqLA0e3SFomoZfjSrTos7mb1Rbw/ruZ7GXedkV";
 
 const CATEGORY_OPTIONS = [
   "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
