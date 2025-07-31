@@ -6,48 +6,57 @@
     <title>NameIT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico">
-    
-    <!-- Core App Styles -->
     <link rel="stylesheet" href="style.css">
-    <!-- Component Specific Styles -->
     <link rel="stylesheet" href="components/topbar.css">
     <link rel="stylesheet" href="components/sidebar.css">
 </head>
 <body>
-    <!-- Placeholder for Top Bar -->
     <div id="top-bar-placeholder"></div>
-
-    <!-- Placeholder for Side Bar -->
     <div id="sidebar-placeholder"></div>
-
-    <!-- Overlay for closing sidebar when clicking outside -->
     <div id="overlay"></div>
-
-    <!-- Full History List Modal -->
     <div id="history-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>Full History</h2>
-            <div id="full-history-list" class="history-inner">
-                <!-- Full history items will be loaded here, grouped by date -->
-            </div>
+            <div id="full-history-list" class="history-inner"></div>
         </div>
     </div>
-
-    <!-- History Details Modal (NEW) -->
     <div id="history-details-modal" class="modal">
         <div class="modal-content history-details-content">
             <span class="close-button">&times;</span>
             <h2>History Entry Details</h2>
-            <div id="details-content">
-                <!-- Details of a specific history entry will be loaded here -->
-            </div>
+            <div id="details-content"></div>
         </div>
     </div>
-
-    <!-- Main Content Wrapper -->
+    <div id="sign-up-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="sign-up-form">
+                <label for="sign-up-email">Email or Name</label>
+                <input type="text" id="sign-up-email" required>
+                <label for="sign-up-password">Password</label>
+                <input type="password" id="sign-up-password" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <button id="sign-up-google">Sign Up with Google</button>
+        </div>
+    </div>
+    <div id="sign-in-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Sign In</h2>
+            <form id="sign-in-form">
+                <label for="sign-in-email">Email or Name</label>
+                <input type="text" id="sign-in-email" required>
+                <label for="sign-in-password">Password</label>
+                <input type="password" id="sign-in-password" required>
+                <button type="submit">Sign In</button>
+            </form>
+            <button id="sign-in-google">Sign In with Google</button>
+        </div>
+    </div>
     <div class="main-content-wrapper">
-        <!-- Re-added Banner Section -->
         <div class="banner-col">
             <img src="banner.png" alt="Banner" id="banner">
         </div>
@@ -61,7 +70,6 @@
                 </div>
                 <div class="input-box right-column">
                     <label for="category">Category</label>
-                    <!-- Tooltip for Category -->
                     <div class="tooltip-container">
                         <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
                         <div class="tooltip-box"></div>
@@ -70,7 +78,6 @@
                         <option value="">Select a category</option>
                     </select>
                     <label for="style">Style</label>
-                    <!-- Tooltip for Style -->
                     <div class="tooltip-container">
                         <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
                         <div class="tooltip-box"></div>
@@ -79,7 +86,6 @@
                         <option value="">Select a style</option>
                     </select>
                     <label for="language">Language</label>
-                    <!-- Tooltip for Language -->
                     <div class="tooltip-container">
                         <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
                         <div class="tooltip-box"></div>
@@ -133,7 +139,6 @@
                     <pre id="refined_reasons"></pre>
                 </div>
             </div>
-            <!-- Recent History section moved back to main content and initially hidden -->
             <div id="history_section" class="history-section hidden-section">
                 <h2>🕘 Recent History</h2>
                 <div id="history" class="history-inner"></div>
@@ -141,12 +146,14 @@
             <div id="error" class="error"></div>
         </div>
     </div>
-
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js';
+        window.firebase = { initializeApp, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut };
+    </script>
     <script src="config.js"></script>
-    <!-- Component Specific JavaScript -->
     <script src="components/topbar.js"></script>
     <script src="components/sidebar.js"></script>
-    <!-- Core App JavaScript -->
     <script src="main.js"></script>
 </body>
 </html>
