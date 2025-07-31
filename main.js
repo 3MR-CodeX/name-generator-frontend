@@ -80,6 +80,18 @@ const recentHistoryDiv = document.getElementById("history");
 const signupModal = document.getElementById("signup-modal");
 const signinModal = document.getElementById("signin-modal");
 
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "YOUR_FIREBASE_API_KEY",
+    authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
+    projectId: "YOUR_FIREBASE_PROJECT_ID",
+    storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
+    appId: "YOUR_FIREBASE_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
@@ -90,8 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    updateAuthSection();
-
+    setupAuthListeners();
     setupTooltips();
 
     closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
@@ -127,17 +138,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         const email = document.getElementById("signup-email").value;
         const password = document.getElementById("signup-password").value;
         try {
-            const response = await fetch(`${BACKEND_URL}/register`, {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            await userCredential.user.updateProfile({ displayName: name });
+            await fetch(`${BACKEND_URL}/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, password }),
             });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || "Registration failed");
-            }
-            alert("Registration successful. Please sign in.");
             signupModal.classList.remove('active');
+            alert("Registration successful. Please sign in.");
             signinModal.classList.add('active');
         } catch (error) {
             alert(error.message);
@@ -148,15 +157,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const email = document.getElementById("signin-email").value;
         const password = document.getElementById("signin-password").value;
         try {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            const idToken = await userCredential.user.getIdToken();
             const response = await fetch(`${BACKEND_URL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || "Login failed");
-            }
+            if (!response.ok) throw new Error("Backend login failed");
             const data = await response.json();
             localStorage.setItem("access_token", data.access_token);
             signinModal.classList.remove('active');
@@ -165,10 +173,60 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert(error.message);
         }
     });
-
-    document.getElementById("signup-google").addEventListener('click', handleGoogleSignIn);
-    document.getElementById("signin-google").addEventListener('click', handleGoogleSignIn);
 });
+
+function setupAuthListeners() {
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            const idToken = await user.getIdToken();
+            localStorage.setItem("access_token", idToken);
+            updateAuthSection();
+        } else {
+            localStorage.removeItem("access_token");
+            updateAuthSection();
+        }
+    });
+
+    document.getElementById("signup-google").addEventListener('click', async () => {
+        try {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            const userCredential = await auth.signInWithPopup(provider);
+            const idToken = await userCredential.user.getIdToken();
+            const response = await fetch(`${BACKEND_URL}/google-login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: idToken }),
+            });
+            if (!response.ok) throw new Error("Backend Google login failed");
+            const data = await response.json();
+            localStorage.setItem("access_token", data.access_token);
+            signupModal.classList.remove('active');
+            updateAuthSection();
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+
+    document.getElementById("signin-google").addEventListener('click', async () => {
+        try {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            const userCredential = await auth.signInWithPopup(provider);
+            const idToken = await userCredential.user.getIdToken();
+            const response = await fetch(`${BACKEND_URL}/google-login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: idToken }),
+            });
+            if (!response.ok) throw new Error("Backend Google login failed");
+            const data = await response.json();
+            localStorage.setItem("access_token", data.access_token);
+            signinModal.classList.remove('active');
+            updateAuthSection();
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+}
 
 async function loadComponent(placeholderId, componentUrl) {
     try {
@@ -302,6 +360,7 @@ async function generateName() {
         if (!response.ok) {
             if (response.status === 401) {
                 localStorage.removeItem("access_token");
+                auth.signOut();
                 updateAuthSection();
                 throw new Error("Please sign in to generate names.");
             }
@@ -366,6 +425,7 @@ async function refineNames() {
         if (!response.ok) {
             if (response.status === 401) {
                 localStorage.removeItem("access_token");
+                auth.signOut();
                 updateAuthSection();
                 throw new Error("Please sign in to refine names.");
             }
@@ -403,6 +463,7 @@ async function fetchHistory(renderToModal = false) {
         if (!response.ok) {
             if (response.status === 401) {
                 localStorage.removeItem("access_token");
+                auth.signOut();
                 updateAuthSection();
                 throw new Error("Please sign in to view history.");
             }
@@ -655,77 +716,30 @@ function closeHistoryDetailsModal() {
 
 async function updateAuthSection() {
     const authSection = document.getElementById("auth-section");
-    const token = localStorage.getItem("access_token");
-    if (token) {
-        try {
-            const response = await fetch(`${BACKEND_URL}/me`, {
-                headers: { "Authorization": `Bearer ${token}` },
-            });
-            if (response.ok) {
-                const user = await response.json();
-                authSection.innerHTML = `
-                    <div class="user-profile" onclick="signOut()">
-                        <img src="${user.picture || 'default-pfp.png'}" alt="Profile Picture" class="pfp">
-                        <div class="user-info">
-                            <span class="user-name">${user.name}</span>
-                            <span class="user-email">${user.email}</span>
-                        </div>
-                    </div>
-                `;
-            } else {
-                localStorage.removeItem("access_token");
-                showSignInSignUpButtons();
-            }
-        } catch (error) {
-            console.error("Error fetching user info:", error);
-            localStorage.removeItem("access_token");
-            showSignInSignUpButtons();
-        }
+    const user = auth.currentUser;
+    if (user) {
+        authSection.innerHTML = `
+            <div class="user-profile" onclick="signOut()">
+                <img src="${user.photoURL || 'default-pfp.png'}" alt="Profile Picture" class="pfp">
+                <div class="user-info">
+                    <span class="user-name">${user.displayName || 'User'}</span>
+                    <span class="user-email">${user.email}</span>
+                </div>
+            </div>
+        `;
     } else {
-        showSignInSignUpButtons();
+        authSection.innerHTML = `
+            <button id="signup-button">Sign Up</button>
+            <button id="signin-button">Sign In</button>
+        `;
+        document.getElementById("signup-button").addEventListener('click', () => signupModal.classList.add('active'));
+        document.getElementById("signin-button").addEventListener('click', () => signinModal.classList.add('active'));
     }
-}
-
-function showSignInSignUpButtons() {
-    const authSection = document.getElementById("auth-section");
-    authSection.innerHTML = `
-        <button id="signup-button">Sign Up</button>
-        <button id="signin-button">Sign In</button>
-    `;
-    document.getElementById("signup-button").addEventListener('click', () => signupModal.classList.add('active'));
-    document.getElementById("signin-button").addEventListener('click', () => signinModal.classList.add('active'));
 }
 
 function signOut() {
-    localStorage.removeItem("access_token");
-    updateAuthSection();
-}
-
-function handleGoogleSignIn() {
-    google.accounts.id.initialize({
-        client_id: "YOUR_GOOGLE_CLIENT_ID", // Replace with your Google Client ID
-        callback: handleCredentialResponse
-    });
-    google.accounts.id.prompt();
-}
-
-async function handleCredentialResponse(response) {
-    const idToken = response.credential;
-    try {
-        const res = await fetch(`${BACKEND_URL}/google-login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: idToken }),
-        });
-        if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.detail || "Google sign-in failed");
-        }
-        const data = await res.json();
-        localStorage.setItem("access_token", data.access_token);
-        document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
+    auth.signOut().then(() => {
+        localStorage.removeItem("access_token");
         updateAuthSection();
-    } catch (error) {
-        alert(error.message);
-    }
+    });
 }
