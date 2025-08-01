@@ -95,4 +95,3 @@ function createTopBar() {
 
 // Call the function to create the top bar when the script loads
 createTopBar();
-
