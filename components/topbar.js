@@ -1,4 +1,5 @@
-// Function to create the top bar HTML
+// components/topbar.js
+
 function createTopBar() {
     const topBarPlaceholder = document.getElementById('top-bar-placeholder');
 
@@ -95,4 +96,3 @@ function createTopBar() {
 
 // Call the function to create the top bar when the script loads
 createTopBar();
-
