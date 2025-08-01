@@ -188,42 +188,12 @@
         </div>
     </div>
 
-    <!-- Firebase SDK Scripts -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Firebase Config (will be provided by the environment)
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // Export auth and db to be used in other modules
-        window.auth = auth;
-        window.db = db;
-        window.onAuthStateChanged = onAuthStateChanged;
-        window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
-        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-        window.inWithPopup = signInWithPopup;
-        window.GoogleAuthProvider = GoogleAuthProvider;
-        window.signOut = signOut;
-        window.signInWithCustomToken = signInWithCustomToken;
-        window.initializeApp = initializeApp;
-        window.getAuth = getAuth;
-        window.getFirestore = getFirestore;
-    </script>
-    <script src="config.js"></script>
+    <!-- Core App JavaScript -->
+    <script src="main.js"></script>
     <!-- Component Specific JavaScript -->
     <script src="components/topbar.js"></script>
     <script src="components/sidebar.js"></script>
-    <!-- Core App JavaScript -->
-    <script src="main.js"></script>
-    <!-- New Firebase Authentication Logic -->
-    <script src="firebase.js"></script>
+    <!-- Firebase Authentication Logic -->
+    <script type="module" src="firebase.js"></script>
 </body>
 </html>
