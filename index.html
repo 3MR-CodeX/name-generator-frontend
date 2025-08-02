@@ -12,6 +12,9 @@
     <!-- Component Specific Styles -->
     <link rel="stylesheet" href="components/topbar.css">
     <link rel="stylesheet" href="components/sidebar.css">
+    
+    <!-- Firebase SDK -->
+    <script type="module" src="./firebase.js"></script>
 </head>
 <body>
     <!-- Placeholder for Top Bar -->
@@ -34,59 +37,13 @@
         </div>
     </div>
 
-    <!-- History Details Modal (NEW) -->
+    <!-- History Details Modal -->
     <div id="history-details-modal" class="modal">
         <div class="modal-content history-details-content">
             <span class="close-button">&times;</span>
             <h2>History Entry Details</h2>
             <div id="details-content">
                 <!-- Details of a specific history entry will be loaded here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Sign Up Modal -->
-    <div id="signup-modal" class="modal">
-        <div class="modal-content auth-modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Create Account</h2>
-            <div class="auth-form-container">
-                <input type="email" id="signup-email" placeholder="Email Address">
-                <input type="password" id="signup-password" placeholder="Password">
-                <button id="create-account-btn" class="auth-btn">Create Account</button>
-                <div class="auth-divider">
-                    <hr>
-                    <span>or</span>
-                    <hr>
-                </div>
-                <button id="signup-google-btn" class="auth-google-btn">
-                    <img src="https://www.gstatic.com/images/branding/product/2x/gsa_48dp.png" alt="Google icon">
-                    Sign Up with Google
-                </button>
-                <p>Already have an account? <a href="#" id="show-signin-link">Sign In</a></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sign In Modal -->
-    <div id="signin-modal" class="modal">
-        <div class="modal-content auth-modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Sign In</h2>
-            <div class="auth-form-container">
-                <input type="email" id="signin-email" placeholder="Email Address">
-                <input type="password" id="signin-password" placeholder="Password">
-                <button id="signin-btn" class="auth-btn">Sign In</button>
-                <div class="auth-divider">
-                    <hr>
-                    <span>or</span>
-                    <hr>
-                </div>
-                <button id="signin-google-btn" class="auth-google-btn">
-                    <img src="https://www.gstatic.com/images/branding/product/2x/gsa_48dp.png" alt="Google icon">
-                    Sign In with Google
-                </button>
-                <p>Don't have an account? <a href="#" id="show-signup-link">Sign Up</a></p>
             </div>
         </div>
     </div>
@@ -179,7 +136,7 @@
                     <pre id="refined_reasons"></pre>
                 </div>
             </div>
-            <!-- Recent History section moved back to main content and initially hidden -->
+            <!-- Recent History section -->
             <div id="history_section" class="history-section hidden-section">
                 <h2>🕘 Recent History</h2>
                 <div id="history" class="history-inner"></div>
@@ -188,12 +145,35 @@
         </div>
     </div>
 
-    <!-- Core App JavaScript -->
-    <script src="main.js"></script>
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-target="signup-modal">&times;</span>
+            <h2>Create Account</h2>
+            <input id="signup-email" type="email" placeholder="Email or Name" />
+            <input id="signup-password" type="password" placeholder="Password" />
+            <button id="signup-submit" class="btn-purple">Create Account</button>
+            <button id="signup-google">Sign Up with Google</button>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div id="signin-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-target="signin-modal">&times;</span>
+            <h2>Sign In</h2>
+            <input id="signin-email" type="email" placeholder="Email" />
+            <input id="signin-password" type="password" placeholder="Password" />
+            <button id="signin-submit">Sign In</button>
+            <button id="signin-google">Sign In with Google</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
     <!-- Component Specific JavaScript -->
     <script src="components/topbar.js"></script>
     <script src="components/sidebar.js"></script>
-    <!-- Firebase Authentication Logic -->
-    <script type="module" src="firebase.js"></script>
+    <!-- Core App JavaScript -->
+    <script src="main.js"></script>
 </body>
 </html>
