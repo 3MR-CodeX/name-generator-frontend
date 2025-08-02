@@ -89,7 +89,6 @@ const detailsContent = document.getElementById("details-content"); // Content ar
 const recentHistorySection = document.getElementById("history_section"); // Reference to the recent history section
 const recentHistoryDiv = document.getElementById("history"); // Reference to the recent history div inside the section
 
-
 document.addEventListener("DOMContentLoaded", async () => {
     // Load top bar HTML
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
@@ -134,6 +133,88 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     }
+
+    // Authentication logic
+    function renderAuthControls(user) {
+        const container = document.getElementById("auth-controls");
+        container.innerHTML = "";
+
+        if (user) {
+            const img = document.createElement("img");
+            img.src = user.photoURL || "default-pfp.png";
+            img.className = "auth-pfp";
+
+            const nameDiv = document.createElement("div");
+            nameDiv.className = "auth-name";
+            nameDiv.innerHTML = `
+                <div>${user.displayName || user.email.split("@")[0]}</div>
+                <div class="auth-email">${user.email}</div>
+            `;
+
+            const signOutBtn = document.createElement("button");
+            signOutBtn.textContent = "Sign Out";
+            signOutBtn.onclick = () => window.signOutUser();
+
+            container.append(img, nameDiv, signOutBtn);
+        } else {
+            const signUpBtn = document.createElement("button");
+            signUpBtn.textContent = "Sign Up";
+            signUpBtn.className = "btn-purple";
+            signUpBtn.onclick = () => openModal("signup-modal");
+
+            const signInBtn = document.createElement("button");
+            signInBtn.textContent = "Sign In";
+            signInBtn.onclick = () => openModal("signin-modal");
+
+            container.append(signUpBtn, signInBtn);
+        }
+    }
+
+    function openModal(id) {
+        document.getElementById(id).classList.add("active");
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove("active");
+    }
+
+    // Set up close buttons for auth modals
+    document.querySelectorAll(".close-button").forEach((btn) => {
+        const target = btn.dataset.target;
+        btn.onclick = () => closeModal(target);
+    });
+
+    // Sign Up
+    document.getElementById("signup-submit").onclick = async () => {
+        const email = document.getElementById("signup-email").value;
+        const pass = document.getElementById("signup-password").value;
+        try {
+            await window.signUp(window.auth, email, pass);
+            closeModal("signup-modal");
+        } catch (e) {
+            alert(e.message);
+        }
+    };
+    document.getElementById("signup-google").onclick = () => window.signInWithGoogle().then(() => closeModal("signup-modal"));
+
+    // Sign In
+    document.getElementById("signin-submit").onclick = async () => {
+        const email = document.getElementById("signin-email").value;
+        const pass = document.getElementById("signin-password").value;
+        try {
+            await window.signIn(window.auth, email, pass);
+            closeModal("signin-modal");
+        } catch (e) {
+            alert(e.message);
+        }
+    };
+    document.getElementById("signin-google").onclick = () => window.signInWithGoogle().then(() => closeModal("signin-modal"));
+
+    // Listen for auth state changes
+    window.onUserStateChange(window.auth, (user) => renderAuthControls(user));
+
+    // Initial render
+    renderAuthControls(null);
 });
 
 /**
@@ -155,7 +236,6 @@ async function loadComponent(placeholderId, componentUrl) {
     }
 }
 
-
 function initializeUI() {
     // Add 'hidden-section' class to ALL sections that should be initially hidden
     outputContainer.classList.add("hidden-section");
@@ -164,7 +244,6 @@ function initializeUI() {
     refineBtn.classList.add("hidden-section");
     // Ensure history section is hidden initially
     recentHistorySection.classList.add("hidden-section");
-
 
     // Store original placeholders for error messaging
     if (!promptInput.dataset.originalPlaceholder) {
@@ -261,7 +340,6 @@ function showTemporaryPlaceholderError(textarea, message) {
     }, 3000);
 }
 
-
 async function generateName() {
     const prompt = promptInput.value.trim(); // Trim whitespace from prompt
 
@@ -308,7 +386,6 @@ async function generateName() {
     refineSection.classList.add("hidden-section");
     refineBtn.classList.remove("visible-section");
     refineBtn.classList.add("hidden-section");
-
 
     try {
         const response = await fetch(`${BACKEND_URL}/generate`, {
@@ -521,7 +598,7 @@ function renderHistory(history, renderToModal = false) {
             let preRefined = '';
             if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
                 preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
-                }
+            }
 
             const button = document.createElement('button');
             button.className = 'history-item';
@@ -678,7 +755,7 @@ function copyToClipboard(elementId) {
 
 /**
  * Resets all dynamic UI sections to their initial hidden state.
- * This is used when an an operation fails or an empty prompt is detected.
+ * This is used when an operation fails or an empty prompt is detected.
  */
 function resetDynamicSections() {
     outputContainer.classList.remove("visible-section");
@@ -692,7 +769,6 @@ function resetDynamicSections() {
     // Ensure recent history section is hidden
     recentHistorySection.classList.remove("visible-section");
     recentHistorySection.classList.add("hidden-section");
-
 
     // Clear content of pre tags
     namesPre.textContent = "";
@@ -739,7 +815,6 @@ function openHistoryModal() {
     }
 }
 
-/**
 /**
  * Closes the full history list modal.
  */
