@@ -4,104 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NameIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico">
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="components/topbar.css">
     <link rel="stylesheet" href="components/sidebar.css">
+    <link rel="stylesheet" href="components/auth/auth.css">
 </head>
 <body>
     <div id="top-bar-placeholder"></div>
+
     <div id="sidebar-placeholder"></div>
-    <div id="banner"></div>
-    <h1>NameIT</h1>
-    <p id="description">Generate creative names for your projects, brands, or anything else!</p>
-    <div class="input-section">
-        <div class="input-container">
-            <textarea id="prompt" rows="4" placeholder="Enter a description for the name"></textarea>
-            <span class="tooltip-icon" data-tooltip-text="Describe what you want the name for (e.g., 'A futuristic app for time management')">?</span>
-            <span class="tooltip-box"></span>
-        </div>
-        <select id="category">
-            <option value="" disabled selected>Category</option>
-        </select>
-        <select id="style">
-            <option value="" disabled selected>Style</option>
-        </select>
-        <select id="language">
-            <option value="English">English</option>
-            <option value="Arabic">Arabic</option>
-        </select>
-        <button class="generate-btn" onclick="generateName()">Generate Names</button>
-        <button class="surprise-btn" onclick="surpriseMe()">Surprise Me</button>
-    </div>
-    <p id="error"></p>
-    <div class="output-section hidden-section" id="output_container">
-        <h2>Generated Names</h2>
-        <pre id="names"></pre>
-        <h2>Explanations</h2>
-        <pre id="reasons"></pre>
-    </div>
-    <div class="refine-section hidden-section" id="refine_section">
-        <h2>Refine Names</h2>
-        <textarea id="edit_box" rows="4" placeholder="How would you like to refine the names?"></textarea>
-        <button class="refine-btn" onclick="refineNames()">Refine</button>
-    </div>
-    <div class="refined-outputs hidden-section" id="refined_outputs">
-        <h2>Refined Names</h2>
-        <pre id="refined_names"></pre>
-        <h2>Refined Explanations</h2>
-        <pre id="refined_reasons"></pre>
-    </div>
-    <div class="history-section hidden-section" id="history_section">
-        <h2>Recent History</h2>
-        <div id="history"></div>
-    </div>
+
+    <div id="overlay"></div>
+
     <div id="history-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>Full History</h2>
-            <div id="full-history-list"></div>
+            <div id="full-history-list" class="history-inner">
+                </div>
         </div>
     </div>
+
     <div id="history-details-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content history-details-content">
             <span class="close-button">&times;</span>
-            <h2>History Details</h2>
-            <div id="details-content"></div>
+            <h2>History Entry Details</h2>
+            <div id="details-content">
+                 </div>
         </div>
     </div>
-    <!-- Sign Up Modal -->
-    <div id="signup-modal" class="modal">
-        <div class="modal-content">
+    
+    <div id="sign-in-modal" class="modal auth-modal">
+        <div class="modal-content auth-modal-content">
             <span class="close-button">&times;</span>
-            <h2>Sign Up</h2>
-            <div id="signup-form">
-                <input type="email" id="signup-email" placeholder="Email" required>
-                <input type="password" id="signup-password" placeholder="Password" required>
-                <button id="signup-submit">Create Account</button>
+            <h2>Sign In to NameIT</h2>
+            <div class="input-group">
+                <input type="email" id="signin-email" placeholder="Email Address" required>
             </div>
-            <button id="google-signup">Sign Up with Google</button>
-        </div>
-    </div>
-    <!-- Sign In Modal -->
-    <div id="signin-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Sign In</h2>
-            <div id="signin-form">
-                <input type="email" id="signin-email" placeholder="Email" required>
+            <div class="input-group">
                 <input type="password" id="signin-password" placeholder="Password" required>
-                <button id="signin-submit">Sign In</button>
             </div>
-            <button id="google-signin">Sign In with Google</button>
+            <button id="signin-submit-btn" class="auth-button">Sign In</button>
+            <div id="auth-error-message-signin" class="error"></div>
+            <div class="auth-divider">or</div>
+            <button id="signin-google-btn" class="auth-button google-button">
+                <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
+                Sign In with Google
+            </button>
         </div>
     </div>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
-    <!-- Main JavaScript -->
-    <script src="main.js"></script>
-    <!-- Component JavaScript -->
+    
+    <div id="sign-up-modal" class="modal auth-modal">
+        <div class="modal-content auth-modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Create Your Account</h2>
+            <div class="input-group">
+                <input type="email" id="signup-email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signup-password" placeholder="Password (6+ characters)" required>
+            </div>
+            <button id="signup-submit-btn" class="auth-button">Create Account</button>
+            <div id="auth-error-message-signup" class="error"></div>
+            <div class="auth-divider">or</div>
+            <button id="signup-google-btn" class="auth-button google-button">
+                 <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
+                Sign Up with Google
+            </button>
+        </div>
+    </div>
+
+
+    <div class="main-content-wrapper">
+        <div class="banner-col">
+            <img src="banner.png" alt="Banner" id="banner">
+        </div>
+        <h1>NameIT</h1>
+        <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
+        <div class="container">
+            <div class="input-section">
+                <div class="input-box textbox-column">
+                    <label for="prompt">What do you want to name?</label>
+                    <textarea id="prompt" placeholder="Enter a description!"></textarea>
+                 </div>
+                <div class="input-box right-column">
+                    <label for="category">Category</label>
+                    <div class="tooltip-container">
+                         <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
+                        <div class="tooltip-box"></div>
+                    </div>
+                    <select id="category">
+                         <option value="">Select a category</option>
+                    </select>
+                    <label for="style">Style</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
+                        <div class="tooltip-box"></div>
+                    </div>
+                     <select id="style">
+                        <option value="">Select a style</option>
+                    </select>
+                    <label for="language">Language</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
+                        <div class="tooltip-box"></div>
+                    </div>
+                     <select id="language">
+                        <option value="English">English</option>
+                        <option value="Arabic">Arabic</option>
+                    </select>
+                 </div>
+            </div>
+            <div class="button-section">
+                <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
+                <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
+            </div>
+            <div id="output_container" class="output-section">
+                 <div class="output-box">
+                    <div class="output-header">
+                        <label>Generated Names/Titles</label>
+                        <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
+                     </div>
+                    <pre id="names"></pre>
+                </div>
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Explanations</label>
+                         <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
+                    </div>
+                    <pre id="reasons"></pre>
+                </div>
+            </div>
+             <div id="refine_section" class="refine-section">
+                <label for="edit_box">Refine the suggestions</label>
+                <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
+            </div>
+            <div class="refine-button-section">
+                <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
+             </div>
+            <div id="refined_outputs" class="output-section">
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Refined Suggestions</label>
+                       <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
+                    </div>
+                    <pre id="refined_names"></pre>
+                </div>
+                <div class="output-box">
+                   <div class="output-header">
+                        <label>Refined Explanations</label>
+                        <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
+                    </div>
+                    <pre id="refined_reasons"></pre>
+                 </div>
+            </div>
+            <div id="history_section" class="history-section hidden-section">
+                <h2>🕘 Recent History</h2>
+                 <div id="history" class="history-inner"></div>
+            </div>
+            <div id="error" class="error"></div>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <script src="config.js"></script>
+    <script src="components/auth/auth.js"></script>
     <script src="components/topbar.js"></script>
     <script src="components/sidebar.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
