@@ -429,7 +429,6 @@ pre {
     color: #ff5555;
     opacity: 1;
 }
-
 .prompt-error-placeholder {
     border-color: #ff5555 !important;
 }
@@ -550,7 +549,8 @@ pre {
     transition: color 0.3s;
 }
 
-.close-button:hover, .close-button:focus {
+.close-button:hover,
+.close-button:focus {
     color: var(--line-purple-glow);
     text-decoration: none;
     cursor: pointer;
@@ -604,230 +604,100 @@ pre {
 }
 
 .history-inner {
-    max-height: 250px; /* Max height for recent history */
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
+    max-height: 200px;
     overflow-y: auto;
-    padding: 0 10px;
+    overflow-x: hidden;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 10px;
 }
 
 .history-item {
     background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
-    padding: 10px;
-    margin-bottom: 10px;
+    color: #e0e0e0;
+    border: none;
+    padding: 8px 12px;
+    margin: 5px 0;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
-    border: 1px solid #4a4a4a;
+    transition: background-color 0.3s;
+    display: block;
+    width: 100%;
+    text-align: left;
+    white-space: normal;
 }
 
 .history-item:hover {
     background-color: #4a4a4a;
-    transform: translateY(-2px);
 }
 
-.history-item p {
-    margin: 0;
-}
-
-.history-item .history-date {
-    font-size: 0.8em;
-    color: #aaa;
-    text-align: right;
-}
-
-/* Styles for history details in modal */
+/* History Details Modal Specific Styles */
 .history-details-content {
-    background-color: #2a2a2a;
-    border-color: var(--line-purple-glow);
-}
-
-#details-content {
-    padding-top: 10px;
+    max-width: 600px; /* Slightly smaller for details */
 }
 
 #details-content p {
-    font-size: 1.1em;
-    margin-bottom: 15px;
-    line-height: 1.6;
-}
-
-#details-content h3 {
-    font-size: 1.4em;
-    color: #ffffff;
     margin-bottom: 10px;
-    border-bottom: 1px solid #4a4a4a;
-    padding-bottom: 5px;
-}
-
-#details-content ul {
-    margin-left: 20px;
-    list-style-type: '⚡ '; /* Custom list marker */
-}
-
-#details-content ul li {
-    margin-bottom: 8px;
-    font-size: 1.1em;
     line-height: 1.5;
 }
 
-/* ------------------------------------------- */
-/* --- NEW AUTHENTICATION SYSTEM STYLES --- */
-/* ------------------------------------------- */
-
-/* Authentication modal specific styles */
-.auth-modal-content {
-    max-width: 450px;
-}
-
-.auth-form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.auth-form-container input {
-    background-color: #2a2a2a;
-    color: #e0e0e0;
-    border: 1px solid #4a4a4a;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 16px;
-    width: 100%;
-}
-
-.auth-form-container input:focus {
-    outline: none;
-    border-color: var(--button-purple);
-    box-shadow: 0 0 5px var(--button-purple);
-}
-
-.auth-btn {
-    width: 100%;
-    background-color: var(--button-purple);
-    font-weight: 500;
-}
-
-.auth-google-btn {
-    width: 100%;
-    background-color: #4285F4; /* Google Blue */
-    color: white;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px 12px;
-}
-
-.auth-google-btn img {
-    width: 24px;
-    height: 24px;
-}
-
-.auth-divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: #aaa;
-}
-
-.auth-divider hr {
-    flex: 1;
-    border: none;
-    height: 1px;
-    background-color: #5a5a5a;
-}
-
-.auth-divider span {
-    padding: 0 10px;
-}
-
-.auth-form-container p {
-    text-align: center;
-    font-size: 14px;
-    color: #ccc;
-    margin-top: 5px;
-}
-
-.auth-form-container p a {
+#details-content strong {
     color: var(--line-purple-default);
-    text-decoration: none;
-    transition: color 0.2s;
 }
-
-.auth-form-container p a:hover {
-    color: var(--line-purple-glow);
-    text-decoration: underline;
-}
-
-/* Styles for topbar user info (signed in state) */
-#user-info-container {
-    display: none; /* Hidden by default */
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: opacity 0.3s ease-in-out;
-}
-
-#user-info-container.signed-in {
-    display: flex;
-}
-
-#user-info-container:hover {
-    opacity: 0.8;
-}
-
-#user-pfp {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--button-purple);
-}
-
-.user-text {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-#user-name {
-    font-size: 1em;
-    font-weight: 500;
-    color: #ffffff;
-    margin: 0;
-}
-
-#user-email {
-    font-size: 0.8em;
-    font-weight: 400;
-    color: #cccccc;
-    margin: 0;
-}
-
-.profile-dropdown {
-    position: absolute;
-    top: calc(var(--top-bar-height) - 10px);
-    right: 20px;
-    background-color: #2a2a2a;
-    border: 1px solid #4a4a4a;
+#details-content pre {
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
+    color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: none;
+    white-space: pre-wrap;
+    max-height: 150px; /* Limit height for detail pre-tags */
+    overflow-y: auto;
+    margin-top: 5px;
+    font-size: 0.9em;
 }
 
-.profile-dropdown button {
-    width: 100%;
-    background-color: transparent;
-    color: #e0e0e0;
-    text-align: left;
-    padding: 8px;
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    .modal-content h2 {
+        font-size: 1.5em;
+    }
+    .close-button {
+        font-size: 24px;
+        top: 5px;
+        right: 15px;
+    }
+}
+
+/* Authentication Controls */
+#auth-controls {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.auth-pfp {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+.auth-name {
+    color: #fff;
+    font-size: 0.9em;
+    line-height: 1.1;
+}
+.auth-email {
+    font-weight: 300;
+    font-size: 0.8em;
+}
+.btn-purple {
+    background: #6b46c1; /* purple */
+    color: white;
     border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
     cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.profile-dropdown button:hover {
-    background-color: #4a4a4a;
 }
