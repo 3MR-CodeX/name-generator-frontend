@@ -1,64 +1,64 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = [
-  "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
-  "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product",
-  "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"
+  "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
+  "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product",
+  "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"
 ];
 const STYLE_OPTIONS = [
-  "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
-  "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
-  "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
-  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious",
-  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
-  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
+  "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
+  "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
+  "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
+  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious",
+  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
+  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
 ];
 const SURPRISES = [
-    ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
-    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
-    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
-    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
-    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
-    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
-    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
-    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
-    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
-    ["An edgy and futuristic name for a cyberpunk productivity app", "App", "Futuristic", "English"],
-    ["A wholesome name for a cozy coffee shop in a rainy city", "Place", "Wholesome", "English"],
-    ["A bold and cryptic name for an underground hacker forum", "Platform", "Dark", "English"],
-    ["A magical and whimsical name for a children’s toy line", "Product", "Whimsical", "English"],
-    ["A high-energy name for a viral TikTok challenge", "Trend", "Catchy", "English"],
-    ["A mysterious name for an AI-powered time travel game", "Game", "Mysterious", "English"],
-    ["A funky brand name for a retro streetwear label", "Brand", "Retro", "English"],
-    ["A futuristic name for a space-themed meditation app", "App", "Zen", "English"],
-    ["A gritty name for a post-apocalyptic survival video game", "Game", "Intense", "English"],
-    ["A dramatic title for a thriller about corporate espionage", "Video", "Suspense", "English"],
-    ["A charming name for a vintage bookstore", "Place", "Cozy", "English"],
-    ["A stylish name for a luxury sneaker brand", "Product", "Fashion", "English"],
-    ["A joyful and energetic name for a dance studio", "Place", "Cheerful", "English"],
-    ["A techy and scalable name for a SaaS startup", "App", "Professional", "English"],
-    ["An abstract name for a generative art collective", "Platform", "Creative", "English"],
-    ["A powerful name for a female-led crypto fintech brand", "Brand", "Bold", "English"],
-    ["A mystical name for a fantasy book publishing house", "Platform", "Fantasy", "English"],
-    ["An iconic name for a retro-style arcade game", "Game", "Arcade", "English"],
-    ["A hilarious name for a parody news site", "Platform", "Funny", "English"],
-    ["An ethereal name for a nature-inspired skincare line", "Product", "Organic", "English"],
-    ["A clever name for an AI assistant for writers", "App", "Smart", "English"],
-    ["A peaceful name for a forest retreat resort", "Place", "Relaxing", "English"],
-    ["An intriguing name for a tech documentary series", "Video", "Informative", "English"],
-    ["A fashionable name for a digital outfit creator", "Product", "Stylish", "English"],
-    ["A punchy name for an esports team", "Platform", "Competitive", "English"],
-    ["A quirky name for a smart pet gadget", "Product", "Playful", "English"],
-    ["A surreal name for a virtual dream simulator", "App", "Surreal", "English"],
-    ["An optimistic name for a mental health journaling app", "App", "Uplifting", "English"],
-    ["A sleek name for a futuristic transportation startup", "Brand", "Sleek", "English"],
-    ["A mythical name for a fantasy map generation tool", "App", "Mythical", "English"],
-    ["A classy name for an online wine subscription service", "Product", "Classy", "English"],
-    ["An awe-inspiring name for a photography portfolio site", "Platform", "Artistic", "English"],
-    ["A mysterious name for an anonymous feedback app", "App", "Cryptic", "English"],
-    ["A snappy name for a productivity browser extension", "App", "Efficient", "English"],
-    ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"],
-    ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
+    ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
+    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
+    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
+    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
+    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
+    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
+    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
+    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
+    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
+    ["An edgy and futuristic name for a cyberpunk productivity app", "App", "Futuristic", "English"],
+    ["A wholesome name for a cozy coffee shop in a rainy city", "Place", "Wholesome", "English"],
+    ["A bold and cryptic name for an underground hacker forum", "Platform", "Dark", "English"],
+    ["A magical and whimsical name for a children’s toy line", "Product", "Whimsical", "English"],
+    ["A high-energy name for a viral TikTok challenge", "Trend", "Catchy", "English"],
+    ["A mysterious name for an AI-powered time travel game", "Game", "Mysterious", "English"],
+    ["A funky brand name for a retro streetwear label", "Brand", "Retro", "English"],
+    ["A futuristic name for a space-themed meditation app", "App", "Zen", "English"],
+    ["A gritty name for a post-apocalyptic survival video game", "Game", "Intense", "English"],
+    ["A dramatic title for a thriller about corporate espionage", "Video", "Suspense", "English"],
+    ["A charming name for a vintage bookstore", "Place", "Cozy", "English"],
+    ["A stylish name for a luxury sneaker brand", "Product", "Fashion", "English"],
+    ["A joyful and energetic name for a dance studio", "Place", "Cheerful", "English"],
+    ["A techy and scalable name for a SaaS startup", "App", "Professional", "English"],
+    ["An abstract name for a generative art collective", "Platform", "Creative", "English"],
+    ["A powerful name for a female-led crypto fintech brand", "Brand", "Bold", "English"],
+    ["A mystical name for a fantasy book publishing house", "Platform", "Fantasy", "English"],
+    ["An iconic name for a retro-style arcade game", "Game", "Arcade", "English"],
+    ["A hilarious name for a parody news site", "Platform", "Funny", "English"],
+    ["An ethereal name for a nature-inspired skincare line", "Product", "Organic", "English"],
+    ["A clever name for an AI assistant for writers", "App", "Smart", "English"],
+    ["A peaceful name for a forest retreat resort", "Place", "Relaxing", "English"],
+    ["An intriguing name for a tech documentary series", "Video", "Informative", "English"],
+    ["A fashionable name for a digital outfit creator", "Product", "Stylish", "English"],
+    ["A punchy name for an esports team", "Platform", "Competitive", "English"],
+    ["A quirky name for a smart pet gadget", "Product", "Playful", "English"],
+    ["A surreal name for a virtual dream simulator", "App", "Surreal", "English"],
+    ["An optimistic name for a mental health journaling app", "App", "Uplifting", "English"],
+    ["A sleek name for a futuristic transportation startup", "Brand", "Sleek", "English"],
+    ["A mythical name for a fantasy map generation tool", "App", "Mythical", "English"],
+    ["A classy name for an online wine subscription service", "Product", "Classy", "English"],
+    ["An awe-inspiring name for a photography portfolio site", "Platform", "Artistic", "English"],
+    ["A mysterious name for an anonymous feedback app", "App", "Cryptic", "English"],
+    ["A snappy name for a productivity browser extension", "App", "Efficient", "English"],
+    ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"],
+    ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
 ];
 
 // Get references to key UI elements
@@ -106,7 +106,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
-    // No initial fetch for history here, it will be fetched on first generation
     setupTooltips();
 
     // Event listeners for full history list modal
@@ -121,18 +120,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Event listeners for history details modal
     if (historyDetailsModal && closeButtonDetailsModal) {
-        // When closing details modal, go back to full history list modal
         closeButtonDetailsModal.addEventListener('click', () => {
             closeHistoryDetailsModal();
-            openHistoryModal(); // Re-open the full history list
+            openHistoryModal();
         });
         window.addEventListener('click', (event) => {
             if (event.target == historyDetailsModal) {
                 closeHistoryDetailsModal();
-                openHistoryModal(); // Re-open the full history list
+                openHistoryModal();
             }
         });
     }
+
+    // Attach event listeners for buttons
+    document.getElementById('generate-btn').addEventListener('click', generateName);
+    document.getElementById('surprise-btn').addEventListener('click', surpriseMe);
+    document.getElementById('refine-btn').addEventListener('click', refineNames);
+    document.getElementById('copy-names').addEventListener('click', () => copyToClipboard('names'));
+    document.getElementById('copy-reasons').addEventListener('click', () => copyToClipboard('reasons'));
+    document.getElementById('copy-refined-names').addEventListener('click', () => copyToClipboard('refined_names'));
+    document.getElementById('copy-refined-reasons').addEventListener('click', () => copyToClipboard('refined_reasons'));
 
     // Authentication logic
     function renderAuthControls(user) {
@@ -178,13 +185,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById(id).classList.remove("active");
     }
 
-    // Set up close buttons for auth modals
     document.querySelectorAll(".close-button").forEach((btn) => {
         const target = btn.dataset.target;
         btn.onclick = () => closeModal(target);
     });
 
-    // Sign Up
     document.getElementById("signup-submit").onclick = async () => {
         const email = document.getElementById("signup-email").value;
         const pass = document.getElementById("signup-password").value;
@@ -197,7 +202,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
     document.getElementById("signup-google").onclick = () => window.signInWithGoogle().then(() => closeModal("signup-modal"));
 
-    // Sign In
     document.getElementById("signin-submit").onclick = async () => {
         const email = document.getElementById("signin-email").value;
         const pass = document.getElementById("signin-password").value;
@@ -210,11 +214,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
     document.getElementById("signin-google").onclick = () => window.signInWithGoogle().then(() => closeModal("signin-modal"));
 
-    // Listen for auth state changes
     window.onUserStateChange(window.auth, (user) => renderAuthControls(user));
-
-    // Initial render
     renderAuthControls(null);
+
+    // Attach functions to window for use in dynamically loaded HTML
+    window.restoreHistory = restoreHistory;
+    window.openHistoryModal = openHistoryModal;
+    window.closeHistoryModal = closeHistoryModal;
+    window.showHistoryDetails = showHistoryDetails;
+    window.closeHistoryDetailsModal = closeHistoryDetailsModal;
 });
 
 /**
@@ -586,302 +594,195 @@ function renderHistory(history, renderToModal = false) {
             });
             targetDiv.appendChild(dailyContainer);
         });
-    } else {
-        // For recent history, just append items directly (already sliced to 100)
-        // Sort entries by timestamp (most recent first) for recent history
-        historyToRender.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
+    } else { // Render for recent history
+        historyToRender.forEach(entry => {
             const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
             const tooltip = entry.category !== "Refined" ?
                 `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` :
                 `Refine Instruction: ${entry.prompt}`;
             
-            let preRefined = '';
-            if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
-                preRefined = `<span class="pre-refined"> (from: ${entry.pre_refined_names.map(cleanNames).join(", ")})</span>`;
-            }
-
             const button = document.createElement('button');
-            button.className = 'history-item';
+            button.className = 'recent-history-item';
             button.title = tooltip;
-            button.innerHTML = `${names}${preRefined}`;
-            // For recent history, clicking restores to main form
-            button.onclick = () => restoreHistory(entry.id); 
+            button.innerHTML = `${names}`;
+            // For recent history, clicking restores the generation state
+            button.onclick = () => restoreHistory(entry); 
             targetDiv.appendChild(button);
         });
     }
 }
 
-// Made global so sidebar.js can call it
-function restoreHistory(id) {
-    // Clear any existing error messages when restoring
-    document.getElementById("error").textContent = "";
-    // Reset prompt and refine placeholders and remove error styling
-    promptInput.placeholder = promptInput.dataset.originalPlaceholder;
-    promptInput.classList.remove("prompt-error-placeholder");
-    editBox.placeholder = editBox.dataset.originalPlaceholder;
-    editBox.classList.remove("prompt-error-placeholder");
+// Global function to restore a previous generation
+function restoreHistory(entry) {
+    if (entry.category === "Refined") {
+        // For refined entries, restore the original prompt and the refine instruction
+        promptInput.value = entry.pre_refined_prompt;
+        document.getElementById("category").value = entry.pre_refined_category;
+        document.getElementById("style").value = entry.pre_refined_style;
+        document.getElementById("language").value = entry.pre_refined_language;
 
-    // Close any open modals
-    closeHistoryModal();
-    closeHistoryDetailsModal();
+        editBox.value = entry.prompt;
+        namesPre.textContent = entry.pre_refined_names.map(cleanNames).join("\n");
+        reasonsPre.textContent = entry.pre_refined_reasons.map(cleanNames).join("\n");
+        refinedNamesPre.textContent = entry.names.map(cleanNames).join("\n");
+        refinedReasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
 
-    fetch(`${BACKEND_URL}/history`).then(res => res.json()).then(historyData => {
-        const entry = historyData.find(e => e.id === id);
-        if (entry) {
-            promptInput.value = entry.prompt;
-            document.getElementById("category").value = entry.category;
-            document.getElementById("style").value = entry.style;
-            document.getElementById("language").value = entry.language;
-            namesPre.textContent = entry.names.map(cleanNames).join("\n");
-            reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+        outputContainer.classList.remove("hidden-section");
+        refineSection.classList.remove("hidden-section");
+        refinedOutputs.classList.remove("hidden-section");
+        refineBtn.classList.remove("hidden-section");
+        
+    } else {
+        // For a new generation, simply restore the prompt and options
+        promptInput.value = entry.prompt;
+        document.getElementById("category").value = entry.category;
+        document.getElementById("style").value = entry.style;
+        document.getElementById("language").value = entry.language;
 
-            // Ensure animation class is applied
-            namesPre.classList.add("fade-in-content");
-            reasonsPre.classList.add("fade-in-content");
+        namesPre.textContent = entry.names.map(cleanNames).join("\n");
+        reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+        refinedNamesPre.textContent = "";
+        refinedReasonsPre.textContent = "";
+        editBox.value = "";
 
-            // Show main output and history sections
-            outputContainer.classList.remove("hidden-section");
-            outputContainer.classList.add("visible-section");
-            
-            // Show refine section and button ONLY if prompt has content
-            if (entry.category !== "Refined" && promptInput.value.trim()) { // Only show refine for non-refined entries
-                refineSection.classList.remove("hidden-section");
-                refineSection.classList.add("visible-section");
-                refineBtn.classList.remove("hidden-section");
-                refineBtn.classList.add("visible-section");
-            } else {
-                refineSection.classList.remove("visible-section");
-                refineSection.classList.add("hidden-section");
-                refineBtn.classList.remove("visible-section");
-                refineBtn.classList.add("hidden-section");
-            }
-
-            // Always hide refined outputs when restoring from history
-            refinedOutputs.classList.remove("visible-section");
-            refinedOutputs.classList.add("hidden-section");
-
-            // Show recent history section
-            recentHistorySection.classList.remove("hidden-section");
-            recentHistorySection.classList.add("visible-section");
-
-            // Close sidebar if it's open after restoring history
-            if (typeof toggleSidebar === 'function' && window.isSidebarOpen) { // Access isSidebarOpen globally
-                toggleSidebar();
-            }
-
-        } else if (id === 'latest') { // Handle "Latest Generation" click from sidebar
-            if (historyData.length > 0) {
-                const latestEntry = historyData[0];
-                promptInput.value = latestEntry.prompt;
-                document.getElementById("category").value = latestEntry.category;
-                document.getElementById("style").value = latestEntry.style;
-                document.getElementById("language").value = latestEntry.language;
-                namesPre.textContent = latestEntry.names.map(cleanNames).join("\n");
-                reasonsPre.textContent = latestEntry.reasons.map(cleanNames).join("\n");
-
-                namesPre.classList.add("fade-in-content");
-                reasonsPre.classList.add("fade-in-content");
-
-                outputContainer.classList.remove("hidden-section");
-                outputContainer.classList.add("visible-section");
-                
-                if (latestEntry.category !== "Refined" && promptInput.value.trim()) {
-                    refineSection.classList.remove("hidden-section");
-                    refineSection.classList.add("visible-section");
-                    refineBtn.classList.remove("hidden-section");
-                    refineBtn.classList.add("visible-section");
-                } else {
-                    refineSection.classList.remove("visible-section");
-                    refineSection.classList.add("hidden-section");
-                    refineBtn.classList.remove("visible-section");
-                    refineBtn.classList.add("hidden-section");
-                }
-                refinedOutputs.classList.remove("visible-section");
-                refinedOutputs.classList.add("hidden-section");
-
-                // Show recent history section
-                recentHistorySection.classList.remove("hidden-section");
-                recentHistorySection.classList.add("visible-section");
-
-                if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
-                    toggleSidebar();
-                }
-            } else {
-                document.getElementById("error").textContent = "No history available to restore.";
-            }
-        }
-    });
+        outputContainer.classList.remove("hidden-section");
+        refineSection.classList.remove("hidden-section");
+        refinedOutputs.classList.add("hidden-section");
+        refineBtn.classList.remove("hidden-section");
+    }
+    // Scroll to the top of the output section for better user experience
+    outputContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
-function surpriseMe() {
-    const [prompt, category, style, language] = SURPRISES[Math.floor(Math.random() * SURPRISES.length)];
-    promptInput.value = prompt;
-    document.getElementById("category").value = category;
-    document.getElementById("style").value = style;
-    document.getElementById("language").value = language;
-    
-    // Call generateName directly after setting the surprise prompt
-    generateName(); 
+// Global function to open the full history modal
+function openHistoryModal() {
+    historyModal.style.display = 'block';
+    fetchHistory(true); // Fetch and render history to the modal
+}
+
+// Global function to close the full history modal
+function closeHistoryModal() {
+    historyModal.style.display = 'none';
+    fullHistoryList.innerHTML = ""; // Clear content on close for performance
+}
+
+// Global function to open history details modal
+async function showHistoryDetails(historyId) {
+    historyModal.style.display = 'none'; // Hide the list modal first
+    closeHistoryDetailsModal(); // Ensure it's clean before opening
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/history/${historyId}`);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Unknown error fetching history details.");
+        }
+        const entry = await response.json();
+        renderHistoryDetails(entry);
+        historyDetailsModal.style.display = 'block';
+    } catch (error) {
+        document.getElementById("error").textContent = "Error fetching details: " + error.message;
+        openHistoryModal(); // Go back to the full list on error
+    }
+}
+
+// Global function to close history details modal
+function closeHistoryDetailsModal() {
+    historyDetailsModal.style.display = 'none';
+    detailsContent.innerHTML = ""; // Clear content on close
+}
+
+// Global function to render details to the modal
+function renderHistoryDetails(entry) {
+    const detailsHtml = `
+        <div class="details-header">
+            <h3>Generation Details</h3>
+            <button class="restore-button" onclick="restoreHistory(${JSON.stringify(entry).replace(/'/g, "\\'")})">Restore</button>
+        </div>
+        <p><strong>Date:</strong> ${new Date(entry.timestamp).toLocaleString()}</p>
+        <p><strong>Prompt:</strong> ${entry.prompt}</p>
+        ${entry.category !== "Refined" ? `
+            <p><strong>Category:</strong> ${entry.category}</p>
+            <p><strong>Style:</strong> ${entry.style}</p>
+            <p><strong>Language:</strong> ${entry.language}</p>
+        ` : `
+            <p><strong>Refined From:</strong></p>
+            <div class="refined-from-info">
+                <p><strong>Prompt:</strong> ${entry.pre_refined_prompt}</p>
+                <p><strong>Category:</strong> ${entry.pre_refined_category}</p>
+                <p><strong>Style:</strong> ${entry.pre_refined_style}</p>
+                <p><strong>Language:</strong> ${entry.pre_refined_language}</p>
+                <p><strong>Original Names:</strong> ${entry.pre_refined_names.map(cleanNames).join(", ")}</p>
+            </div>
+        `}
+        <div class="details-section">
+            <h4>Names:</h4>
+            <pre>${entry.names.map(cleanNames).join("\n")}</pre>
+        </div>
+        <div class="details-section">
+            <h4>Reasons:</h4>
+            <pre>${entry.reasons.map(cleanNames).join("\n")}</pre>
+        </div>
+    `;
+    detailsContent.innerHTML = detailsHtml;
+}
+
+// Made global to be accessible from surpriseMe() and to be testable
+async function getSurprisePrompt() {
+    const response = await fetch(`${BACKEND_URL}/surprise`);
+    const data = await response.json();
+    return data;
+}
+
+// Surprise me functionality
+async function surpriseMe() {
+    try {
+        const data = await getSurprisePrompt();
+        promptInput.value = data.prompt;
+        document.getElementById("category").value = data.category;
+        document.getElementById("style").value = data.style;
+        document.getElementById("language").value = data.language;
+        await generateName();
+    } catch (error) {
+        document.getElementById("error").textContent = "Error fetching surprise prompt: " + error.message;
+    }
+}
+
+/**
+ * Resets and hides all dynamic sections (output, refine, refined, and history).
+ * This is useful for error states or when the user clears the prompt.
+ */
+function resetDynamicSections() {
+    outputContainer.classList.add("hidden-section");
+    refineSection.classList.add("hidden-section");
+    refinedOutputs.classList.add("hidden-section");
+    refineBtn.classList.add("hidden-section");
+    recentHistorySection.classList.add("hidden-section");
 }
 
 function copyToClipboard(elementId) {
-    const text = document.getElementById(elementId).textContent;
-    navigator.clipboard.writeText(text).then(() => {
-        const copyMessage = document.createElement('div');
-        copyMessage.textContent = "Copied to clipboard!";
-        copyMessage.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--button-purple);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-        `;
-        document.body.appendChild(copyMessage);
-        setTimeout(() => {
-            copyMessage.style.opacity = 1;
-        }, 10); // Small delay to trigger transition
-        setTimeout(() => {
-            copyMessage.style.opacity = 0;
-            copyMessage.addEventListener('transitionend', () => copyMessage.remove());
-        }, 2000); // Message visible for 2 seconds
-    });
+    const element = document.getElementById(elementId);
+    if (element) {
+        navigator.clipboard.writeText(element.textContent).then(() => {
+            alert("Copied to clipboard!");
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
 }
 
-/**
- * Resets all dynamic UI sections to their initial hidden state.
- * This is used when an operation fails or an empty prompt is detected.
- */
-function resetDynamicSections() {
-    outputContainer.classList.remove("visible-section");
-    outputContainer.classList.add("hidden-section");
-    refineSection.classList.remove("visible-section");
-    refineSection.classList.add("hidden-section");
-    refinedOutputs.classList.remove("visible-section");
-    refinedOutputs.classList.add("hidden-section");
-    refineBtn.classList.remove("visible-section");
-    refineBtn.classList.add("hidden-section");
-    // Ensure recent history section is hidden
-    recentHistorySection.classList.remove("visible-section");
-    recentHistorySection.classList.add("hidden-section");
-
-    // Clear content of pre tags
-    namesPre.textContent = "";
-    reasonsPre.textContent = "";
-    refinedNamesPre.textContent = "";
-    refinedReasonsPre.textContent = "";
-
-    // Clear animation classes
-    namesPre.classList.remove("fade-in-content");
-    reasonsPre.classList.remove("fade-in-content");
-    refinedNamesPre.classList.remove("fade-in-content");
-    refinedReasonsPre.classList.remove("fade-in-content");
-
-    // Clear general error message
-    document.getElementById("error").textContent = "";
-}
-
-/**
- * Sets up the hover functionality for tooltip icons.
- */
+// Function to set up tooltips using Tippy.js
 function setupTooltips() {
-    const tooltipIcons = document.querySelectorAll('.tooltip-icon');
-
-    tooltipIcons.forEach(icon => {
-        const tooltipBox = icon.nextElementSibling; // The tooltip-box is the next sibling
-        const tooltipText = icon.dataset.tooltipText;
-
-        // Set the text content of the tooltip box
-        tooltipBox.textContent = tooltipText;
+    tippy('.with-tooltip', {
+        content(reference) {
+            const tooltipId = reference.getAttribute('data-tooltip-id');
+            const template = document.getElementById(tooltipId);
+            return template ? template.innerHTML : '';
+        },
+        allowHTML: true,
+        animation: 'fade',
+        duration: 200,
+        theme: 'light',
+        interactive: true,
     });
-}
-
-/**
- * Opens the full history list modal.
- */
-function openHistoryModal() {
-    if (historyModal) {
-        historyModal.classList.add('active');
-        fetchHistory(true); // Fetch and render ALL history to the modal
-    }
-    // Close sidebar if it's open when modal is opened
-    if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
-        toggleSidebar();
-    }
-}
-
-/**
- * Closes the full history list modal.
- */
-function closeHistoryModal() {
-    if (historyModal) {
-        historyModal.classList.remove('active');
-    }
-}
-
-/**
- * Opens the history details modal and populates it with specific entry data.
- * @param {string} id The ID of the history entry to display.
- */
-async function showHistoryDetails(id) {
-    if (!historyDetailsModal || !detailsContent) {
-        console.error("History details modal elements not found.");
-        return;
-    }
-
-    try {
-        const response = await fetch(`${BACKEND_URL}/history`);
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Unknown error fetching history for details.");
-        }
-        const historyData = await response.json();
-        const entry = historyData.find(e => e.id === id);
-
-        if (entry) {
-            let contentHtml = '';
-            contentHtml += `<p><strong>Timestamp:</strong> ${new Date(entry.timestamp).toLocaleString()}</p>`;
-
-            if (entry.category === "Refined") {
-                contentHtml += `<p><strong>Refine Instruction:</strong> ${entry.prompt}</p>`;
-                contentHtml += `<p><strong>Refined Names:</strong></p><pre>${entry.names.map(cleanNames).join("\n")}</pre>`;
-                contentHtml += `<p><strong>Refined Explanations:</strong></p><pre>${entry.reasons.map(cleanNames).join("\n")}</pre>`;
-                if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
-                    contentHtml += `<p><strong>Original Names (Pre-Refined):</strong></p><pre>${entry.pre_refined_names.map(cleanNames).join("\n")}</pre>`;
-                }
-            } else {
-                contentHtml += `<p><strong>Prompt:</strong> ${entry.prompt}</p>`;
-                contentHtml += `<p><strong>Category:</strong> ${entry.category}</p>`;
-                contentHtml += `<p><strong>Style:</strong> ${entry.style}</p>`;
-                contentHtml += `<p><strong>Language:</strong> ${entry.language}</p>`;
-                contentHtml += `<p><strong>Generated Names:</strong></p><pre>${entry.names.map(cleanNames).join("\n")}</pre>`;
-                contentHtml += `<p><strong>Explanations:</strong></p><pre>${entry.reasons.map(cleanNames).join("\n")}</pre>`;
-            }
-            
-            detailsContent.innerHTML = contentHtml;
-            historyDetailsModal.classList.add('active');
-            closeHistoryModal(); // Close the list modal when opening details
-        } else {
-            console.error("History entry not found for ID:", id);
-            document.getElementById("error").textContent = "Error: History entry not found.";
-        }
-    } catch (error) {
-        console.error("Error displaying history details:", error);
-        document.getElementById("error").textContent = "Error displaying history details: " + error.message;
-    }
-}
-
-/**
- * Closes the history details modal.
- */
-function closeHistoryDetailsModal() {
-    if (historyDetailsModal) {
-        historyDetailsModal.classList.remove('active');
-        detailsContent.innerHTML = ''; // Clear content when closing
-    }
 }
