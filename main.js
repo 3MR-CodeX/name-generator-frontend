@@ -13,13 +13,8 @@ const STYLE_OPTIONS = [
   "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
   "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
 ];
-// RESTORED: Full list of Surprise Me prompts
 const SURPRISES = [
     ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
-    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
-    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
-    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
-    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
     ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
     ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
     ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
@@ -27,43 +22,8 @@ const SURPRISES = [
     ["An edgy and futuristic name for a cyberpunk productivity app", "App", "Futuristic", "English"],
     ["A wholesome name for a cozy coffee shop in a rainy city", "Place", "Wholesome", "English"],
     ["A bold and cryptic name for an underground hacker forum", "Platform", "Dark", "English"],
-    ["A magical and whimsical name for a children’s toy line", "Product", "Whimsical", "English"],
-    ["A high-energy name for a viral TikTok challenge", "Trend", "Catchy", "English"],
-    ["A mysterious name for an AI-powered time travel game", "Game", "Mysterious", "English"],
-    ["A funky brand name for a retro streetwear label", "Brand", "Retro", "English"],
-    ["A futuristic name for a space-themed meditation app", "App", "Zen", "English"],
-    ["A gritty name for a post-apocalyptic survival video game", "Game", "Intense", "English"],
-    ["A dramatic title for a thriller about corporate espionage", "Video", "Suspense", "English"],
-    ["A charming name for a vintage bookstore", "Place", "Cozy", "English"],
-    ["A stylish name for a luxury sneaker brand", "Product", "Fashion", "English"],
-    ["A joyful and energetic name for a dance studio", "Place", "Cheerful", "English"],
-    ["A techy and scalable name for a SaaS startup", "App", "Professional", "English"],
-    ["An abstract name for a generative art collective", "Platform", "Creative", "English"],
-    ["A powerful name for a female-led crypto fintech brand", "Brand", "Bold", "English"],
-    ["A mystical name for a fantasy book publishing house", "Platform", "Fantasy", "English"],
-    ["An iconic name for a retro-style arcade game", "Game", "Arcade", "English"],
-    ["A hilarious name for a parody news site", "Platform", "Funny", "English"],
-    ["An ethereal name for a nature-inspired skincare line", "Product", "Organic", "English"],
-    ["A clever name for an AI assistant for writers", "App", "Smart", "English"],
-    ["A peaceful name for a forest retreat resort", "Place", "Relaxing", "English"],
-    ["An intriguing name for a tech documentary series", "Video", "Informative", "English"],
-    ["A fashionable name for a digital outfit creator", "Product", "Stylish", "English"],
-    ["A punchy name for an esports team", "Platform", "Competitive", "English"],
-    ["A quirky name for a smart pet gadget", "Product", "Playful", "English"],
-    ["A surreal name for a virtual dream simulator", "App", "Surreal", "English"],
-    ["An optimistic name for a mental health journaling app", "App", "Uplifting", "English"],
-    ["A sleek name for a futuristic transportation startup", "Brand", "Sleek", "English"],
-    ["A mythical name for a fantasy map generation tool", "App", "Mythical", "English"],
-    ["A classy name for an online wine subscription service", "Product", "Classy", "English"],
-    ["An awe-inspiring name for a photography portfolio site", "Platform", "Artistic", "English"],
-    ["A mysterious name for an anonymous feedback app", "App", "Cryptic", "English"],
-    ["A snappy name for a productivity browser extension", "App", "Efficient", "English"],
-    ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"],
-    ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
+    ["A magical and whimsical name for a children’s toy line", "Product", "Whimsical", "English"]
 ];
-
-// (The rest of the main.js file is identical to the last version and is omitted for brevity)
-// ...
 
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
@@ -92,10 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (typeof initializeTopbar === 'function') initializeTopbar();
     if (typeof initializeSidebar === 'function') initializeSidebar();
-    
-    if (typeof initializeAuth === 'function') {
-        initializeAuth();
-    }
+    if (typeof initializeAuth === 'function') initializeAuth();
     
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
@@ -210,12 +167,23 @@ function showTemporaryPlaceholderError(textarea, message) {
 
 async function getUserToken() {
     if (window.auth && window.auth.currentUser) {
+        await window.auth.currentUser.reload(); // Get latest user state (including emailVerified)
         return await window.auth.currentUser.getIdToken(true);
     }
     return null;
 }
 
 async function generateName() {
+    // Handle anonymous user limits
+    if (!window.auth.currentUser) {
+        let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
+        if (anonGenerations >= 10) {
+            document.getElementById("error").textContent = "You have used all 10 free generations. Please sign up to continue.";
+            if (typeof openSignUpModal === 'function') openSignUpModal();
+            return;
+        }
+    }
+
     const prompt = promptInput.value.trim();
     if (!prompt) {
         showTemporaryPlaceholderError(promptInput, "You cannot generate names without a description!");
@@ -256,7 +224,14 @@ async function generateName() {
         }
         const data = await response.json();
 
-        // UPDATED: Joined with double newline for spacing
+        // On Successful Generation, increment anonymous counter if needed
+        if (!window.auth.currentUser) {
+            let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
+            anonGenerations++;
+            localStorage.setItem('anonGenerations', anonGenerations);
+            if(typeof window.updateUserStatusUI === 'function') window.updateUserStatusUI(null);
+        }
+
         namesPre.textContent = data.names.map(cleanNames).join("\n\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
 
@@ -310,7 +285,6 @@ async function refineNames() {
         }
         const data = await response.json();
         
-        // UPDATED: Joined with double newline for spacing
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
         refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
 
@@ -365,7 +339,6 @@ function renderHistory(history, renderToModal = false) {
     }
 
     if (renderToModal) {
-        // Full history modal logic
         const groupedHistory = history.reduce((acc, entry) => {
             const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
                 year: 'numeric', month: 'long', day: 'numeric'
@@ -382,14 +355,13 @@ function renderHistory(history, renderToModal = false) {
             dateHeading.textContent = date;
             dailyContainer.appendChild(dateHeading);
             groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-                // ADDED: Tooltip logic for the full history modal
                 const tooltip = entry.category !== "Refined" 
                     ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` 
                     : `Refine Instruction: ${entry.prompt}`;
 
                 const button = document.createElement('button');
                 button.className = 'history-item';
-                button.title = tooltip; // ADDED: Assigns the tooltip to the button
+                button.title = tooltip;
                 button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
                 button.onclick = () => showHistoryDetails(entry.id);
                 dailyContainer.appendChild(button);
@@ -397,16 +369,14 @@ function renderHistory(history, renderToModal = false) {
             targetDiv.appendChild(dailyContainer);
         });
     } else {
-        // Recent history logic
         history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-            // ADDED: Tooltip logic for the recent history list
             const tooltip = entry.category !== "Refined" 
                 ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` 
                 : `Refine Instruction: ${entry.prompt}`;
-
+            
             const button = document.createElement('button');
             button.className = 'history-item';
-            button.title = tooltip; // ADDED: Assigns the tooltip to the button
+            button.title = tooltip;
             
             const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
             let preRefinedHTML = '';
@@ -422,6 +392,8 @@ function renderHistory(history, renderToModal = false) {
         });
     }
 }
+
+// (The remaining helper functions: restoreHistory, surpriseMe, copyToClipboard, etc., are unchanged)
 
 async function restoreHistory(id) {
     document.getElementById("error").textContent = "";
@@ -563,6 +535,7 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
 
