@@ -4,203 +4,138 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: var(--top-bar-height); /* Thinner top bar */
-    background-image: url('../topbar.png'); /* Corrected path: one level up from components folder */
+    height: var(--top-bar-height);
+    background-image: url('../topbar.png');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat; /* Ensure image doesn't repeat */
-    background-color: rgba(51, 51, 51, 0.75); /* Less transparent */
-    z-index: 1000; /* Ensure it's on top of everything */
+    background-repeat: no-repeat;
+    background-color: rgba(51, 51, 51, 0.75);
+    z-index: 1000;
     display: flex;
     align-items: center;
     padding: 0 20px;
-    /* Vibrant purple line at the bottom */
-    box-shadow: 0 2px 0 0 var(--line-purple-default), 0 2px 10px rgba(0, 0, 0, 0.5); /* Line + original shadow */
-    transition: box-shadow 0.3s ease-in-out; /* Smooth transition for glow */
+    box-shadow: 0 2px 0 0 var(--line-purple-default), 0 2px 10px rgba(0, 0, 0, 0.5);
+    transition: box-shadow 0.3s ease-in-out;
 }
-
-/* Glow effect on hover for the entire top bar */
 #top-bar:hover {
     box-shadow: 0 2px 0 0 var(--line-purple-glow), 0 0 15px 5px var(--line-purple-glow), 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
+/* (Your existing hexagon button and hamburger styles remain here...) */
+/* ... */
 
-#top-bar h1 {
-    /* This h1 is now removed from topbar.html */
-    /* Keeping the style here just in case, but it won't apply */
-    font-size: 2.5em;
-    color: #ffffff;
-    margin: 0 auto;
+/* --- Auth UI Styling --- */
+#auth-section {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-}
-
-/* Hexagon Button Styling */
-#hexagon-button {
-    position: relative; /* Needed for pseudo-element positioning and child absolute positioning */
-    width: var(--hexagon-button-size); /* Bigger hexagon button */
-    height: var(--hexagon-button-size); /* Bigger hexagon button */
-    background-color: transparent; /* No background color for the button itself */
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out; /* For rolling animation */
-    z-index: 1001; /* Ensure button is above other top bar elements if any */
-    padding: 0; /* Remove default button padding */
-    flex-shrink: 0; /* Prevent button from shrinking */
-    overflow: hidden; /* Clip the pseudo-element if it extends beyond the button's bounds */
-
-    /* Hexagon shape using clip-path (applied to the button container) */
-    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-    -webkit-clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-
-    display: flex; /* Enable flexbox for positioning lines */
-    flex-direction: column;
-    justify-content: center;
+    right: 20px;
+    display: flex;
     align-items: center;
-
-    /* Move the entire button container (and its contents) 5 pixels to the left */
-    transform: translateX(-5px);
-    transform-origin: center center; /* Ensure rotation is around the center */
+    gap: 20px; /* Increased gap */
 }
 
-/* My hexagonV2.png image inside the button */
-.hexagon-image {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    /* Move up by 4px */
-    transform: translate(-50%, calc(-50% - 3px)); 
-    /* Made bigger, but smaller than the pseudo-element */
-    width: calc(var(--hexagon-button-size) * 1.15); /* Changed to 73% of button size */
-    height: calc(var(--hexagon-button-size) * 1.15); /* Changed to 73% of button size */
-    object-fit: contain; /* Ensure the image fits */
-    z-index: 2; /* On top of the pseudo-element, below lines */
-    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Add transition for size/position */
+.auth-buttons-container button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid var(--button-purple);
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Pseudo-element for the glowing hexagon frame (your hexagon) */
-#hexagon-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    /* My hexagon is 75% of button size */
-    width: calc(var(--hexagon-button-size) * 0.65); 
-    height: calc(var(--hexagon-button-size) * 0.65); 
-    transform: translate(-50%, -50%); /* Center the pseudo-element */
-    background-color: transparent; /* Default transparent */
-    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-    -webkit-clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-    z-index: 1; /* Behind my hexagonV2.png, above button background */
-    transition: background-color 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Add size transition */
+.auth-buttons-container button:hover {
+    background-color: var(--button-purple);
+    color: white;
 }
 
-/* Glow effect on hover for the pseudo-element */
-#hexagon-button:hover::before {
-    background-color: var(--line-purple-default); /* Glow in #ff00ff on hover */
+.auth-buttons-container .sign-up-btn {
+    background-color: var(--button-purple);
 }
-
-/* Color change animation for pseudo-element when sidebar is open */
-#hexagon-button.button-rotated::before {
-    background-color: var(--line-purple-glow); /* Change to #a500ff when sidebar open */
+.auth-buttons-container .sign-up-btn:hover {
+    background-color: #a020f0;
 }
 
 
-/* Hamburger Dot Styling (replaces lines) */
-.hamburger-line { /* Renamed to hamburger-line for consistency with HTML structure */
-    display: block;
-    width: 6px; /* Reverted to original Dot size */
-    height: 6px; /* Reverted to original Dot size */
-    border-radius: 50%; /* Make it a circle */
-    background-color: #ffffff; /* White dots */
-    position: absolute; /* Position dots within the button */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Center horizontally */
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, background-color 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
-    z-index: 3; /* On top of hexagonV2.png and your hexagon */
+.user-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-/* Initial Dot Positions (Vertically stacked, middle dot exactly in center) */
-.hamburger-line.line-top {
-    transform: translateX(-50%) translateY(-8px); /* Adjusted for dot spacing */
+.user-profile-pfp {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--line-purple-default);
+    object-fit: cover;
 }
 
-.hamburger-line.line-middle {
-    transform: translateX(-50%) translateY(0px); /* Exactly in the middle */
+.user-profile-info .user-name {
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 16px;
 }
 
-.hamburger-line.line-bottom {
-    transform: translateX(-50%) translateY(8px); /* Adjusted for dot spacing */
+.user-profile-info .user-email {
+    font-weight: 400;
+    color: #cccccc;
+    font-size: 12px;
 }
 
-/* Bounce animation on hover for dots */
-.hamburger-line:hover {
-    animation: dot-bounce 0.6s infinite alternate ease-in-out;
+.hidden {
+    display: none !important;
 }
 
-@keyframes dot-bounce {
-    from { transform: translateX(-50%) translateY(var(--initial-y, 0px)); }
-    to { transform: translateX(-50%) translateY(calc(var(--initial-y, 0px) - 3px)); } /* Bounce up 3px */
+/* --- NEW: User Status Styles (Moved & Adjusted) --- */
+#user-status-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 5px 10px;
+    background-color: rgba(42, 42, 42, 0.75);
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
 }
 
-/* Set initial-y custom property for each dot */
-.hamburger-line.line-top { --initial-y: -8px; }
-.hamburger-line.line-middle { --initial-y: 0px; }
-.hamburger-line.line-bottom { --initial-y: 8px; }
-
-
-/* Animation for dots when sidebar is open (button-rotated class is active) */
-#hexagon-button.button-rotated {
-    transform: translateX(-5px) rotate(-90deg); /* Apply both translation and rotation, fixed shift */
+.tier-badge {
+    color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 0.9em;
+    flex-shrink: 0; /* Prevent badge from shrinking */
 }
 
-/* Balls Merging into One Bigger Ball */
-#hexagon-button.button-rotated .line-top,
-#hexagon-button.button-rotated .line-bottom {
-    transform: translateX(-50%) translateY(0px); /* Move top and bottom dots to center */
-    opacity: 0; /* Fade them out */
-    width: 0; /* Shrink them */
-    height: 0; /* Shrink them */
+.tier-badge.free-tier { background-color: #ff00ff; }
+.tier-badge.premium-tier { background-color: #a500ff; }
+.tier-badge.business-tier { background-color: #ff0090; }
+
+.generations-info {
+    display: flex;
+    flex-direction: column;
 }
 
-#hexagon-button.button-rotated .line-middle {
-    transform: translateX(-50%) translateY(0px); /* Keep middle dot in center */
-    width: 10px; /* Make it just a little bigger */
-    height: 10px; /* Make it just a little bigger */
-    /* Removed background-color: var(--line-purple-glow); to keep it white */
+.generation-counter {
+    font-size: 0.8em;
+    color: #cccccc;
+    white-space: nowrap; /* Prevent text from wrapping */
+    margin-bottom: 4px;
 }
 
+.progress-bar-outer {
+    width: 150px; /* Fixed width for top bar */
+    height: 8px;
+    background-color: #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #5a5a5a;
+}
 
-@media (max-width: 768px) {
-    #top-bar h1 {
-        font-size: 1.8em;
-    }
-    :root {
-        --hexagon-button-size: 60px; /* Adjusted for mobile */
-    }
-    .hexagon-image {
-        width: calc(var(--hexagon-button-size) * 1.15); /* 73% of button size for mobile */
-        height: calc(var(--hexagon-button-size) * 1.15); /* 73% of button size for mobile */
-    }
-    .hamburger-line {
-        width: 4px; /* Smaller dots for mobile */
-        height: 4px; /* Smaller dots for mobile */
-    }
-    .hamburger-line.line-top {
-        transform: translateX(-50%) translateY(-6px); /* Adjusted for mobile dots */
-    }
-    .hamburger-line.line-middle {
-        transform: translateX(-50%) translateY(0px); /* Adjusted for mobile dots */
-    }
-    .hamburger-line.line-bottom {
-        transform: translateX(-50%) translateY(6px); /* Adjusted for mobile dots */
-    }
-
-    /* Mobile Merged Ball */
-    #hexagon-button.button-rotated .line-middle {
-        width: 8px; /* Smaller merged ball for mobile */
-        height: 8px; /* Smaller merged ball for mobile */
-    }
+.progress-bar-inner {
+    height: 100%;
+    background-color: var(--button-purple);
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out;
 }
