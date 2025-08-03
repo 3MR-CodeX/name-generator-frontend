@@ -3,10 +3,17 @@
         <h2>Menu</h2>
         <ul>
             <li><a href="#" onclick="restoreHistory('latest'); return false;">Latest Generation</a></li>
-            <li><a href="#" onclick="openHistoryModal(); return false;">Full History</a></li>
+            <li id="full-history-li" class="hidden"><a href="#" onclick="openHistoryModal(); return false;">Full History</a></li>
             <li><a href="#">Settings</a></li>
             <li id="sign-out-li" class="hidden"><a href="#" id="sign-out-link">Sign Out</a></li>
             <li><a href="#">About</a></li>
         </ul>
+        <div id="user-status-container" class="hidden">
+            <div id="tier-badge" class="tier-badge"></div>
+            <p id="generation-counter" class="generation-counter"></p>
+            <div class="progress-bar-outer">
+                <div id="generation-progress-bar" class="progress-bar-inner"></div>
+            </div>
         </div>
+    </div>
 </div>
