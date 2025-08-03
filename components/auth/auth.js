@@ -1,14 +1,16 @@
 // components/auth/auth.js
 
+// This function will now be called from main.js AFTER the top bar is loaded.
 function initializeAuth() {
     // --- Firebase Initialization ---
-    if (!window.env || !window.env.FIREBASE_CONFIG) {
+    if (window.env && window.env.FIREBASE_CONFIG) {
+        firebase.initializeApp(window.env.FIREBASE_CONFIG);
+        window.auth = firebase.auth();
+        window.googleProvider = new firebase.auth.GoogleAuthProvider();
+    } else {
         console.error("Firebase config not found.");
         return;
     }
-    firebase.initializeApp(window.env.FIREBASE_CONFIG);
-    window.auth = firebase.auth();
-    window.googleProvider = new firebase.auth.GoogleAuthProvider();
 
     // --- DOM Element References ---
     const signInModal = document.getElementById("sign-in-modal");
@@ -20,38 +22,33 @@ function initializeAuth() {
     const userPfp = document.getElementById("user-pfp");
     const userName = document.getElementById("user-name");
     const userEmail = document.getElementById("user-email");
-    
-    // Sign In
     const signInEmail = document.getElementById("signin-email");
     const signInPassword = document.getElementById("signin-password");
     const signInSubmit = document.getElementById("signin-submit-btn");
     const signInGoogle = document.getElementById("signin-google-btn");
     const authErrorMessageSignIn = document.getElementById("auth-error-message-signin");
-
-    // Sign Up
     const signUpEmail = document.getElementById("signup-email");
     const signUpPassword = document.getElementById("signup-password");
-    const signUpConfirmPassword = document.getElementById("signup-confirm-password"); // New
+    const signUpConfirmPassword = document.getElementById("signup-confirm-password");
     const signUpSubmit = document.getElementById("signup-submit-btn");
     const signUpGoogle = document.getElementById("signup-google-btn");
     const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
-    
-    // Sign Out
-    const signOutLi = document.getElementById("sign-out-li"); // New
-    const signOutLink = document.getElementById("sign-out-link"); // New
+    const signOutLi = document.getElementById("sign-out-li");
+    const signOutLink = document.getElementById("sign-out-link");
+    // NEW: User Status UI Elements
+    const userStatusContainer = document.getElementById("user-status-container");
+    const tierBadge = document.getElementById("tier-badge");
+    const generationCounter = document.getElementById("generation-counter");
+    const generationProgressBar = document.getElementById("generation-progress-bar");
 
     // --- Event Listeners ---
     document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
     window.addEventListener('click', (event) => {
         if (event.target === signInModal || event.target === signUpModal) closeAllAuthModals();
     });
-
     signInBtn.addEventListener('click', openSignInModal);
     signUpBtn.addEventListener('click', openSignUpModal);
-    
-    // FIXED: Sign out is now a dedicated button
     signOutLink.addEventListener('click', signOut); 
-
     signInSubmit.addEventListener('click', signInWithEmail);
     signUpSubmit.addEventListener('click', signUpWithEmail);
     signInGoogle.addEventListener('click', signInWithGoogle);
@@ -60,14 +57,11 @@ function initializeAuth() {
     // --- Core Auth State Management ---
     auth.onAuthStateChanged(user => {
         updateUIForAuthState(user);
-        // Fetch history for the current user (or anonymous)
-        if (typeof window.fetchHistory === 'function') {
-            window.fetchHistory(false);
-        }
+        if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
     });
 
+    // --- UI Update Functions ---
     function updateUIForAuthState(user) {
-        // FIXED: App features are always enabled
         document.querySelector(".generate-btn").disabled = false;
         document.querySelector(".surprise-btn").disabled = false;
         document.getElementById("error").textContent = "";
@@ -75,38 +69,49 @@ function initializeAuth() {
         if (user) { // User is Logged In
             authButtonsContainer.classList.add('hidden');
             userProfileContainer.classList.remove('hidden');
-            signOutLi.classList.remove('hidden'); // Show sign out link
+            signOutLi.classList.remove('hidden');
+            userStatusContainer.classList.remove('hidden'); // Show status container
 
             userName.textContent = user.displayName || 'User';
             userEmail.textContent = user.email;
-            // FIXED: Use a placeholder for the profile picture to avoid 404
             userPfp.src = user.photoURL || `https://placehold.co/40x40/800080/FFFFFF?text=${(user.email?.[0] || 'U').toUpperCase()}`;
             userPfp.onerror = () => { userPfp.src = 'https://placehold.co/40x40/800080/FFFFFF?text=U'; };
-
+            
+            updateUserStatusUI(user); // NEW: Update the status UI
         } else { // User is Logged Out
             authButtonsContainer.classList.remove('hidden');
             userProfileContainer.classList.add('hidden');
-            signOutLi.classList.add('hidden'); // Hide sign out link
+            signOutLi.classList.add('hidden');
+            userStatusContainer.classList.add('hidden'); // Hide status container
         }
     }
 
-    function signUpWithEmail() {
-        const email = signUpEmail.value;
-        const password = signUpPassword.value;
-        const confirmPassword = signUpConfirmPassword.value;
+    // NEW: Function to manage the subscription status panel
+    function updateUserStatusUI(user) {
+        // For now, this is mock data. Later, this would come from a database.
+        const userData = { tier: "Free Tier", generationsLeft: 100, maxGenerations: 100 };
+        
+        tierBadge.textContent = userData.tier;
+        tierBadge.className = 'tier-badge'; // Reset classes
+        if (userData.tier === "Free Tier") {
+            tierBadge.classList.add('free-tier');
+            generationCounter.textContent = `${userData.generationsLeft} / ${userData.maxGenerations} Generations Left`;
+            const percentage = (userData.generationsLeft / userData.maxGenerations) * 100;
+            generationProgressBar.style.width = `${percentage}%`;
+        } // Add else-if blocks for 'Premium' and 'Business' tiers here
+    }
 
-        // NEW: Password confirmation
-        if (password !== confirmPassword) {
+    // --- Auth Action Functions ---
+    function signUpWithEmail() {
+        if (signUpPassword.value !== signUpConfirmPassword.value) {
             authErrorMessageSignUp.textContent = "Passwords do not match.";
             return;
         }
-
-        auth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(signUpEmail.value, signUpPassword.value)
             .then((userCredential) => {
-                // NEW: Send verification email
                 userCredential.user.sendEmailVerification();
-                authErrorMessageSignUp.textContent = "Account created! Please check your email to verify your account.";
-                setTimeout(closeAllAuthModals, 3000); // Close modal after a delay
+                authErrorMessageSignUp.textContent = "Account created! Please check your email to verify.";
+                setTimeout(closeAllAuthModals, 3000);
             })
             .catch(error => { authErrorMessageSignUp.textContent = error.message; });
     }
@@ -127,8 +132,11 @@ function initializeAuth() {
     }
 
     function signOut(event) {
-        event.preventDefault(); // Prevent link from navigating
-        auth.signOut().catch(error => console.error("Sign out error:", error));
+        event.preventDefault();
+        // NEW: Add confirmation dialog
+        if (window.confirm("Are you sure you want to sign out?")) {
+            auth.signOut().catch(error => console.error("Sign out error:", error));
+        }
     }
 
     function openSignInModal() {
