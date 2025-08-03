@@ -256,8 +256,10 @@ async function generateName() {
         }
         const data = await response.json();
 
-        namesPre.textContent = data.names.map(cleanNames).join("\n");
-        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
+        // UPDATED: Joined with double newline for spacing
+        namesPre.textContent = data.names.map(cleanNames).join("\n\n");
+        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
         refineSection.classList.remove("hidden-section");
@@ -308,9 +310,9 @@ async function refineNames() {
         }
         const data = await response.json();
         
-        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
-        // CORRECTED: This now correctly targets the 'refined_reasons' element
-        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
+        // UPDATED: Joined with double newline for spacing
+        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
+        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
 
         refinedNamesPre.classList.add("fade-in-content");
         refinedReasonsPre.classList.add("fade-in-content");
@@ -538,5 +540,6 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
