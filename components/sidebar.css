@@ -1,41 +1,34 @@
-/* Side Bar Styling */
 #sidebar {
     position: fixed;
-    top: var(--top-bar-height); [cite_start]/* Starts right below the top bar (adjusted height) */ [cite: 34]
-    left: calc(-1 * var(--sidebar-width)); [cite_start]/* Initially hidden off-screen to the left */ [cite: 35]
+    top: var(--top-bar-height);
+    left: calc(-1 * var(--sidebar-width));
     width: var(--sidebar-width);
-    height: calc(100vh - var(--top-bar-height)); [cite_start]/* Fills remaining vertical space (adjusted height) */ [cite: 36]
-    background-image: url('../sidebar.png'); [cite_start]/* Corrected path: one level up from components folder */ [cite: 37]
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; [cite_start]/* Ensure image doesn't repeat */ [cite: 38]
-    background-color: rgba(34, 34, 34, 0.75); [cite_start]/* Less transparent */ [cite: 39]
-    z-index: 999; /* Below top bar, above main content */
-    transition: left 0.5s ease-in-out, box-shadow 0.3s ease-in-out; [cite_start]/* Smooth sliding and glow transition */ [cite: 40]
-    /* Vibrant purple line on the right */
-    box-shadow: 2px 0 0 0 var(--line-purple-default), 2px 0 10px rgba(0, 0, 0, 0.5); [cite_start]/* Line + original shadow */ [cite: 41]
+    height: calc(100vh - var(--top-bar-height));
+    background-color: rgba(34, 34, 34, 0.9);
+    z-index: 999;
+    transition: left 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 2px 0 0 0 var(--line-purple-default), 2px 0 10px rgba(0, 0, 0, 0.5);
     padding: 20px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; [cite_start]/* Enable scrolling for sidebar content */ [cite: 42]
+    overflow-y: auto;
 }
 
-/* Glow effect on hover for the entire sidebar */
 #sidebar:hover {
-    [cite_start]box-shadow: 2px 0 0 0 var(--line-purple-glow), 0 0 15px 5px var(--line-purple-glow), 2px 0 10px rgba(0, 0, 0, 0.5); [cite: 43]
+    box-shadow: 2px 0 0 0 var(--line-purple-glow), 0 0 15px 5px var(--line-purple-glow), 2px 0 10px rgba(0, 0, 0, 0.5);
 }
 
 #sidebar.sidebar-open {
-    left: 0; /* Slide into view */
+    left: 0;
 }
 
 .sidebar-content {
-    [cite_start]color: #e0e0e0; [cite: 44]
+    color: #e0e0e0;
 }
 
 .sidebar-content h2 {
-    font-size: 1.8em; /* Made bigger as requested */
-    [cite_start]margin-bottom: 15px; [cite: 45]
+    font-size: 1.8em;
+    margin-bottom: 15px;
     color: #ffffff;
     text-align: center;
 }
@@ -43,92 +36,43 @@
 .sidebar-content ul {
     list-style: none;
     padding: 0;
-    [cite_start]margin-bottom: 20px; [cite: 46]
+    margin-bottom: 20px;
 }
 
 .sidebar-content ul li {
-    margin-bottom: 8px; /* Slightly smaller margin */
+    margin-bottom: 8px;
 }
 
 .sidebar-content ul li a {
-    [cite_start]display: block; [cite: 47]
-    padding: 8px 12px; [cite_start]/* Reverted to smaller padding */ [cite: 47]
-    background-color: rgba(128, 0, 128, 0.7); [cite_start]/* Purple background */ [cite: 48]
+    display: block;
+    padding: 8px 12px;
+    background-color: rgba(128, 0, 128, 0.7);
     color: white;
     text-decoration: none;
     border-radius: 8px;
     transition: background-color 0.3s, transform 0.2s;
-    font-size: 0.95em; [cite_start]/* Reverted to smaller font size */ [cite: 49]
+    font-size: 0.95em;
 }
 
 .sidebar-content ul li a:hover {
     background-color: #a020f0;
-    [cite_start]transform: translateX(5px); [cite: 50]
+    transform: translateX(5px);
 }
 
-/* Overlay for closing sidebar */
 #overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    [cite_start]height: 100%; [cite: 51]
-    background-color: rgba(0, 0, 0, 0.5); [cite_start]/* Semi-transparent black */ [cite: 51]
-    z-index: 998; [cite_start]/* Below sidebar, above main content */ [cite: 52]
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
     opacity: 0;
-    [cite_start]visibility: hidden; [cite: 53]
+    visibility: hidden;
     transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
 #overlay.overlay-active {
     opacity: 1;
-    [cite_start]visibility: visible; [cite: 54]
-}
-
-/* --- NEW: User Status Styles --- */
-
-#user-status-container {
-    margin-top: 25px;
-    padding: 15px;
-    background-color: rgba(42, 42, 42, 0.75);
-    border: 1px solid #4a4a4a;
-    border-radius: 8px;
-}
-
-.tier-badge {
-    color: white;
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-weight: 500;
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 0.9em;
-}
-
-/* Tier-specific colors */
-.tier-badge.free-tier { background-color: #ff00ff; }
-.tier-badge.premium-tier { background-color: #a500ff; }
-.tier-badge.business-tier { background-color: #ff0090; }
-
-.generation-counter {
-    font-size: 0.85em;
-    color: #cccccc;
-    text-align: center;
-    margin-bottom: 8px;
-}
-
-.progress-bar-outer {
-    width: 100%;
-    height: 10px;
-    background-color: #1a1a1a;
-    border-radius: 5px;
-    overflow: hidden;
-    border: 1px solid #5a5a5a;
-}
-
-.progress-bar-inner {
-    height: 100%;
-    background-color: var(--button-purple);
-    border-radius: 5px;
-    transition: width 0.5s ease-in-out;
+    visibility: visible;
 }
