@@ -1,8 +1,4 @@
-// components/auth/auth.js
-
-// This function will now be called from main.js AFTER the top bar is loaded.
 function initializeAuth() {
-    // --- Firebase Initialization ---
     if (window.env && window.env.FIREBASE_CONFIG) {
         firebase.initializeApp(window.env.FIREBASE_CONFIG);
         window.auth = firebase.auth();
@@ -35,11 +31,11 @@ function initializeAuth() {
     const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
     const signOutLi = document.getElementById("sign-out-li");
     const signOutLink = document.getElementById("sign-out-link");
-    // NEW: User Status UI Elements
     const userStatusContainer = document.getElementById("user-status-container");
     const tierBadge = document.getElementById("tier-badge");
     const generationCounter = document.getElementById("generation-counter");
     const generationProgressBar = document.getElementById("generation-progress-bar");
+    const fullHistoryLi = document.getElementById("full-history-li");
 
     // --- Event Listeners ---
     document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
@@ -70,35 +66,61 @@ function initializeAuth() {
             authButtonsContainer.classList.add('hidden');
             userProfileContainer.classList.remove('hidden');
             signOutLi.classList.remove('hidden');
-            userStatusContainer.classList.remove('hidden'); // Show status container
+            fullHistoryLi.classList.remove('hidden'); // Show Full History
+            userStatusContainer.classList.remove('hidden');
 
             userName.textContent = user.displayName || 'User';
             userEmail.textContent = user.email;
             userPfp.src = user.photoURL || `https://placehold.co/40x40/800080/FFFFFF?text=${(user.email?.[0] || 'U').toUpperCase()}`;
             userPfp.onerror = () => { userPfp.src = 'https://placehold.co/40x40/800080/FFFFFF?text=U'; };
             
-            updateUserStatusUI(user); // NEW: Update the status UI
+            updateUserStatusUI(user);
         } else { // User is Logged Out
             authButtonsContainer.classList.remove('hidden');
             userProfileContainer.classList.add('hidden');
             signOutLi.classList.add('hidden');
-            userStatusContainer.classList.add('hidden'); // Hide status container
+            fullHistoryLi.classList.add('hidden'); // Hide Full History
+            userStatusContainer.classList.add('hidden');
         }
     }
 
-    // NEW: Function to manage the subscription status panel
     function updateUserStatusUI(user) {
-        // For now, this is mock data. Later, this would come from a database.
-        const userData = { tier: "Free Tier", generationsLeft: 100, maxGenerations: 100 };
-        
-        tierBadge.textContent = userData.tier;
-        tierBadge.className = 'tier-badge'; // Reset classes
-        if (userData.tier === "Free Tier") {
-            tierBadge.classList.add('free-tier');
+        // To preview other tiers, change the "tier" value in the line below.
+        // Options: "Free Tier", "Premium Tier", "Business Tier"
+        const mockUserData = { tier: "Free Tier" };
+
+        const tiers = {
+            "Free Tier": {
+                className: 'free-tier',
+                generationsLeft: 100,
+                maxGenerations: 100,
+            },
+            "Premium Tier": {
+                className: 'premium-tier',
+                generationsLeft: 1000,
+                maxGenerations: 1000,
+            },
+            "Business Tier": {
+                className: 'business-tier',
+                generationsLeft: Infinity,
+                maxGenerations: Infinity,
+            }
+        };
+
+        const userData = tiers[mockUserData.tier];
+
+        tierBadge.textContent = mockUserData.tier;
+        tierBadge.className = 'tier-badge';
+        tierBadge.classList.add(userData.className);
+
+        if (userData.generationsLeft === Infinity) {
+            generationCounter.textContent = `Unlimited Generations`;
+            generationProgressBar.style.width = `100%`;
+        } else {
             generationCounter.textContent = `${userData.generationsLeft} / ${userData.maxGenerations} Generations Left`;
             const percentage = (userData.generationsLeft / userData.maxGenerations) * 100;
             generationProgressBar.style.width = `${percentage}%`;
-        } // Add else-if blocks for 'Premium' and 'Business' tiers here
+        }
     }
 
     // --- Auth Action Functions ---
@@ -133,7 +155,6 @@ function initializeAuth() {
 
     function signOut(event) {
         event.preventDefault();
-        // NEW: Add confirmation dialog
         if (window.confirm("Are you sure you want to sign out?")) {
             auth.signOut().catch(error => console.error("Sign out error:", error));
         }
