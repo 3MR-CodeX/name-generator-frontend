@@ -365,6 +365,7 @@ function renderHistory(history, renderToModal = false) {
     }
 
     if (renderToModal) {
+        // Full history modal logic (remains the same)
         const groupedHistory = history.reduce((acc, entry) => {
             const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
                 year: 'numeric', month: 'long', day: 'numeric'
@@ -390,10 +391,21 @@ function renderHistory(history, renderToModal = false) {
             targetDiv.appendChild(dailyContainer);
         });
     } else {
+        // UPDATED: Recent history logic
         history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
             const button = document.createElement('button');
             button.className = 'history-item';
-            button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
+            
+            const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
+            let preRefinedHTML = '';
+            
+            // If it's a refined entry, create the small text for original names
+            if (entry.category === "Refined" && entry.pre_refined_names && entry.pre_refined_names.length > 0) {
+                const preRefinedText = `from: ${entry.pre_refined_names.map(cleanNames).join(", ")}`;
+                preRefinedHTML = `<small class="pre-refined-history">${preRefinedText}</small>`;
+            }
+
+            button.innerHTML = `${names}${preRefinedHTML}`;
             button.onclick = () => restoreHistory(entry.id);
             targetDiv.appendChild(button);
         });
@@ -540,6 +552,7 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
 
