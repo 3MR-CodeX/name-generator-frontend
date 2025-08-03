@@ -47,14 +47,17 @@ const recentHistorySection = document.getElementById("history_section");
 const recentHistoryDiv = document.getElementById("history");
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // Load components first
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
 
+    // Initialize components' JS
     if (typeof initializeTopbar === 'function') initializeTopbar();
     if (typeof initializeSidebar === 'function') initializeSidebar();
-
-    if (typeof initializeAuthElements === 'function') {
-        initializeAuthElements();
+    
+    // Initialize the entire authentication system now that the HTML is ready
+    if (typeof initializeAuth === 'function') { // <--- THIS IS THE NEW LINE
+        initializeAuth();
     }
 
     initializeUI();
@@ -502,3 +505,4 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
