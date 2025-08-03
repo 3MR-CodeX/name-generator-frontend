@@ -309,7 +309,9 @@ async function refineNames() {
         const data = await response.json();
         
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n");
-        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
+        // CORRECTED: This now correctly targets the 'refined_reasons' element
+        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n");
+
         refinedNamesPre.classList.add("fade-in-content");
         refinedReasonsPre.classList.add("fade-in-content");
         refinedOutputs.classList.remove("hidden-section");
@@ -536,4 +538,5 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
