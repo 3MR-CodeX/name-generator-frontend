@@ -7,10 +7,21 @@
     </button>
     
     <div id="auth-section">
+        <div id="user-status-container" class="hidden">
+            <div id="tier-badge" class="tier-badge"></div>
+            <div class="generations-info">
+                <p id="generation-counter" class="generation-counter"></p>
+                <div class="progress-bar-outer">
+                    <div id="generation-progress-bar" class="progress-bar-inner"></div>
+                </div>
+            </div>
+        </div>
+
         <div id="auth-buttons" class="auth-buttons-container hidden">
             <button id="top-bar-signin-btn">Sign In</button>
             <button id="top-bar-signup-btn" class="sign-up-btn">Sign Up</button>
         </div>
+
         <div id="user-profile" class="user-profile-container hidden">
             <img id="user-pfp" src="" alt="User Profile" class="user-profile-pfp">
             <div class="user-profile-info">
