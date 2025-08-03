@@ -233,11 +233,13 @@ async function generateName() {
     promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
 
+    // MOVED: This line is now here, so it doesn't clear the "limit reached" message.
+    document.getElementById("error").textContent = "";
+
     const category = document.getElementById("category").value;
     const style = document.getElementById("style").value;
     const language = document.getElementById("language").value;
     
-    document.getElementById("error").textContent = "";
     outputContainer.classList.remove("hidden-section");
     outputContainer.classList.add("visible-section");
     showLoading(namesPre);
@@ -264,7 +266,6 @@ async function generateName() {
         }
         const data = await response.json();
 
-        // On Successful Generation, increment anonymous counter if needed
         if (!window.auth.currentUser) {
             let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
             anonGenerations++;
@@ -274,13 +275,17 @@ async function generateName() {
 
         namesPre.textContent = data.names.map(cleanNames).join("\n\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
-
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
-        refineSection.classList.remove("hidden-section");
-        refineSection.classList.add("visible-section");
-        refineBtn.classList.remove("hidden-section");
-        refineBtn.classList.add("visible-section");
+
+        // NEW: Check if user is logged in before showing the refine section
+        if (window.auth.currentUser) {
+            refineSection.classList.remove("hidden-section");
+            refineSection.classList.add("visible-section");
+            refineBtn.classList.remove("hidden-section");
+            refineBtn.classList.add("visible-section");
+        }
+
         recentHistorySection.classList.remove("hidden-section");
         recentHistorySection.classList.add("visible-section");
         fetchHistory(false);
@@ -573,6 +578,7 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
 
