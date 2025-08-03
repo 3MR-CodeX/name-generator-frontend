@@ -365,7 +365,7 @@ function renderHistory(history, renderToModal = false) {
     }
 
     if (renderToModal) {
-        // Full history modal logic (remains the same)
+        // Full history modal logic
         const groupedHistory = history.reduce((acc, entry) => {
             const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
                 year: 'numeric', month: 'long', day: 'numeric'
@@ -382,8 +382,14 @@ function renderHistory(history, renderToModal = false) {
             dateHeading.textContent = date;
             dailyContainer.appendChild(dateHeading);
             groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
+                // ADDED: Tooltip logic for the full history modal
+                const tooltip = entry.category !== "Refined" 
+                    ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` 
+                    : `Refine Instruction: ${entry.prompt}`;
+
                 const button = document.createElement('button');
                 button.className = 'history-item';
+                button.title = tooltip; // ADDED: Assigns the tooltip to the button
                 button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
                 button.onclick = () => showHistoryDetails(entry.id);
                 dailyContainer.appendChild(button);
@@ -391,15 +397,20 @@ function renderHistory(history, renderToModal = false) {
             targetDiv.appendChild(dailyContainer);
         });
     } else {
-        // UPDATED: Recent history logic
+        // Recent history logic
         history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
+            // ADDED: Tooltip logic for the recent history list
+            const tooltip = entry.category !== "Refined" 
+                ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` 
+                : `Refine Instruction: ${entry.prompt}`;
+
             const button = document.createElement('button');
             button.className = 'history-item';
+            button.title = tooltip; // ADDED: Assigns the tooltip to the button
             
             const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
             let preRefinedHTML = '';
             
-            // If it's a refined entry, create the small text for original names
             if (entry.category === "Refined" && entry.pre_refined_names && entry.pre_refined_names.length > 0) {
                 const preRefinedText = `from: ${entry.pre_refined_names.map(cleanNames).join(", ")}`;
                 preRefinedHTML = `<small class="pre-refined-history">${preRefinedText}</small>`;
@@ -552,6 +563,7 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
 
