@@ -673,3 +673,10 @@ pre {
         right: 15px;
     }
 }
+.pre-refined-history {
+    font-weight: 300; /* Thin font */
+    font-size: 0.9em;
+    color: #aaa;
+    margin-top: 4px;
+    display: block;
+}
