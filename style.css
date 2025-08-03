@@ -680,3 +680,22 @@ pre {
     margin-top: 4px;
     display: block;
 }
+
+/* --- NEW: Verification Notice Styles --- */
+#verification-notice {
+    background-color: #5d350d;
+    border: 1px solid #ff8c00;
+    color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 0 auto 20px auto;
+    max-width: 800px;
+}
+
+#verification-notice a {
+    color: #ffc58a;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
