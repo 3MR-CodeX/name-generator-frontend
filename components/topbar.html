@@ -1,21 +1,19 @@
-<div id="top-bar">
-    <button id="hexagon-button" aria-label="Toggle Sidebar">
-        <img src="hexagonV2.png" alt="Hexagon" class="hexagon-image">
-        <span class="hamburger-line line-top"></span>
-        <span class="hamburger-line line-middle"></span>
-        <span class="hamburger-line line-bottom"></span>
-    </button>
-    
-    <div id="auth-section">
-        <div id="auth-buttons" class="auth-buttons-container hidden">
-            <button id="top-bar-signin-btn">Sign In</button>
-            <button id="top-bar-signup-btn" class="sign-up-btn">Sign Up</button>
-        </div>
-        <div id="user-profile" class="user-profile-container hidden" title="Click to sign out">
-            <img id="user-pfp" src="" alt="User Profile" class="user-profile-pfp">
-            <div class="user-profile-info">
-                <div id="user-name" class="user-name"></div>
-                <div id="user-email" class="user-email"></div>
+<div id="sidebar">
+    <div class="sidebar-content">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="#" onclick="restoreHistory('latest'); return false;">Latest Generation</a></li>
+            <li><a href="#" onclick="openHistoryModal(); return false;">Full History</a></li>
+            <li><a href="#">Settings</a></li>
+            <li id="sign-out-li" class="hidden"><a href="#" id="sign-out-link">Sign Out</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+
+        <div id="user-status-container" class="hidden">
+            <div id="tier-badge" class="tier-badge"></div>
+            <p id="generation-counter" class="generation-counter"></p>
+            <div class="progress-bar-outer">
+                <div id="generation-progress-bar" class="progress-bar-inner"></div>
             </div>
         </div>
     </div>
