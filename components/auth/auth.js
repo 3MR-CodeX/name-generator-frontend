@@ -125,19 +125,39 @@ function initializeAuth() {
 
     // --- Auth Action Functions ---
     function signUpWithEmail() {
-        if (signUpPassword.value !== signUpConfirmPassword.value) {
-            authErrorMessageSignUp.textContent = "Passwords do not match.";
-            return;
-        }
-        auth.createUserWithEmailAndPassword(signUpEmail.value, signUpPassword.value)
-            .then((userCredential) => {
-                userCredential.user.sendEmailVerification();
-                authErrorMessageSignUp.textContent = "Account created! Please check your email to verify.";
-                setTimeout(closeAllAuthModals, 3000);
-            })
-            .catch(error => { authErrorMessageSignUp.textContent = error.message; });
+    const email = signUpEmail.value;
+    const password = signUpPassword.value;
+    const confirmPassword = signUpConfirmPassword.value;
+
+    // NEW: Regular expression to validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        authErrorMessageSignUp.textContent = "Please enter a valid email address format.";
+        return;
     }
 
+    if (password !== confirmPassword) {
+        authErrorMessageSignUp.textContent = "Passwords do not match.";
+        return;
+    }
+    
+    auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            userCredential.user.sendEmailVerification();
+            authErrorMessageSignUp.textContent = "Account created! A verification link has been sent to your email.";
+            setTimeout(closeAllAuthModals, 3000);
+        })
+        .catch(error => { 
+            // Handle common Firebase errors
+            if (error.code == 'auth/email-already-in-use') {
+                authErrorMessageSignUp.textContent = "This email address is already in use.";
+            } else if (error.code == 'auth/weak-password') {
+                authErrorMessageSignUp.textContent = "Password should be at least 6 characters.";
+            } else {
+                authErrorMessageSignUp.textContent = error.message;
+            }
+        });
+}
     function signInWithEmail() {
         auth.signInWithEmailAndPassword(signInEmail.value, signInPassword.value)
             .then(() => closeAllAuthModals())
