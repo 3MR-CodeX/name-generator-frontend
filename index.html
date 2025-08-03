@@ -17,26 +17,28 @@
 
     <div id="sidebar-placeholder"></div>
 
-    <div id="overlay"></div>
+    [cite_start]<div id="overlay"></div> [cite: 72]
 
-    <div id="history-modal" class="modal">
-        <div class="modal-content">
+    [cite_start]<div id="history-modal" class="modal"> [cite: 72]
+        [cite_start]<div class="modal-content"> [cite: 72]
             <span class="close-button">&times;</span>
             <h2>Full History</h2>
-            <div id="full-history-list" class="history-inner">
-                </div>
+            [cite_start]<div id="full-history-list" class="history-inner"> [cite: 72]
+                [cite_start][cite: 73]
+            </div>
         </div>
     </div>
 
-    <div id="history-details-modal" class="modal">
-        <div class="modal-content history-details-content">
+    [cite_start]<div id="history-details-modal" class="modal"> [cite: 73]
+        [cite_start]<div class="modal-content history-details-content"> [cite: 73]
             <span class="close-button">&times;</span>
             <h2>History Entry Details</h2>
-            <div id="details-content">
-                 </div>
+            [cite_start]<div id="details-content"> [cite: 73]
+                 [cite_start][cite: 74]
+            </div>
         </div>
     </div>
-    
+
     <div id="sign-in-modal" class="modal auth-modal">
         <div class="modal-content auth-modal-content">
             <span class="close-button">&times;</span>
@@ -67,6 +69,9 @@
             <div class="input-group">
                 <input type="password" id="signup-password" placeholder="Password (6+ characters)" required>
             </div>
+            <div class="input-group">
+                <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
+            </div>
             <button id="signup-submit-btn" class="auth-button">Create Account</button>
             <div id="auth-error-message-signup" class="error"></div>
             <div class="auth-divider">or</div>
@@ -79,42 +84,42 @@
 
 
     <div class="main-content-wrapper">
-        <div class="banner-col">
-            <img src="banner.png" alt="Banner" id="banner">
+        [cite_start]<div class="banner-col"> [cite: 74]
+            [cite_start]<img src="banner.png" alt="Banner" id="banner"> [cite: 74]
         </div>
         <h1>NameIT</h1>
-        <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
+        <p class="description">Name anything — a product, brand, place, company, video, or even a new word. [cite_start]Then refine it instantly.</p> [cite: 75]
         <div class="container">
             <div class="input-section">
                 <div class="input-box textbox-column">
                     <label for="prompt">What do you want to name?</label>
-                    <textarea id="prompt" placeholder="Enter a description!"></textarea>
+                    [cite_start]<textarea id="prompt" placeholder="Enter a description!"></textarea> [cite: 76]
                  </div>
                 <div class="input-box right-column">
                     <label for="category">Category</label>
-                    <div class="tooltip-container">
-                         <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
-                        <div class="tooltip-box"></div>
+                    [cite_start]<div class="tooltip-container"> [cite: 77]
+                         [cite_start]<span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span> [cite: 77]
+                        [cite_start]<div class="tooltip-box"></div> [cite: 77]
                     </div>
-                    <select id="category">
-                         <option value="">Select a category</option>
+                    [cite_start]<select id="category"> [cite: 78]
+                         [cite_start]<option value="">Select a category</option> [cite: 78]
                     </select>
                     <label for="style">Style</label>
-                    <div class="tooltip-container">
-                        <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
-                        <div class="tooltip-box"></div>
+                    [cite_start]<div class="tooltip-container"> [cite: 79]
+                        [cite_start]<span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span> [cite: 79]
+                        [cite_start]<div class="tooltip-box"></div> [cite: 79]
                     </div>
-                     <select id="style">
-                        <option value="">Select a style</option>
+                     [cite_start]<select id="style"> [cite: 80]
+                        [cite_start]<option value="">Select a style</option> [cite: 80]
                     </select>
                     <label for="language">Language</label>
-                    <div class="tooltip-container">
-                        <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
-                        <div class="tooltip-box"></div>
+                    [cite_start]<div class="tooltip-container"> [cite: 81]
+                        [cite_start]<span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span> [cite: 81]
+                        [cite_start]<div class="tooltip-box"></div> [cite: 81]
                     </div>
-                     <select id="language">
-                        <option value="English">English</option>
-                        <option value="Arabic">Arabic</option>
+                     [cite_start]<select id="language"> [cite: 82]
+                        [cite_start]<option value="English">English</option> [cite: 82]
+                        [cite_start]<option value="Arabic">Arabic</option> [cite: 82]
                     </select>
                  </div>
             </div>
@@ -122,48 +127,48 @@
                 <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
                 <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
             </div>
-            <div id="output_container" class="output-section">
-                 <div class="output-box">
+            [cite_start]<div id="output_container" class="output-section"> [cite: 83]
+                 [cite_start]<div class="output-box"> [cite: 84]
                     <div class="output-header">
                         <label>Generated Names/Titles</label>
-                        <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
+                        [cite_start]<button class="copy-button" onclick="copyToClipboard('names')">📋</button> [cite: 84]
                      </div>
-                    <pre id="names"></pre>
+                    [cite_start]<pre id="names"></pre> [cite: 85]
                 </div>
                 <div class="output-box">
                     <div class="output-header">
                         <label>Explanations</label>
-                         <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
+                         [cite_start]<button class="copy-button" onclick="copyToClipboard('reasons')">📋</button> [cite: 85]
                     </div>
-                    <pre id="reasons"></pre>
+                    [cite_start]<pre id="reasons"></pre> [cite: 86]
                 </div>
             </div>
-             <div id="refine_section" class="refine-section">
+             [cite_start]<div id="refine_section" class="refine-section"> [cite: 86]
                 <label for="edit_box">Refine the suggestions</label>
-                <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
+                [cite_start]<textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea> [cite: 86]
             </div>
             <div class="refine-button-section">
-                <button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button>
+                [cite_start]<button class="refine-btn" onclick="refineNames()">🛠️ Refine Suggestions</button> [cite: 87]
              </div>
-            <div id="refined_outputs" class="output-section">
+            [cite_start]<div id="refined_outputs" class="output-section"> [cite: 87]
                 <div class="output-box">
                     <div class="output-header">
                         <label>Refined Suggestions</label>
-                       <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
+                       [cite_start]<button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button> [cite: 88]
                     </div>
-                    <pre id="refined_names"></pre>
+                    [cite_start]<pre id="refined_names"></pre> [cite: 88]
                 </div>
-                <div class="output-box">
+                [cite_start]<div class="output-box"> [cite: 89]
                    <div class="output-header">
                         <label>Refined Explanations</label>
-                        <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
+                        [cite_start]<button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button> [cite: 89]
                     </div>
-                    <pre id="refined_reasons"></pre>
+                    [cite_start]<pre id="refined_reasons"></pre> [cite: 90]
                  </div>
             </div>
-            <div id="history_section" class="history-section hidden-section">
+            [cite_start]<div id="history_section" class="history-section hidden-section"> [cite: 90]
                 <h2>🕘 Recent History</h2>
-                 <div id="history" class="history-inner"></div>
+                 [cite_start]<div id="history" class="history-inner"></div> [cite: 91]
             </div>
             <div id="error" class="error"></div>
         </div>
