@@ -52,17 +52,42 @@ function initializeAuth() {
 
     // --- Core Auth State Management ---
     auth.onAuthStateChanged(user => {
-        window.updateUserStatusUI(user);
+        updateUIForAuthState(user);
         if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
     });
 
-    // --- Global UI Update Function ---
-    window.updateUserStatusUI = (user) => {
+    // --- UI Update Functions ---
+
+    // A small, global function just for updating the counter and bar
+    window.updateGenerationCountUI = (count, max) => {
+        if (max === Infinity) {
+            generationCounter.textContent = `Unlimited Generations`;
+            generationProgressBar.style.width = `100%`;
+        } else {
+            generationCounter.textContent = `${count} / ${max} Generations Left`;
+            const percentage = (count / max) * 100;
+            generationProgressBar.style.width = `${percentage}%`;
+        }
+    };
+    
+    // This function sets the tier and calls the smaller update function
+    function updateSubscriptionDisplay(data) {
+        tierBadge.textContent = data.tier;
+        tierBadge.className = 'tier-badge';
+        
+        const tiers = { "Anonymous": { className: 'free-tier' }, "Free Tier": { className: 'free-tier' }, "Premium Tier": { className: 'premium-tier' }, "Business Tier": { className: 'business-tier' } };
+        if(tiers[data.tier]) tierBadge.classList.add(tiers[data.tier].className);
+
+        window.updateGenerationCountUI(data.generationsLeft, data.maxGenerations);
+    }
+    
+    // This is the main function that runs on login/logout to set the overall state
+    function updateUIForAuthState(user) {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
 
-        // Hide all conditional UI elements by default
+        // Hide all conditional UI elements by default to prevent flickering
         userStatusContainer.classList.add('hidden');
         verificationNotice.classList.add('hidden');
         authButtonsContainer.classList.add('hidden');
@@ -83,17 +108,14 @@ function initializeAuth() {
                     surpriseBtn.disabled = false;
                     userStatusContainer.classList.remove('hidden');
                     
-                    // Fetch real user status from the backend
                     user.getIdToken().then(token => {
-                        fetch(`${BACKEND_URL}/status`, {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        })
+                        fetch(`${BACKEND_URL}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
                         .then(res => res.json())
                         .then(status => {
                             updateSubscriptionDisplay({
                                 tier: status.tier,
                                 generationsLeft: status.generationsLeft,
-                                maxGenerations: 100 // Assuming 100 for Free Tier
+                                maxGenerations: 100
                             });
                         });
                     });
@@ -106,7 +128,6 @@ function initializeAuth() {
                     document.getElementById('resend-verification').addEventListener('click', resendVerificationEmail);
                 }
             });
-
         } else { // --- USER IS NOT LOGGED IN (ANONYMOUS) ---
             generateBtn.disabled = false;
             surpriseBtn.disabled = false;
@@ -119,23 +140,6 @@ function initializeAuth() {
                 generationsLeft: Math.max(0, 10 - anonGenerations),
                 maxGenerations: 10
             });
-        }
-    };
-
-    function updateSubscriptionDisplay(data) {
-        tierBadge.textContent = data.tier;
-        tierBadge.className = 'tier-badge';
-        
-        const tiers = { "Anonymous": { className: 'free-tier' }, "Free Tier": { className: 'free-tier' }, "Premium Tier": { className: 'premium-tier' }, "Business Tier": { className: 'business-tier' } };
-        if(tiers[data.tier]) tierBadge.classList.add(tiers[data.tier].className);
-
-        if (data.maxGenerations === Infinity) {
-            generationCounter.textContent = `Unlimited Generations`;
-            generationProgressBar.style.width = `100%`;
-        } else {
-            generationCounter.textContent = `${data.generationsLeft} / ${data.maxGenerations} Generations Left`;
-            const percentage = (data.generationsLeft / data.maxGenerations) * 100;
-            generationProgressBar.style.width = `${percentage}%`;
         }
     }
     
