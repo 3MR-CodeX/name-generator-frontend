@@ -40,39 +40,8 @@ function initializeAuth() {
     const signUpGoogle = document.getElementById("signup-google-btn");
     const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
 
-    // --- Event Listeners ---
-    signInBtn.addEventListener('click', openSignInModal);
-    signUpBtn.addEventListener('click', openSignUpModal);
-    signOutLink.addEventListener('click', signOut);
-    signInSubmit.addEventListener('click', signInWithEmail);
-    signUpSubmit.addEventListener('click', signUpWithEmail);
-    signInGoogle.addEventListener('click', signInWithGoogle);
-    signUpGoogle.addEventListener('click', signInWithGoogle);
-    userProfileContainer.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(accountDropdown); });
-    tierBadge.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(tierDropdown); });
-    dropdownSignOutBtn.addEventListener('click', signOut);
-    document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
-    
-    // Global listener to close dropdowns when clicking outside
-    document.addEventListener('click', (event) => {
-        if (accountDropdown && !userProfileContainer.contains(event.target)) {
-            accountDropdown.classList.remove('visible');
-        }
-        if (tierDropdown && !userStatusContainer.contains(event.target)) {
-            tierDropdown.classList.remove('visible');
-        }
-        if (event.target === signInModal || event.target === signUpModal) {
-            closeAllAuthModals();
-        }
-    });
+    // --- UI Update Functions (Defined before they are called) ---
 
-    // --- Core Auth State Management ---
-    auth.onAuthStateChanged(user => {
-        window.updateUserStatusUI(user);
-        if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
-    });
-
-    // --- UI Update Functions ---
     window.updateGenerationCountUI = (count, max) => {
         if (max === Infinity) {
             generationCounter.textContent = `Unlimited Generations`;
@@ -92,12 +61,12 @@ function initializeAuth() {
         window.updateGenerationCountUI(data.generationsLeft, data.maxGenerations);
     }
     
-    function updateUIForAuthState(user) {
+    window.updateUserStatusUI = (user) => {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
 
-        // Hide all conditional UI elements by default
+        // Hide all conditional UI elements by default to prevent flickering
         userStatusContainer.classList.add('hidden');
         verificationNotice.classList.add('hidden');
         authButtonsContainer.classList.add('hidden');
@@ -132,7 +101,7 @@ function initializeAuth() {
                             updateSubscriptionDisplay({
                                 tier: status.tier,
                                 generationsLeft: status.generationsLeft,
-                                maxGenerations: 100 // Assume 100 for Free Tier, this would be dynamic
+                                maxGenerations: 100
                             });
                         });
                     });
@@ -158,8 +127,39 @@ function initializeAuth() {
                 maxGenerations: 10
             });
         }
-    }
+    };
+
+    // --- Core Auth State Management ---
+    auth.onAuthStateChanged(user => {
+        window.updateUserStatusUI(user);
+        if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
+    });
+
+    // --- Event Listeners and other functions ---
+    signInBtn.addEventListener('click', openSignInModal);
+    signUpBtn.addEventListener('click', openSignUpModal);
+    signOutLink.addEventListener('click', signOut);
+    signInSubmit.addEventListener('click', signInWithEmail);
+    signUpSubmit.addEventListener('click', signUpWithEmail);
+    signInGoogle.addEventListener('click', signInWithGoogle);
+    signUpGoogle.addEventListener('click', signInWithGoogle);
+    userProfileContainer.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(accountDropdown); });
+    tierBadge.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(tierDropdown); });
+    dropdownSignOutBtn.addEventListener('click', signOut);
+    document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
     
+    document.addEventListener('click', (event) => {
+        if (accountDropdown && !userProfileContainer.contains(event.target)) {
+            accountDropdown.classList.remove('visible');
+        }
+        if (tierDropdown && !userStatusContainer.contains(event.target)) {
+            tierDropdown.classList.remove('visible');
+        }
+        if (event.target === signInModal || event.target === signUpModal) {
+            closeAllAuthModals();
+        }
+    });
+
     function resendVerificationEmail() {
         const user = auth.currentUser;
         if (user) {
@@ -243,10 +243,14 @@ function initializeAuth() {
     }
 
     function toggleDropdown(dropdown) {
-        // Close other dropdowns first
-        if (dropdown === accountDropdown) tierDropdown.classList.remove('visible');
-        if (dropdown === tierDropdown) accountDropdown.classList.remove('visible');
-        // Toggle the target dropdown
-        dropdown.classList.toggle('visible');
+        if (!dropdown) return;
+        const isVisible = dropdown.classList.contains('visible');
+        // Close all dropdowns first
+        if (accountDropdown) accountDropdown.classList.remove('visible');
+        if (tierDropdown) tierDropdown.classList.remove('visible');
+        // If the target dropdown was not visible, show it
+        if (!isVisible) {
+            dropdown.classList.add('visible');
+        }
     }
 }
