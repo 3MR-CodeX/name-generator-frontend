@@ -437,7 +437,18 @@ async function restoreHistory(id) {
     const token = await getUserToken();
     if (!token) return;
 
-    fetch(`${BACKEND_URL}/history`, { headers: { ...(token && { "Authorization": `Bearer ${token}` }) } })
+    // NEW: Call the backend to sync the state
+    await fetch(`${BACKEND_URL}/restore-history`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ id: id })
+    });
+
+    // Fetch and display the history item as before
+    fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } })
         .then(res => res.json())
         .then(historyData => {
             const entry = id === 'latest' ? historyData[0] : historyData.find(e => e.id === id);
@@ -446,8 +457,9 @@ async function restoreHistory(id) {
                 document.getElementById("category").value = entry.category;
                 document.getElementById("style").value = entry.style;
                 document.getElementById("language").value = entry.language;
-                namesPre.textContent = entry.names.map(cleanNames).join("\n");
-                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n");
+                namesPre.textContent = entry.names.map(cleanNames).join("\n\n");
+                reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
+                
                 namesPre.classList.add("fade-in-content");
                 reasonsPre.classList.add("fade-in-content");
                 outputContainer.classList.remove("hidden-section");
@@ -474,7 +486,6 @@ async function restoreHistory(id) {
             }
         });
 }
-
 function surpriseMe() {
     const [prompt, category, style, language] = SURPRISES[Math.floor(Math.random() * SURPRISES.length)];
     promptInput.value = prompt;
@@ -565,6 +576,7 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
 
