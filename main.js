@@ -354,6 +354,7 @@ async function refineNames() {
         enableButtons();
     }
 }
+
 async function fetchHistory(renderToModal = false) {
     const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
     targetDiv.innerHTML = "";
