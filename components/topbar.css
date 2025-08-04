@@ -224,12 +224,13 @@
 
 /* --- NEW: Glowing Animation for Progress Bar --- */
 .glowing {
-    /* The animation will run for 1.5 seconds */
-    animation: glow-animation 1.5s ease-in-out;
+    /* The animation will now run for 2 seconds */
+    animation: glow-animation 2s ease-in-out;
 }
 
 @keyframes glow-animation {
-    0% { box-shadow: 0 0 5px #a020f0; }
-    50% { box-shadow: 0 0 20px 5px #ff00ff; }
-    100% { box-shadow: 0 0 5px #a020f0; }
+    0% { background-color: var(--button-purple); }
+    33% { background-color: #ff00ff; }
+    66% { background-color: #a500ff; }
+    100% { background-color: var(--button-purple); }
 }
