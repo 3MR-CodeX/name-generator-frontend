@@ -101,22 +101,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (historyModal && closeButtonHistoryModal) {
         closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
-        window.addEventListener('click', (event) => {
-            if (event.target == historyModal) closeHistoryModal();
-        });
+        window.addEventListener('click', (event) => { if (event.target == historyModal) closeHistoryModal(); });
     }
-
     if (historyDetailsModal && closeButtonDetailsModal) {
-        closeButtonDetailsModal.addEventListener('click', () => {
-            closeHistoryDetailsModal();
-            openHistoryModal();
-        });
-        window.addEventListener('click', (event) => {
-            if (event.target == historyDetailsModal) {
-                closeHistoryDetailsModal();
-                openHistoryModal();
-            }
-        });
+        closeButtonDetailsModal.addEventListener('click', () => { closeHistoryDetailsModal(); openHistoryModal(); });
+        window.addEventListener('click', (event) => { if (event.target == historyDetailsModal) { closeHistoryDetailsModal(); openHistoryModal(); } });
     }
 });
 
@@ -155,9 +144,7 @@ function populateDropdown(id, options) {
     });
 }
 
-function cleanNames(text) {
-    return text.replace(/\*\*/g, '');
-}
+function cleanNames(text) { return text.replace(/\*\*/g, ''); }
 
 function showLoading(targetElement) {
     targetElement.textContent = "";
@@ -174,9 +161,7 @@ function showLoading(targetElement) {
 
 function hideLoading(targetElement) {
     const spinnerOverlay = targetElement.querySelector(".spinner-overlay");
-    if (spinnerOverlay) {
-        spinnerOverlay.classList.remove("show");
-    }
+    if (spinnerOverlay) spinnerOverlay.classList.remove("show");
 }
 
 function disableButtons() {
@@ -207,14 +192,13 @@ function showTemporaryPlaceholderError(textarea, message) {
 
 async function getUserToken() {
     if (window.auth && window.auth.currentUser) {
-        await window.auth.currentUser.reload(); // Get latest user state (including emailVerified)
+        await window.auth.currentUser.reload();
         return await window.auth.currentUser.getIdToken(true);
     }
     return null;
 }
 
 async function generateName() {
-    // Handle anonymous user limits
     if (!window.auth.currentUser) {
         let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
         if (anonGenerations >= 10) {
@@ -232,10 +216,7 @@ async function generateName() {
     }
     promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
-
-    // MOVED: This line is now here, so it doesn't clear the "limit reached" message.
     document.getElementById("error").textContent = "";
-
     const category = document.getElementById("category").value;
     const style = document.getElementById("style").value;
     const language = document.getElementById("language").value;
@@ -251,15 +232,16 @@ async function generateName() {
 
     try {
         const token = await getUserToken();
-
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...(token && { "Authorization": `Bearer ${token}` })
-            },
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ prompt, category, style, language })
         });
+        
+        if (response.status === 403) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "You have run out of generations.");
+        }
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "Unknown error during name generation.");
@@ -271,21 +253,20 @@ async function generateName() {
             anonGenerations++;
             localStorage.setItem('anonGenerations', anonGenerations);
             if(typeof window.updateUserStatusUI === 'function') window.updateUserStatusUI(null);
+        } else if (data.generationsLeft !== undefined) {
+             if(typeof window.updateUserStatusUI === 'function') window.updateUserStatusUI(window.auth.currentUser);
         }
 
         namesPre.textContent = data.names.map(cleanNames).join("\n\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
-
-        // NEW: Check if user is logged in before showing the refine section
-        if (window.auth.currentUser) {
+        if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
             refineSection.classList.remove("hidden-section");
             refineSection.classList.add("visible-section");
             refineBtn.classList.remove("hidden-section");
             refineBtn.classList.add("visible-section");
         }
-
         recentHistorySection.classList.remove("hidden-section");
         recentHistorySection.classList.add("visible-section");
         fetchHistory(false);
@@ -307,7 +288,6 @@ async function refineNames() {
     }
     editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
-
     document.getElementById("error").textContent = "";
     showLoading(refinedNamesPre);
     showLoading(refinedReasonsPre);
@@ -315,13 +295,9 @@ async function refineNames() {
 
     try {
         const token = await getUserToken();
-        
         const response = await fetch(`${BACKEND_URL}/refine`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...(token && { "Authorization": `Bearer ${token}` })
-            },
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ instruction })
         });
         if (!response.ok) {
@@ -332,7 +308,6 @@ async function refineNames() {
         
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
         refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
-
         refinedNamesPre.classList.add("fade-in-content");
         refinedReasonsPre.classList.add("fade-in-content");
         refinedOutputs.classList.remove("hidden-section");
@@ -351,15 +326,9 @@ async function refineNames() {
 async function fetchHistory(renderToModal = false) {
     const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
     targetDiv.innerHTML = "";
-    
     const token = await getUserToken();
-
     try {
-        const response = await fetch(`${BACKEND_URL}/history`, {
-            headers: {
-                ...(token && { "Authorization": `Bearer ${token}` })
-            }
-        });
+        const response = await fetch(`${BACKEND_URL}/history`, { headers: { ...(token && { "Authorization": `Bearer ${token}` }) } });
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "Unknown error fetching history.");
@@ -375,19 +344,14 @@ async function fetchHistory(renderToModal = false) {
 function renderHistory(history, renderToModal = false) {
     const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
     if (!targetDiv) return;
-
     targetDiv.innerHTML = "";
-
     if (history.length === 0) {
         targetDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
         return;
     }
-
     if (renderToModal) {
         const groupedHistory = history.reduce((acc, entry) => {
-            const date = new Date(entry.timestamp).toLocaleDateString('en-US', {
-                year: 'numeric', month: 'long', day: 'numeric'
-            });
+            const date = new Date(entry.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
             if (!acc[date]) acc[date] = [];
             acc[date].push(entry);
             return acc;
@@ -400,10 +364,7 @@ function renderHistory(history, renderToModal = false) {
             dateHeading.textContent = date;
             dailyContainer.appendChild(dateHeading);
             groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-                const tooltip = entry.category !== "Refined" 
-                    ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` 
-                    : `Refine Instruction: ${entry.prompt}`;
-
+                const tooltip = entry.category !== "Refined" ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` : `Refine Instruction: ${entry.prompt}`;
                 const button = document.createElement('button');
                 button.className = 'history-item';
                 button.title = tooltip;
@@ -415,22 +376,16 @@ function renderHistory(history, renderToModal = false) {
         });
     } else {
         history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-            const tooltip = entry.category !== "Refined" 
-                ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` 
-                : `Refine Instruction: ${entry.prompt}`;
-            
+            const tooltip = entry.category !== "Refined" ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` : `Refine Instruction: ${entry.prompt}`;
             const button = document.createElement('button');
             button.className = 'history-item';
             button.title = tooltip;
-            
             const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
             let preRefinedHTML = '';
-            
             if (entry.category === "Refined" && entry.pre_refined_names && entry.pre_refined_names.length > 0) {
                 const preRefinedText = `from: ${entry.pre_refined_names.map(cleanNames).join(", ")}`;
                 preRefinedHTML = `<small class="pre-refined-history">${preRefinedText}</small>`;
             }
-
             button.innerHTML = `${names}${preRefinedHTML}`;
             button.onclick = () => restoreHistory(entry.id);
             targetDiv.appendChild(button);
@@ -578,6 +533,7 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
 
