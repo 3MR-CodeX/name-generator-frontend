@@ -300,11 +300,25 @@ async function refineNames() {
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ instruction })
         });
+        
+        // ADDED: Handle the "out of generations" error
+        if (response.status === 403) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "You have run out of generations.");
+        }
+        
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "Unknown error during name refinement.");
         }
         const data = await response.json();
+
+        // ADDED: Update UI with new count from backend
+        if (window.auth.currentUser && data.generationsLeft !== undefined) {
+             if(typeof window.updateUserStatusUI === 'function') {
+                window.updateUserStatusUI(window.auth.currentUser);
+             }
+        }
         
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
         refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
@@ -322,7 +336,6 @@ async function refineNames() {
         enableButtons();
     }
 }
-
 async function fetchHistory(renderToModal = false) {
     const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
     targetDiv.innerHTML = "";
@@ -533,6 +546,7 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
 
