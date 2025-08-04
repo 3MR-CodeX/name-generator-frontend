@@ -18,6 +18,14 @@ function initializeAuth() {
     const userPfp = document.getElementById("user-pfp");
     const userName = document.getElementById("user-name");
     const userEmail = document.getElementById("user-email");
+    const signOutLi = document.getElementById("sign-out-li");
+    const signOutLink = document.getElementById("sign-out-link");
+    const fullHistoryLi = document.getElementById("full-history-li");
+    const verificationNotice = document.getElementById("verification-notice"); // For showing verification message
+    const userStatusContainer = document.getElementById("user-status-container");
+    const tierBadge = document.getElementById("tier-badge");
+    const generationCounter = document.getElementById("generation-counter");
+    const generationProgressBar = document.getElementById("generation-progress-bar");
     const signInEmail = document.getElementById("signin-email");
     const signInPassword = document.getElementById("signin-password");
     const signInSubmit = document.getElementById("signin-submit-btn");
@@ -29,135 +37,140 @@ function initializeAuth() {
     const signUpSubmit = document.getElementById("signup-submit-btn");
     const signUpGoogle = document.getElementById("signup-google-btn");
     const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
-    const signOutLi = document.getElementById("sign-out-li");
-    const signOutLink = document.getElementById("sign-out-link");
-    const userStatusContainer = document.getElementById("user-status-container");
-    const tierBadge = document.getElementById("tier-badge");
-    const generationCounter = document.getElementById("generation-counter");
-    const generationProgressBar = document.getElementById("generation-progress-bar");
-    const fullHistoryLi = document.getElementById("full-history-li");
 
     // --- Event Listeners ---
-    document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
-    window.addEventListener('click', (event) => {
-        if (event.target === signInModal || event.target === signUpModal) closeAllAuthModals();
-    });
     signInBtn.addEventListener('click', openSignInModal);
     signUpBtn.addEventListener('click', openSignUpModal);
-    signOutLink.addEventListener('click', signOut); 
+    signOutLink.addEventListener('click', signOut);
     signInSubmit.addEventListener('click', signInWithEmail);
     signUpSubmit.addEventListener('click', signUpWithEmail);
     signInGoogle.addEventListener('click', signInWithGoogle);
     signUpGoogle.addEventListener('click', signInWithGoogle);
-    
+    document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
+    window.addEventListener('click', (event) => {
+        if (event.target === signInModal || event.target === signUpModal) closeAllAuthModals();
+    });
+
     // --- Core Auth State Management ---
     auth.onAuthStateChanged(user => {
-        updateUIForAuthState(user);
+        window.updateUserStatusUI(user);
         if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
     });
 
-    // --- UI Update Functions ---
-    function updateUIForAuthState(user) {
-        document.querySelector(".generate-btn").disabled = false;
-        document.querySelector(".surprise-btn").disabled = false;
-        document.getElementById("error").textContent = "";
+    // --- Global UI Update Function ---
+    window.updateUserStatusUI = (user) => {
+        const generateBtn = document.querySelector(".generate-btn");
+        const surpriseBtn = document.querySelector(".surprise-btn");
+        const errorDiv = document.getElementById("error");
 
-        if (user) { // User is Logged In
-            authButtonsContainer.classList.add('hidden');
+        // Hide all conditional UI elements by default
+        userStatusContainer.classList.add('hidden');
+        verificationNotice.classList.add('hidden');
+        authButtonsContainer.classList.add('hidden');
+        userProfileContainer.classList.add('hidden');
+        signOutLi.classList.add('hidden');
+        fullHistoryLi.classList.add('hidden');
+
+        if (user) { // --- USER IS LOGGED IN ---
             userProfileContainer.classList.remove('hidden');
             signOutLi.classList.remove('hidden');
-            fullHistoryLi.classList.remove('hidden'); // Show Full History
-            userStatusContainer.classList.remove('hidden');
-
-            userName.textContent = user.displayName || 'User';
-            userEmail.textContent = user.email;
+            fullHistoryLi.classList.remove('hidden');
+            userName.textContent = user.displayName || user.email;
             userPfp.src = user.photoURL || `https://placehold.co/40x40/800080/FFFFFF?text=${(user.email?.[0] || 'U').toUpperCase()}`;
-            userPfp.onerror = () => { userPfp.src = 'https://placehold.co/40x40/800080/FFFFFF?text=U'; };
             
-            updateUserStatusUI(user);
-        } else { // User is Logged Out
+            user.reload().then(() => {
+                if (user.emailVerified) {
+                    // USER IS VERIFIED - Enable full app functionality
+                    generateBtn.disabled = false;
+                    surpriseBtn.disabled = false;
+                    userStatusContainer.classList.remove('hidden');
+                    updateSubscriptionDisplay({ tier: "Free Tier", generationsLeft: 100, maxGenerations: 100 });
+                } else {
+                    // USER IS NOT VERIFIED - Disable app and show notice
+                    generateBtn.disabled = true;
+                    surpriseBtn.disabled = true;
+                    errorDiv.textContent = ""; // Clear other errors
+                    verificationNotice.classList.remove('hidden');
+                    verificationNotice.innerHTML = `Please check your inbox to verify your email address. <a id="resend-verification">Resend verification email.</a>`;
+                    document.getElementById('resend-verification').addEventListener('click', resendVerificationEmail);
+                }
+            });
+
+        } else { // --- USER IS NOT LOGGED IN (ANONYMOUS) ---
+            generateBtn.disabled = false;
+            surpriseBtn.disabled = false;
             authButtonsContainer.classList.remove('hidden');
-            userProfileContainer.classList.add('hidden');
-            signOutLi.classList.add('hidden');
-            fullHistoryLi.classList.add('hidden'); // Hide Full History
-            userStatusContainer.classList.add('hidden');
+            
+            const anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
+            userStatusContainer.classList.remove('hidden');
+            updateSubscriptionDisplay({
+                tier: "Anonymous",
+                generationsLeft: Math.max(0, 10 - anonGenerations),
+                maxGenerations: 10
+            });
         }
-    }
+    };
 
-    function updateUserStatusUI(user) {
-        // To preview other tiers, change the "tier" value in the line below.
-        // Options: "Free Tier", "Premium Tier", "Business Tier"
-        const mockUserData = { tier: "Free Tier" };
-
-        const tiers = {
-            "Free Tier": {
-                className: 'free-tier',
-                generationsLeft: 100,
-                maxGenerations: 100,
-            },
-            "Premium Tier": {
-                className: 'premium-tier',
-                generationsLeft: 1000,
-                maxGenerations: 1000,
-            },
-            "Business Tier": {
-                className: 'business-tier',
-                generationsLeft: Infinity,
-                maxGenerations: Infinity,
-            }
-        };
-
-        const userData = tiers[mockUserData.tier];
-
-        tierBadge.textContent = mockUserData.tier;
+    function updateSubscriptionDisplay(data) {
+        tierBadge.textContent = data.tier;
         tierBadge.className = 'tier-badge';
-        tierBadge.classList.add(userData.className);
+        
+        const tiers = { "Anonymous": { className: 'free-tier' }, "Free Tier": { className: 'free-tier' }, "Premium Tier": { className: 'premium-tier' }, "Business Tier": { className: 'business-tier' } };
+        if(tiers[data.tier]) tierBadge.classList.add(tiers[data.tier].className);
 
-        if (userData.generationsLeft === Infinity) {
+        if (data.maxGenerations === Infinity) {
             generationCounter.textContent = `Unlimited Generations`;
             generationProgressBar.style.width = `100%`;
         } else {
-            generationCounter.textContent = `${userData.generationsLeft} / ${userData.maxGenerations} Generations Left`;
-            const percentage = (userData.generationsLeft / userData.maxGenerations) * 100;
+            generationCounter.textContent = `${data.generationsLeft} / ${data.maxGenerations} Generations Left`;
+            const percentage = (data.generationsLeft / data.maxGenerations) * 100;
             generationProgressBar.style.width = `${percentage}%`;
         }
     }
-
-    // --- Auth Action Functions ---
-    function signUpWithEmail() {
-    const email = signUpEmail.value;
-    const password = signUpPassword.value;
-    const confirmPassword = signUpConfirmPassword.value;
-
-    // NEW: Regular expression to validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        authErrorMessageSignUp.textContent = "Please enter a valid email address format.";
-        return;
-    }
-
-    if (password !== confirmPassword) {
-        authErrorMessageSignUp.textContent = "Passwords do not match.";
-        return;
+    
+    function resendVerificationEmail() {
+        const user = auth.currentUser;
+        if (user) {
+            user.sendEmailVerification()
+                .then(() => {
+                    verificationNotice.innerHTML = `Verification email sent! Please check your inbox (and spam folder).`;
+                })
+                .catch(error => {
+                    verificationNotice.innerHTML = `Error: ${error.message}`;
+                });
+        }
     }
     
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            userCredential.user.sendEmailVerification();
-            authErrorMessageSignUp.textContent = "Account created! A verification link has been sent to your email.";
-            setTimeout(closeAllAuthModals, 3000);
-        })
-        .catch(error => { 
-            // Handle common Firebase errors
-            if (error.code == 'auth/email-already-in-use') {
-                authErrorMessageSignUp.textContent = "This email address is already in use.";
-            } else if (error.code == 'auth/weak-password') {
-                authErrorMessageSignUp.textContent = "Password should be at least 6 characters.";
-            } else {
-                authErrorMessageSignUp.textContent = error.message;
-            }
-        });
-}
+    function signUpWithEmail() {
+        const email = signUpEmail.value;
+        const password = signUpPassword.value;
+        const confirmPassword = signUpConfirmPassword.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            authErrorMessageSignUp.textContent = "Please enter a valid email address format.";
+            return;
+        }
+        if (password !== confirmPassword) {
+            authErrorMessageSignUp.textContent = "Passwords do not match.";
+            return;
+        }
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                userCredential.user.sendEmailVerification();
+                authErrorMessageSignUp.textContent = "Account created! A verification link has been sent to your email.";
+                setTimeout(closeAllAuthModals, 3000);
+            })
+            .catch(error => {
+                if (error.code == 'auth/email-already-in-use') {
+                    authErrorMessageSignUp.textContent = "This email address is already in use.";
+                } else if (error.code == 'auth/weak-password') {
+                    authErrorMessageSignUp.textContent = "Password should be at least 6 characters.";
+                } else {
+                    authErrorMessageSignUp.textContent = error.message;
+                }
+            });
+    }
+
     function signInWithEmail() {
         auth.signInWithEmailAndPassword(signInEmail.value, signInPassword.value)
             .then(() => closeAllAuthModals())
