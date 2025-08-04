@@ -25,6 +25,9 @@ function initializeAuth() {
     const tierBadge = document.getElementById("tier-badge");
     const generationCounter = document.getElementById("generation-counter");
     const generationProgressBar = document.getElementById("generation-progress-bar");
+    const accountDropdown = document.getElementById("account-dropdown");
+    const tierDropdown = document.getElementById("tier-dropdown");
+    const dropdownSignOutBtn = document.getElementById("dropdown-signout-btn");
     const signInEmail = document.getElementById("signin-email");
     const signInPassword = document.getElementById("signin-password");
     const signInSubmit = document.getElementById("signin-submit-btn");
@@ -45,55 +48,64 @@ function initializeAuth() {
     signUpSubmit.addEventListener('click', signUpWithEmail);
     signInGoogle.addEventListener('click', signInWithGoogle);
     signUpGoogle.addEventListener('click', signInWithGoogle);
+    userProfileContainer.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(accountDropdown); });
+    tierBadge.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(tierDropdown); });
+    dropdownSignOutBtn.addEventListener('click', signOut);
     document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
-    window.addEventListener('click', (event) => {
-        if (event.target === signInModal || event.target === signUpModal) closeAllAuthModals();
+    
+    // Global listener to close dropdowns when clicking outside
+    document.addEventListener('click', (event) => {
+        if (accountDropdown && !userProfileContainer.contains(event.target)) {
+            accountDropdown.classList.remove('visible');
+        }
+        if (tierDropdown && !userStatusContainer.contains(event.target)) {
+            tierDropdown.classList.remove('visible');
+        }
+        if (event.target === signInModal || event.target === signUpModal) {
+            closeAllAuthModals();
+        }
     });
 
     // --- Core Auth State Management ---
     auth.onAuthStateChanged(user => {
-        updateUIForAuthState(user);
+        window.updateUserStatusUI(user);
         if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
     });
 
     // --- UI Update Functions ---
-
-    // A small, global function just for updating the counter and bar
     window.updateGenerationCountUI = (count, max) => {
         if (max === Infinity) {
             generationCounter.textContent = `Unlimited Generations`;
             generationProgressBar.style.width = `100%`;
         } else {
             generationCounter.textContent = `${count} / ${max} Generations Left`;
-            const percentage = (count / max) * 100;
+            const percentage = max > 0 ? (count / max) * 100 : 0;
             generationProgressBar.style.width = `${percentage}%`;
         }
     };
     
-    // This function sets the tier and calls the smaller update function
     function updateSubscriptionDisplay(data) {
         tierBadge.textContent = data.tier;
         tierBadge.className = 'tier-badge';
-        
         const tiers = { "Anonymous": { className: 'free-tier' }, "Free Tier": { className: 'free-tier' }, "Premium Tier": { className: 'premium-tier' }, "Business Tier": { className: 'business-tier' } };
         if(tiers[data.tier]) tierBadge.classList.add(tiers[data.tier].className);
-
         window.updateGenerationCountUI(data.generationsLeft, data.maxGenerations);
     }
     
-    // This is the main function that runs on login/logout to set the overall state
     function updateUIForAuthState(user) {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
 
-        // Hide all conditional UI elements by default to prevent flickering
+        // Hide all conditional UI elements by default
         userStatusContainer.classList.add('hidden');
         verificationNotice.classList.add('hidden');
         authButtonsContainer.classList.add('hidden');
         userProfileContainer.classList.add('hidden');
         signOutLi.classList.add('hidden');
         fullHistoryLi.classList.add('hidden');
+        if (accountDropdown) accountDropdown.classList.remove('visible');
+        if (tierDropdown) tierDropdown.classList.remove('visible');
 
         if (user) { // --- USER IS LOGGED IN ---
             userProfileContainer.classList.remove('hidden');
@@ -101,6 +113,11 @@ function initializeAuth() {
             fullHistoryLi.classList.remove('hidden');
             userName.textContent = user.displayName || user.email;
             userPfp.src = user.photoURL || `https://placehold.co/40x40/800080/FFFFFF?text=${(user.email?.[0] || 'U').toUpperCase()}`;
+            
+            document.getElementById('account-name-detail').textContent = user.displayName || 'Not set';
+            document.getElementById('account-email-detail').textContent = user.email;
+            const creationDate = new Date(user.metadata.creationTime).toLocaleDateString();
+            document.getElementById('account-created-detail').textContent = creationDate;
             
             user.reload().then(() => {
                 if (user.emailVerified) {
@@ -115,7 +132,7 @@ function initializeAuth() {
                             updateSubscriptionDisplay({
                                 tier: status.tier,
                                 generationsLeft: status.generationsLeft,
-                                maxGenerations: 100
+                                maxGenerations: 100 // Assume 100 for Free Tier, this would be dynamic
                             });
                         });
                     });
@@ -223,5 +240,13 @@ function initializeAuth() {
         if(signUpModal) signUpModal.classList.remove('active');
         if(authErrorMessageSignIn) authErrorMessageSignIn.textContent = '';
         if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = '';
+    }
+
+    function toggleDropdown(dropdown) {
+        // Close other dropdowns first
+        if (dropdown === accountDropdown) tierDropdown.classList.remove('visible');
+        if (dropdown === tierDropdown) accountDropdown.classList.remove('visible');
+        // Toggle the target dropdown
+        dropdown.classList.toggle('visible');
     }
 }
