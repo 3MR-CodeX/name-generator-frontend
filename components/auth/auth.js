@@ -1,12 +1,11 @@
 function initializeAuth() {
-    if (window.env && window.env.FIREBASE_CONFIG) {
-        firebase.initializeApp(window.env.FIREBASE_CONFIG);
-        window.auth = firebase.auth();
-        window.googleProvider = new firebase.auth.GoogleAuthProvider();
-    } else {
+    if (!window.env || !window.env.FIREBASE_CONFIG) {
         console.error("Firebase config not found.");
         return;
     }
+    firebase.initializeApp(window.env.FIREBASE_CONFIG);
+    window.auth = firebase.auth();
+    window.googleProvider = new firebase.auth.GoogleAuthProvider();
 
     // --- DOM Element References ---
     const signInModal = document.getElementById("sign-in-modal");
@@ -21,7 +20,7 @@ function initializeAuth() {
     const signOutLi = document.getElementById("sign-out-li");
     const signOutLink = document.getElementById("sign-out-link");
     const fullHistoryLi = document.getElementById("full-history-li");
-    const verificationNotice = document.getElementById("verification-notice"); // For showing verification message
+    const verificationNotice = document.getElementById("verification-notice");
     const userStatusContainer = document.getElementById("user-status-container");
     const tierBadge = document.getElementById("tier-badge");
     const generationCounter = document.getElementById("generation-counter");
@@ -80,16 +79,28 @@ function initializeAuth() {
             
             user.reload().then(() => {
                 if (user.emailVerified) {
-                    // USER IS VERIFIED - Enable full app functionality
                     generateBtn.disabled = false;
                     surpriseBtn.disabled = false;
                     userStatusContainer.classList.remove('hidden');
-                    updateSubscriptionDisplay({ tier: "Free Tier", generationsLeft: 100, maxGenerations: 100 });
+                    
+                    // Fetch real user status from the backend
+                    user.getIdToken().then(token => {
+                        fetch(`${BACKEND_URL}/status`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        })
+                        .then(res => res.json())
+                        .then(status => {
+                            updateSubscriptionDisplay({
+                                tier: status.tier,
+                                generationsLeft: status.generationsLeft,
+                                maxGenerations: 100 // Assuming 100 for Free Tier
+                            });
+                        });
+                    });
                 } else {
-                    // USER IS NOT VERIFIED - Disable app and show notice
                     generateBtn.disabled = true;
                     surpriseBtn.disabled = true;
-                    errorDiv.textContent = ""; // Clear other errors
+                    errorDiv.textContent = "";
                     verificationNotice.classList.remove('hidden');
                     verificationNotice.innerHTML = `Please check your inbox to verify your email address. <a id="resend-verification">Resend verification email.</a>`;
                     document.getElementById('resend-verification').addEventListener('click', resendVerificationEmail);
