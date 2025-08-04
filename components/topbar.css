@@ -221,3 +221,15 @@
     border-radius: 4px;
     transition: width 0.5s ease-in-out;
 }
+
+/* --- NEW: Glowing Animation for Progress Bar --- */
+.glowing {
+    /* The animation will run for 1.5 seconds */
+    animation: glow-animation 1.5s ease-in-out;
+}
+
+@keyframes glow-animation {
+    0% { box-shadow: 0 0 5px #a020f0; }
+    50% { box-shadow: 0 0 20px 5px #ff00ff; }
+    100% { box-shadow: 0 0 5px #a020f0; }
+}
