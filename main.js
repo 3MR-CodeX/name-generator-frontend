@@ -199,7 +199,6 @@ async function getUserToken() {
 }
 
 async function generateName() {
-    // Handle anonymous user limits
     if (!window.auth.currentUser) {
         let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
         if (anonGenerations >= 10) {
@@ -217,7 +216,6 @@ async function generateName() {
     }
     promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
-
     document.getElementById("error").textContent = "";
 
     const category = document.getElementById("category").value;
@@ -237,10 +235,7 @@ async function generateName() {
         const token = await getUserToken();
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...(token && { "Authorization": `Bearer ${token}` })
-            },
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ prompt, category, style, language })
         });
         
@@ -258,9 +253,13 @@ async function generateName() {
             let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
             anonGenerations++;
             localStorage.setItem('anonGenerations', anonGenerations);
-            if(typeof window.updateUserStatusUI === 'function') window.updateUserStatusUI(null);
+            if(typeof window.updateGenerationCountUI === 'function') {
+                window.updateGenerationCountUI(Math.max(0, 10 - anonGenerations), 10);
+            }
         } else if (data.generationsLeft !== undefined) {
-             if(typeof window.updateUserStatusUI === 'function') window.updateUserStatusUI(window.auth.currentUser);
+             if(typeof window.updateGenerationCountUI === 'function') {
+                window.updateGenerationCountUI(data.generationsLeft, 100);
+             }
         }
 
         const progressBar = document.getElementById("generation-progress-bar");
@@ -268,14 +267,13 @@ async function generateName() {
             progressBar.classList.add("glowing");
             setTimeout(() => {
                 progressBar.classList.remove("glowing");
-            }, 1500);
+            }, 2000);
         }
 
         namesPre.textContent = data.names.map(cleanNames).join("\n\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
-
         if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
             refineSection.classList.remove("hidden-section");
             refineSection.classList.add("visible-section");
@@ -328,15 +326,15 @@ async function refineNames() {
         const data = await response.json();
 
         if (window.auth.currentUser && data.generationsLeft !== undefined) {
-             if(typeof window.updateUserStatusUI === 'function') {
-                window.updateUserStatusUI(window.auth.currentUser);
+             if(typeof window.updateGenerationCountUI === 'function') {
+                window.updateGenerationCountUI(data.generationsLeft, 100);
              }
              const progressBar = document.getElementById("generation-progress-bar");
              if (progressBar) {
                  progressBar.classList.add("glowing");
                  setTimeout(() => {
                      progressBar.classList.remove("glowing");
-                 }, 1500);
+                 }, 2000);
              }
         }
         
@@ -566,6 +564,7 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
 
 
