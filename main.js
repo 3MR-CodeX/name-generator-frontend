@@ -89,16 +89,13 @@ const recentHistoryDiv = document.getElementById("history");
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
-
     if (typeof initializeTopbar === 'function') initializeTopbar();
     if (typeof initializeSidebar === 'function') initializeSidebar();
     if (typeof initializeAuth === 'function') initializeAuth();
-    
     initializeUI();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
     setupTooltips();
-
     if (historyModal && closeButtonHistoryModal) {
         closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
         window.addEventListener('click', (event) => { if (event.target == historyModal) closeHistoryModal(); });
@@ -207,7 +204,6 @@ async function generateName() {
             return;
         }
     }
-
     const prompt = promptInput.value.trim();
     if (!prompt) {
         showTemporaryPlaceholderError(promptInput, "You cannot generate names without a description!");
@@ -217,11 +213,10 @@ async function generateName() {
     promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
     document.getElementById("error").textContent = "";
-
+    const keywords = document.getElementById("keywords").value.trim();
     const category = document.getElementById("category").value;
     const style = document.getElementById("style").value;
     const language = document.getElementById("language").value;
-    
     outputContainer.classList.remove("hidden-section");
     outputContainer.classList.add("visible-section");
     showLoading(namesPre);
@@ -230,15 +225,13 @@ async function generateName() {
     refinedOutputs.classList.add("hidden-section");
     refineSection.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
-
     try {
         const token = await getUserToken();
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ prompt, category, style, language })
+            body: JSON.stringify({ prompt, keywords, category, style, language })
         });
-        
         if (response.status === 403) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "You have run out of generations.");
@@ -248,28 +241,23 @@ async function generateName() {
             throw new Error(errorData.detail || "Unknown error during name generation.");
         }
         const data = await response.json();
-
         if (!window.auth.currentUser) {
             let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
             anonGenerations++;
             localStorage.setItem('anonGenerations', anonGenerations);
-            if(typeof window.updateGenerationCountUI === 'function') {
+            if (typeof window.updateGenerationCountUI === 'function') {
                 window.updateGenerationCountUI(Math.max(0, 10 - anonGenerations), 10);
             }
         } else if (data.generationsLeft !== undefined) {
-             if(typeof window.updateGenerationCountUI === 'function') {
+            if (typeof window.updateGenerationCountUI === 'function') {
                 window.updateGenerationCountUI(data.generationsLeft, 100);
-             }
+            }
         }
-
         const progressBar = document.getElementById("generation-progress-bar");
         if (progressBar) {
             progressBar.classList.add("glowing");
-            setTimeout(() => {
-                progressBar.classList.remove("glowing");
-            }, 2000);
+            setTimeout(() => { progressBar.classList.remove("glowing"); }, 2000);
         }
-
         namesPre.textContent = data.names.map(cleanNames).join("\n\n");
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         namesPre.classList.add("fade-in-content");
@@ -305,7 +293,6 @@ async function refineNames() {
     showLoading(refinedNamesPre);
     showLoading(refinedReasonsPre);
     disableButtons();
-
     try {
         const token = await getUserToken();
         const response = await fetch(`${BACKEND_URL}/refine`, {
@@ -313,31 +300,25 @@ async function refineNames() {
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ instruction })
         });
-        
         if (response.status === 403) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "You have run out of generations.");
         }
-        
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "Unknown error during name refinement.");
         }
         const data = await response.json();
-
         if (window.auth.currentUser && data.generationsLeft !== undefined) {
-             if(typeof window.updateGenerationCountUI === 'function') {
+            if (typeof window.updateGenerationCountUI === 'function') {
                 window.updateGenerationCountUI(data.generationsLeft, 100);
-             }
-             const progressBar = document.getElementById("generation-progress-bar");
-             if (progressBar) {
-                 progressBar.classList.add("glowing");
-                 setTimeout(() => {
-                     progressBar.classList.remove("glowing");
-                 }, 2000);
-             }
+            }
+            const progressBar = document.getElementById("generation-progress-bar");
+            if (progressBar) {
+                progressBar.classList.add("glowing");
+                setTimeout(() => { progressBar.classList.remove("glowing"); }, 2000);
+            }
         }
-        
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
         refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         refinedNamesPre.classList.add("fade-in-content");
@@ -433,21 +414,13 @@ async function restoreHistory(id) {
     editBox.classList.remove("prompt-error-placeholder");
     closeHistoryModal();
     closeHistoryDetailsModal();
-
     const token = await getUserToken();
     if (!token) return;
-
-    // NEW: Call the backend to sync the state
     await fetch(`${BACKEND_URL}/restore-history`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ id: id })
     });
-
-    // Fetch and display the history item as before
     fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } })
         .then(res => res.json())
         .then(historyData => {
@@ -459,12 +432,10 @@ async function restoreHistory(id) {
                 document.getElementById("language").value = entry.language;
                 namesPre.textContent = entry.names.map(cleanNames).join("\n\n");
                 reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
-                
                 namesPre.classList.add("fade-in-content");
                 reasonsPre.classList.add("fade-in-content");
                 outputContainer.classList.remove("hidden-section");
                 outputContainer.classList.add("visible-section");
-                
                 if (entry.category !== "Refined" && promptInput.value.trim()) {
                     refineSection.classList.remove("hidden-section");
                     refineSection.classList.add("visible-section");
@@ -477,7 +448,6 @@ async function restoreHistory(id) {
                 refinedOutputs.classList.add("hidden-section");
                 recentHistorySection.classList.remove("hidden-section");
                 recentHistorySection.classList.add("visible-section");
-                
                 if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
                     toggleSidebar();
                 }
@@ -486,6 +456,7 @@ async function restoreHistory(id) {
             }
         });
 }
+
 function surpriseMe() {
     const [prompt, category, style, language] = SURPRISES[Math.floor(Math.random() * SURPRISES.length)];
     promptInput.value = prompt;
@@ -497,7 +468,21 @@ function surpriseMe() {
 
 function copyToClipboard(elementId) {
     const text = document.getElementById(elementId).textContent;
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(text).then(() => {
+        const copyMessage = document.createElement('div');
+        copyMessage.textContent = "Copied to clipboard!";
+        copyMessage.style.cssText = `
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background-color: var(--button-purple); color: white; padding: 10px 20px;
+            border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-out;
+        `;
+        document.body.appendChild(copyMessage);
+        setTimeout(() => { copyMessage.style.opacity = 1; }, 10);
+        setTimeout(() => {
+            copyMessage.style.opacity = 0;
+            copyMessage.addEventListener('transitionend', () => copyMessage.remove());
+        }, 2000);
+    });
 }
 
 function resetDynamicSections() {
@@ -540,7 +525,6 @@ function closeHistoryModal() {
 async function showHistoryDetails(id) {
     if (!historyDetailsModal || !detailsContent) return;
     const token = await getUserToken();
-
     try {
         const response = await fetch(`${BACKEND_URL}/history`, { headers: { ...(token && { "Authorization": `Bearer ${token}` }) } });
         if (!response.ok) throw new Error("Could not fetch history for details.");
@@ -576,13 +560,3 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
-
-
-
-
-
-
-
-
-
-
