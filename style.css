@@ -699,3 +699,17 @@ pre {
     cursor: pointer;
     text-decoration: underline;
 }
+
+/* --- NEW: Keywords Field Styles --- */
+#keywords {
+    height: 45px; /* Roughly 1/4 the height of the textarea */
+    flex-grow: 0; /* Prevent it from growing like the textarea */
+    margin-bottom: 0;
+}
+
+.optional-text {
+    font-weight: 300; /* Thinner font */
+    font-size: 0.9em;
+    color: #aaa;
+    margin-left: 8px;
+}
