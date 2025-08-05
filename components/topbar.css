@@ -17,6 +17,7 @@
     box-shadow: 0 2px 0 0 var(--line-purple-glow), 0 0 15px 5px var(--line-purple-glow), 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
+/* Hexagon Button Styling */
 #hexagon-button {
     position: relative;
     width: var(--hexagon-button-size);
@@ -109,6 +110,7 @@
     height: 10px;
 }
 
+/* --- Auth UI Styling --- */
 #auth-section {
     position: absolute;
     right: 20px;
@@ -136,6 +138,7 @@
 .auth-buttons-container .sign-up-btn {
     background-color: var(--button-purple);
 }
+
 .auth-buttons-container .sign-up-btn:hover {
     background-color: #a020f0;
 }
@@ -144,6 +147,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
 }
 
 .user-profile-pfp {
@@ -152,6 +156,11 @@
     border-radius: 50%;
     border: 2px solid var(--line-purple-default);
     object-fit: cover;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.user-profile-container:hover .user-profile-pfp {
+    box-shadow: 0 0 10px 2px var(--line-purple-glow);
 }
 
 .user-profile-info .user-name {
@@ -170,6 +179,7 @@
     display: none !important;
 }
 
+/* --- User Status Styles --- */
 #user-status-container {
     display: flex;
     align-items: center;
@@ -178,6 +188,7 @@
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
+    position: relative; /* Needed for dropdown positioning */
 }
 
 .tier-badge {
@@ -188,6 +199,7 @@
     text-align: center;
     font-size: 0.9em;
     flex-shrink: 0;
+    cursor: pointer;
 }
 
 .tier-badge.free-tier { background-color: #ff00ff; }
@@ -222,9 +234,7 @@
     transition: width 0.5s ease-in-out;
 }
 
-/* --- NEW: Glowing Animation for Progress Bar --- */
 .glowing {
-    /* The animation will now run for 2 seconds */
     animation: glow-animation 2s ease-in-out;
 }
 
@@ -235,10 +245,10 @@
     100% { background-color: var(--button-purple); }
 }
 
-/* --- NEW: Dropdown Menu Styles --- */
+/* --- Dropdown Menu Styles --- */
 .dropdown-menu {
     position: absolute;
-    top: calc(100% + 10px); /* Position below the top bar */
+    top: calc(100% + 10px);
     right: 0;
     background-color: #2a2a2a;
     border: 1px solid #4a4a4a;
@@ -259,7 +269,6 @@
     visibility: visible;
 }
 
-/* Account Dropdown Specifics */
 #account-dropdown .account-info {
     margin-bottom: 10px;
     font-size: 0.9em;
@@ -282,10 +291,8 @@
     background-color: #a020f0;
 }
 
-
-/* Tier Dropdown Specifics */
 #tier-dropdown {
-    left: 0; /* Align to the left of its container */
+    left: 0;
     width: 320px;
 }
 #tier-dropdown .tier-item {
@@ -297,7 +304,7 @@
 #tier-dropdown .tier-item p {
     font-size: 0.85em;
     color: #cccccc;
-    font-weight: 300; /* Thinner font */
+    font-weight: 300;
     margin-top: 5px;
     line-height: 1.4;
 }
