@@ -41,7 +41,6 @@ function initializeAuth() {
     const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
 
     // --- UI Update Functions (Defined before they are called) ---
-
     window.updateGenerationCountUI = (count, max) => {
         if (max === Infinity) {
             generationCounter.textContent = `Unlimited Generations`;
@@ -61,12 +60,12 @@ function initializeAuth() {
         window.updateGenerationCountUI(data.generationsLeft, data.maxGenerations);
     }
     
-    window.updateUserStatusUI = (user) => {
+    function updateUIForAuthState(user) {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
 
-        // Hide all conditional UI elements by default to prevent flickering
+        // Hide all conditional UI elements by default
         userStatusContainer.classList.add('hidden');
         verificationNotice.classList.add('hidden');
         authButtonsContainer.classList.add('hidden');
@@ -98,11 +97,8 @@ function initializeAuth() {
                         fetch(`${BACKEND_URL}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
                         .then(res => res.json())
                         .then(status => {
-                            updateSubscriptionDisplay({
-                                tier: status.tier,
-                                generationsLeft: status.generationsLeft,
-                                maxGenerations: 100
-                            });
+                            // This uses the mock data from this file for display purposes
+                            updateUserStatusUI_mock(user); 
                         });
                     });
                 } else {
@@ -127,11 +123,38 @@ function initializeAuth() {
                 maxGenerations: 10
             });
         }
-    };
+    }
+
+    // Renamed this to avoid conflicts and to clarify it uses MOCK data
+    function updateUserStatusUI_mock(user) {
+        // To preview other tiers, change the "tier" value in the line below.
+        const mockUserData = { tier: "Free Tier" };
+
+        const tiers = {
+            "Free Tier": {
+                className: 'free-tier',
+                generationsLeft: 100,
+                maxGenerations: 100,
+            },
+            "Premium Tier": {
+                className: 'premium-tier',
+                generationsLeft: Infinity,
+                maxGenerations: Infinity,
+            },
+            "Business Tier": {
+                className: 'business-tier',
+                generationsLeft: Infinity,
+                maxGenerations: Infinity,
+            }
+        };
+
+        const userData = tiers[mockUserData.tier];
+        updateSubscriptionDisplay(userData);
+    }
 
     // --- Core Auth State Management ---
     auth.onAuthStateChanged(user => {
-        window.updateUserStatusUI(user);
+        updateUIForAuthState(user);
         if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
     });
 
@@ -159,6 +182,10 @@ function initializeAuth() {
             closeAllAuthModals();
         }
     });
+    
+    // (The rest of the functions: resendVerificationEmail, signUpWithEmail, signOut, etc. remain unchanged)
+    // ...
+}
 
     function resendVerificationEmail() {
         const user = auth.currentUser;
