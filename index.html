@@ -6,6 +6,7 @@
     <title>NameIT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico">
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="components/topbar.css">
     <link rel="stylesheet" href="components/sidebar.css">
@@ -13,6 +14,7 @@
 </head>
 <body>
     <div id="top-bar-placeholder"></div>
+
     <div id="sidebar-placeholder"></div>
 
     <div id="overlay"></div>
@@ -83,6 +85,7 @@
         <h1>NameIT</h1>
         <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
         <div id="verification-notice" class="hidden"></div>
+        
         <div class="container">
             <div class="input-section">
                 <div class="input-box textbox-column">
@@ -90,8 +93,7 @@
                     <textarea id="prompt" placeholder="Enter a description!"></textarea>
                     <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
                     <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
-
-                 </div>
+                </div>
                 <div class="input-box right-column">
                     <label for="category">Category</label>
                     <div class="tooltip-container">
@@ -124,23 +126,30 @@
                 <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
                 <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
             </div>
+            
+            <div id="more-like-this-section" class="hidden">
+                <label>More Like This</label>
+                <div id="more-like-this-container"></div>
+            </div>
+
             <div id="output_container" class="output-section">
-                 <div class="output-box">
+                <div class="output-box">
                     <div class="output-header">
                         <label>Generated Names/Titles</label>
                         <button class="copy-button" onclick="copyToClipboard('names')">📋</button>
-                     </div>
+                    </div>
                     <pre id="names"></pre>
                 </div>
                 <div class="output-box">
                     <div class="output-header">
                         <label>Explanations</label>
-                         <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
+                        <button class="copy-button" onclick="copyToClipboard('reasons')">📋</button>
                     </div>
                     <pre id="reasons"></pre>
                 </div>
             </div>
-             <div id="refine_section" class="refine-section">
+            
+            <div id="refine_section" class="refine-section">
                 <label for="edit_box">Refine the suggestions</label>
                 <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
             </div>
@@ -180,5 +189,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
-
