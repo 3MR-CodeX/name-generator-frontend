@@ -41,6 +41,7 @@ function initializeAuth() {
     const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
 
     // --- UI Update Functions (Defined before they are called) ---
+
     window.updateGenerationCountUI = (count, max) => {
         if (max === Infinity) {
             generationCounter.textContent = `Unlimited Generations`;
@@ -60,7 +61,7 @@ function initializeAuth() {
         window.updateGenerationCountUI(data.generationsLeft, data.maxGenerations);
     }
     
-    function updateUIForAuthState(user) {
+    window.updateUserStatusUI = (user) => {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
@@ -97,8 +98,11 @@ function initializeAuth() {
                         fetch(`${BACKEND_URL}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
                         .then(res => res.json())
                         .then(status => {
-                            // This uses the mock data from this file for display purposes
-                            updateUserStatusUI_mock(user); 
+                            updateSubscriptionDisplay({
+                                tier: status.tier,
+                                generationsLeft: status.generationsLeft,
+                                maxGenerations: 100
+                            });
                         });
                     });
                 } else {
@@ -123,38 +127,11 @@ function initializeAuth() {
                 maxGenerations: 10
             });
         }
-    }
-
-    // Renamed this to avoid conflicts and to clarify it uses MOCK data
-    function updateUserStatusUI_mock(user) {
-        // To preview other tiers, change the "tier" value in the line below.
-        const mockUserData = { tier: "Free Tier" };
-
-        const tiers = {
-            "Free Tier": {
-                className: 'free-tier',
-                generationsLeft: 100,
-                maxGenerations: 100,
-            },
-            "Premium Tier": {
-                className: 'premium-tier',
-                generationsLeft: Infinity,
-                maxGenerations: Infinity,
-            },
-            "Business Tier": {
-                className: 'business-tier',
-                generationsLeft: Infinity,
-                maxGenerations: Infinity,
-            }
-        };
-
-        const userData = tiers[mockUserData.tier];
-        updateSubscriptionDisplay(userData);
-    }
+    };
 
     // --- Core Auth State Management ---
     auth.onAuthStateChanged(user => {
-        updateUIForAuthState(user);
+        window.updateUserStatusUI(user);
         if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
     });
 
@@ -182,10 +159,6 @@ function initializeAuth() {
             closeAllAuthModals();
         }
     });
-    
-    // (The rest of the functions: resendVerificationEmail, signUpWithEmail, signOut, etc. remain unchanged)
-    // ...
-}
 
     function resendVerificationEmail() {
         const user = auth.currentUser;
@@ -272,10 +245,8 @@ function initializeAuth() {
     function toggleDropdown(dropdown) {
         if (!dropdown) return;
         const isVisible = dropdown.classList.contains('visible');
-        // Close all dropdowns first
         if (accountDropdown) accountDropdown.classList.remove('visible');
         if (tierDropdown) tierDropdown.classList.remove('visible');
-        // If the target dropdown was not visible, show it
         if (!isVisible) {
             dropdown.classList.add('visible');
         }
