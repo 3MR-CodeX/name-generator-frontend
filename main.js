@@ -1,69 +1,8 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
-const CATEGORY_OPTIONS = [
-  "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game",
-  "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product",
-  "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"
-];
-const STYLE_OPTIONS = [
-  "Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy",
-  "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy",
-  "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative",
-  "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious",
-  "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive",
-  "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"
-];
-// RESTORED: Full list of Surprise Me prompts
-const SURPRISES = [
-    ["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"],
-    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
-    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
-    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
-    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
-    ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"],
-    ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"],
-    ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"],
-    ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"],
-    ["An edgy and futuristic name for a cyberpunk productivity app", "App", "Futuristic", "English"],
-    ["A wholesome name for a cozy coffee shop in a rainy city", "Place", "Wholesome", "English"],
-    ["A bold and cryptic name for an underground hacker forum", "Platform", "Dark", "English"],
-    ["A magical and whimsical name for a children’s toy line", "Product", "Whimsical", "English"],
-    ["A high-energy name for a viral TikTok challenge", "Trend", "Catchy", "English"],
-    ["A mysterious name for an AI-powered time travel game", "Game", "Mysterious", "English"],
-    ["A funky brand name for a retro streetwear label", "Brand", "Retro", "English"],
-    ["A futuristic name for a space-themed meditation app", "App", "Zen", "English"],
-    ["A gritty name for a post-apocalyptic survival video game", "Game", "Intense", "English"],
-    ["A dramatic title for a thriller about corporate espionage", "Video", "Suspense", "English"],
-    ["A charming name for a vintage bookstore", "Place", "Cozy", "English"],
-    ["A stylish name for a luxury sneaker brand", "Product", "Fashion", "English"],
-    ["A joyful and energetic name for a dance studio", "Place", "Cheerful", "English"],
-    ["A techy and scalable name for a SaaS startup", "App", "Professional", "English"],
-    ["An abstract name for a generative art collective", "Platform", "Creative", "English"],
-    ["A powerful name for a female-led crypto fintech brand", "Brand", "Bold", "English"],
-    ["A mystical name for a fantasy book publishing house", "Platform", "Fantasy", "English"],
-    ["An iconic name for a retro-style arcade game", "Game", "Arcade", "English"],
-    ["A hilarious name for a parody news site", "Platform", "Funny", "English"],
-    ["An ethereal name for a nature-inspired skincare line", "Product", "Organic", "English"],
-    ["A clever name for an AI assistant for writers", "App", "Smart", "English"],
-    ["A peaceful name for a forest retreat resort", "Place", "Relaxing", "English"],
-    ["An intriguing name for a tech documentary series", "Video", "Informative", "English"],
-    ["A fashionable name for a digital outfit creator", "Product", "Stylish", "English"],
-    ["A punchy name for an esports team", "Platform", "Competitive", "English"],
-    ["A quirky name for a smart pet gadget", "Product", "Playful", "English"],
-    ["A surreal name for a virtual dream simulator", "App", "Surreal", "English"],
-    ["An optimistic name for a mental health journaling app", "App", "Uplifting", "English"],
-    ["A sleek name for a futuristic transportation startup", "Brand", "Sleek", "English"],
-    ["A mythical name for a fantasy map generation tool", "App", "Mythical", "English"],
-    ["A classy name for an online wine subscription service", "Product", "Classy", "English"],
-    ["An awe-inspiring name for a photography portfolio site", "Platform", "Artistic", "English"],
-    ["A mysterious name for an anonymous feedback app", "App", "Cryptic", "English"],
-    ["A snappy name for a productivity browser extension", "App", "Efficient", "English"],
-    ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"],
-    ["A chilling title for a horror podcast series", "Video", "Scary", "English"]
-];
-
-// (The rest of the main.js file is identical to the last version and is omitted for brevity)
-// ...
+const CATEGORY_OPTIONS = ["App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
+const STYLE_OPTIONS = ["Random", "Powerful", "aggressive", "Artistic", "Arcade", "Bold", "Catchy", "Cheerful", "Classy", "Cozy", "Creative", "Cryptic", "Cute", "Dark", "Edgy", "Elegant", "Efficient", "Fantasy", "Fashion", "Funny", "Futuristic", "Informative", "Intense", "Luxury", "Minimal", "Modern", "Mythical", "Organic", "Playful", "Mysterious", "Professional", "Retro", "Relaxing", "Scary", "Smart", "Stylish", "Sleek", "Competitive", "Suspense", "Surreal", "Traditional", "Uplifting", "Wholesome", "Zen", "Whimsical"];
+const SURPRISES = [["أريد اسمًا قويًا ومميزًا لعلامة تجارية عربية جديدة في مجال التكنولوجيا", "Brand", "Powerful", "Arabic"], ["A silly and cute name for a hyperactive parrot", "Pet", "Funny", "English"], ["A strange, ancient place hidden under the ocean", "Place", "Mysterious", "English"], ["An elegant and luxurious name for a new high-end perfume line", "Product", "Luxury", "English"], ["A poetic name for a short film about isolation and self-discovery", "Video", "Minimal", "English"], ["An edgy and futuristic name for a cyberpunk productivity app", "App", "Futuristic", "English"], ["A wholesome name for a cozy coffee shop in a rainy city", "Place", "Wholesome", "English"], ["A bold and cryptic name for an underground hacker forum", "Platform", "Dark", "English"], ["A magical and whimsical name for a children’s toy line", "Product", "Whimsical", "English"], ["A high-energy name for a viral TikTok challenge", "Trend", "Catchy", "English"], ["A mysterious name for an AI-powered time travel game", "Game", "Mysterious", "English"], ["A funky brand name for a retro streetwear label", "Brand", "Retro", "English"], ["A futuristic name for a space-themed meditation app", "App", "Zen", "English"], ["A gritty name for a post-apocalyptic survival video game", "Game", "Intense", "English"], ["A dramatic title for a thriller about corporate espionage", "Video", "Suspense", "English"], ["A charming name for a vintage bookstore", "Place", "Cozy", "English"], ["A stylish name for a luxury sneaker brand", "Product", "Fashion", "English"], ["A joyful and energetic name for a dance studio", "Place", "Cheerful", "English"], ["A techy and scalable name for a SaaS startup", "App", "Professional", "English"], ["An abstract name for a generative art collective", "Platform", "Creative", "English"], ["A powerful name for a female-led crypto fintech brand", "Brand", "Bold", "English"], ["A mystical name for a fantasy book publishing house", "Platform", "Fantasy", "English"], ["An iconic name for a retro-style arcade game", "Game", "Arcade", "English"], ["A hilarious name for a parody news site", "Platform", "Funny", "English"], ["An ethereal name for a nature-inspired skincare line", "Product", "Organic", "English"], ["A clever name for an AI assistant for writers", "App", "Smart", "English"], ["A peaceful name for a forest retreat resort", "Place", "Relaxing", "English"], ["An intriguing name for a tech documentary series", "Video", "Informative", "English"], ["A fashionable name for a digital outfit creator", "Product", "Stylish", "English"], ["A punchy name for an esports team", "Platform", "Competitive", "English"], ["A quirky name for a smart pet gadget", "Product", "Playful", "English"], ["A surreal name for a virtual dream simulator", "App", "Surreal", "English"], ["An optimistic name for a mental health journaling app", "App", "Uplifting", "English"], ["A sleek name for a futuristic transportation startup", "Brand", "Sleek", "English"], ["A mythical name for a fantasy map generation tool", "App", "Mythical", "English"], ["A classy name for an online wine subscription service", "Product", "Classy", "English"], ["An awe-inspiring name for a photography portfolio site", "Platform", "Artistic", "English"], ["A mysterious name for an anonymous feedback app", "App", "Cryptic", "English"], ["A snappy name for a productivity browser extension", "App", "Efficient", "English"], ["A delightful name for a weekly design inspiration newsletter", "Platform", "Creative", "English"], ["A chilling title for a horror podcast series", "Video", "Scary", "English"]];
 
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
@@ -195,6 +134,43 @@ async function getUserToken() {
     return null;
 }
 
+function renderClickableNames(namesArray) {
+    namesPre.innerHTML = '';
+    namesPre.classList.add('clickable');
+    namesArray.forEach(name => {
+        const nameEl = document.createElement('div');
+        nameEl.className = 'generated-name';
+        nameEl.textContent = name;
+        nameEl.addEventListener('click', () => addSeedName(name));
+        namesPre.appendChild(nameEl);
+    });
+}
+
+function addSeedName(name) {
+    const moreLikeThisSection = document.getElementById("more-like-this-section");
+    const container = document.getElementById("more-like-this-container");
+    const existing = Array.from(container.children).map(el => el.textContent.slice(0, -1).trim());
+    if (existing.includes(name)) return;
+
+    moreLikeThisSection.classList.remove('hidden');
+    const tag = document.createElement('div');
+    tag.className = 'seed-tag';
+    tag.textContent = name;
+    
+    const removeBtn = document.createElement('span');
+    removeBtn.className = 'remove-seed';
+    removeBtn.textContent = 'x';
+    removeBtn.onclick = () => {
+        tag.remove();
+        if (container.children.length === 0) {
+            moreLikeThisSection.classList.add('hidden');
+        }
+    };
+    
+    tag.appendChild(removeBtn);
+    container.appendChild(tag);
+}
+
 async function generateName() {
     if (!window.auth.currentUser) {
         let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
@@ -213,10 +189,14 @@ async function generateName() {
     promptInput.placeholder = promptInput.dataset.originalPlaceholder;
     promptInput.classList.remove("prompt-error-placeholder");
     document.getElementById("error").textContent = "";
+
+    const seedNamesContainer = document.getElementById("more-like-this-container");
+    const seed_names = Array.from(seedNamesContainer.children).map(el => el.textContent.slice(0, -1).trim());
     const keywords = document.getElementById("keywords").value.trim();
     const category = document.getElementById("category").value;
     const style = document.getElementById("style").value;
     const language = document.getElementById("language").value;
+    
     outputContainer.classList.remove("hidden-section");
     outputContainer.classList.add("visible-section");
     showLoading(namesPre);
@@ -230,17 +210,19 @@ async function generateName() {
         const response = await fetch(`${BACKEND_URL}/generate`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ prompt, keywords, category, style, language })
+            body: JSON.stringify({ prompt, keywords, category, style, language, seed_names })
         });
-        if (response.status === 403) {
+        
+        if (response.status === 403 || response.status === 500) {
             const errorData = await response.json();
-            throw new Error(errorData.detail || "You have run out of generations.");
+            throw new Error(errorData.detail || "An error occurred.");
         }
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "Unknown error during name generation.");
         }
         const data = await response.json();
+
         if (!window.auth.currentUser) {
             let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
             anonGenerations++;
@@ -258,7 +240,7 @@ async function generateName() {
             progressBar.classList.add("glowing");
             setTimeout(() => { progressBar.classList.remove("glowing"); }, 2000);
         }
-        namesPre.textContent = data.names.map(cleanNames).join("\n\n");
+        renderClickableNames(data.names.map(cleanNames));
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
@@ -319,6 +301,7 @@ async function refineNames() {
                 setTimeout(() => { progressBar.classList.remove("glowing"); }, 2000);
             }
         }
+        renderClickableNames(data.names.map(cleanNames)); // Also make refined names clickable
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
         refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         refinedNamesPre.classList.add("fade-in-content");
@@ -358,6 +341,9 @@ function renderHistory(history, renderToModal = false) {
     const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
     if (!targetDiv) return;
     targetDiv.innerHTML = "";
+    if (!renderToModal) {
+        history = history.slice(0, 50);
+    }
     if (history.length === 0) {
         targetDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
         return;
@@ -430,7 +416,7 @@ async function restoreHistory(id) {
                 document.getElementById("category").value = entry.category;
                 document.getElementById("style").value = entry.style;
                 document.getElementById("language").value = entry.language;
-                namesPre.textContent = entry.names.map(cleanNames).join("\n\n");
+                renderClickableNames(entry.names.map(cleanNames)); // Use clickable render
                 reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
                 namesPre.classList.add("fade-in-content");
                 reasonsPre.classList.add("fade-in-content");
@@ -463,6 +449,9 @@ function surpriseMe() {
     document.getElementById("category").value = category;
     document.getElementById("style").value = style;
     document.getElementById("language").value = language;
+    document.getElementById("keywords").value = ''; // Clear keywords for surprise
+    document.getElementById("more-like-this-container").innerHTML = ''; // Clear seeds
+    document.getElementById("more-like-this-section").classList.add('hidden');
     generateName();
 }
 
@@ -471,17 +460,10 @@ function copyToClipboard(elementId) {
     navigator.clipboard.writeText(text).then(() => {
         const copyMessage = document.createElement('div');
         copyMessage.textContent = "Copied to clipboard!";
-        copyMessage.style.cssText = `
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background-color: var(--button-purple); color: white; padding: 10px 20px;
-            border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-out;
-        `;
+        copyMessage.style.cssText = `position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--button-purple); color: white; padding: 10px 20px; border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-out;`;
         document.body.appendChild(copyMessage);
         setTimeout(() => { copyMessage.style.opacity = 1; }, 10);
-        setTimeout(() => {
-            copyMessage.style.opacity = 0;
-            copyMessage.addEventListener('transitionend', () => copyMessage.remove());
-        }, 2000);
+        setTimeout(() => { copyMessage.style.opacity = 0; copyMessage.addEventListener('transitionend', () => copyMessage.remove()); }, 2000);
     });
 }
 
@@ -491,6 +473,8 @@ function resetDynamicSections() {
     refinedOutputs.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
     recentHistorySection.classList.add("hidden-section");
+    document.getElementById("more-like-this-section").classList.add('hidden');
+    document.getElementById("more-like-this-container").innerHTML = '';
     namesPre.textContent = "";
     reasonsPre.textContent = "";
     refinedNamesPre.textContent = "";
