@@ -240,7 +240,6 @@ async function generateName() {
             setTimeout(() => { progressBar.classList.remove("glowing"); }, 2000);
         }
 
-        renderClickableNames(data.names.map(cleanNames));
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
@@ -562,3 +561,4 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
