@@ -172,7 +172,7 @@ function addSeedName(name) {
 }
 
 async function generateName() {
-    if (generateBtn.disabled) return; // Prevent function from running if already disabled
+    if (generateBtn.disabled) return; 
 
     if (!window.auth.currentUser) {
         let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
@@ -205,7 +205,7 @@ async function generateName() {
     outputContainer.classList.add("visible-section");
     showLoading(namesPre);
     showLoading(reasonsPre);
-    disableButtons(); // This already disables the button at the start
+    disableButtons();
 
     try {
         const token = await getUserToken();
@@ -215,7 +215,7 @@ async function generateName() {
             body: JSON.stringify({ prompt, keywords, category, style, language, seed_names })
         });
         
-        if (!response.ok) { // Simplified error handling for any non-2xx response
+        if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.detail || `A server error occurred (Status: ${response.status}).`);
         }
@@ -240,6 +240,7 @@ async function generateName() {
             setTimeout(() => { progressBar.classList.remove("glowing"); }, 2000);
         }
 
+        renderClickableNames(data.names.map(cleanNames));
         reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         namesPre.classList.add("fade-in-content");
         reasonsPre.classList.add("fade-in-content");
@@ -260,10 +261,8 @@ async function generateName() {
         hideLoading(namesPre);
         hideLoading(reasonsPre);
         
-        // --- NEW COOLDOWN LOGIC ---
         let countdown = 5;
         generateBtn.textContent = `Please wait ${countdown}s...`;
-        // Keep the Surprise Me button disabled during cooldown
         surpriseBtn.disabled = true;
 
         const interval = setInterval(() => {
@@ -273,7 +272,6 @@ async function generateName() {
             } else {
                 clearInterval(interval);
                 generateBtn.textContent = '🎯 Generate Names';
-                // Re-enable all relevant buttons
                 enableButtons();
             }
         }, 1000);
@@ -318,7 +316,10 @@ async function refineNames() {
                 setTimeout(() => { progressBar.classList.remove("glowing"); }, 2000);
             }
         }
-        renderClickableNames(data.names.map(cleanNames)); // Also make refined names clickable
+        
+        // THIS IS THE LINE THAT WAS REMOVED
+        // renderClickableNames(data.names.map(cleanNames)); 
+
         refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
         refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         refinedNamesPre.classList.add("fade-in-content");
@@ -561,4 +562,3 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
-
