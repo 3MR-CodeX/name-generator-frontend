@@ -1,5 +1,3 @@
-// main.js
-
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = ["App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
@@ -45,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         closeButtonDetailsModal.addEventListener('click', () => { closeHistoryDetailsModal(); openHistoryModal(); });
         window.addEventListener('click', (event) => { if (event.target == historyDetailsModal) { closeHistoryDetailsModal(); openHistoryModal(); } });
     }
-    // Make the original refine button call the new function with "freestyle" action
+    // Updated to call the new structured refineNames function
     if(refineBtn) {
         refineBtn.onclick = () => {
             const instruction = editBox.value.trim();
@@ -291,8 +289,9 @@ async function generateName() {
     }
 }
 
-// *** NEW: UPGRADED REFINE FUNCTION ***
 async function refineNames(action, names = null, extra_info = "") {
+    if (refineBtn.disabled) return;
+
     editBox.placeholder = editBox.dataset.originalPlaceholder;
     editBox.classList.remove("prompt-error-placeholder");
     document.getElementById("error").textContent = "";
@@ -344,7 +343,25 @@ async function refineNames(action, names = null, extra_info = "") {
     } finally {
         hideLoading(refinedNamesPre);
         hideLoading(refinedReasonsPre);
-        enableButtons();
+        
+        // --- NEW COOLDOWN LOGIC FOR REFINE BUTTON ---
+        let countdown = 5;
+        refineBtn.textContent = `Please wait ${countdown}s...`;
+        // Keep other buttons disabled
+        generateBtn.disabled = true;
+        surpriseBtn.disabled = true;
+
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                refineBtn.textContent = `Please wait ${countdown}s...`;
+            } else {
+                clearInterval(interval);
+                refineBtn.textContent = '🛠️ Refine Suggestions';
+                // Re-enable all relevant buttons
+                enableButtons();
+            }
+        }, 1000);
     }
 }
 
