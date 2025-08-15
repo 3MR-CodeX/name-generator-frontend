@@ -111,6 +111,7 @@
 }
 
 /* --- Auth UI Styling --- */
+/* --- Auth UI Styling --- */
 #auth-section {
     position: absolute;
     right: 20px;
@@ -127,7 +128,13 @@
     padding: 8px 16px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Added transition */
+}
+
+/* --- NEW: Focus effect for top-bar buttons --- */
+.auth-buttons-container button:focus {
+    outline: none;
+    box-shadow: 0 0 8px 2px var(--line-purple-glow);
 }
 
 .auth-buttons-container button:hover {
@@ -142,6 +149,8 @@
 .auth-buttons-container .sign-up-btn:hover {
     background-color: #a020f0;
 }
+
+/* Other existing styles remain the same... */
 
 .user-profile-container {
     display: flex;
