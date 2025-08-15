@@ -92,10 +92,7 @@
                     <label for="prompt">What do you want to name?</label>
                     <textarea id="prompt" placeholder="Enter a description!"></textarea>
                     <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
-                    <div class="keywords-container">
-                        <div id="keywords-backdrop"></div>
-                        <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                    </div>
+                    <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
                 </div>
                 <div class="input-box right-column">
                     <label for="category">Category</label>
@@ -103,17 +100,13 @@
                          <span class="tooltip-icon" data-tooltip-text="Choose the type of item you're naming.">i</span>
                         <div class="tooltip-box"></div>
                     </div>
-                    <select id="category">
-                         <option value="">Select a category</option>
-                    </select>
+                    <select id="category"></select>
                     <label for="style">Style</label>
                      <div class="tooltip-container">
                         <span class="tooltip-icon" data-tooltip-text="Select the tone or vibe of the name.">i</span>
                         <div class="tooltip-box"></div>
                      </div>
-                     <select id="style">
-                        <option value="">Select a style</option>
-                    </select>
+                     <select id="style"></select>
                     <label for="language">Language</label>
                      <div class="tooltip-container">
                         <span class="tooltip-icon" data-tooltip-text="Pick the language for the generated names.">i</span>
