@@ -1,5 +1,4 @@
 /* Top Bar Styling */
-/* Top Bar Styling */
 #top-bar {
     position: fixed;
     top: 0;
@@ -11,12 +10,10 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
-    /* REMOVED box-shadow property */
-    border-bottom: 2px solid #2a2a2a; /* Added a subtle border instead */
+    border-bottom: 2px solid #2a2a2a; /* Replaces box-shadow */
 }
 
 /* All other topbar styles remain the same */
-
 /* Hexagon Button Styling */
 #hexagon-button {
     position: relative;
