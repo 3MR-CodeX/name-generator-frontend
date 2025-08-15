@@ -64,11 +64,12 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
+/* UPDATED: Reduced width and increased top padding */
 .main-content-wrapper {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px; 
     margin: 0 auto;
-    padding: 40px 20px; /* Increased padding */
+    padding: 40px 10px 20px 10px;
     position: relative;
     z-index: 1;
 }
@@ -81,7 +82,7 @@ body::before {
     border-radius: 8px;
     transition: background-color 0.3s;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
 }
 
 .banner-col:hover {
@@ -99,14 +100,14 @@ h1 {
     font-size: 3em;
     color: #ffffff;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* Increased space */
 }
 
 .description {
     font-size: 1.2em;
     color: #cccccc;
     text-align: center;
-    margin-bottom: 40px; /* Increased margin */
+    margin-bottom: 20px;
 }
 
 .container {
@@ -115,20 +116,23 @@ h1 {
     z-index: 1;
 }
 
+/* UPDATED: Increased margin-bottom */
 .input-section {
     display: flex;
     gap: 20px;
-    margin-bottom: 40px; /* Increased margin */
+    margin-bottom: 40px;
     flex-wrap: wrap;
 }
 
+/* UPDATED: Set min-height to stretch the boxes */
 .input-box {
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
-    padding: 15px; /* Increased padding */
-    border-radius: 12px; /* Increased border-radius */
+    padding: 10px;
+    border-radius: 8px;
     flex: 1;
     min-width: 300px;
+    min-height: 320px; /* Stretches the boxes */
 }
 
 .textbox-column {
@@ -137,8 +141,12 @@ h1 {
     flex-direction: column;
 }
 
+/* UPDATED: Made the right column a flexbox to distribute space */
 .right-column {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Increases space between dropdowns */
 }
 
 label {
@@ -152,82 +160,79 @@ textarea, select, input[type="text"] {
     background-color: rgba(58, 58, 58, 0.75);
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
-    border-radius: 10px; /* Increased border-radius */
-    padding: 12px; /* Adjusted padding */
+    border-radius: 8px;
+    padding: 10px;
     font-size: 16px;
     width: 100%;
     font-family: 'Roboto', sans-serif;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Added transition */
-}
-
-/* --- NEW: Focus effect for inputs --- */
-textarea:focus, select:focus, input[type="text"]:focus {
-    outline: none;
-    border-color: var(--line-purple-default);
-    box-shadow: 0 0 10px 2px var(--line-purple-glow);
 }
 
 textarea {
     resize: none;
-    flex-grow: 1;
+    flex-grow: 1; /* This makes the textarea fill the new stretched space */
     margin-bottom: 10px;
 }
 
-#keywords {
-    height: 48px; /* Adjusted height */
-    flex-grow: 0;
-    margin-bottom: 0;
-    padding-left: 15px;
+/* UPDATED: Stretched the refine box */
+#edit_box {
+    height: 220px;
+    margin-top: 10px;
+    margin-bottom: 20px; /* Increased space */
 }
 
-.button-section, .refine-button-section {
+/* UPDATED: Increased margin-bottom */
+.button-section {
     display: flex;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     flex-wrap: wrap;
 }
 
 button {
-    background-color: var(--button-purple);
     color: white;
-    border: 1px solid var(--button-purple);
-    border-radius: 10px; /* Increased border-radius */
-    padding: 12px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     transition: all 0.3s;
 }
 
-button:hover:not(:disabled) {
-    background-color: #a020f0;
-    border-color: #a020f0;
-    box-shadow: 0 0 10px 2px rgba(128, 0, 128, 0.7);
-}
-
-button:disabled {
-    background-color: #5a5a5a;
-    border-color: #5a5a5a;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-/* --- UPDATED: Button Hierarchy --- */
+/* UPDATED: Button thickness, colors, and hierarchy */
 .generate-btn {
     flex: 3;
-    padding: 15px; /* Make primary button larger */
-    font-size: 18px;
+    background-color: #ff00ff;
+    padding: 15px;
     font-weight: 500;
+}
+.generate-btn:hover:not(:disabled) {
+    background-color: #c400c4;
 }
 
 .surprise-btn {
     flex: 1;
-    background-color: transparent; /* Ghost button style */
-    border: 1px solid var(--button-purple);
+    background-color: transparent;
+    border: 2px solid #ff00ff;
+    padding: 15px;
+}
+.surprise-btn:hover:not(:disabled) {
+    background-color: #ff00ff;
 }
 
-.surprise-btn:hover:not(:disabled) {
-    background-color: var(--button-purple);
+.refine-btn {
+    width: 100%;
+    background-color: #ff00ff;
+    padding: 15px; /* Increased thickness */
+    font-weight: 500;
 }
+.refine-btn:hover:not(:disabled) {
+    background-color: #c400c4; /* Added hover effect */
+}
+
+#output_container {
+    margin-bottom: 40px; /* Increased space */
+}
+
+/* All other styles (modals, history, etc.) remain the same */
 
 /* Other existing styles remain the same... */
 
@@ -262,11 +267,6 @@ pre#names {
     transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease, margin 0.4s ease;
 }
 
-
-.refine-btn {
-    width: 100%;
-    z-index: 1;
-}
 
 .hidden-section {
     opacity: 0;
@@ -812,6 +812,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
