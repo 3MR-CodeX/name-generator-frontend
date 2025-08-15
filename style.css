@@ -832,49 +832,11 @@ pre {
     background-color: #333;
 }
 
-/* Keywords Input Box Styles */
-.keywords-container {
-    position: relative;
-    background-color: rgba(58, 58, 58, 0.75);
-    border: 1px solid #4a4a4a;
-    border-radius: 8px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    min-height: 45px; /* Same as original input */
-    color: #e0e0e0;
-    display: flex; /* Vertically center the text */
-    align-items: center;
-    padding: 10px;
-    padding-left: 15px; /* Add padding to the container */
-}
-
-.keywords-container .keyword-span {
-    color: white; /* Default color */
-}
-.keywords-container .keyword-span.completed {
-    color: #ff00ff; /* Purple for completed keywords */
-}
-
 #keywords {
-    all: unset;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 10px;
-    padding-left: 15px; /* Match container padding */
-    background: transparent;
-    color: transparent; /* Make original text invisible */
-    caret-color: white; /* Make the typing cursor visible */
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    height: 45px;
+    padding-left: 15px; /* Adds a little space so text isn't against the edge */
 }
 
-#keywords-backdrop {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
 
 @keyframes shake-animation {
     0%, 100% { transform: translateX(0); }
@@ -885,3 +847,4 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
