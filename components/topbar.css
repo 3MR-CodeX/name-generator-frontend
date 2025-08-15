@@ -1,4 +1,5 @@
 /* Top Bar Styling */
+/* Top Bar Styling */
 #top-bar {
     position: fixed;
     top: 0;
@@ -10,12 +11,11 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
-    box-shadow: 0 2px 0 0 var(--line-purple-default), 0 2px 10px rgba(0, 0, 0, 0.5);
-    transition: box-shadow 0.3s ease-in-out;
+    /* REMOVED box-shadow property */
+    border-bottom: 2px solid #2a2a2a; /* Added a subtle border instead */
 }
-#top-bar:hover {
-    box-shadow: 0 2px 0 0 var(--line-purple-glow), 0 0 15px 5px var(--line-purple-glow), 0 2px 10px rgba(0, 0, 0, 0.5);
-}
+
+/* All other topbar styles remain the same */
 
 /* Hexagon Button Styling */
 #hexagon-button {
