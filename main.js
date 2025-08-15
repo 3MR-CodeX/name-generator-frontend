@@ -25,9 +25,6 @@ const detailsContent = document.getElementById("details-content");
 const recentHistorySection = document.getElementById("history_section");
 const recentHistoryDiv = document.getElementById("history");
 
-const keywordsInput = document.getElementById("keywords");
-const keywordsBackdrop = document.getElementById("keywords-backdrop");
-
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
@@ -56,33 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             refineNames('freestyle', null, instruction);
         };
     }
-    if (keywordsInput && keywordsBackdrop) {
-        keywordsInput.addEventListener('input', updateKeywordsBackdrop);
-        updateKeywordsBackdrop();
-    }
 });
-
-// --- NEW/UPDATED KEYWORDS STYLING FUNCTION ---
-function updateKeywordsBackdrop() {
-    const text = keywordsInput.value;
-    const regex = /(\S+)([\s,.]*)/g;
-    let html = '';
-    let match;
-    while ((match = regex.exec(text)) !== null) {
-        const keyword = match[1];
-        const punctuation = match[2];
-        if (punctuation.length > 0) {
-            html += `<span class="keyword-span completed">${keyword}</span>${punctuation}`;
-        } else {
-            html += `<span class="keyword-span">${keyword}</span>`;
-        }
-    }
-    const lastMatchEnd = regex.lastIndex;
-    if (lastMatchEnd < text.length) {
-        html += text.substring(lastMatchEnd);
-    }
-    keywordsBackdrop.innerHTML = html;
-}
 
 async function loadComponent(placeholderId, componentUrl) {
     try {
@@ -186,7 +157,6 @@ function renderClickableNames(namesArray) {
     });
 }
 
-// --- UPDATED: addSeedName with limit and animations ---
 function addSeedName(name) {
     const moreLikeThisSection = document.getElementById("more-like-this-section");
     const container = document.getElementById("more-like-this-container");
@@ -433,6 +403,18 @@ function renderHistory(history, renderToModal = false) {
         targetDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
         return;
     }
+
+    const createTooltip = (entry) => {
+        let tooltip = `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}`;
+        if (entry.keywords) {
+            tooltip += `\nKeywords: ${entry.keywords}`;
+        }
+        if (entry.seed_names_used && entry.seed_names_used.length > 0) {
+            tooltip += `\nFrom Seeds: ${entry.seed_names_used.join(", ")}`;
+        }
+        return tooltip;
+    };
+
     if (renderToModal) {
         const groupedHistory = history.reduce((acc, entry) => {
             const date = new Date(entry.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -448,10 +430,9 @@ function renderHistory(history, renderToModal = false) {
             dateHeading.textContent = date;
             dailyContainer.appendChild(dateHeading);
             groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-                const tooltip = entry.category !== "Refined" ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` : `Refine Instruction: ${entry.prompt}`;
                 const button = document.createElement('button');
                 button.className = 'history-item';
-                button.title = tooltip;
+                button.title = entry.category === "Refined" ? `Refine Instruction: ${entry.prompt}` : createTooltip(entry);
                 button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
                 button.onclick = () => showHistoryDetails(entry.id);
                 dailyContainer.appendChild(button);
@@ -460,22 +441,27 @@ function renderHistory(history, renderToModal = false) {
         });
     } else {
         history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-            const tooltip = entry.category !== "Refined" ? `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}\nLanguage: ${entry.language}` : `Refine Instruction: ${entry.prompt}`;
             const button = document.createElement('button');
             button.className = 'history-item';
-            button.title = tooltip;
+            button.title = entry.category === "Refined" ? `Refine Instruction: ${entry.prompt}` : createTooltip(entry);
             const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
             let preRefinedHTML = '';
             if (entry.category === "Refined" && entry.pre_refined_names && entry.pre_refined_names.length > 0) {
                 const preRefinedText = `from: ${entry.pre_refined_names.map(cleanNames).join(", ")}`;
                 preRefinedHTML = `<small class="pre-refined-history">${preRefinedText}</small>`;
             }
-            button.innerHTML = `${names}${preRefinedHTML}`;
+            let seedNamesHTML = '';
+            if (entry.seed_names_used && entry.seed_names_used.length > 0) {
+                const seedNamesText = `from seeds: ${entry.seed_names_used.join(", ")}`;
+                seedNamesHTML = `<small class="seed-names-history">${seedNamesText}</small>`;
+            }
+            button.innerHTML = `${names}${seedNamesHTML}${preRefinedHTML}`;
             button.onclick = () => restoreHistory(entry.id);
             targetDiv.appendChild(button);
         });
     }
 }
+
 
 async function restoreHistory(id) {
     document.getElementById("error").textContent = "";
@@ -498,6 +484,7 @@ async function restoreHistory(id) {
             const entry = id === 'latest' ? historyData[0] : historyData.find(e => e.id === id);
             if (entry) {
                 promptInput.value = entry.prompt;
+                document.getElementById("keywords").value = entry.keywords || '';
                 document.getElementById("category").value = entry.category;
                 document.getElementById("style").value = entry.style;
                 document.getElementById("language").value = entry.language;
@@ -537,7 +524,6 @@ function surpriseMe() {
     document.getElementById("keywords").value = ''; 
     document.getElementById("more-like-this-container").innerHTML = '';
     document.getElementById("more-like-this-section").classList.remove('visible');
-    updateKeywordsBackdrop();
     generateName();
 }
 
@@ -610,6 +596,12 @@ async function showHistoryDetails(id) {
                 }
             } else {
                 contentHtml += `<p><strong>Prompt:</strong> ${entry.prompt}</p>`;
+                if (entry.keywords) {
+                    contentHtml += `<p><strong>Keywords:</strong> ${entry.keywords}</p>`;
+                }
+                if (entry.seed_names_used && entry.seed_names_used.length > 0) {
+                    contentHtml += `<p><strong>From Seeds:</strong> ${entry.seed_names_used.join(", ")}</p>`;
+                }
                 contentHtml += `<p><strong>Category:</strong> ${entry.category}</p>`;
                 contentHtml += `<p><strong>Style:</strong> ${entry.style}</p>`;
                 contentHtml += `<p><strong>Language:</strong> ${entry.language}</p>`;
