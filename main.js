@@ -25,7 +25,6 @@ const detailsContent = document.getElementById("details-content");
 const recentHistorySection = document.getElementById("history_section");
 const recentHistoryDiv = document.getElementById("history");
 
-// --- NEW: Elements for Keywords Input ---
 const keywordsInput = document.getElementById("keywords");
 const keywordsBackdrop = document.getElementById("keywords-backdrop");
 
@@ -57,31 +56,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             refineNames('freestyle', null, instruction);
         };
     }
-    // --- NEW: Event Listener for Keywords Input ---
     if (keywordsInput && keywordsBackdrop) {
         keywordsInput.addEventListener('input', updateKeywordsBackdrop);
-        updateKeywordsBackdrop(); // Initial render
+        updateKeywordsBackdrop();
     }
 });
 
-// --- NEW: Keywords Styling Function ---
+// --- NEW/UPDATED KEYWORDS STYLING FUNCTION ---
 function updateKeywordsBackdrop() {
     const text = keywordsInput.value;
-    const regex = /([^,.]+)([.,]?)/g;
+    const regex = /(\S+)([\s,.]*)/g;
     let html = '';
     let match;
     while ((match = regex.exec(text)) !== null) {
         const keyword = match[1];
         const punctuation = match[2];
-        if (keyword.trim()) {
-            html += `<span class="keyword-span">${keyword}</span>${punctuation}`;
+        if (punctuation.length > 0) {
+            html += `<span class="keyword-span completed">${keyword}</span>${punctuation}`;
         } else {
-            html += punctuation;
+            html += `<span class="keyword-span">${keyword}</span>`;
         }
+    }
+    const lastMatchEnd = regex.lastIndex;
+    if (lastMatchEnd < text.length) {
+        html += text.substring(lastMatchEnd);
     }
     keywordsBackdrop.innerHTML = html;
 }
-
 
 async function loadComponent(placeholderId, componentUrl) {
     try {
@@ -100,6 +101,7 @@ function initializeUI() {
     refinedOutputs.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
     recentHistorySection.classList.add("hidden-section");
+    document.getElementById("more-like-this-section").classList.remove('visible'); // Start hidden
     if (!promptInput.dataset.originalPlaceholder) {
         promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     }
@@ -198,7 +200,7 @@ function addSeedName(name) {
         return;
     }
 
-    moreLikeThisSection.classList.add('visible'); // Use add for animation
+    moreLikeThisSection.classList.add('visible');
     
     const tag = document.createElement('div');
     tag.className = 'seed-tag';
@@ -534,8 +536,8 @@ function surpriseMe() {
     document.getElementById("language").value = language;
     document.getElementById("keywords").value = ''; 
     document.getElementById("more-like-this-container").innerHTML = '';
-    document.getElementById("more-like-this-section").classList.remove('visible'); // Updated
-    updateKeywordsBackdrop(); // Update keywords display
+    document.getElementById("more-like-this-section").classList.remove('visible');
+    updateKeywordsBackdrop();
     generateName();
 }
 
@@ -557,7 +559,7 @@ function resetDynamicSections() {
     refinedOutputs.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
     recentHistorySection.classList.add("hidden-section");
-    document.getElementById("more-like-this-section").classList.remove('visible'); // Updated
+    document.getElementById("more-like-this-section").classList.remove('visible');
     document.getElementById("more-like-this-container").innerHTML = '';
     namesPre.textContent = "";
     reasonsPre.textContent = "";
