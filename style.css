@@ -64,16 +64,17 @@ body::before {
     100% { background-position: 0% 0%; }
 }
 
-/* UPDATED: Reduced width and increased top padding */
+/* UPDATED: Adjusted width and top padding */
 .main-content-wrapper {
     width: 100%;
-    max-width: 1100px; 
+    max-width: 1150px;
     margin: 0 auto;
     padding: 40px 10px 20px 10px;
     position: relative;
     z-index: 1;
 }
 
+/* UPDATED: Adjusted width */
 .banner-col {
     text-align: center;
     margin-bottom: 20px;
@@ -82,7 +83,7 @@ body::before {
     border-radius: 8px;
     transition: background-color 0.3s;
     width: 100%;
-    max-width: 1100px;
+    max-width: 1150px;
 }
 
 .banner-col:hover {
@@ -124,7 +125,6 @@ h1 {
     flex-wrap: wrap;
 }
 
-/* UPDATED: Set min-height to stretch the boxes */
 .input-box {
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
@@ -132,7 +132,7 @@ h1 {
     border-radius: 8px;
     flex: 1;
     min-width: 300px;
-    min-height: 320px; /* Stretches the boxes */
+    min-height: 320px;
 }
 
 .textbox-column {
@@ -141,12 +141,11 @@ h1 {
     flex-direction: column;
 }
 
-/* UPDATED: Made the right column a flexbox to distribute space */
 .right-column {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Increases space between dropdowns */
+    justify-content: space-between;
 }
 
 label {
@@ -169,15 +168,18 @@ textarea, select, input[type="text"] {
 
 textarea {
     resize: none;
-    flex-grow: 1; /* This makes the textarea fill the new stretched space */
+    flex-grow: 1;
     margin-bottom: 10px;
 }
 
-/* UPDATED: Stretched the refine box */
 #edit_box {
     height: 220px;
     margin-top: 10px;
-    margin-bottom: 20px; /* Increased space */
+    margin-bottom: 20px;
+}
+
+select {
+    margin-bottom: 10px;
 }
 
 /* UPDATED: Increased margin-bottom */
@@ -203,14 +205,16 @@ button {
     background-color: #ff00ff;
     padding: 15px;
     font-weight: 500;
+    border: 2px solid #ff00ff;
 }
 .generate-btn:hover:not(:disabled) {
     background-color: #c400c4;
+    border-color: #c400c4;
 }
 
 .surprise-btn {
     flex: 1;
-    background-color: transparent;
+    background-color: #1a1a1a;
     border: 2px solid #ff00ff;
     padding: 15px;
 }
@@ -221,15 +225,18 @@ button {
 .refine-btn {
     width: 100%;
     background-color: #ff00ff;
-    padding: 15px; /* Increased thickness */
+    padding: 15px;
     font-weight: 500;
+    border: 2px solid #ff00ff;
 }
 .refine-btn:hover:not(:disabled) {
-    background-color: #c400c4; /* Added hover effect */
+    background-color: #c400c4;
+    border-color: #c400c4;
 }
 
+/* UPDATED: Increased margin-bottom */
 #output_container {
-    margin-bottom: 40px; /* Increased space */
+    margin-bottom: 40px;
 }
 
 /* All other styles (modals, history, etc.) remain the same */
@@ -812,6 +819,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
