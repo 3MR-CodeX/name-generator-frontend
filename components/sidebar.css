@@ -6,8 +6,9 @@
     height: calc(100vh - var(--top-bar-height));
     background-color: rgba(34, 34, 34, 0.9);
     z-index: 999;
-    transition: left 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 2px 0 0 0 var(--line-purple-default), 2px 0 10px rgba(0, 0, 0, 0.5);
+    transition: left 0.5s ease-in-out;
+    /* REMOVED box-shadow property */
+    border-right: 2px solid #2a2a2a; /* Added a subtle border instead */
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -21,6 +22,7 @@
 #sidebar.sidebar-open {
     left: 0;
 }
+
 
 .sidebar-content {
     color: #e0e0e0;
