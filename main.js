@@ -72,7 +72,7 @@ function initializeUI() {
     refinedOutputs.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
     recentHistorySection.classList.add("hidden-section");
-    document.getElementById("more-like-this-section").classList.remove('visible'); // Start hidden
+    document.getElementById("more-like-this-section").classList.remove('visible');
     if (!promptInput.dataset.originalPlaceholder) {
         promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     }
