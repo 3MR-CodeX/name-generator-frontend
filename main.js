@@ -25,6 +25,10 @@ const detailsContent = document.getElementById("details-content");
 const recentHistorySection = document.getElementById("history_section");
 const recentHistoryDiv = document.getElementById("history");
 
+// --- NEW: Elements for Keywords Input ---
+const keywordsInput = document.getElementById("keywords");
+const keywordsBackdrop = document.getElementById("keywords-backdrop");
+
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
@@ -43,7 +47,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         closeButtonDetailsModal.addEventListener('click', () => { closeHistoryDetailsModal(); openHistoryModal(); });
         window.addEventListener('click', (event) => { if (event.target == historyDetailsModal) { closeHistoryDetailsModal(); openHistoryModal(); } });
     }
-    // Updated to call the new structured refineNames function
     if(refineBtn) {
         refineBtn.onclick = () => {
             const instruction = editBox.value.trim();
@@ -54,7 +57,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             refineNames('freestyle', null, instruction);
         };
     }
+    // --- NEW: Event Listener for Keywords Input ---
+    if (keywordsInput && keywordsBackdrop) {
+        keywordsInput.addEventListener('input', updateKeywordsBackdrop);
+        updateKeywordsBackdrop(); // Initial render
+    }
 });
+
+// --- NEW: Keywords Styling Function ---
+function updateKeywordsBackdrop() {
+    const text = keywordsInput.value;
+    const regex = /([^,.]+)([.,]?)/g;
+    let html = '';
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+        const keyword = match[1];
+        const punctuation = match[2];
+        if (keyword.trim()) {
+            html += `<span class="keyword-span">${keyword}</span>${punctuation}`;
+        } else {
+            html += punctuation;
+        }
+    }
+    keywordsBackdrop.innerHTML = html;
+}
+
 
 async function loadComponent(placeholderId, componentUrl) {
     try {
@@ -157,13 +184,22 @@ function renderClickableNames(namesArray) {
     });
 }
 
+// --- UPDATED: addSeedName with limit and animations ---
 function addSeedName(name) {
     const moreLikeThisSection = document.getElementById("more-like-this-section");
     const container = document.getElementById("more-like-this-container");
     const existing = Array.from(container.children).map(el => el.textContent.slice(0, -1).trim());
-    if (existing.includes(name)) return;
+    
+    if (existing.includes(name) || existing.length >= 3) {
+        if (existing.length >= 3) {
+            moreLikeThisSection.classList.add('shake');
+            setTimeout(() => moreLikeThisSection.classList.remove('shake'), 500);
+        }
+        return;
+    }
 
-    moreLikeThisSection.classList.remove('hidden');
+    moreLikeThisSection.classList.add('visible'); // Use add for animation
+    
     const tag = document.createElement('div');
     tag.className = 'seed-tag';
     tag.textContent = name;
@@ -172,10 +208,13 @@ function addSeedName(name) {
     removeBtn.className = 'remove-seed';
     removeBtn.textContent = 'x';
     removeBtn.onclick = () => {
-        tag.remove();
-        if (container.children.length === 0) {
-            moreLikeThisSection.classList.add('hidden');
-        }
+        tag.classList.add('pop-out');
+        tag.addEventListener('animationend', () => {
+            tag.remove();
+            if (container.children.length === 0) {
+                moreLikeThisSection.classList.remove('visible');
+            }
+        });
     };
     
     tag.appendChild(removeBtn);
@@ -344,10 +383,8 @@ async function refineNames(action, names = null, extra_info = "") {
         hideLoading(refinedNamesPre);
         hideLoading(refinedReasonsPre);
         
-        // --- NEW COOLDOWN LOGIC FOR REFINE BUTTON ---
         let countdown = 5;
         refineBtn.textContent = `Please wait ${countdown}s...`;
-        // Keep other buttons disabled
         generateBtn.disabled = true;
         surpriseBtn.disabled = true;
 
@@ -358,7 +395,6 @@ async function refineNames(action, names = null, extra_info = "") {
             } else {
                 clearInterval(interval);
                 refineBtn.textContent = '🛠️ Refine Suggestions';
-                // Re-enable all relevant buttons
                 enableButtons();
             }
         }, 1000);
@@ -498,7 +534,8 @@ function surpriseMe() {
     document.getElementById("language").value = language;
     document.getElementById("keywords").value = ''; 
     document.getElementById("more-like-this-container").innerHTML = '';
-    document.getElementById("more-like-this-section").classList.add('hidden');
+    document.getElementById("more-like-this-section").classList.remove('visible'); // Updated
+    updateKeywordsBackdrop(); // Update keywords display
     generateName();
 }
 
@@ -520,7 +557,7 @@ function resetDynamicSections() {
     refinedOutputs.classList.add("hidden-section");
     refineBtn.classList.add("hidden-section");
     recentHistorySection.classList.add("hidden-section");
-    document.getElementById("more-like-this-section").classList.add('hidden');
+    document.getElementById("more-like-this-section").classList.remove('visible'); // Updated
     document.getElementById("more-like-this-container").innerHTML = '';
     namesPre.textContent = "";
     reasonsPre.textContent = "";
