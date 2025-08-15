@@ -701,13 +701,6 @@ pre {
     text-decoration: underline;
 }
 
-/* --- NEW: Keywords Field Styles --- */
-#keywords {
-    height: 45px; /* Roughly 1/4 the height of the textarea */
-    flex-grow: 0; /* Prevent it from growing like the textarea */
-    margin-bottom: 0;
-}
-
 .optional-text {
     font-weight: 300; /* Thinner font */
     font-size: 0.9em;
@@ -715,11 +708,11 @@ pre {
     margin-left: 8px;
 }
 
-/* --- NEW STYLES FROM LATEST REQUEST --- */
+/* --- UPDATED & NEW STYLES FROM LATEST REQUEST --- */
 
 /* Generated Name Bubble Styles */
 #names.clickable .generated-name {
-    display: inline-block;
+    display: block; /* UPDATED: Makes names stack vertically */
     padding: 6px 12px;
     margin: 4px;
     border-radius: 16px;
@@ -738,7 +731,6 @@ pre {
 #more-like-this-section {
     margin-top: 10px;
     margin-bottom: 10px;
-    /* Animation properties are now handled by class toggling */
     transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease, margin 0.4s ease;
 }
 
@@ -748,6 +740,7 @@ pre {
     transform: translateY(-10px);
     margin-top: 0;
     margin-bottom: 0;
+    pointer-events: none;
 }
 
 #more-like-this-section.visible {
@@ -788,7 +781,6 @@ pre {
     100% { transform: scale(0.5); opacity: 0; }
 }
 
-
 .remove-seed {
     display: flex;
     align-items: center;
@@ -815,26 +807,32 @@ pre {
     background-color: rgba(58, 58, 58, 0.75);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
-    padding: 10px;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    min-height: 45px;
+    min-height: 45px; /* Same as original input */
     color: #e0e0e0;
+    display: flex; /* Vertically center the text */
+    align-items: center;
+    padding: 10px;
+    padding-left: 15px; /* Add padding to the container */
 }
 
 .keywords-container .keyword-span {
-    color: #ff00ff; /* Purple for keywords */
+    color: white; /* Default color */
+}
+.keywords-container .keyword-span.completed {
+    color: #ff00ff; /* Purple for completed keywords */
 }
 
 #keywords {
-    all: unset; /* Remove all default styling */
+    all: unset;
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
     padding: 10px;
-    padding-left: 15px; /* Move text to the right */
+    padding-left: 15px; /* Match container padding */
     background: transparent;
     color: transparent; /* Make original text invisible */
     caret-color: white; /* Make the typing cursor visible */
@@ -845,10 +843,8 @@ pre {
 #keywords-backdrop {
     white-space: pre-wrap;
     word-wrap: break-word;
-    padding-left: 5px; /* Match the input's padding-left */
 }
 
-/* Animation for More Like This section when limit is reached */
 @keyframes shake-animation {
     0%, 100% { transform: translateX(0); }
     10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
