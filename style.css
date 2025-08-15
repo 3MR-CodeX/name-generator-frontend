@@ -203,7 +203,7 @@ label {
     visibility: visible;
 }
 
-textarea, select {
+textarea, select, input[type="text"] {
     background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
@@ -277,8 +277,9 @@ button:disabled {
     max-height: 0;
     overflow: hidden;
     transform: translateY(20px);
-    transition: opacity 0.5s ease-out, max-height 0.7s ease-out, transform 0.5s ease-out;
+    transition: opacity 0.5s ease-out, max-height 0.7s ease-out, transform 0.5s ease-out, margin 0.5s ease-out;
     pointer-events: none;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
 
@@ -286,7 +287,7 @@ button:disabled {
     opacity: 1;
     max-height: 1000px;
     transform: translateY(0);
-    transition: opacity 0.5s ease-out, max-height 0.7s ease-out, transform 0.5s ease-out;
+    transition: opacity 0.5s ease-out, max-height 0.7s ease-out, transform 0.5s ease-out, margin 0.5s ease-out;
     pointer-events: auto;
     margin-bottom: 20px !important;
 }
@@ -712,4 +713,148 @@ pre {
     font-size: 0.9em;
     color: #aaa;
     margin-left: 8px;
+}
+
+/* --- NEW STYLES FROM LATEST REQUEST --- */
+
+/* Generated Name Bubble Styles */
+#names.clickable .generated-name {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 4px;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#names.clickable .generated-name:hover {
+    border-color: #ff00ff;
+    background-color: rgba(255, 0, 255, 0.1);
+    box-shadow: 0 0 10px 2px #ff00ff;
+}
+
+/* More Like This Section Styles */
+#more-like-this-section {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* Animation properties are now handled by class toggling */
+    transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease, margin 0.4s ease;
+}
+
+#more-like-this-section:not(.visible) {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#more-like-this-section.visible {
+    opacity: 1;
+    max-height: 200px; 
+    transform: translateY(0);
+}
+
+#more-like-this-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 5px;
+}
+
+.seed-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #7f00f7;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.seed-tag.pop-out {
+    animation: popOut 0.3s ease-out forwards;
+}
+
+@keyframes popOut {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.5); opacity: 0; }
+}
+
+
+.remove-seed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 12px; /* Space between name and X */
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    transition: background-color 0.2s;
+}
+
+.remove-seed:hover {
+    background-color: #333;
+}
+
+/* Keywords Input Box Styles */
+.keywords-container {
+    position: relative;
+    background-color: rgba(58, 58, 58, 0.75);
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    min-height: 45px;
+    color: #e0e0e0;
+}
+
+.keywords-container .keyword-span {
+    color: #ff00ff; /* Purple for keywords */
+}
+
+#keywords {
+    all: unset; /* Remove all default styling */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    padding-left: 15px; /* Move text to the right */
+    background: transparent;
+    color: transparent; /* Make original text invisible */
+    caret-color: white; /* Make the typing cursor visible */
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+#keywords-backdrop {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding-left: 5px; /* Match the input's padding-left */
+}
+
+/* Animation for More Like This section when limit is reached */
+@keyframes shake-animation {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+#more-like-this-section.shake {
+    animation: shake-animation 0.5s ease-in-out;
 }
