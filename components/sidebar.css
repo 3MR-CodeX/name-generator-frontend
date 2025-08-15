@@ -7,8 +7,7 @@
     background-color: rgba(34, 34, 34, 0.9);
     z-index: 999;
     transition: left 0.5s ease-in-out;
-    /* REMOVED box-shadow property */
-    border-right: 2px solid #2a2a2a; /* Added a subtle border instead */
+    border-right: 2px solid #2a2a2a; /* Replaces box-shadow */
     padding: 20px;
     display: flex;
     flex-direction: column;
