@@ -38,7 +38,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('patternV2.png');
+    background-image: url('patternV3.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -836,6 +836,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
