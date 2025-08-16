@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NameIT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.png">
+    <link rel="icon" href="favicon.ico">
     
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="components/topbar.css">
@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="components/auth/auth.css">
 </head>
 <body>
-    <div class="animated-line left"></div>
-    <div class="animated-line right"></div>
+    <div id="background-container">
+        <div class="animated-bar left"></div>
+        <div class="animated-bar right"></div>
+        <div class="background-pattern"></div>
+    </div>
 
     <div id="top-bar-placeholder"></div>
 
@@ -109,11 +112,6 @@
                         <option value="English">English</option>
                         <option value="Arabic">Arabic</option>
                     </select>
-
-                    <label for="pattern">Pattern</label>
-                    <select id="pattern" disabled>
-                        <option value="">Coming Soon</option>
-                    </select>
                 </div>
             </div>
             <div class="button-section">
@@ -121,7 +119,7 @@
                 <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
             </div>
             
-            <div id="more-like-this-section">
+            <div id="more-like-this-section" class="hidden">
                 <label>More Like This</label>
                 <div id="more-like-this-container"></div>
             </div>
@@ -183,5 +181,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
-
