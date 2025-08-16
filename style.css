@@ -16,7 +16,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a; /* Base color for the entire page */
+    background: #1a1a1a; /* Simple fallback background */
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
@@ -30,48 +30,54 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* This creates the left light beam */
-body::before {
-    content: '';
+/* --- NEW: Isolated Animation System --- */
+
+#background-animation-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* UPDATED: More vibrant and colorful gradient */
-    background: radial-gradient(800px circle at -20% 20%, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.2), transparent 40%);
+    z-index: -1; /* Place the container behind all content */
+    overflow: hidden;
+}
+
+.light-beam {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 0, 255, 0.25), transparent 60%);
+}
+
+.light-beam.left {
+    top: 20%;
+    left: -20%;
     animation: slide-left 20s infinite alternate ease-in-out;
-    z-index: -1;
-    pointer-events: none;
 }
 
-/* This creates the right light beam */
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* UPDATED: A different colorful gradient */
-    background: radial-gradient(800px circle at 120% 80%, rgba(0, 80, 255, 0.3), rgba(255, 0, 255, 0.2), transparent 40%);
+.light-beam.right {
+    top: 80%;
+    right: -20%;
     animation: slide-right 25s infinite alternate ease-in-out;
-    z-index: -1;
-    pointer-events: none;
+    background: radial-gradient(circle, rgba(0, 80, 255, 0.25), transparent 60%);
 }
 
-@keyframes slide-in-dual {
-    0% {
-        background-position: -30% 50%, 130% 50%;
-        opacity: 0;
+@keyframes slide-left {
+    from {
+        transform: translate(0, -15%);
     }
-    50% {
-        background-position: 20% 50%, 80% 50%; /* Move bars inward */
-        opacity: 1;
+    to {
+        transform: translate(10%, 15%);
     }
-    100% {
-        background-position: -30% 50%, 130% 50%;
-        opacity: 0;
+}
+
+@keyframes slide-right {
+    from {
+        transform: translate(0, 15%);
+    }
+    to {
+        transform: translate(-10%, -15%);
     }
 }
 
@@ -832,6 +838,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
