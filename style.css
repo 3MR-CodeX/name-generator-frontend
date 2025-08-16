@@ -1,7 +1,22 @@
+:root {
+    --top-bar-height: 60px;
+    --sidebar-width: 280px;
+    --hexagon-button-size: 80px;
+    --button-purple: #800080;
+    --line-purple-default: #ff00ff;
+    --line-purple-glow: #a500ff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a; /* Base color */
+    background: #1a1a1a;
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
@@ -15,7 +30,19 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* This is the top layer, displaying your pattern image */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
+    z-index: -2;
+}
+
 body::before {
     content: '';
     position: fixed;
@@ -23,67 +50,28 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('patternV2.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    opacity: 0.15;
-    z-index: -1; /* Layer is on top of the animation */
+    background: url('patternV2.png') repeat;
+    background-size: 400px 400px;
+    z-index: -1;
     pointer-events: none;
 }
 
-/* This ::after pseudo-element is not used */
-body::after {
-    display: none;
+@keyframes gradientShift {
+    0% { background-position: 0% 0%; }
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 25% 75%; }
+    100% { background-position: 0% 0%; }
 }
 
-/* This is the bottom layer, creating the animated bars */
-.animated-gradient-bar {
-    position: fixed;
-    top: 0;
-    height: 100%;
-    width: 30%; /* UPDATED: Thinner bars */
-    z-index: -2; /* Layer is behind the pattern */
-    pointer-events: none;
-    /* UPDATED: Switched to a soft radial gradient for a blurry effect */
-    background: radial-gradient(ellipse at center, rgba(255, 0, 255, 0.2), transparent 70%);
-}
-
-.animated-gradient-bar.left {
-    left: 0;
-    animation: slide-and-fade-left 15s infinite ease-in-out;
-}
-
-.animated-gradient-bar.right {
-    right: 0;
-    animation: slide-and-fade-right 15s infinite ease-in-out;
-    animation-delay: -7.5s; /* Makes the animations offset */
-}
-
-/* UPDATED: Keyframes to fade at the center */
-@keyframes slide-and-fade-left {
-    0% { transform: translateX(-90%); opacity: 0; }
-    50% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(-90%); opacity: 0; }
-}
-
-@keyframes slide-and-fade-right {
-    0% { transform: translateX(90%); opacity: 0; }
-    50% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(90%); opacity: 0; }
-}
-
-/* The rest of your style.css file continues from here... */
-
-/* --- MAIN CONTENT STYLES --- */
-
+/* UPDATED: Adjusted width and top padding */
 .main-content-wrapper {
     width: 100%;
     max-width: 1150px;
     margin: 0 auto;
     padding: 40px 10px 20px 10px;
     position: relative;
-    z-index: 1; /* Ensures content is above background */
+    z-index: 1;
 }
 
 /* ... the rest of your style.css remains the same as the last complete version ... */
@@ -833,6 +821,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
