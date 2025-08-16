@@ -54,7 +54,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    opacity: 0.15;
+    opacity: 1;
     z-index: 2; /* Sits ON TOP of the animation bars */
 }
 
@@ -854,6 +854,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
