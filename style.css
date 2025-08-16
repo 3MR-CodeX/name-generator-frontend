@@ -31,6 +31,7 @@ body {
 }
 
 /* This is the TOP layer, displaying your pattern image */
+/* This is the TOP layer, displaying your pattern image */
 body::before {
     content: '';
     position: fixed;
@@ -42,8 +43,8 @@ body::before {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    opacity: 0.15;
-    z-index: -1; /* Sits ON TOP of the animation */
+    opacity: 1; /* UPDATED: Set to 100% visible */
+    z-index: -1;
     pointer-events: none;
 }
 
@@ -839,6 +840,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
