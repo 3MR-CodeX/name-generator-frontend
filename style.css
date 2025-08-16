@@ -16,7 +16,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a; /* Simple fallback background */
+    background: #1a1a1a; /* Base color */
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
@@ -30,67 +30,65 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* --- NEW: Isolated Animation System --- */
-
-#background-animation-container {
+/* This is the TOP layer, displaying your pattern image */
+body::before {
+    content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Place the container behind all content */
-    overflow: hidden;
-}
-
-.light-beam {
-    position: absolute;
-    width: 800px;
-    height: 800px;
+    background-image: url('patternV2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    opacity: 0.15;
+    z-index: -1; /* Sits ON TOP of the animation */
     pointer-events: none;
-    background: radial-gradient(circle, rgba(255, 0, 255, 0.25), transparent 60%);
 }
 
-.light-beam.left {
-    top: 20%;
-    left: -20%;
-    animation: slide-left 20s infinite alternate ease-in-out;
+/* This is the BOTTOM layer, creating BOTH animated bars */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2; /* Sits BEHIND the pattern */
+    background-image:
+        /* Left bar */
+        linear-gradient(to right, rgba(255, 0, 255, 0.4), transparent 40%),
+        /* Right bar */
+        linear-gradient(to left, rgba(255, 0, 255, 0.4), transparent 40%);
+    background-repeat: no-repeat;
+    background-size: 50% 100%; /* Each bar takes up half the space */
+    animation: sweep-symmetrical 8s infinite linear;
 }
 
-.light-beam.right {
-    top: 80%;
-    right: -20%;
-    animation: slide-right 25s infinite alternate ease-in-out;
-    background: radial-gradient(circle, rgba(0, 80, 255, 0.25), transparent 60%);
-}
-
-@keyframes slide-left {
-    from {
-        transform: translate(0, -15%);
+@keyframes sweep-symmetrical {
+    0% {
+        background-position: -50% 0, 150% 0; /* Both start off-screen */
     }
-    to {
-        transform: translate(10%, 15%);
+    50% {
+        background-position: 0% 0, 100% 0; /* They meet at the edges */
+    }
+    100% {
+        background-position: -50% 0, 150% 0; /* Return to start */
     }
 }
 
-@keyframes slide-right {
-    from {
-        transform: translate(0, 15%);
-    }
-    to {
-        transform: translate(-10%, -15%);
-    }
-}
+/* --- MAIN CONTENT STYLES --- */
 
-/* UPDATED: Adjusted width and top padding */
 .main-content-wrapper {
     width: 100%;
     max-width: 1150px;
     margin: 0 auto;
     padding: 40px 10px 20px 10px;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Ensures content is above all background layers */
 }
-
 /* ... the rest of your style.css remains the same as the last complete version ... */
 
 /* UPDATED: Adjusted width */
@@ -838,6 +836,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
