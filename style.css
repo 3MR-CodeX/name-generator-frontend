@@ -38,10 +38,12 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('patternV2.png') repeat;
-    background-size: 400px 400px;
-    opacity: 0.1; /* Makes the pattern very subtle */
-    z-index: -1; /* Set to -1 to be on top of the lines */
+    background-image: url('patternV2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    opacity: 0.25; /* Increased opacity to make it visible */
+    z-index: -1;
     pointer-events: none;
 }
 
@@ -53,13 +55,12 @@ body::after {
 .animated-line {
     position: fixed;
     top: 0;
-    width: 3px; /* UPDATED: Wider line */
+    width: 9px; /* UPDATED: 3x wider line */
     height: 100%;
     background-color: #ff00ff;
-    /* UPDATED: Brighter, larger glow */
     box-shadow: 0 0 15px 3px rgba(255, 0, 255, 0.7);
     opacity: 0;
-    z-index: -2; /* UPDATED: Set to -2 to be behind the pattern */
+    z-index: -2; 
     pointer-events: none;
 }
 
@@ -845,6 +846,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
