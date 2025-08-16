@@ -16,7 +16,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a; /* The base color under the pattern */
+    background: #2a2a2a; /* Solid, dark gray base color */
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
@@ -30,7 +30,7 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* UPDATED: This now displays your patternV2.png on the TOP layer */
+/* This creates the left light beam */
 body::before {
     content: '';
     position: fixed;
@@ -38,59 +38,45 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('patternV2.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    opacity: 0.25; /* Increased opacity to make it visible */
+    background: radial-gradient(800px circle at -20% 20%, rgba(255, 0, 255, 0.15), transparent 40%);
+    animation: slide-left 20s infinite alternate ease-in-out;
     z-index: -1;
     pointer-events: none;
 }
 
+/* This creates the right light beam */
 body::after {
-    display: none;
-}
-
-/* UPDATED: Sliding Line Animation */
-.animated-line {
+    content: '';
     position: fixed;
     top: 0;
-    width: 9px; /* UPDATED: 3x wider line */
+    left: 0;
+    width: 100%;
     height: 100%;
-    background-color: #ff00ff;
-    box-shadow: 0 0 15px 3px rgba(255, 0, 255, 0.7);
-    opacity: 0;
-    z-index: -2; 
+    background: radial-gradient(800px circle at 120% 80%, rgba(255, 0, 255, 0.15), transparent 40%);
+    animation: slide-right 25s infinite alternate ease-in-out;
+    z-index: -1;
     pointer-events: none;
 }
 
-.animated-line.left {
-    left: 0;
-    animation: sweep-from-left 12s infinite linear;
+/* Animation for the left light beam */
+@keyframes slide-left {
+    from {
+        transform: translate(0, -15%);
+    }
+    to {
+        transform: translate(10%, 15%);
+    }
 }
 
-.animated-line.right {
-    right: 0;
-    animation: sweep-from-right 12s infinite linear;
-    /* UPDATED: animation-delay removed to start at the same time */
+/* Animation for the right light beam */
+@keyframes slide-right {
+    from {
+        transform: translate(0, 15%);
+    }
+    to {
+        transform: translate(-10%, -15%);
+    }
 }
-
-@keyframes sweep-from-left {
-    0% { transform: translateX(0); opacity: 0; }
-    10% { opacity: 0.5; }
-    50% { transform: translateX(50vw); opacity: 0; }
-    100% { transform: translateX(50vw); opacity: 0; }
-}
-
-@keyframes sweep-from-right {
-    0% { transform: translateX(0); opacity: 0; }
-    10% { opacity: 0.5; }
-    50% { transform: translateX(-50vw); opacity: 0; }
-    100% { transform: translateX(-50vw); opacity: 0; }
-}
-
-/* All other styles for .main-content-wrapper, h1, .container, etc., remain the same */
-
 /* UPDATED: Adjusted width and top padding */
 .main-content-wrapper {
     width: 100%;
@@ -846,6 +832,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
