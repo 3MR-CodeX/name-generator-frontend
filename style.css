@@ -32,6 +32,8 @@ body {
 
 /* --- DEFINITIVE BACKGROUND SYSTEM --- */
 
+/* --- DEFINITIVE BACKGROUND SYSTEM --- */
+
 #background-container {
     position: fixed;
     top: 0;
@@ -54,7 +56,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    opacity: 1;
+    opacity: 0.15;
     z-index: 2; /* Sits ON TOP of the animation bars */
 }
 
@@ -66,37 +68,31 @@ body {
     width: 20%; /* Controls the width of the blurry bar */
     z-index: 1; /* Sits BEHIND the pattern */
     opacity: 0; /* Start invisible */
-    background: linear-gradient(to right, transparent, rgba(255, 0, 255, 0.7), transparent);
+    /* Creates a vertical bar with soft edges */
+    background: linear-gradient(to right, transparent, rgba(255, 0, 255, 0.5), transparent);
 }
 
 .animated-bar.left {
     left: 0;
-    animation: sweep-to-center 10s infinite linear;
+    animation: sweep-left-to-center 8s infinite linear;
 }
 
 .animated-bar.right {
     right: 0;
-    /* Use the same animation, but the initial 'right: 0' makes it mirrored */
-    animation: sweep-to-center 10s infinite linear;
+    animation: sweep-right-to-center 8s infinite linear;
 }
 
-@keyframes sweep-to-center {
-    0% {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    40% {
-        opacity: 1; /* Fade in */
-    }
-    60% {
-        opacity: 1; /* Hold at full opacity */
-    }
-    100% {
-        transform: translateX(250%); /* Move to the center and slightly past to fade */
-        opacity: 0;
-    }
+@keyframes sweep-left-to-center {
+    0% { transform: translateX(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(50vw); opacity: 0; }
 }
 
+@keyframes sweep-right-to-center {
+    0% { transform: translateX(100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(-50vw); opacity: 0; }
+}
 
 /* --- MAIN CONTENT STYLES --- */
 
@@ -854,6 +850,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
