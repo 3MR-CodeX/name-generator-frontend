@@ -30,12 +30,7 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* This ::after pseudo-element is not used in the new design */
-body::after {
-    display: none;
-}
-
-/* This is the TOP layer, displaying your pattern image */
+/* This is the top layer, displaying your pattern image */
 body::before {
     content: '';
     position: fixed;
@@ -47,48 +42,43 @@ body::before {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    opacity: 1; /* A subtle opacity for the pattern */
-    z-index: -1; /* Sits ON TOP of the animation */
+    opacity: 0.15;
+    z-index: -1; /* Layer is on top of the animation */
     pointer-events: none;
 }
 
-/* --- NEW ANIMATED BARS --- */
-
-/* This is the BOTTOM layer, creating the animated bars */
-.animated-line {
+/* This is the bottom layer, creating the animated bars */
+.animated-gradient-bar {
     position: fixed;
     top: 0;
     height: 100%;
-    width: 2px; /* Thin, crisp line */
-    background: #ff00ff;
-    box-shadow: 0 0 8px 1px #ff00ff; /* Vibrant glow */
-    opacity: 0;
-    z-index: -2; /* Sits BEHIND the pattern */
+    width: 30%;
+    z-index: -2; /* Layer is behind the pattern */
     pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(255, 0, 255, 0.2), transparent 70%);
 }
 
-.animated-line.left {
+.animated-gradient-bar.left {
     left: 0;
-    animation: slide-fade-from-left 8s infinite ease-out;
+    animation: slide-and-fade-left 15s infinite ease-in-out;
 }
 
-.animated-line.right {
+.animated-gradient-bar.right {
     right: 0;
-    animation: slide-fade-from-right 8s infinite ease-out;
+    animation: slide-and-fade-right 15s infinite ease-in-out;
+    animation-delay: -7.5s; /* Makes the animations offset */
 }
 
-@keyframes slide-fade-from-left {
-    0% { transform: translateX(0); opacity: 0; }
-    25% { opacity: 0.7; }
-    50% { transform: translateX(50vw); opacity: 0; }
-    100% { transform: translateX(50vw); opacity: 0; }
+@keyframes slide-and-fade-left {
+    0% { transform: translateX(-90%); opacity: 0; }
+    50% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(-90%); opacity: 0; }
 }
 
-@keyframes slide-fade-from-right {
-    0% { transform: translateX(0); opacity: 0; }
-    25% { opacity: 0.7; }
-    50% { transform: translateX(-50vw); opacity: 0; }
-    100% { transform: translateX(-50vw); opacity: 0; }
+@keyframes slide-and-fade-right {
+    0% { transform: translateX(90%); opacity: 0; }
+    50% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(90%); opacity: 0; }
 }
 
 /* --- MAIN CONTENT STYLES --- */
@@ -849,4 +839,5 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
