@@ -16,12 +16,12 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #2a2a2a; /* UPDATED: Solid, dark gray base color */
+    background: #1a1a1a; /* The base color under the pattern */
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
     min-height: 100vh;
-    position: relative; /* Keep this for positioning the pseudo-elements */
+    position: relative;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
@@ -30,7 +30,7 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* This creates the left light beam */
+/* This now displays your pattern.png file */
 body::before {
     content: '';
     position: fixed;
@@ -38,44 +38,54 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(800px circle at -20% 20%, rgba(255, 0, 255, 0.15), transparent 40%);
-    animation: slide-left 20s infinite alternate ease-in-out;
-    z-index: -1;
+    background: url('patternV2.png') repeat;
+    background-size: 520px 520px;
+    opacity: 0.1; /* Makes the pattern very subtle */
+    z-index: -2;
     pointer-events: none;
 }
 
-/* This creates the right light beam */
+/* This ::after pseudo-element is no longer needed */
 body::after {
-    content: '';
+    display: none;
+}
+
+/* --- NEW: Sliding Line Animation --- */
+.animated-line {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    width: 1px; /* The thickness of the line */
     height: 100%;
-    background: radial-gradient(800px circle at 120% 80%, rgba(255, 0, 255, 0.15), transparent 40%);
-    animation: slide-right 25s infinite alternate ease-in-out;
+    background-color: #ff00ff;
+    box-shadow: 0 0 10px 1px #ff00ff;
+    opacity: 0;
     z-index: -1;
     pointer-events: none;
 }
 
-/* Animation for the left light beam */
-@keyframes slide-left {
-    from {
-        transform: translate(0, -15%);
-    }
-    to {
-        transform: translate(10%, 15%);
-    }
+.animated-line.left {
+    left: 0;
+    animation: sweep-from-left 12s infinite linear;
 }
 
-/* Animation for the right light beam */
-@keyframes slide-right {
-    from {
-        transform: translate(0, 15%);
-    }
-    to {
-        transform: translate(-10%, -15%);
-    }
+.animated-line.right {
+    right: 0;
+    animation: sweep-from-right 12s infinite linear;
+    animation-delay: 6s; /* Starts halfway through the other animation's cycle */
+}
+
+@keyframes sweep-from-left {
+    0% { transform: translateX(0); opacity: 0; }
+    10% { opacity: 0.7; }
+    50% { transform: translateX(50vw); opacity: 0; } /* Reaches center and fades */
+    100% { transform: translateX(50vw); opacity: 0; }
+}
+
+@keyframes sweep-from-right {
+    0% { transform: translateX(0); opacity: 0; }
+    10% { opacity: 0.7; }
+    50% { transform: translateX(-50vw); opacity: 0; } /* Reaches center and fades */
+    100% { transform: translateX(-50vw); opacity: 0; }
 }
 
 /* UPDATED: Adjusted width and top padding */
@@ -833,6 +843,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
