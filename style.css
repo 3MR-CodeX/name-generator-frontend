@@ -30,8 +30,6 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* --- NEW BACKGROUND SYSTEM --- */
-
 /* This is the top layer, displaying your pattern image */
 body::before {
     content: '';
@@ -47,6 +45,11 @@ body::before {
     opacity: 0.15;
     z-index: -1; /* Layer is on top of the animation */
     pointer-events: none;
+}
+
+/* body::after is not used in this setup */
+body::after {
+    display: none;
 }
 
 /* This is the bottom layer, creating the animated bars */
@@ -81,6 +84,7 @@ body::before {
     to { transform: translateX(-100vw); }
 }
 
+/* The rest of your style.css file continues from here... */
 
 /* --- MAIN CONTENT STYLES --- */
 
@@ -840,6 +844,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
