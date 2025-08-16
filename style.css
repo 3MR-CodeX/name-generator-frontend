@@ -16,7 +16,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a; /* Base color */
+    background: #1a1a1a; /* Simple fallback background */
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
@@ -30,83 +30,80 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* This ::after pseudo-element is not used */
-body::after {
-    display: none;
-}
+/* --- NEW BACKGROUND SYSTEM --- */
 
-/* This is the TOP layer, displaying your pattern image */
-body::before {
-    content: '';
+#background-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('patternV2.png');
-    background-repeat: no-repeat;
-    background-size: 150%; /* UPDATED: Zooms out the pattern */
-    background-position: center center;
-    opacity: 0.1;
-    z-index: -1; /* Sits ON TOP of the animation */
-    pointer-events: none;
+    z-index: -1; /* Place the entire container behind all content */
+    overflow: hidden;
+    background-color: #1a1a1a;
 }
 
-/* --- NEW ANIMATED BARS --- */
-.animated-line {
-    position: fixed;
+/* This is the top layer, displaying your pattern image */
+.background-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('patternV3.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    opacity: 0.15;
+    z-index: 2; /* Sits ON TOP of the animation bars */
+}
+
+/* This is the bottom layer, creating the animated bars */
+.animated-bar {
+    position: absolute;
     top: 0;
     height: 100%;
-    width: 2px; /* Thin, crisp line */
-    background: #ff00ff;
-    box-shadow: 0 0 10px 2px #ff00ff; /* Vibrant glow */
-    opacity: 0;
-    z-index: -2; /* Sits BEHIND the pattern */
-    pointer-events: none;
+    width: 30%; /* Thinner than before */
+    z-index: 1; /* Sits BEHIND the pattern */
+    background: radial-gradient(ellipse at center, rgba(255, 0, 255, 0.2), transparent 70%);
 }
 
-.animated-line.left {
+.animated-bar.left {
     left: 0;
-    animation: slide-in-and-fade 8s infinite ease-in-out;
+    animation: slide-and-fade-left 15s infinite ease-in-out;
 }
 
-.animated-line.right {
+.animated-bar.right {
     right: 0;
-    animation: slide-in-and-fade 8s infinite ease-in-out;
-    /* They now start at the same time */
+    animation: slide-and-fade-right 15s infinite ease-in-out;
+    animation-delay: -7.5s; /* Makes the animations offset */
 }
 
-@keyframes slide-in-and-fade {
-    0% {
-        transform: translateX(0);
-        opacity: 0;
-    }
-    40% {
-        transform: translateX(25vw); /* Moves a quarter of the way */
-        opacity: 0.7;
-    }
-    50% {
-        transform: translateX(50vw); /* Reaches the center and fades out */
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(50vw);
-        opacity: 0;
-    }
+@keyframes slide-and-fade-left {
+    0% { transform: translateX(-90%); opacity: 0; }
+    50% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(-90%); opacity: 0; }
 }
+
+@keyframes slide-and-fade-right {
+    0% { transform: translateX(90%); opacity: 0; }
+    50% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(90%); opacity: 0; }
+}
+
+
 /* --- MAIN CONTENT STYLES --- */
 
 .main-content-wrapper {
     width: 100%;
-    max-width: 1150px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 10px 20px 10px;
+    padding: 20px 10px;
     position: relative;
-    z-index: 1; /* Ensures content is above all background layers */
+    z-index: 1; /* Ensures content is above the background container */
 }
-/* ... the rest of your style.css remains the same as the last complete version ... */
 
-/* UPDATED: Adjusted width */
+
 .banner-col {
     text-align: center;
     margin-bottom: 20px;
@@ -851,6 +848,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
