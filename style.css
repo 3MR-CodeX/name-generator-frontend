@@ -47,7 +47,7 @@ body::before {
     background-repeat: no-repeat;
     background-size: 150%; /* UPDATED: Zooms out the pattern */
     background-position: center center;
-    opacity: 1;
+    opacity: 0.1;
     z-index: -1; /* Sits ON TOP of the animation */
     pointer-events: none;
 }
@@ -94,7 +94,6 @@ body::before {
         opacity: 0;
     }
 }
-
 /* --- MAIN CONTENT STYLES --- */
 
 .main-content-wrapper {
@@ -852,6 +851,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
