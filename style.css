@@ -16,7 +16,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a;
+    background: #1a1a1a; /* Simple fallback background */
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
@@ -30,24 +30,22 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* This is the BOTTOM layer (animation) */
-body::after {
-    content: '';
+/* --- DEFINITIVE BACKGROUND SYSTEM --- */
+
+#background-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 20s ease infinite; /* Slower, calmer animation */
-    z-index: -2;
+    z-index: -1; /* Place the entire container behind all content */
+    overflow: hidden;
+    background-color: #1a1a1a;
 }
 
-/* This is the TOP layer (pattern) */
-body::before {
-    content: '';
-    position: fixed;
+/* The top layer, displaying your pattern image */
+.background-pattern {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -57,25 +55,51 @@ body::before {
     background-size: cover;
     background-position: center center;
     opacity: 0.15;
-    z-index: -1;
-    pointer-events: none;
+    z-index: 2; /* Sits ON TOP of the animation bars */
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* The bottom layer, creating the animated bars */
+.animated-gradient-bar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 30%;
+    z-index: 1; /* Sits BEHIND the pattern */
+    background: radial-gradient(ellipse at center, rgba(255, 0, 255, 0.2), transparent 70%);
 }
 
-/* All other styles (.main-content-wrapper, etc.) remain the same */
-/* UPDATED: Adjusted width and top padding */
+.animated-gradient-bar.left {
+    left: 0;
+    animation: slide-and-fade-left 15s infinite ease-in-out;
+}
+
+.animated-gradient-bar.right {
+    right: 0;
+    animation: slide-and-fade-right 15s infinite ease-in-out;
+    animation-delay: -7.5s; /* Makes the animations offset */
+}
+
+@keyframes slide-and-fade-left {
+    0% { transform: translateX(-90%); opacity: 0; }
+    50% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(-90%); opacity: 0; }
+}
+
+@keyframes slide-and-fade-right {
+    0% { transform: translateX(90%); opacity: 0; }
+    50% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(90%); opacity: 0; }
+}
+
+/* --- MAIN CONTENT STYLES --- */
+
 .main-content-wrapper {
     width: 100%;
     max-width: 1150px;
     margin: 0 auto;
     padding: 40px 10px 20px 10px;
-    position: relative;
-    z-index: 1;
+    position: relative; /* This is important */
+    z-index: 1; /* Ensures content is above the background container */
 }
 
 /* ... the rest of your style.css remains the same as the last complete version ... */
@@ -825,6 +849,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
