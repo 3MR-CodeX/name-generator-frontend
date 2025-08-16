@@ -16,7 +16,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a;
+    background: #1a1a1a; /* Base color */
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
@@ -30,73 +30,81 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-#background-container {
+/* This ::after pseudo-element is not used in the new design */
+body::after {
+    display: none;
+}
+
+/* This is the TOP layer, displaying your pattern image */
+body::before {
+    content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2;
+    background-image: url('patternV2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    opacity: 0.1; /* A subtle opacity for the pattern */
+    z-index: -1; /* Sits ON TOP of the animation */
+    pointer-events: none;
 }
 
-.animated-gradient-bar {
-    position: absolute;
+/* --- NEW ANIMATED BARS --- */
+
+/* This is the BOTTOM layer, creating the animated bars */
+.animated-line {
+    position: fixed;
     top: 0;
-    width: 50%;
     height: 100%;
-    background: linear-gradient(to right, #ff00ff, transparent);
-    animation: slideFade 6s ease-in-out infinite;
+    width: 2px; /* Thin, crisp line */
+    background: #ff00ff;
+    box-shadow: 0 0 8px 1px #ff00ff; /* Vibrant glow */
+    opacity: 0;
+    z-index: -2; /* Sits BEHIND the pattern */
+    pointer-events: none;
 }
 
-.animated-gradient-bar.left {
+.animated-line.left {
     left: 0;
+    animation: slide-fade-from-left 8s infinite ease-out;
 }
 
-.animated-gradient-bar.right {
+.animated-line.right {
     right: 0;
-    background: linear-gradient(to left, #ff00ff, transparent);
+    animation: slide-fade-from-right 8s infinite ease-out;
 }
 
-@keyframes slideFade {
-    0% {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    50% {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    51% {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
+@keyframes slide-fade-from-left {
+    0% { transform: translateX(0); opacity: 0; }
+    25% { opacity: 0.7; }
+    50% { transform: translateX(50vw); opacity: 0; }
+    100% { transform: translateX(50vw); opacity: 0; }
 }
 
-.background-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('patternV2.png') repeat;
-    background-size: 500px 500px;
-    z-index: -1;
+@keyframes slide-fade-from-right {
+    0% { transform: translateX(0); opacity: 0; }
+    25% { opacity: 0.7; }
+    50% { transform: translateX(-50vw); opacity: 0; }
+    100% { transform: translateX(-50vw); opacity: 0; }
 }
 
-/* Rest of the existing styles */
+/* --- MAIN CONTENT STYLES --- */
+
 .main-content-wrapper {
     width: 100%;
     max-width: 1150px;
     margin: 0 auto;
     padding: 40px 10px 20px 10px;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Ensures content is above all background layers */
 }
 
+/* ... the rest of your style.css remains the same as the last complete version ... */
+
+/* UPDATED: Adjusted width */
 .banner-col {
     text-align: center;
     margin-bottom: 20px;
@@ -123,7 +131,7 @@ h1 {
     font-size: 3em;
     color: #ffffff;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Increased space */
 }
 
 .description {
@@ -139,6 +147,7 @@ h1 {
     z-index: 1;
 }
 
+/* UPDATED: Increased margin-bottom */
 .input-section {
     display: flex;
     gap: 20px;
@@ -147,7 +156,7 @@ h1 {
 }
 
 .input-box {
-    background-color: rgba(42, 42 Gonna
+    background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -203,6 +212,7 @@ select {
     margin-bottom: 10px;
 }
 
+/* UPDATED: Increased margin-bottom */
 .button-section {
     display: flex;
     gap: 20px;
@@ -219,6 +229,7 @@ button {
     transition: all 0.3s;
 }
 
+/* UPDATED: Button thickness, colors, and hierarchy */
 .generate-btn {
     flex: 3;
     background-color: #ff00ff;
@@ -253,18 +264,25 @@ button {
     border-color: #c400c4;
 }
 
+/* UPDATED: Increased margin-bottom */
 #output_container {
     margin-bottom: 40px;
 }
 
-#names {
+/* All other styles (modals, history, etc.) remain the same */
+
+/* Other existing styles remain the same... */
+
+
+/* --- UPDATED: Generated Name Bubble Styles --- */
+pre#names {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-start; /* Aligns items to the left */
 }
 
 #names.clickable .generated-name {
-    display: block;
+    display: block; /* Ensures it takes its own line */
     padding: 6px 12px;
     margin: 4px;
     border-radius: 16px;
@@ -279,11 +297,13 @@ button {
     box-shadow: 0 0 10px 2px #ff00ff;
 }
 
+/* --- More Like This Section Styles --- */
 #more-like-this-section {
     margin-top: 10px;
     margin-bottom: 10px;
     transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease, margin 0.4s ease;
 }
+
 
 .hidden-section {
     opacity: 0;
@@ -336,7 +356,7 @@ button {
 }
 
 .output-box {
-    background-color: rgba(42, 42, 42, 0.75);
+    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
@@ -371,7 +391,7 @@ button {
 }
 
 pre {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -385,7 +405,7 @@ pre {
 }
 
 .refine-section {
-    background-color: rgba(42, 42, 42, 0.75);
+    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -466,14 +486,15 @@ pre {
     background: #a020f0;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
     :root {
-        --top-bar-height: 60px;
-        --sidebar-width: 220px;
-        --hexagon-button-size: 60px;
+        --top-bar-height: 60px; /* Smaller top bar on mobile */
+        --sidebar-width: 220px; /* Smaller sidebar on mobile */
+        --hexagon-button-size: 60px; /* Adjusted for mobile */
     }
 
-    h1 {
+    h1 { /* Adjusted for main page h1 on mobile */
         font-size: 2.5em;
     }
 
@@ -483,7 +504,7 @@ pre {
 
     body {
         padding: 10px;
-        padding-top: var(--top-bar-height);
+        padding-top: var(--top-bar-height); /* Maintain top padding */
     }
 
     .input-section, .button-section, .output-section, .refine-button-section {
@@ -497,18 +518,19 @@ pre {
     }
 }
 
+/* Base Modal Styles */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.7);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity and blur */
+    backdrop-filter: blur(5px); /* Blur effect */
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
     justify-content: center;
     align-items: center;
     opacity: 0;
@@ -517,28 +539,28 @@ pre {
 }
 
 .modal.active {
-    display: flex;
+    display: flex; /* Show flex container */
     opacity: 1;
     visibility: visible;
 }
 
 .modal-content {
-    background-color: #333333;
+    background-color: #333333; /* Dark grey background */
     margin: auto;
     padding: 20px;
-    border: 2px solid var(--line-purple-default);
+    border: 2px solid var(--line-purple-default); /* 2px vibrant purple border */
     border-radius: 12px;
     width: 90%;
-    max-width: 700px;
+    max-width: 700px; /* Max width for the modal */
     box-shadow: 0 5px 15px rgba(0,0,0,0.8);
     position: relative;
-    transform: translateY(-50px);
+    transform: translateY(-50px); /* Start slightly above */
     opacity: 0;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .modal.active .modal-content {
-    transform: translateY(0);
+    transform: translateY(0); /* Slide into place */
     opacity: 1;
 }
 
@@ -568,24 +590,26 @@ pre {
     cursor: pointer;
 }
 
+/* History list inside modal */
 #full-history-list {
-    max-height: 500px;
+    max-height: 500px; /* Max height for modal history list */
     overflow-y: auto;
-    background-color: transparent;
-    border: none;
-    padding: 0;
+    background-color: transparent; /* Changed to transparent for daily containers */
+    border: none; /* Removed border from here */
+    padding: 0; /* Removed padding from here */
 }
 
 #full-history-list .history-item {
-    margin: 5px 0;
+    margin: 5px 0; /* Adjust margin for items in modal */
 }
 
+/* Daily history container within the modal */
 .daily-history-container {
-    background-color: rgba(76, 76, 76, 0.75);
+    background-color: rgba(76, 76, 76, 0.75); /* Lighter gray background, less transparent */
     border-radius: 8px;
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #5a5a5a;
+    margin-bottom: 15px; /* Space between daily containers */
+    border: 1px solid #5a5a5a; /* Subtle border for definition */
 }
 
 .daily-history-container h3 {
@@ -594,26 +618,28 @@ pre {
     margin-bottom: 10px;
     text-align: center;
     padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Separator line */
 }
 
+
+/* Recent History section moved back to main content */
 .history-section {
-    background-color: rgba(42, 42, 42, 0.75);
+    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
-    margin-top: 20px;
+    margin-top: 20px; /* Space from other sections */
 }
 
 .history-section h2 {
     font-size: 20px;
     margin-bottom: 10px;
-    color: #ffffff;
+    color: #ffffff; /* Ensure title is visible */
     text-align: center;
 }
 
 .history-inner {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
     max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -623,7 +649,7 @@ pre {
 }
 
 .history-item {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
     color: #e0e0e0;
     border: none;
     padding: 8px 12px;
@@ -641,8 +667,9 @@ pre {
     background-color: #4a4a4a;
 }
 
+/* History Details Modal Specific Styles */
 .history-details-content {
-    max-width: 600px;
+    max-width: 600px; /* Slightly smaller for details */
 }
 
 #details-content p {
@@ -654,16 +681,17 @@ pre {
     color: var(--line-purple-default);
 }
 #details-content pre {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
     white-space: pre-wrap;
-    max-height: 150px;
+    max-height: 150px; /* Limit height for detail pre-tags */
     overflow-y: auto;
     margin-top: 5px;
     font-size: 0.9em;
 }
+
 
 @media (max-width: 600px) {
     .modal-content {
@@ -680,13 +708,14 @@ pre {
     }
 }
 .pre-refined-history {
-    font-weight: 300;
+    font-weight: 300; /* Thin font */
     font-size: 0.9em;
     color: #aaa;
     margin-top: 4px;
     display: block;
 }
 
+/* --- NEW: Verification Notice Styles --- */
 #verification-notice {
     background-color: #5d350d;
     border: 1px solid #ff8c00;
@@ -706,14 +735,17 @@ pre {
 }
 
 .optional-text {
-    font-weight: 300;
+    font-weight: 300; /* Thinner font */
     font-size: 0.9em;
     color: #aaa;
     margin-left: 8px;
 }
 
+/* --- UPDATED & NEW STYLES FROM LATEST REQUEST --- */
+
+/* Generated Name Bubble Styles */
 #names.clickable .generated-name {
-    display: block;
+    display: block; /* UPDATED: Makes names stack vertically */
     padding: 6px 12px;
     margin: 4px;
     border-radius: 16px;
@@ -728,6 +760,7 @@ pre {
     box-shadow: 0 0 10px 2px #ff00ff;
 }
 
+/* More Like This Section Styles */
 #more-like-this-section {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -745,7 +778,7 @@ pre {
 
 #more-like-this-section.visible {
     opacity: 1;
-    max-height: 200px;
+    max-height: 200px; 
     transform: translateY(0);
 }
 
@@ -787,7 +820,7 @@ pre {
     justify-content: center;
     width: 20px;
     height: 20px;
-    margin-left: 12px;
+    margin-left: 12px; /* Space between name and X */
     background-color: black;
     color: white;
     border-radius: 50%;
@@ -803,8 +836,9 @@ pre {
 
 #keywords {
     height: 45px;
-    padding-left: 15px;
+    padding-left: 15px; /* Adds a little space so text isn't against the edge */
 }
+
 
 @keyframes shake-animation {
     0%, 100% { transform: translateX(0); }
