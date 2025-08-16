@@ -43,7 +43,6 @@ body::after {
     z-index: -2;
 }
 
-/* This correctly displays your large background image */
 body::before {
     content: '';
     position: fixed;
@@ -51,13 +50,10 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('patternV2.png');
-    background-repeat: no-repeat;       /* Do not tile the image */
-    background-size: cover;             /* Scale the image to cover the area */
-    background-position: center center; /* Center the image */
+    background: url('patternV2.png') repeat;
+    background-size: 400px 400px;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.1; /* You can adjust this value to make it more/less visible */
 }
 
 @keyframes gradientShift {
@@ -825,4 +821,3 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
-
