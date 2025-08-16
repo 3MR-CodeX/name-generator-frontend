@@ -47,7 +47,7 @@ body::before {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    opacity: 0.1; /* A subtle opacity for the pattern */
+    opacity: 1; /* A subtle opacity for the pattern */
     z-index: -1; /* Sits ON TOP of the animation */
     pointer-events: none;
 }
@@ -849,3 +849,4 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
