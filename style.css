@@ -30,8 +30,7 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-/* This is the TOP layer, displaying your pattern image */
-/* This is the TOP layer, displaying your pattern image */
+/* This creates the left light beam */
 body::before {
     content: '';
     position: fixed;
@@ -39,16 +38,14 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('patternV2.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    opacity: 1; /* UPDATED: Set to 100% visible */
+    /* UPDATED: More vibrant and colorful gradient */
+    background: radial-gradient(800px circle at -20% 20%, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.2), transparent 40%);
+    animation: slide-left 20s infinite alternate ease-in-out;
     z-index: -1;
     pointer-events: none;
 }
 
-/* This is the BOTTOM layer, creating BOTH animated bars */
+/* This creates the right light beam */
 body::after {
     content: '';
     position: fixed;
@@ -56,16 +53,11 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
+    /* UPDATED: A different colorful gradient */
+    background: radial-gradient(800px circle at 120% 80%, rgba(0, 80, 255, 0.3), rgba(255, 0, 255, 0.2), transparent 40%);
+    animation: slide-right 25s infinite alternate ease-in-out;
+    z-index: -1;
     pointer-events: none;
-    z-index: -2; /* Sits BEHIND the pattern */
-    background-image: 
-        /* Left bar */
-        radial-gradient(ellipse 30% 100% at 0% 50%, rgba(255, 0, 255, 0.2), transparent 70%),
-        /* Right bar */
-        radial-gradient(ellipse 30% 100% at 100% 50%, rgba(255, 0, 255, 0.2), transparent 70%);
-    background-repeat: no-repeat;
-    background-position: -30% 50%, 130% 50%; /* Initial positions: left bar is off-screen left, right bar is off-screen right */
-    animation: slide-in-dual 15s infinite ease-in-out;
 }
 
 @keyframes slide-in-dual {
@@ -840,6 +832,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
