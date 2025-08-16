@@ -30,22 +30,54 @@ body {
     transition: padding-left 0.5s ease-in-out;
 }
 
-body::after {
-    content: '';
+#background-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, #1a1a1a 0%, #1a1a1a 50%, #800080 60%, #1a1a1a 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
     z-index: -2;
 }
 
-body::before {
-    content: '';
-    position: fixed;
+.animated-gradient-bar {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, #ff00ff, transparent);
+    animation: slideFade 6s ease-in-out infinite;
+}
+
+.animated-gradient-bar.left {
+    left: 0;
+}
+
+.animated-gradient-bar.right {
+    right: 0;
+    background: linear-gradient(to left, #ff00ff, transparent);
+}
+
+@keyframes slideFade {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    51% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.background-pattern {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -53,18 +85,9 @@ body::before {
     background: url('patternV2.png') repeat;
     background-size: 500px 500px;
     z-index: -1;
-    pointer-events: none;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 0%; }
-    25% { background-position: 50% 100%; }
-    50% { background-position: 100% 50%; }
-    75% { background-position: 25% 75%; }
-    100% { background-position: 0% 0%; }
-}
-
-/* UPDATED: Adjusted width and top padding */
+/* Rest of the existing styles */
 .main-content-wrapper {
     width: 100%;
     max-width: 1150px;
@@ -74,9 +97,6 @@ body::before {
     z-index: 1;
 }
 
-/* ... the rest of your style.css remains the same as the last complete version ... */
-
-/* UPDATED: Adjusted width */
 .banner-col {
     text-align: center;
     margin-bottom: 20px;
@@ -103,7 +123,7 @@ h1 {
     font-size: 3em;
     color: #ffffff;
     text-align: center;
-    margin-bottom: 20px; /* Increased space */
+    margin-bottom: 20px;
 }
 
 .description {
@@ -119,7 +139,6 @@ h1 {
     z-index: 1;
 }
 
-/* UPDATED: Increased margin-bottom */
 .input-section {
     display: flex;
     gap: 20px;
@@ -128,7 +147,7 @@ h1 {
 }
 
 .input-box {
-    background-color: rgba(42, 42, 42, 0.75);
+    background-color: rgba(42, 42 Gonna
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -184,7 +203,6 @@ select {
     margin-bottom: 10px;
 }
 
-/* UPDATED: Increased margin-bottom */
 .button-section {
     display: flex;
     gap: 20px;
@@ -201,7 +219,6 @@ button {
     transition: all 0.3s;
 }
 
-/* UPDATED: Button thickness, colors, and hierarchy */
 .generate-btn {
     flex: 3;
     background-color: #ff00ff;
@@ -236,25 +253,18 @@ button {
     border-color: #c400c4;
 }
 
-/* UPDATED: Increased margin-bottom */
 #output_container {
     margin-bottom: 40px;
 }
 
-/* All other styles (modals, history, etc.) remain the same */
-
-/* Other existing styles remain the same... */
-
-
-/* --- UPDATED: Generated Name Bubble Styles --- */
-pre#names {
+#names {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Aligns items to the left */
+    align-items: flex-start;
 }
 
 #names.clickable .generated-name {
-    display: block; /* Ensures it takes its own line */
+    display: block;
     padding: 6px 12px;
     margin: 4px;
     border-radius: 16px;
@@ -269,13 +279,11 @@ pre#names {
     box-shadow: 0 0 10px 2px #ff00ff;
 }
 
-/* --- More Like This Section Styles --- */
 #more-like-this-section {
     margin-top: 10px;
     margin-bottom: 10px;
     transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease, margin 0.4s ease;
 }
-
 
 .hidden-section {
     opacity: 0;
@@ -328,7 +336,7 @@ pre#names {
 }
 
 .output-box {
-    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
+    background-color: rgba(42, 42, 42, 0.75);
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
@@ -363,7 +371,7 @@ pre#names {
 }
 
 pre {
-    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
+    background-color: rgba(58, 58, 58, 0.75);
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -377,7 +385,7 @@ pre {
 }
 
 .refine-section {
-    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
+    background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     padding: 10px;
     border-radius: 8px;
@@ -458,15 +466,14 @@ pre {
     background: #a020f0;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     :root {
-        --top-bar-height: 60px; /* Smaller top bar on mobile */
-        --sidebar-width: 220px; /* Smaller sidebar on mobile */
-        --hexagon-button-size: 60px; /* Adjusted for mobile */
+        --top-bar-height: 60px;
+        --sidebar-width: 220px;
+        --hexagon-button-size: 60px;
     }
 
-    h1 { /* Adjusted for main page h1 on mobile */
+    h1 {
         font-size: 2.5em;
     }
 
@@ -476,7 +483,7 @@ pre {
 
     body {
         padding: 10px;
-        padding-top: var(--top-bar-height); /* Maintain top padding */
+        padding-top: var(--top-bar-height);
     }
 
     .input-section, .button-section, .output-section, .refine-button-section {
@@ -490,19 +497,18 @@ pre {
     }
 }
 
-/* Base Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 2000; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 2000;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.7); /* Black w/ opacity and blur */
-    backdrop-filter: blur(5px); /* Blur effect */
-    -webkit-backdrop-filter: blur(5px); /* Safari support */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     justify-content: center;
     align-items: center;
     opacity: 0;
@@ -511,28 +517,28 @@ pre {
 }
 
 .modal.active {
-    display: flex; /* Show flex container */
+    display: flex;
     opacity: 1;
     visibility: visible;
 }
 
 .modal-content {
-    background-color: #333333; /* Dark grey background */
+    background-color: #333333;
     margin: auto;
     padding: 20px;
-    border: 2px solid var(--line-purple-default); /* 2px vibrant purple border */
+    border: 2px solid var(--line-purple-default);
     border-radius: 12px;
     width: 90%;
-    max-width: 700px; /* Max width for the modal */
+    max-width: 700px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.8);
     position: relative;
-    transform: translateY(-50px); /* Start slightly above */
+    transform: translateY(-50px);
     opacity: 0;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .modal.active .modal-content {
-    transform: translateY(0); /* Slide into place */
+    transform: translateY(0);
     opacity: 1;
 }
 
@@ -562,26 +568,24 @@ pre {
     cursor: pointer;
 }
 
-/* History list inside modal */
 #full-history-list {
-    max-height: 500px; /* Max height for modal history list */
+    max-height: 500px;
     overflow-y: auto;
-    background-color: transparent; /* Changed to transparent for daily containers */
-    border: none; /* Removed border from here */
-    padding: 0; /* Removed padding from here */
+    background-color: transparent;
+    border: none;
+    padding: 0;
 }
 
 #full-history-list .history-item {
-    margin: 5px 0; /* Adjust margin for items in modal */
+    margin: 5px 0;
 }
 
-/* Daily history container within the modal */
 .daily-history-container {
-    background-color: rgba(76, 76, 76, 0.75); /* Lighter gray background, less transparent */
+    background-color: rgba(76, 76, 76, 0.75);
     border-radius: 8px;
     padding: 10px;
-    margin-bottom: 15px; /* Space between daily containers */
-    border: 1px solid #5a5a5a; /* Subtle border for definition */
+    margin-bottom: 15px;
+    border: 1px solid #5a5a5a;
 }
 
 .daily-history-container h3 {
@@ -590,28 +594,26 @@ pre {
     margin-bottom: 10px;
     text-align: center;
     padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Separator line */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-
-/* Recent History section moved back to main content */
 .history-section {
-    background-color: rgba(42, 42, 42, 0.75); /* Less transparent */
+    background-color: rgba(42, 42, 42, 0.75);
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
-    margin-top: 20px; /* Space from other sections */
+    margin-top: 20px;
 }
 
 .history-section h2 {
     font-size: 20px;
     margin-bottom: 10px;
-    color: #ffffff; /* Ensure title is visible */
+    color: #ffffff;
     text-align: center;
 }
 
 .history-inner {
-    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
+    background-color: rgba(58, 58, 58, 0.75);
     max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -621,7 +623,7 @@ pre {
 }
 
 .history-item {
-    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
+    background-color: rgba(58, 58, 58, 0.75);
     color: #e0e0e0;
     border: none;
     padding: 8px 12px;
@@ -639,9 +641,8 @@ pre {
     background-color: #4a4a4a;
 }
 
-/* History Details Modal Specific Styles */
 .history-details-content {
-    max-width: 600px; /* Slightly smaller for details */
+    max-width: 600px;
 }
 
 #details-content p {
@@ -653,17 +654,16 @@ pre {
     color: var(--line-purple-default);
 }
 #details-content pre {
-    background-color: rgba(58, 58, 58, 0.75); /* Less transparent */
+    background-color: rgba(58, 58, 58, 0.75);
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
     white-space: pre-wrap;
-    max-height: 150px; /* Limit height for detail pre-tags */
+    max-height: 150px;
     overflow-y: auto;
     margin-top: 5px;
     font-size: 0.9em;
 }
-
 
 @media (max-width: 600px) {
     .modal-content {
@@ -680,14 +680,13 @@ pre {
     }
 }
 .pre-refined-history {
-    font-weight: 300; /* Thin font */
+    font-weight: 300;
     font-size: 0.9em;
     color: #aaa;
     margin-top: 4px;
     display: block;
 }
 
-/* --- NEW: Verification Notice Styles --- */
 #verification-notice {
     background-color: #5d350d;
     border: 1px solid #ff8c00;
@@ -707,17 +706,14 @@ pre {
 }
 
 .optional-text {
-    font-weight: 300; /* Thinner font */
+    font-weight: 300;
     font-size: 0.9em;
     color: #aaa;
     margin-left: 8px;
 }
 
-/* --- UPDATED & NEW STYLES FROM LATEST REQUEST --- */
-
-/* Generated Name Bubble Styles */
 #names.clickable .generated-name {
-    display: block; /* UPDATED: Makes names stack vertically */
+    display: block;
     padding: 6px 12px;
     margin: 4px;
     border-radius: 16px;
@@ -732,7 +728,6 @@ pre {
     box-shadow: 0 0 10px 2px #ff00ff;
 }
 
-/* More Like This Section Styles */
 #more-like-this-section {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -750,7 +745,7 @@ pre {
 
 #more-like-this-section.visible {
     opacity: 1;
-    max-height: 200px; 
+    max-height: 200px;
     transform: translateY(0);
 }
 
@@ -792,7 +787,7 @@ pre {
     justify-content: center;
     width: 20px;
     height: 20px;
-    margin-left: 12px; /* Space between name and X */
+    margin-left: 12px;
     background-color: black;
     color: white;
     border-radius: 50%;
@@ -808,9 +803,8 @@ pre {
 
 #keywords {
     height: 45px;
-    padding-left: 15px; /* Adds a little space so text isn't against the edge */
+    padding-left: 15px;
 }
-
 
 @keyframes shake-animation {
     0%, 100% { transform: translateX(0); }
@@ -821,4 +815,3 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
-
