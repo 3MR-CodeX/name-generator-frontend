@@ -195,8 +195,10 @@ function addSeedName(name) {
     container.appendChild(tag);
 }
 
-async function generateName() {
-    if (generateBtn.disabled) return; 
+// UPDATED to accept a 'force' parameter
+async function generateName(force = false) {
+    // UPDATED to check for the 'force' parameter
+    if (generateBtn.disabled && !force) return; 
 
     if (!window.auth.currentUser) {
         let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
@@ -394,7 +396,8 @@ async function surpriseMe() {
         document.getElementById("language").value = "English";
         document.getElementById("pattern").value = "Auto (AI Decides)";
 
-        await generateName();
+        // UPDATED to force the generation
+        await generateName(true);
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
@@ -638,4 +641,5 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
 
