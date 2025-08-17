@@ -11,7 +11,6 @@
 
 #name-to-check-input {
     flex-grow: 1;
-    height: 50px;
     font-size: 18px;
     padding-left: 15px;
 }
@@ -19,11 +18,12 @@
 #check-availability-btn {
     padding: 0 30px;
     font-weight: 500;
+    flex-shrink: 0;
 }
 
 #results-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
 
@@ -32,6 +32,7 @@
     border: 1px solid #4a4a4a;
     padding: 20px;
     border-radius: 12px;
+    min-height: 200px;
 }
 
 .results-box h2 {
@@ -39,14 +40,21 @@
     margin-bottom: 20px;
     border-bottom: 1px solid #4a4a4a;
     padding-bottom: 10px;
+    font-weight: 500;
+}
+
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .status-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
     font-size: 1.1em;
+    padding: 8px 0;
 }
 
 .status-badge {
@@ -59,9 +67,17 @@
 .status-badge.available {
     background-color: #1e4d2b;
     color: #86efac;
+    box-shadow: 0 0 8px rgba(134, 239, 172, 0.5);
 }
 
 .status-badge.taken {
     background-color: #450a0a;
     color: #fca5a5;
+    box-shadow: 0 0 8px rgba(252, 165, 165, 0.5);
+}
+
+.status-badge.error,
+.status-badge.checking\.\.\. {
+    background-color: #4a4a4a;
+    color: #cccccc;
 }
