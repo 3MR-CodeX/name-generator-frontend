@@ -229,6 +229,13 @@ button {
     transition: all 0.3s;
 }
 
+button:disabled {
+    background-color: #4d004d; /* UPDATED: Deep purple for cooldown */
+    border-color: #4d004d;     /* Match the border color */
+    color: #aaa;               /* Lighter text for readability */
+    cursor: not-allowed;
+    opacity: 1;                 /* Make it fully opaque */
+}
 /* UPDATED: Button thickness, colors, and hierarchy */
 .generate-btn {
     flex: 3;
@@ -849,6 +856,7 @@ pre {
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
+
 
 
 
