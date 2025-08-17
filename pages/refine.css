@@ -14,6 +14,9 @@
 .refine-input-box label {
     display: block;
     margin-bottom: 10px;
+    color: #cccccc;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 #custom-name-input {
@@ -31,4 +34,8 @@
 }
 #output_container.visible-section {
     margin-top: 40px;
+}
+
+#refined_reasons {
+    white-space: normal; /* Allow text to wrap naturally */
 }
