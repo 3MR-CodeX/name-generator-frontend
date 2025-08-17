@@ -1,9 +1,10 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Load shared components
-    await loadComponent('top-bar-placeholder', 'components/topbar.html');
-    await loadComponent('sidebar-placeholder', 'components/sidebar.html');
+    // UPDATED: Corrected paths to go up one directory
+    await loadComponent('top-bar-placeholder', '../components/topbar.html');
+    await loadComponent('sidebar-placeholder', '../components/sidebar.html');
+
     if (typeof initializeTopbar === 'function') initializeTopbar();
     if (typeof initializeSidebar === 'function') initializeSidebar();
     if (typeof initializeAuth === 'function') initializeAuth();
