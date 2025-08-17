@@ -1,9 +1,10 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Load shared components
-    await loadComponent('top-bar-placeholder', 'components/topbar.html');
-    await loadComponent('sidebar-placeholder', 'components/sidebar.html');
+    // UPDATED: Corrected paths to go up one directory
+    await loadComponent('top-bar-placeholder', '../components/topbar.html');
+    await loadComponent('sidebar-placeholder', '../components/sidebar.html');
+
     if (typeof initializeTopbar === 'function') initializeTopbar();
     if (typeof initializeSidebar === 'function') initializeSidebar();
     if (typeof initializeAuth === 'function') initializeAuth();
@@ -58,6 +59,8 @@ async function handleCustomRefine() {
         refinedReasonsPre.textContent = data.reasons.join("\n\n");
         
         copyBtn.onclick = () => copyToClipboard('refined_names');
+        document.getElementById('reasons-copy-btn').onclick = () => copyToClipboard('refined_reasons');
+
 
     } catch(err) {
         errorDiv.textContent = err.message;
@@ -92,6 +95,7 @@ async function loadComponent(placeholderId, componentUrl) {
         document.getElementById(placeholderId).innerHTML = await response.text();
     } catch (error) {
         console.error(error);
+        document.getElementById(placeholderId).innerHTML = `<div style="color: red;">Error loading component.</div>`;
     }
 }
 
@@ -105,15 +109,15 @@ async function getUserToken() {
 
 function showLoading(targetElement) {
     targetElement.textContent = "";
-    targetElement.classList.remove("fade-in-content");
     let spinnerOverlay = targetElement.querySelector(".spinner-overlay");
     if (!spinnerOverlay) {
         spinnerOverlay = document.createElement("div");
-        spinnerOverlay.className = "spinner-overlay";
+        spinnerOverlay.className = "spinner-overlay show";
         spinnerOverlay.innerHTML = '<div class="spinner"></div>';
         targetElement.appendChild(spinnerOverlay);
+    } else {
+        spinnerOverlay.classList.add("show");
     }
-    spinnerOverlay.classList.add("show");
 }
 
 function hideLoading(targetElement) {
