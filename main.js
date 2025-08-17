@@ -1,8 +1,8 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
-const CATEGORY_OPTIONS = ["App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
-const STYLE_OPTIONS = ["Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
-const PATTERN_OPTIONS = ["Auto", "One Word", "Two Words", "More than two words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
+const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
+const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
+const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
 
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
@@ -638,3 +638,4 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
+
