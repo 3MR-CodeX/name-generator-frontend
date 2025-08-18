@@ -54,6 +54,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     setupEventListeners();
 });
 
+// main.js Line 52
+    setupEventListeners();
+    initializeSliders(); // Add this line
+});
+
 async function loadComponent(placeholderId, componentUrl) {
     try {
         const response = await fetch(componentUrl);
@@ -94,6 +99,27 @@ function setupEventListeners() {
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
     }, 500);
+}
+
+// main.js
+function initializeSliders() {
+    const sliders = [
+        { id: 'generator-relevancy', valueId: 'generator-relevancy-value' },
+        { id: 'refiner-relevancy', valueId: 'refiner-relevancy-value' }
+    ];
+
+    sliders.forEach(sliderInfo => {
+        const slider = document.getElementById(sliderInfo.id);
+        const valueDisplay = document.getElementById(sliderInfo.valueId);
+
+        if (slider && valueDisplay) {
+            const updateValue = () => {
+                valueDisplay.textContent = `Level ${slider.value}`;
+            };
+            slider.addEventListener('input', updateValue);
+            updateValue(); // Set initial value
+        }
+    });
 }
 
 function showView(viewName) {
@@ -246,6 +272,7 @@ async function generateName(force = false) {
         language: document.getElementById("language").value, 
         pattern: document.getElementById("pattern").value, 
         seed_names 
+        relevancy: document.getElementById("generator-relevancy").value // Add this line
     };
     
     if(outputContainer) outputContainer.classList.remove("hidden");
@@ -423,10 +450,15 @@ async function customRefineName() {
 
     try {
         const token = await getUserToken();
+        // main.js Line 385
         const response = await fetch(`${BACKEND_URL}/custom-refine`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ name: nameToRefine, instructions: instructions })
+            body: JSON.stringify({ 
+                name: nameToRefine, 
+                instructions: instructions,
+                relevancy: document.getElementById("refiner-relevancy").value // Add this line
+            })
         });
 
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during custom refinement.");
@@ -680,4 +712,5 @@ function openHistoryModal() {
 
 function closeHistoryModal() { if (historyModal) historyModal.classList.remove('active'); }
 function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active'); }
+
 
