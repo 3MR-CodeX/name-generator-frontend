@@ -1,7 +1,7 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // UPDATED: Corrected paths to go up one directory
+    // UPDATED: Corrected paths
     await loadComponent('top-bar-placeholder', '../components/topbar.html');
     await loadComponent('sidebar-placeholder', '../components/sidebar.html');
 
@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         checkBtn.addEventListener('click', handleAvailabilityCheck);
     }
 });
+// ... (rest of availability.js is the same as the last version I provided)
 // ... (rest of the file is the same as the previous correct version)
 
 async function handleAvailabilityCheck() {
