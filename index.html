@@ -95,6 +95,15 @@
                     <div class="input-box textbox-column">
                         <label for="prompt">What do you want to name?</label>
                         <textarea id="prompt" placeholder="Enter a description!"></textarea>
+                        <div class="relevancy-slider-container">
+                            <label for="generator-relevancy">Relevancy</label>
+                            <div class="slider-wrapper">
+                                <span class="slider-label">Strict</span>
+                                <input type="range" min="1" max="6" value="3" class="relevancy-slider" id="generator-relevancy">
+                                <span class="slider-label">Creative</span>
+                            </div>
+                            <div class="slider-value" id="generator-relevancy-value">Level 3</div>
+                        </div>
                         <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
                         <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
                     </div>
@@ -116,99 +125,107 @@
             </div>
         </div>
 
-       <!-- index.html Line 610 -->
-<div id="custom-refiner-view" class="hidden">
-    <h1>Custom Name Refining</h1>
-    <p class="description">Provide a name and instructions to have the AI refine it for you.</p>
-    <div class="input-section custom-refiner-inputs">
-        <div class="input-box">
-             <label for="name-to-refine">Name to be Refined</label>
-             <input type="text" id="name-to-refine" placeholder="e.g., Stellaris">
-        </div>
-        <div class="input-box">
-            <label for="refinement-instructions">Refinement Instructions</label>
-            <textarea id="refinement-instructions" placeholder="e.g., Make it sound more ancient and mysterious"></textarea>
-        </div>
-    </div>
-    <div class="button-section">
-        <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
-    </div>
-
-    <!-- This container now holds the outputs AND history for this view -->
-    <div class="container">
-        <div id="refiner-loading-placeholder" class="hidden"></div>
-        
-        <div id="refined_outputs_custom" class="output-section hidden">
-            <div class="output-box">
-                <div class="output-header">
-                    <label>Refined Suggestions</label>
-                    <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names_custom')">📋</button>
+        <div id="custom-refiner-view" class="hidden">
+            <h1>Custom Name Refining</h1>
+            <p class="description">Provide a name and instructions to have the AI refine it for you.</p>
+            <div class="input-section custom-refiner-inputs">
+                <div class="input-box">
+                     <label for="name-to-refine">Name to be Refined</label>
+                     <input type="text" id="name-to-refine" placeholder="e.g., Stellaris">
                 </div>
-                <pre id="refined_names_custom"></pre>
-            </div>
-            <div class="output-box">
-               <div class="output-header">
-                    <label>Refined Explanations</label>
-                    <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons_custom')">📋</button>
+                <div class="input-box">
+                    <label for="refinement-instructions">Refinement Instructions</label>
+                    <textarea id="refinement-instructions" placeholder="e.g., Make it sound more ancient and mysterious"></textarea>
+                    <div class="relevancy-slider-container">
+                        <label for="refiner-relevancy">Relevancy</label>
+                        <div class="slider-wrapper">
+                            <span class="slider-label">Similar</span>
+                            <input type="range" min="1" max="6" value="3" class="relevancy-slider" id="refiner-relevancy">
+                            <span class="slider-label">Creative</span>
+                        </div>
+                        <div class="slider-value" id="refiner-relevancy-value">Level 3</div>
+                    </div>
                 </div>
-                <pre id="refined_reasons_custom"></pre>
+            </div>
+            <div class="button-section">
+                <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
+            </div>
+
+            <div class="container">
+                <div id="refiner-loading-placeholder" class="hidden"></div>
+                
+                <div id="refined_outputs_custom" class="output-section hidden">
+                    <div class="output-box">
+                        <div class="output-header">
+                            <label>Refined Suggestions</label>
+                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names_custom')">📋</button>
+                        </div>
+                        <pre id="refined_names_custom"></pre>
+                    </div>
+                    <div class="output-box">
+                       <div class="output-header">
+                            <label>Refined Explanations</label>
+                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons_custom')">📋</button>
+                        </div>
+                        <pre id="refined_reasons_custom"></pre>
+                    </div>
+                </div>
+
+                <div id="custom-refine-history-section" class="history-section hidden">
+                    <h2>✨ Recent Refinements</h2>
+                    <div id="custom-refine-history" class="history-inner"></div>
+                </div>
             </div>
         </div>
 
-        <div id="custom-refine-history-section" class="history-section hidden">
-            <h2>✨ Recent Refinements</h2>
-            <div id="custom-refine-history" class="history-inner"></div>
-        </div>
-    </div>
-</div>
-
-<!-- SHARED OUTPUTS & HISTORY for main generator page -->
-<div class="container">
-    <div id="output_container" class="output-section hidden">
-        <div class="output-box">
-            <div class="output-header">
-                <label>Generated Names/Titles</label>
-                <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('names')">📋</button>
+        <!-- SHARED OUTPUTS & HISTORY for main generator page -->
+        <div class="container">
+            <div id="output_container" class="output-section hidden">
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Generated Names/Titles</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('names')">📋</button>
+                    </div>
+                    <pre id="names"></pre>
+                </div>
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Explanations</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('reasons')">📋</button>
+                    </div>
+                    <pre id="reasons"></pre>
+                </div>
             </div>
-            <pre id="names"></pre>
-        </div>
-        <div class="output-box">
-            <div class="output-header">
-                <label>Explanations</label>
-                <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('reasons')">📋</button>
+            <div id="refine_section" class="refine-section hidden">
+                <label for="edit_box">Refine the suggestions</label>
+                <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
             </div>
-            <pre id="reasons"></pre>
-        </div>
-    </div>
-    <div id="refine_section" class="refine-section hidden">
-        <label for="edit_box">Refine the suggestions</label>
-        <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
-    </div>
-    <div class="refine-button-section">
-        <button class="refine-btn hidden">🛠️ Refine Suggestions</button>
-    </div>
-    <div id="refined_outputs" class="output-section hidden">
-        <div class="output-box">
-            <div class="output-header">
-                <label>Refined Suggestions</label>
-                <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names')">📋</button>
+            <div class="refine-button-section">
+                <button class="refine-btn hidden">🛠️ Refine Suggestions</button>
             </div>
-            <pre id="refined_names"></pre>
-        </div>
-        <div class="output-box">
-           <div class="output-header">
-                <label>Refined Explanations</label>
-                <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons')">📋</button>
+            <div id="refined_outputs" class="output-section hidden">
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Refined Suggestions</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names')">📋</button>
+                    </div>
+                    <pre id="refined_names"></pre>
+                </div>
+                <div class="output-box">
+                   <div class="output-header">
+                        <label>Refined Explanations</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons')">📋</button>
+                    </div>
+                    <pre id="refined_reasons"></pre>
+                </div>
             </div>
-            <pre id="refined_reasons"></pre>
+            <div id="history_section" class="history-section hidden">
+                <h2>🕘 Recent History</h2>
+                <div id="history" class="history-inner"></div>
+            </div>
+            <div id="error" class="error"></div>
         </div>
     </div>
-    <div id="history_section" class="history-section hidden">
-        <h2>🕘 Recent History</h2>
-        <div id="history" class="history-inner"></div>
-    </div>
-    <div id="error" class="error"></div>
-</div>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -219,4 +236,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
