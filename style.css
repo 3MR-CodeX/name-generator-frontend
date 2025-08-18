@@ -314,12 +314,12 @@ pre#names {
 
 /* style.css Line 425 */
 .hidden {
-    display: none !important; /* This will be overridden for animation */
+    display: none;
 }
 
 .visible-section,
 .output-section:not(.hidden) {
-    display: flex; /* Or block, depending on the element */
+    display: flex;
 }
 
 /* New Animation Class */
@@ -865,6 +865,9 @@ pre {
 /* --- IMPROVEMENTS & NEW STYLES --- */
 
 /* Custom Refiner Input Box Styling */
+/* --- IMPROVEMENTS & NEW STYLES --- */
+
+/* Custom Refiner Input Box Styling */
 .input-section.custom-refiner-inputs {
     align-items: stretch; /* Makes boxes equal height */
 }
@@ -883,21 +886,6 @@ pre {
     margin-bottom: 0; /* Remove default margin */
 }
 
-/* New Professional Loading Animation */
-.loading-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 8px;
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-/* style.css Line 1040 */
 /* New Professional "Dark" Loading Animation */
 #refiner-loading-placeholder {
     width: 100%;
@@ -933,4 +921,5 @@ pre {
     opacity: 1;
   }
 }
+
 
