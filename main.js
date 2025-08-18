@@ -38,6 +38,7 @@ const refinedNamesCustomPre = document.getElementById("refined_names_custom");
 const refinedReasonsCustomPre = document.getElementById("refined_reasons_custom");
 const refinerLoadingPlaceholder = document.getElementById("refiner-loading-placeholder");
 
+// main.js Line 42
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
@@ -52,11 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateDropdown("pattern", PATTERN_OPTIONS);
     
     setupEventListeners();
-});
-
-// main.js Line 52
-    setupEventListeners();
-    initializeSliders(); // Add this line
+    initializeSliders(); // This was outside the listener by mistake
 });
 
 async function loadComponent(placeholderId, componentUrl) {
@@ -712,5 +709,6 @@ function openHistoryModal() {
 
 function closeHistoryModal() { if (historyModal) historyModal.classList.remove('active'); }
 function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active'); }
+
 
 
