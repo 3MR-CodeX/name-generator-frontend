@@ -23,7 +23,7 @@
     <div id="sidebar-placeholder"></div>
     <div id="overlay"></div>
 
-    <!-- MODALS (Unchanged) -->
+    <!-- MODALS -->
     <div id="history-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -42,25 +42,41 @@
         <div class="modal-content auth-modal-content">
             <span class="close-button">&times;</span>
             <h2>Sign In to NameIT</h2>
-            <div class="input-group"><input type="email" id="signin-email" placeholder="Email Address" required></div>
-            <div class="input-group"><input type="password" id="signin-password" placeholder="Password" required></div>
+            <div class="input-group">
+                <input type="email" id="signin-email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signin-password" placeholder="Password" required>
+            </div>
             <button id="signin-submit-btn" class="auth-button">Sign In</button>
             <div id="auth-error-message-signin" class="error"></div>
             <div class="auth-divider">or</div>
-            <button id="signin-google-btn" class="auth-button google-button"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> Sign In with Google</button>
+            <button id="signin-google-btn" class="auth-button google-button">
+                <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> 
+                Sign In with Google
+            </button>
         </div>
     </div>
     <div id="sign-up-modal" class="modal auth-modal">
         <div class="modal-content auth-modal-content">
             <span class="close-button">&times;</span>
             <h2>Create Your Account</h2>
-            <div class="input-group"><input type="email" id="signup-email" placeholder="Email Address" required></div>
-            <div class="input-group"><input type="password" id="signup-password" placeholder="Password (6+ characters)" required></div>
-            <div class="input-group"><input type="password" id="signup-confirm-password" placeholder="Confirm Password" required></div>
+            <div class="input-group">
+                <input type="email" id="signup-email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signup-password" placeholder="Password (6+ characters)" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
+            </div>
             <button id="signup-submit-btn" class="auth-button">Create Account</button>
             <div id="auth-error-message-signup" class="error"></div>
             <div class="auth-divider">or</div>
-            <button id="signup-google-btn" class="auth-button google-button"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> Sign Up with Google</button>
+            <button id="signup-google-btn" class="auth-button google-button">
+                <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> 
+                Sign Up with Google
+            </button>
         </div>
     </div>
 
@@ -69,7 +85,6 @@
             <img src="banner.png" alt="Banner" id="banner">
         </div>
         
-        <!-- NEW: Wrapper for the main name generator view -->
         <div id="main-generator-view">
             <h1>NameIT</h1>
             <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
@@ -84,17 +99,10 @@
                         <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
                     </div>
                     <div class="input-box right-column">
-                        <label for="category">Category</label>
-                        <select id="category"></select>
-                        <label for="style">Style</label>
-                        <select id="style"></select>
-                        <label for="language">Language</label>
-                        <select id="language">
-                            <option value="English">English</option>
-                            <option value="Arabic">Arabic</option>
-                        </select>
-                        <label for="pattern">Pattern</label>
-                        <select id="pattern"></select>
+                        <label for="category">Category</label><select id="category"></select>
+                        <label for="style">Style</label><select id="style"></select>
+                        <label for="language">Language</label><select id="language"><option value="English">English</option><option value="Arabic">Arabic</option></select>
+                        <label for="pattern">Pattern</label><select id="pattern"></select>
                     </div>
                 </div>
                 <div class="button-section">
@@ -108,59 +116,41 @@
             </div>
         </div>
 
-        <!-- NEW: View for the Custom Name Refiner feature -->
         <div id="custom-refiner-view" class="hidden">
             <h1>Custom Name Refining</h1>
             <p class="description">Provide a name and instructions to have the AI refine it for you.</p>
-            <div class="input-section">
-                <div class="input-box" style="flex: 1;">
+            <div class="input-section custom-refiner-inputs">
+                <div class="input-box">
                      <label for="name-to-refine">Name to be Refined</label>
                      <input type="text" id="name-to-refine" placeholder="e.g., Stellaris">
                 </div>
-                <div class="input-box" style="flex: 2;">
+                <div class="input-box">
                     <label for="refinement-instructions">Refinement Instructions</label>
-                    <textarea id="refinement-instructions" placeholder="e.g., Make it sound more ancient and mysterious" style="height: 100px; resize: none;"></textarea>
+                    <textarea id="refinement-instructions" placeholder="e.g., Make it sound more ancient and mysterious"></textarea>
                 </div>
             </div>
             <div class="button-section">
                 <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
             </div>
+            <div id="custom-refine-history-section" class="history-section hidden">
+                <h2>✨ Recent Refinements</h2>
+                <div id="custom-refine-history" class="history-inner"></div>
+            </div>
         </div>
 
-        <!-- SHARED OUTPUTS & HISTORY (visible for both views) -->
+        <!-- SHARED OUTPUTS & HISTORY -->
         <div class="container">
-            <div id="output_container" class="output-section">
-                <div class="output-box">
-                    <div class="output-header"><label>Generated Names/Titles</label><button class="copy-button" onclick="copyToClipboard('names')">📋</button></div>
-                    <pre id="names"></pre>
-                </div>
-                <div class="output-box">
-                    <div class="output-header"><label>Explanations</label><button class="copy-button" onclick="copyToClipboard('reasons')">📋</button></div>
-                    <pre id="reasons"></pre>
-                </div>
+            <div id="output_container" class="output-section hidden">
+                <div class="output-box"><div class="output-header"><label>Generated Names/Titles</label><button class="copy-button" onclick="copyToClipboard('names')">📋</button></div><pre id="names"></pre></div>
+                <div class="output-box"><div class="output-header"><label>Explanations</label><button class="copy-button" onclick="copyToClipboard('reasons')">📋</button></div><pre id="reasons"></pre></div>
             </div>
-            
-            <div id="refine_section" class="refine-section hidden-section">
-                <label for="edit_box">Refine the suggestions</label>
-                <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
+            <div id="refine_section" class="refine-section hidden"><label for="edit_box">Refine the suggestions</label><textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea></div>
+            <div class="refine-button-section"><button class="refine-btn hidden">🛠️ Refine Suggestions</button></div>
+            <div id="refined_outputs" class="output-section hidden">
+                <div class="output-box"><div class="output-header"><label>Refined Suggestions</label><button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button></div><pre id="refined_names"></pre></div>
+                <div class="output-box"><div class="output-header"><label>Refined Explanations</label><button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button></div><pre id="refined_reasons"></pre></div>
             </div>
-            <div class="refine-button-section">
-                <button class="refine-btn">🛠️ Refine Suggestions</button>
-            </div>
-            <div id="refined_outputs" class="output-section">
-                <div class="output-box">
-                    <div class="output-header"><label>Refined Suggestions</label><button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button></div>
-                    <pre id="refined_names"></pre>
-                </div>
-                <div class="output-box">
-                   <div class="output-header"><label>Refined Explanations</label><button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button></div>
-                    <pre id="refined_reasons"></pre>
-                </div>
-            </div>
-            <div id="history_section" class="history-section hidden-section">
-                <h2>🕘 Recent History</h2>
-                <div id="history" class="history-inner"></div>
-            </div>
+            <div id="history_section" class="history-section hidden"><h2>🕘 Recent History</h2><div id="history" class="history-inner"></div></div>
             <div id="error" class="error"></div>
         </div>
     </div>
