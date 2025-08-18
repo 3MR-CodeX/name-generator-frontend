@@ -25,43 +25,7 @@
     <div id="overlay"></div>
 
     <div class="main-content-wrapper">
-        <div class="page-header">
-            <h1>Custom Name Refining</h1>
-            <p class="description">Have a name you already like? Polish it to perfection with the power of AI.</p>
         </div>
-        
-        <div class="container">
-            <div class="refine-input-box">
-                <label for="custom-name-input">Name to Refine</label>
-                <input type="text" id="custom-name-input" placeholder="Enter your name here...">
-            </div>
-            <div class="refine-input-box">
-                <label for="refine-instruction-input">Refinement Instruction</label>
-                <textarea id="refine-instruction-input" placeholder="e.g., Make it sound more futuristic, suggest 5 shorter versions..."></textarea>
-            </div>
-            <div class="button-section">
-                <button id="custom-refine-btn" class="generate-btn">🔬 Refine Name</button>
-            </div>
-            
-            <div id="output_container" class="output-section hidden-section">
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Refined Suggestions</label>
-                        <button class="copy-button" onclick="copyToClipboard('refined_names')">📋</button>
-                    </div>
-                    <pre id="refined_names"></pre>
-                </div>
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Explanations</label>
-                        <button class="copy-button" onclick="copyToClipboard('refined_reasons')">📋</button>
-                    </div>
-                    <pre id="refined_reasons"></pre>
-                </div>
-            </div>
-             <div id="error" class="error"></div>
-        </div>
-    </div>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
