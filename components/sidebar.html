@@ -1,12 +1,15 @@
+<!-- components/sidebar.html -->
 <div id="sidebar">
     <div class="sidebar-content">
         <h2>Menu</h2>
         <ul>
-            <li><a href="/index.html">Home</a></li>
+            <!-- NEW: Added ID for the main generator link -->
+            <li><a href="#" id="home-link">Name Generator</a></li>
             <li><a href="#" class="premium-link">✨ Go Premium</a></li>
-            <li><a href="/pages/refine.html">Custom Name Refining</a></li>
-            <li><a href="/pages/availability.html">Name Availability Check</a></li>
+            <!-- NEW: Added ID for the custom refiner link -->
+            <li><a href="#" id="custom-refine-link">Custom Name Refining</a></li>
             <li><a href="#">Custom Name Rating</a></li>
+            <li><a href="#">Name Availability Check</a></li>
             <li id="full-history-li" class="hidden"><a href="#" onclick="openHistoryModal(); return false;">Full History</a></li>
             <li><a href="#">Settings</a></li>
             <li id="sign-out-li" class="hidden"><a href="#" id="sign-out-link">Sign Out</a></li>
