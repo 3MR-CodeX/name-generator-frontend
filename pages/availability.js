@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         checkBtn.addEventListener('click', handleAvailabilityCheck);
     }
 });
+// ... (rest of the file is the same as the previous correct version)
 
 async function handleAvailabilityCheck() {
     const nameInput = document.getElementById("name-to-check-input");
