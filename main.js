@@ -33,7 +33,10 @@ const recentHistorySection = document.getElementById("history_section");
 const recentHistoryDiv = document.getElementById("history");
 const customRefineHistorySection = document.getElementById("custom-refine-history-section");
 const customRefineHistoryDiv = document.getElementById("custom-refine-history");
-
+const refinedOutputsCustom = document.getElementById("refined_outputs_custom");
+const refinedNamesCustomPre = document.getElementById("refined_names_custom");
+const refinedReasonsCustomPre = document.getElementById("refined_reasons_custom");
+const refinerLoadingPlaceholder = document.getElementById("refiner-loading-placeholder");
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
@@ -102,7 +105,6 @@ function showView(viewName) {
         mainGeneratorView.classList.remove('hidden');
     } else if (viewName === 'refiner') {
         customRefinerView.classList.remove('hidden');
-        // Hide the standard refine section on this page
         refineSection.classList.add('hidden');
         if(refineBtn) refineBtn.classList.add('hidden');
     }
@@ -122,25 +124,25 @@ function populateDropdown(id, options) {
 
 function cleanNames(text) { return text.replace(/\*\*|`/g, ''); }
 
-// Updated loading function for professional animation
 function showLoading(targetElement, isCustomRefine = false) {
     targetElement.innerHTML = ''; // Clear previous content
     targetElement.classList.remove("fade-in-content");
+    
+    const overlay = document.createElement("div");
+    overlay.className = "loading-overlay";
+
     if (isCustomRefine) {
-        targetElement.classList.add("loading-active");
+        overlay.innerHTML = `<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>`;
     } else {
         // Fallback for original spinner
-        let spinnerOverlay = document.createElement("div");
-        spinnerOverlay.className = "spinner-overlay show";
-        spinnerOverlay.innerHTML = '<div class="spinner"></div>';
-        targetElement.appendChild(spinnerOverlay);
+        overlay.innerHTML = '<div class="spinner-overlay show"><div class="spinner"></div></div>';
     }
+    targetElement.appendChild(overlay);
 }
 
 function hideLoading(targetElement) {
-    targetElement.classList.remove("loading-active");
-    const spinnerOverlay = targetElement.querySelector(".spinner-overlay");
-    if (spinnerOverlay) spinnerOverlay.remove();
+    const overlay = targetElement.querySelector(".loading-overlay");
+    if (overlay) overlay.remove();
 }
 
 function disableButtons() {
@@ -179,7 +181,7 @@ function renderClickableNames(namesArray, targetPre = namesPre) {
         const nameEl = document.createElement('div');
         nameEl.className = 'generated-name';
         nameEl.textContent = name;
-        if (targetPre === namesPre) { // Only add seed functionality to main generator
+        if (targetPre === namesPre) {
             targetPre.classList.add('clickable');
             nameEl.addEventListener('click', () => addSeedName(name));
         }
@@ -389,9 +391,12 @@ async function customRefineName() {
     if (!instructions) return showTemporaryPlaceholderError(instructionsInput, "Please enter refinement instructions.");
 
     document.getElementById("error").textContent = "";
-    refinedOutputs.classList.remove("hidden"); 
-    showLoading(refinedNamesPre, true);
-    showLoading(refinedReasonsPre, true);
+    
+    refinedOutputsCustom.classList.add("hidden");
+    refinedOutputsCustom.classList.remove("slide-down-animation");
+    refinerLoadingPlaceholder.innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div>`;
+    refinerLoadingPlaceholder.classList.remove("hidden");
+    
     disableButtons();
 
     try {
@@ -404,15 +409,18 @@ async function customRefineName() {
 
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during custom refinement.");
         const data = await response.json();
+        
+        refinerLoadingPlaceholder.classList.add("hidden");
 
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
         
-        renderClickableNames(data.names.map(cleanNames), refinedNamesPre);
-        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
-        refinedNamesPre.classList.add("fade-in-content");
-        refinedReasonsPre.classList.add("fade-in-content");
+        renderClickableNames(data.names.map(cleanNames), refinedNamesCustomPre);
+        refinedReasonsCustomPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+        
+        refinedOutputsCustom.classList.remove("hidden");
+        refinedOutputsCustom.classList.add("slide-down-animation");
 
         const historyEntry = { originalName: nameToRefine, instructions, results: data.names };
         customRefineHistoryLog.push(historyEntry);
@@ -422,11 +430,8 @@ async function customRefineName() {
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        refinedOutputs.classList.add("hidden");
+        refinerLoadingPlaceholder.classList.add("hidden");
     } finally {
-        hideLoading(refinedNamesPre);
-        hideLoading(refinedReasonsPre);
-        
         let countdown = 5;
         customRefineBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
@@ -446,27 +451,21 @@ function renderCustomRefineHistory() {
     }
 
     [...customRefineHistoryLog].reverse().forEach(entry => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'custom-history-item';
-
-        const originalP = document.createElement('p');
-        originalP.innerHTML = `<strong>Original:</strong> ${entry.originalName}`;
+        const button = document.createElement('button');
+        button.className = 'history-item';
         
-        const instructionP = document.createElement('p');
-        instructionP.innerHTML = `<strong>Instruction:</strong> ${entry.instructions}`;
+        button.title = `Original: ${entry.originalName}\nInstruction: ${entry.instructions}`;
+        
+        const namesHTML = entry.results.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
+        const preRefinedHTML = `<small class="pre-refined-history">from: ${cleanNames(entry.originalName)}</small>`;
+        button.innerHTML = `${namesHTML}${preRefinedHTML}`;
 
-        const resultsList = document.createElement('ul');
-        resultsList.className = 'refined-results-list';
-        entry.results.forEach(name => {
-            const li = document.createElement('li');
-            li.textContent = name;
-            resultsList.appendChild(li);
-        });
+        button.onclick = () => {
+            document.getElementById('name-to-refine').value = entry.originalName;
+            document.getElementById('refinement-instructions').value = entry.instructions;
+        };
 
-        itemDiv.appendChild(originalP);
-        itemDiv.appendChild(instructionP);
-        itemDiv.appendChild(resultsList);
-        customRefineHistoryDiv.appendChild(itemDiv);
+        customRefineHistoryDiv.appendChild(button);
     });
 }
 
@@ -584,9 +583,9 @@ function copyToClipboard(elementId) {
 }
 
 function resetDynamicSections(clearInputs = true) {
-    [outputContainer, refineSection, refinedOutputs, recentHistorySection, customRefineHistorySection].forEach(el => el.classList.add("hidden"));
+    [outputContainer, refineSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection].forEach(el => el.classList.add("hidden"));
     if (clearInputs) {
-        [namesPre, reasonsPre, refinedNamesPre, refinedReasonsPre].forEach(el => el.textContent = "");
+        [namesPre, reasonsPre, refinedNamesPre, refinedReasonsPre, refinedNamesCustomPre, refinedReasonsCustomPre].forEach(el => el.textContent = "");
     }
     document.getElementById("error").textContent = "";
 }
