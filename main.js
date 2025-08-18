@@ -195,9 +195,7 @@ function addSeedName(name) {
     container.appendChild(tag);
 }
 
-// UPDATED to accept a 'force' parameter
 async function generateName(force = false) {
-    // UPDATED to check for the 'force' parameter
     if (generateBtn.disabled && !force) return; 
 
     if (!window.auth.currentUser) {
@@ -396,7 +394,6 @@ async function surpriseMe() {
         document.getElementById("language").value = "English";
         document.getElementById("pattern").value = "Auto (AI Decides)";
 
-        // UPDATED to force the generation
         await generateName(true);
 
     } catch (error) {
@@ -641,5 +638,3 @@ function closeHistoryDetailsModal() {
         detailsContent.innerHTML = '';
     }
 }
-
-
