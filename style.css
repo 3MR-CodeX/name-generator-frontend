@@ -923,9 +923,10 @@ pre {
 }
 
 /* --- Relevancy Slider Styles --- */
+/* --- Relevancy Slider Styles --- */
 .relevancy-slider-container {
-    margin-top: 15px;
-    margin-bottom: 10px;
+    margin: 5px 0; /* Reduced vertical spacing */
+    padding: 5px; /* Added 5px padding around the bar */
 }
 .relevancy-slider-container label {
     font-size: 16px;
@@ -937,19 +938,21 @@ pre {
 .slider-wrapper {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px; /* Reduced gap between elements */
 }
 .slider-label {
     color: #aaa;
-    font-size: 0.9em;
+    font-size: 0.8em; /* Made text smaller */
+    text-align: center;
+    line-height: 1.2;
 }
 .relevancy-slider {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 8px;
+    height: 6px; /* Made the bar thinner */
     background: #3a3a3a;
-    border-radius: 5px;
+    border-radius: 3px;
     outline: none;
     opacity: 0.7;
     transition: opacity .2s;
@@ -960,8 +963,8 @@ pre {
 .relevancy-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 18px; /* Made the thumb smaller */
+    height: 18px; /* Made the thumb smaller */
     background: var(--line-purple-default);
     cursor: pointer;
     border-radius: 50%;
@@ -969,8 +972,8 @@ pre {
     box-shadow: 0 0 5px var(--line-purple-glow);
 }
 .relevancy-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: var(--line-purple-default);
     cursor: pointer;
     border-radius: 50%;
@@ -979,8 +982,10 @@ pre {
 }
 .slider-value {
     text-align: center;
-    margin-top: 8px;
+    margin-top: 5px; /* Reduced top margin */
     color: #ccc;
     font-weight: 500;
+    font-size: 0.9em;
 }
+
 
