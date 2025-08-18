@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // UPDATED: Corrected paths to go up one directory
     await loadComponent('top-bar-placeholder', '../components/topbar.html');
     await loadComponent('sidebar-placeholder', '../components/sidebar.html');
-
+    
     if (typeof initializeTopbar === 'function') initializeTopbar();
     if (typeof initializeSidebar === 'function') initializeSidebar();
     if (typeof initializeAuth === 'function') initializeAuth();
