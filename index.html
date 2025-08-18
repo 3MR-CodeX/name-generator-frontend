@@ -95,17 +95,17 @@
                     <div class="input-box textbox-column">
                         <label for="prompt">What do you want to name?</label>
                         <textarea id="prompt" placeholder="Enter a description!"></textarea>
+                        <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
+                        <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
                         <div class="relevancy-slider-container">
-                            <label for="generator-relevancy">Relevancy</label>
+                            <label for="generator-relevancy">Keyword Relevancy</label>
                             <div class="slider-wrapper">
-                                <span class="slider-label">Strict</span>
+                                <span class="slider-label">Strict<br>(Level 1)</span>
                                 <input type="range" min="1" max="6" value="3" class="relevancy-slider" id="generator-relevancy">
-                                <span class="slider-label">Creative</span>
+                                <span class="slider-label">Creative<br>(Level 6)</span>
                             </div>
                             <div class="slider-value" id="generator-relevancy-value">Level 3</div>
                         </div>
-                        <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
-                        <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
                     </div>
                     <div class="input-box right-column">
                         <label for="category">Category</label><select id="category"></select>
@@ -137,11 +137,11 @@
                     <label for="refinement-instructions">Refinement Instructions</label>
                     <textarea id="refinement-instructions" placeholder="e.g., Make it sound more ancient and mysterious"></textarea>
                     <div class="relevancy-slider-container">
-                        <label for="refiner-relevancy">Relevancy</label>
+                        <label for="refiner-relevancy">Refinement Style</label>
                         <div class="slider-wrapper">
-                            <span class="slider-label">Similar</span>
+                            <span class="slider-label">Similar<br>(Level 1)</span>
                             <input type="range" min="1" max="6" value="3" class="relevancy-slider" id="refiner-relevancy">
-                            <span class="slider-label">Creative</span>
+                            <span class="slider-label">Creative<br>(Level 6)</span>
                         </div>
                         <div class="slider-value" id="refiner-relevancy-value">Level 3</div>
                     </div>
