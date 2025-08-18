@@ -66,8 +66,8 @@ async function loadComponent(placeholderId, componentUrl) {
 
 function initializeUI() {
     showView('generator');
-    if (!promptInput.dataset.originalPlaceholder) promptInput.dataset.originalPlaceholder = promptInput.placeholder;
-    if (!editBox.dataset.originalPlaceholder) editBox.dataset.originalPlaceholder = editBox.placeholder;
+    if (promptInput && !promptInput.dataset.originalPlaceholder) promptInput.dataset.originalPlaceholder = promptInput.placeholder;
+    if (editBox && !editBox.dataset.originalPlaceholder) editBox.dataset.originalPlaceholder = editBox.placeholder;
 }
 
 function setupEventListeners() {
@@ -97,15 +97,16 @@ function setupEventListeners() {
 }
 
 function showView(viewName) {
-    mainGeneratorView.classList.add('hidden');
-    customRefinerView.classList.add('hidden');
+    if(mainGeneratorView) mainGeneratorView.classList.add('hidden');
+    if(customRefinerView) customRefinerView.classList.add('hidden');
+    
     resetDynamicSections(false);
 
     if (viewName === 'generator') {
-        mainGeneratorView.classList.remove('hidden');
+        if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
     } else if (viewName === 'refiner') {
-        customRefinerView.classList.remove('hidden');
-        refineSection.classList.add('hidden');
+        if(customRefinerView) customRefinerView.classList.remove('hidden');
+        if(refineSection) refineSection.classList.add('hidden');
         if(refineBtn) refineBtn.classList.add('hidden');
     }
 }
@@ -124,24 +125,20 @@ function populateDropdown(id, options) {
 
 function cleanNames(text) { return text.replace(/\*\*|`/g, ''); }
 
-function showLoading(targetElement, isCustomRefine = false) {
-    targetElement.innerHTML = ''; // Clear previous content
+function showLoading(targetElement) {
+    if (!targetElement) return;
+    targetElement.innerHTML = '';
     targetElement.classList.remove("fade-in-content");
     
     const overlay = document.createElement("div");
     overlay.className = "loading-overlay";
-
-    if (isCustomRefine) {
-        overlay.innerHTML = `<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>`;
-    } else {
-        // Fallback for original spinner
-        overlay.innerHTML = '<div class="spinner-overlay show"><div class="spinner"></div></div>';
-    }
+    overlay.innerHTML = '<div class="spinner-overlay show"><div class="spinner"></div></div>'; // Using original spinner for now
     targetElement.appendChild(overlay);
 }
 
 function hideLoading(targetElement) {
-    const overlay = targetElement.querySelector(".loading-overlay");
+    if (!targetElement) return;
+    const overlay = targetElement.querySelector(".loading-overlay, .spinner-overlay");
     if (overlay) overlay.remove();
 }
 
@@ -154,6 +151,7 @@ function enableButtons() {
 }
 
 function showTemporaryPlaceholderError(element, message) {
+    if (!element) return;
     if (!element.dataset.originalPlaceholder) element.dataset.originalPlaceholder = element.placeholder;
     element.placeholder = message;
     element.classList.add("prompt-error-placeholder");
@@ -174,6 +172,7 @@ async function getUserToken() {
 }
 
 function renderClickableNames(namesArray, targetPre = namesPre) {
+    if (!targetPre) return;
     targetPre.innerHTML = '';
     if(targetPre.classList.contains('clickable')) targetPre.classList.remove('clickable');
 
@@ -192,6 +191,7 @@ function renderClickableNames(namesArray, targetPre = namesPre) {
 function addSeedName(name) {
     const moreLikeThisSection = document.getElementById("more-like-this-section");
     const container = document.getElementById("more-like-this-container");
+    if (!moreLikeThisSection || !container) return;
     const existing = Array.from(container.children).map(el => el.textContent.slice(0, -1).trim());
     
     if (existing.includes(name) || existing.length >= 3) {
@@ -248,7 +248,7 @@ async function generateName(force = false) {
         seed_names 
     };
     
-    outputContainer.classList.remove("hidden");
+    if(outputContainer) outputContainer.classList.remove("hidden");
     showLoading(namesPre);
     showLoading(reasonsPre);
     disableButtons();
@@ -273,15 +273,15 @@ async function generateName(force = false) {
         }
 
         renderClickableNames(data.names.map(cleanNames));
-        reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
-        namesPre.classList.add("fade-in-content");
-        reasonsPre.classList.add("fade-in-content");
+        if(reasonsPre) reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+        if(namesPre) namesPre.classList.add("fade-in-content");
+        if(reasonsPre) reasonsPre.classList.add("fade-in-content");
 
         if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
-            refineSection.classList.remove("hidden");
+            if(refineSection) refineSection.classList.remove("hidden");
             if(refineBtn) refineBtn.classList.remove("hidden");
         }
-        recentHistorySection.classList.remove("hidden");
+        if(recentHistorySection) recentHistorySection.classList.remove("hidden");
         fetchHistory(false);
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
@@ -291,11 +291,16 @@ async function generateName(force = false) {
         hideLoading(reasonsPre);
         
         let countdown = 5;
-        generateBtn.textContent = `Please wait ${countdown}s...`;
+        if(generateBtn) generateBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
             countdown--;
-            if (countdown > 0) generateBtn.textContent = `Please wait ${countdown}s...`;
-            else { clearInterval(interval); generateBtn.textContent = '🎯 Generate Names'; enableButtons(); }
+            if (countdown > 0) {
+                if(generateBtn) generateBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(generateBtn) generateBtn.textContent = '🎯 Generate Names'; 
+                enableButtons(); 
+            }
         }, 1000);
     }
 }
@@ -303,7 +308,7 @@ async function generateName(force = false) {
 async function refineNames(action, names = null, extra_info = "") {
     if (refineBtn.disabled) return;
     document.getElementById("error").textContent = "";
-    refinedOutputs.classList.remove("hidden");
+    if(refinedOutputs) refinedOutputs.classList.remove("hidden");
     showLoading(refinedNamesPre);
     showLoading(refinedReasonsPre);
     disableButtons();
@@ -323,24 +328,29 @@ async function refineNames(action, names = null, extra_info = "") {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
         
-        refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
-        refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
-        refinedNamesPre.classList.add("fade-in-content");
-        refinedReasonsPre.classList.add("fade-in-content");
+        if(refinedNamesPre) refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
+        if(refinedReasonsPre) refinedReasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+        if(refinedNamesPre) refinedNamesPre.classList.add("fade-in-content");
+        if(refinedReasonsPre) refinedReasonsPre.classList.add("fade-in-content");
         fetchHistory(false);
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        refinedOutputs.classList.add("hidden");
+        if(refinedOutputs) refinedOutputs.classList.add("hidden");
     } finally {
         hideLoading(refinedNamesPre);
         hideLoading(refinedReasonsPre);
         
         let countdown = 5;
-        refineBtn.textContent = `Please wait ${countdown}s...`;
+        if(refineBtn) refineBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
             countdown--;
-            if (countdown > 0) refineBtn.textContent = `Please wait ${countdown}s...`;
-            else { clearInterval(interval); refineBtn.textContent = '🛠️ Refine Suggestions'; enableButtons(); }
+            if (countdown > 0) {
+                if(refineBtn) refineBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(refineBtn) refineBtn.textContent = '🛠️ Refine Suggestions'; 
+                enableButtons(); 
+            }
         }, 1000);
     }
 }
@@ -348,13 +358,19 @@ async function refineNames(action, names = null, extra_info = "") {
 async function surpriseMe() {
     if (surpriseBtn.disabled) return;
     
-    document.getElementById("keywords").value = '';
-    document.getElementById("more-like-this-container").innerHTML = '';
-    document.getElementById("more-like-this-section").classList.add('hidden');
+    const keywordsInput = document.getElementById("keywords");
+    const moreLikeThisContainer = document.getElementById("more-like-this-container");
+    const moreLikeThisSection = document.getElementById("more-like-this-section");
+
+    if(keywordsInput) keywordsInput.value = '';
+    if(moreLikeThisContainer) moreLikeThisContainer.innerHTML = '';
+    if(moreLikeThisSection) moreLikeThisSection.classList.add('hidden');
     
     disableButtons();
-    promptInput.value = '';
-    promptInput.placeholder = 'Conjuring an idea...';
+    if(promptInput) {
+        promptInput.value = '';
+        promptInput.placeholder = 'Conjuring an idea...';
+    }
 
     try {
         const token = await getUserToken();
@@ -365,7 +381,7 @@ async function surpriseMe() {
         if (!response.ok) throw new Error((await response.json()).detail || "Failed to get a surprise prompt.");
         const data = await response.json();
 
-        promptInput.value = data.prompt;
+        if(promptInput) promptInput.value = data.prompt;
         document.getElementById("category").value = data.category;
         document.getElementById("style").value = data.style;
         document.getElementById("language").value = "English";
@@ -375,7 +391,7 @@ async function surpriseMe() {
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         enableButtons();
-        promptInput.placeholder = 'Enter a description!';
+        if(promptInput) promptInput.placeholder = 'Enter a description!';
     }
 }
 
@@ -392,10 +408,14 @@ async function customRefineName() {
 
     document.getElementById("error").textContent = "";
     
-    refinedOutputsCustom.classList.add("hidden");
-    refinedOutputsCustom.classList.remove("slide-down-animation");
-    refinerLoadingPlaceholder.innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div>`;
-    refinerLoadingPlaceholder.classList.remove("hidden");
+    if(refinedOutputsCustom) {
+        refinedOutputsCustom.classList.add("hidden");
+        refinedOutputsCustom.classList.remove("slide-down-animation");
+    }
+    if(refinerLoadingPlaceholder) {
+        refinerLoadingPlaceholder.innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div>`;
+        refinerLoadingPlaceholder.classList.remove("hidden");
+    }
     
     disableButtons();
 
@@ -410,34 +430,41 @@ async function customRefineName() {
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during custom refinement.");
         const data = await response.json();
         
-        refinerLoadingPlaceholder.classList.add("hidden");
+        if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
 
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
         
         renderClickableNames(data.names.map(cleanNames), refinedNamesCustomPre);
-        refinedReasonsCustomPre.textContent = data.reasons.map(cleanNames).join("\n\n");
+        if(refinedReasonsCustomPre) refinedReasonsCustomPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         
-        refinedOutputsCustom.classList.remove("hidden");
-        refinedOutputsCustom.classList.add("slide-down-animation");
+        if(refinedOutputsCustom) {
+            refinedOutputsCustom.classList.remove("hidden");
+            refinedOutputsCustom.classList.add("slide-down-animation");
+        }
 
         const historyEntry = { originalName: nameToRefine, instructions, results: data.names };
         customRefineHistoryLog.push(historyEntry);
         customRefineHistoryLog = customRefineHistoryLog.slice(-50);
         renderCustomRefineHistory();
-        customRefineHistorySection.classList.remove("hidden");
+        if(customRefineHistorySection) customRefineHistorySection.classList.remove("hidden");
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
-        refinerLoadingPlaceholder.classList.add("hidden");
+        if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
     } finally {
         let countdown = 5;
-        customRefineBtn.textContent = `Please wait ${countdown}s...`;
+        if(customRefineBtn) customRefineBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
             countdown--;
-            if (countdown > 0) customRefineBtn.textContent = `Please wait ${countdown}s...`;
-            else { clearInterval(interval); customRefineBtn.textContent = '🤖 Refine Name'; enableButtons(); }
+            if (countdown > 0) {
+                if(customRefineBtn) customRefineBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(customRefineBtn) customRefineBtn.textContent = '🤖 Refine Name'; 
+                enableButtons(); 
+            }
         }, 1000);
     }
 }
@@ -461,8 +488,10 @@ function renderCustomRefineHistory() {
         button.innerHTML = `${namesHTML}${preRefinedHTML}`;
 
         button.onclick = () => {
-            document.getElementById('name-to-refine').value = entry.originalName;
-            document.getElementById('refinement-instructions').value = entry.instructions;
+            const nameInput = document.getElementById('name-to-refine');
+            const instructionsInput = document.getElementById('refinement-instructions');
+            if(nameInput) nameInput.value = entry.originalName;
+            if(instructionsInput) instructionsInput.value = entry.instructions;
         };
 
         customRefineHistoryDiv.appendChild(button);
@@ -553,17 +582,17 @@ async function restoreHistory(id) {
     const entry = historyData.find(e => e.id === id);
     if (entry && !entry.category.includes("Refined")) {
         showView('generator');
-        promptInput.value = entry.prompt;
+        if(promptInput) promptInput.value = entry.prompt;
         document.getElementById("keywords").value = entry.keywords || '';
         document.getElementById("category").value = entry.category;
         document.getElementById("style").value = entry.style;
         document.getElementById("language").value = entry.language || 'English';
         renderClickableNames(entry.names.map(cleanNames)); 
-        reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
-        outputContainer.classList.remove("hidden");
-        refineSection.classList.remove("hidden");
+        if(reasonsPre) reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
+        if(outputContainer) outputContainer.classList.remove("hidden");
+        if(refineSection) refineSection.classList.remove("hidden");
         if(refineBtn) refineBtn.classList.remove("hidden");
-        recentHistorySection.classList.remove("hidden");
+        if(recentHistorySection) recentHistorySection.classList.remove("hidden");
         if (window.isSidebarOpen) toggleSidebar();
     } else {
         document.getElementById("error").textContent = "Cannot restore a refinement history item.";
@@ -571,7 +600,9 @@ async function restoreHistory(id) {
 }
 
 function copyToClipboard(elementId) {
-    const text = document.getElementById(elementId).textContent;
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    const text = element.textContent;
     navigator.clipboard.writeText(text).then(() => {
         const copyMessage = document.createElement('div');
         copyMessage.textContent = "Copied to clipboard!";
@@ -582,12 +613,21 @@ function copyToClipboard(elementId) {
     });
 }
 
+// CORRECTED: This function now safely checks if each element exists before trying to modify it.
 function resetDynamicSections(clearInputs = true) {
-    [outputContainer, refineSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection].forEach(el => el.classList.add("hidden"));
+    const sections = [outputContainer, refineSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection];
+    sections.forEach(el => {
+        if (el) el.classList.add("hidden");
+    });
+
     if (clearInputs) {
-        [namesPre, reasonsPre, refinedNamesPre, refinedReasonsPre, refinedNamesCustomPre, refinedReasonsCustomPre].forEach(el => el.textContent = "");
+        const textPres = [namesPre, reasonsPre, refinedNamesPre, refinedReasonsPre, refinedNamesCustomPre, refinedReasonsCustomPre];
+        textPres.forEach(el => {
+            if (el) el.textContent = "";
+        });
     }
-    document.getElementById("error").textContent = "";
+    const errorDiv = document.getElementById("error");
+    if (errorDiv) errorDiv.textContent = "";
 }
 
 async function showHistoryDetails(id) {
