@@ -395,6 +395,7 @@ async function surpriseMe() {
     }
 }
 
+// main.js Line 372
 async function customRefineName() {
     if (customRefineBtn.disabled) return;
 
@@ -408,6 +409,7 @@ async function customRefineName() {
 
     document.getElementById("error").textContent = "";
     
+    // 1. Hide old results and show the loading animation
     if(refinedOutputsCustom) {
         refinedOutputsCustom.classList.add("hidden");
         refinedOutputsCustom.classList.remove("slide-down-animation");
@@ -430,6 +432,7 @@ async function customRefineName() {
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during custom refinement.");
         const data = await response.json();
         
+        // 2. Hide loader
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
 
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
@@ -439,9 +442,13 @@ async function customRefineName() {
         renderClickableNames(data.names.map(cleanNames), refinedNamesCustomPre);
         if(refinedReasonsCustomPre) refinedReasonsCustomPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         
+        // 3. Show results with the slide-down animation
         if(refinedOutputsCustom) {
             refinedOutputsCustom.classList.remove("hidden");
-            refinedOutputsCustom.classList.add("slide-down-animation");
+            // Use a timeout to ensure the browser registers the display change before adding the animation class
+            setTimeout(() => {
+                refinedOutputsCustom.classList.add("slide-down-animation");
+            }, 10);
         }
 
         const historyEntry = { originalName: nameToRefine, instructions, results: data.names };
@@ -454,6 +461,7 @@ async function customRefineName() {
         document.getElementById("error").textContent = "Error: " + error.message;
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
     } finally {
+        // 4. Cooldown timer
         let countdown = 5;
         if(customRefineBtn) customRefineBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
@@ -672,3 +680,4 @@ function openHistoryModal() {
 
 function closeHistoryModal() { if (historyModal) historyModal.classList.remove('active'); }
 function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active'); }
+
