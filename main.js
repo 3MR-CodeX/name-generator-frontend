@@ -4,8 +4,7 @@ const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company"
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
 
-// --- Global State ---
-let customRefineHistoryLog = []; // For custom refine history
+let customRefineHistoryLog = [];
 
 // --- DOM Element Selectors ---
 const mainGeneratorView = document.getElementById("main-generator-view");
@@ -38,7 +37,6 @@ const refinedNamesCustomPre = document.getElementById("refined_names_custom");
 const refinedReasonsCustomPre = document.getElementById("refined_reasons_custom");
 const refinerLoadingPlaceholder = document.getElementById("refiner-loading-placeholder");
 
-// main.js Line 42
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
@@ -53,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateDropdown("pattern", PATTERN_OPTIONS);
     
     setupEventListeners();
-    initializeSliders(); // This was outside the listener by mistake
+    initializeSliders();
 });
 
 async function loadComponent(placeholderId, componentUrl) {
@@ -98,23 +96,28 @@ function setupEventListeners() {
     }, 500);
 }
 
-// main.js
 function initializeSliders() {
     const sliders = [
-        { id: 'generator-relevancy', valueId: 'generator-relevancy-value' },
-        { id: 'refiner-relevancy', valueId: 'refiner-relevancy-value' }
+        { id: 'generator-relevancy', labelsId: 'generator-relevancy-labels' },
+        { id: 'refiner-relevancy', labelsId: 'refiner-relevancy-labels' },
+        { id: 'generator-amount', labelsId: 'generator-amount-labels' },
+        { id: 'refiner-amount', labelsId: 'refiner-amount-labels' }
     ];
 
     sliders.forEach(sliderInfo => {
         const slider = document.getElementById(sliderInfo.id);
-        const valueDisplay = document.getElementById(sliderInfo.valueId);
+        const labelsContainer = document.getElementById(sliderInfo.labelsId);
 
-        if (slider && valueDisplay) {
+        if (slider && labelsContainer) {
+            const labels = labelsContainer.querySelectorAll('span');
             const updateValue = () => {
-                valueDisplay.textContent = `Level ${slider.value}`;
+                labels.forEach(label => label.classList.remove('active'));
+                if (labels[slider.value - 1]) {
+                    labels[slider.value - 1].classList.add('active');
+                }
             };
             slider.addEventListener('input', updateValue);
-            updateValue(); // Set initial value
+            updateValue();
         }
     });
 }
@@ -155,7 +158,7 @@ function showLoading(targetElement) {
     
     const overlay = document.createElement("div");
     overlay.className = "loading-overlay";
-    overlay.innerHTML = '<div class="spinner-overlay show"><div class="spinner"></div></div>'; // Using original spinner for now
+    overlay.innerHTML = '<div class="spinner-overlay show"><div class="spinner"></div></div>';
     targetElement.appendChild(overlay);
 }
 
@@ -261,6 +264,8 @@ async function generateName(force = false) {
 
     document.getElementById("error").textContent = "";
     const seed_names = Array.from(document.getElementById("more-like-this-container").children).map(el => el.textContent.slice(0, -1).trim());
+    
+    // CORRECTED: Added comma after seed_names
     const payload = { 
         prompt, 
         keywords: document.getElementById("keywords").value.trim(), 
@@ -268,8 +273,9 @@ async function generateName(force = false) {
         style: document.getElementById("style").value, 
         language: document.getElementById("language").value, 
         pattern: document.getElementById("pattern").value, 
-        seed_names 
-        relevancy: document.getElementById("generator-relevancy").value // Add this line
+        seed_names,
+        relevancy: document.getElementById("generator-relevancy").value,
+        amount: document.getElementById("generator-amount").value
     };
     
     if(outputContainer) outputContainer.classList.remove("hidden");
@@ -419,7 +425,6 @@ async function surpriseMe() {
     }
 }
 
-// main.js Line 372
 async function customRefineName() {
     if (customRefineBtn.disabled) return;
 
@@ -433,7 +438,6 @@ async function customRefineName() {
 
     document.getElementById("error").textContent = "";
     
-    // 1. Hide old results and show the loading animation
     if(refinedOutputsCustom) {
         refinedOutputsCustom.classList.add("hidden");
         refinedOutputsCustom.classList.remove("slide-down-animation");
@@ -447,21 +451,20 @@ async function customRefineName() {
 
     try {
         const token = await getUserToken();
-        // main.js Line 385
         const response = await fetch(`${BACKEND_URL}/custom-refine`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ 
                 name: nameToRefine, 
                 instructions: instructions,
-                relevancy: document.getElementById("refiner-relevancy").value // Add this line
+                relevancy: document.getElementById("refiner-relevancy").value,
+                amount: document.getElementById("refiner-amount").value
             })
         });
 
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during custom refinement.");
         const data = await response.json();
         
-        // 2. Hide loader
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
 
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
@@ -471,10 +474,8 @@ async function customRefineName() {
         renderClickableNames(data.names.map(cleanNames), refinedNamesCustomPre);
         if(refinedReasonsCustomPre) refinedReasonsCustomPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         
-        // 3. Show results with the slide-down animation
         if(refinedOutputsCustom) {
             refinedOutputsCustom.classList.remove("hidden");
-            // Use a timeout to ensure the browser registers the display change before adding the animation class
             setTimeout(() => {
                 refinedOutputsCustom.classList.add("slide-down-animation");
             }, 10);
@@ -490,7 +491,6 @@ async function customRefineName() {
         document.getElementById("error").textContent = "Error: " + error.message;
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
     } finally {
-        // 4. Cooldown timer
         let countdown = 5;
         if(customRefineBtn) customRefineBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
@@ -650,7 +650,6 @@ function copyToClipboard(elementId) {
     });
 }
 
-// CORRECTED: This function now safely checks if each element exists before trying to modify it.
 function resetDynamicSections(clearInputs = true) {
     const sections = [outputContainer, refineSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection];
     sections.forEach(el => {
@@ -709,6 +708,3 @@ function openHistoryModal() {
 
 function closeHistoryModal() { if (historyModal) historyModal.classList.remove('active'); }
 function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active'); }
-
-
-
