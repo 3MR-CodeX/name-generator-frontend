@@ -1,7 +1,7 @@
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // UPDATED: Corrected paths to go up one directory
+    // UPDATED: Corrected paths
     await loadComponent('top-bar-placeholder', '../components/topbar.html');
     await loadComponent('sidebar-placeholder', '../components/sidebar.html');
 
@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         refineBtn.addEventListener('click', handleCustomRefine);
     }
 });
+
+// ... (rest of refine.js is the same as the last version I provided)
 // ... (rest of the file is the same as the previous correct version)
 async function handleCustomRefine() {
     const nameInput = document.getElementById("custom-name-input");
