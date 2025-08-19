@@ -926,8 +926,6 @@ pre {
 /* --- Relevancy Slider Styles --- */
 /* --- Slider Styles --- */
 /* --- Slider Styles --- */
-/* --- Slider Styles --- */
-/* --- Slider Styles --- */
 .sliders-wrapper {
     display: flex;
     gap: 20px;
@@ -942,7 +940,7 @@ pre {
 .relevancy-slider-container label {
     font-size: 1em;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* More space for labels */
     display: block;
     text-align: center;
 }
@@ -953,7 +951,7 @@ pre {
     gap: 10px;
 }
 .slider-ui-wrapper.amount-slider {
-    padding: 0 15px;
+    padding: 0 25px; /* Center the amount slider */
 }
 .slider-track {
     position: relative;
@@ -1010,7 +1008,7 @@ pre {
     height: 6px;
     background: #3a3a3a;
     border-radius: 3px;
-    padding: 0 9px; /* Aligns ticks with thumb travel */
+    padding: 0 9px;
 }
 .slider-ticks span {
     width: 2px;
@@ -1019,14 +1017,15 @@ pre {
     color: #888;
     font-size: 0.8em;
     position: relative;
-    top: 18px; /* Moves numbers down */
+    top: 18px;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.amount-slider .slider-ticks span {
-    background-color: transparent;
+.amount-slider .slider-ticks span,
+#refiner-relevancy ~ .slider-ticks span {
+    background-color: transparent; /* Hide tick marks for these sliders */
 }
 
 /* Custom Refiner Page Layout Fixes */
