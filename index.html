@@ -97,27 +97,24 @@
                         <textarea id="prompt" placeholder="Enter a description!"></textarea>
                         <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
                         <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
-                        <div class="relevancy-slider-container">
-                            <label>Keyword Relevancy</label>
-                            <input type="range" min="1" max="6" value="3" class="relevancy-slider" id="generator-relevancy">
-                            <div class="slider-labels" id="generator-relevancy-labels">
-                                <span>Strict</span>
-                                <span></span>
-                                <span>Balanced</span>
-                                <span></span>
-                                <span></span>
-                                <span>Creative</span>
+                        <div class="sliders-wrapper">
+                            <div class="relevancy-slider-container">
+                                <label>Keyword Relevancy</label>
+                                <div class="slider-ui-wrapper">
+                                    <span class="slider-label-end">Strict</span>
+                                    <div class="slider-track">
+                                        <input type="range" min="1" max="5" value="3" class="relevancy-slider" id="generator-relevancy">
+                                        <div class="slider-ticks" id="generator-relevancy-ticks"><span></span><span></span><span></span><span></span><span></span></div>
+                                    </div>
+                                    <span class="slider-label-end">Creative</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="relevancy-slider-container">
-                            <label>Amount</label>
-                            <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="generator-amount">
-                            <div class="slider-labels amount-labels" id="generator-amount-labels">
-                                <span>1</span>
-                                <span>2</span>
-                                <span>3</span>
-                                <span>4</span>
-                                <span>5</span>
+                            <div class="relevancy-slider-container">
+                                <label>Amount</label>
+                                <div class="slider-ui-wrapper">
+                                    <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="generator-amount">
+                                    <div class="slider-ticks" id="generator-amount-ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -146,31 +143,26 @@
                 <div class="input-box">
                      <label for="name-to-refine">Name to be Refined</label>
                      <input type="text" id="name-to-refine" placeholder="e.g., Stellaris">
+                     <div class="relevancy-slider-container">
+                        <label>Refinement Style</label>
+                        <div class="slider-ui-wrapper">
+                            <span class="slider-label-end">Similar</span>
+                            <div class="slider-track">
+                                <input type="range" min="1" max="5" value="3" class="relevancy-slider" id="refiner-relevancy">
+                                <div class="slider-ticks" id="refiner-relevancy-ticks"><span></span><span></span><span></span><span></span><span></span></div>
+                            </div>
+                            <span class="slider-label-end">Creative</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-box">
                     <label for="refinement-instructions">Refinement Instructions</label>
                     <textarea id="refinement-instructions" placeholder="e.g., Make it sound more ancient and mysterious"></textarea>
                     <div class="relevancy-slider-container">
-                        <label>Refinement Style</label>
-                        <input type="range" min="1" max="6" value="3" class="relevancy-slider" id="refiner-relevancy">
-                        <div class="slider-labels" id="refiner-relevancy-labels">
-                            <span>Similar</span>
-                            <span></span>
-                            <span>Balanced</span>
-                            <span></span>
-                            <span></span>
-                            <span>Creative</span>
-                        </div>
-                    </div>
-                    <div class="relevancy-slider-container">
                         <label>Amount</label>
-                        <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="refiner-amount">
-                        <div class="slider-labels amount-labels" id="refiner-amount-labels">
-                            <span>1</span>
-                            <span>2</span>
-                            <span>3</span>
-                            <span>4</span>
-                            <span>5</span>
+                        <div class="slider-ui-wrapper">
+                            <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="refiner-amount">
+                            <div class="slider-ticks" id="refiner-amount-ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
                         </div>
                     </div>
                 </div>
@@ -178,10 +170,8 @@
             <div class="button-section">
                 <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
             </div>
-
             <div class="container">
                 <div id="refiner-loading-placeholder" class="hidden"></div>
-                
                 <div id="refined_outputs_custom" class="output-section hidden">
                     <div class="output-box">
                         <div class="output-header">
@@ -198,7 +188,6 @@
                         <pre id="refined_reasons_custom"></pre>
                     </div>
                 </div>
-
                 <div id="custom-refine-history-section" class="history-section hidden">
                     <h2>✨ Recent Refinements</h2>
                     <div id="custom-refine-history" class="history-inner"></div>
