@@ -167,8 +167,10 @@ h1 {
 }
 
 /* style.css Line 222 */
-.main-generator-view .input-box {
-    min-height: 400px; /* Extends the main boxes by 30px */
+.custom-refiner-inputs .input-box {
+    min-height: 320px; /* Extends the outer box by 30px */
+    display: flex;
+    flex-direction: column;
 }
 
 .textbox-column {
@@ -1068,6 +1070,7 @@ pre {
     position: relative;
     z-index: 5;
 }
+
 
 
 
