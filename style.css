@@ -926,11 +926,16 @@ pre {
 /* --- Relevancy Slider Styles --- */
 /* --- Slider Styles --- */
 /* --- Slider Styles --- */
+/* --- Slider Styles --- */
 .sliders-wrapper {
     display: flex;
     gap: 20px;
-    margin-top: auto; /* Pushes sliders to the bottom of the flex container */
+    margin-top: auto;
     padding-top: 10px;
+    align-items: flex-end;
+}
+.sliders-wrapper .relevancy-slider-container:first-child {
+    margin-top: -5px; /* Moves relevancy slider up on main page */
 }
 .relevancy-slider-container {
     flex: 1;
@@ -967,11 +972,12 @@ pre {
     appearance: none;
     width: 100%;
     height: 6px;
-    background: #3a3a3a;
-    border-radius: 3px;
+    background: transparent; /* Make track invisible */
     outline: none;
     padding: 0;
     margin: 0;
+    position: relative;
+    z-index: 2;
 }
 .relevancy-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -983,8 +989,6 @@ pre {
     border-radius: 50%;
     border: 2px solid #1a1a1a;
     box-shadow: 0 0 5px var(--line-purple-glow);
-    position: relative;
-    z-index: 2;
 }
 .relevancy-slider::-moz-range-thumb {
     width: 18px;
@@ -994,59 +998,59 @@ pre {
     border-radius: 50%;
     border: 2px solid #1a1a1a;
     box-shadow: 0 0 5px var(--line-purple-glow);
-    position: relative;
-    z-index: 2;
 }
 .slider-ticks {
     position: absolute;
     top: 50%;
-    left: 9px;
-    right: 9px;
+    left: 0;
+    right: 0;
     transform: translateY(-50%);
     display: flex;
     justify-content: space-between;
     pointer-events: none;
     z-index: 1;
-}
-.amount-slider .slider-ticks {
-    left: 0;
-    right: 0;
+    height: 6px; /* Same as slider track */
+    background: #3a3a3a;
+    border-radius: 3px;
 }
 .slider-ticks span {
     width: 2px;
-    height: 8px;
+    height: 10px; /* Taller ticks */
     background-color: #555;
     color: #888;
     font-size: 0.8em;
     position: relative;
     top: 12px;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%); /* Center ticks */
+    display: flex;
+    justify-content: center;
 }
 .amount-slider .slider-ticks span {
-    background-color: transparent;
+    background-color: transparent; /* No ticks for amount */
 }
 
 /* Custom Refiner Page Layout Fixes */
 .custom-refiner-inputs .input-box {
-    min-height: 220px; /* Increased height */
+    min-height: 235px; /* Increased height by 15px */
     display: flex;
     flex-direction: column;
 }
-.custom-refiner-inputs .input-box textarea {
-    padding-bottom: 15px; /* Added 5px bottom padding */
+.custom-refiner-inputs .input-box #name-to-refine {
+    padding-bottom: 15px; /* Added 15px bottom padding */
+    flex-grow: 1; /* Allow it to take space */
+    height: auto;
 }
-#name-to-refine {
-    resize: none;
-    overflow: hidden; /* Hides scrollbar on single-line textarea */
-    padding-bottom: 15px;
+.custom-refiner-inputs .input-box #refinement-instructions {
+    flex-grow: 1; /* Ensure textarea fills space */
 }
-.custom-refiner-inputs .relevancy-slider-container {
-    margin-top: auto; /* Pushes sliders to the bottom */
+.custom-refiner-inputs .input-box .relevancy-slider-container {
+    margin-top: auto;
     padding-top: 10px;
-    margin-bottom: 4px; /* Added 4px margin */
+    margin-bottom: 4px;
 }
 #custom-refiner-view .button-section {
-    margin-top: -20px; /* Moved button up by 20px */
+    margin-top: -20px;
     position: relative;
     z-index: 5;
 }
+
