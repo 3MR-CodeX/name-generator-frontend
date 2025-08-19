@@ -159,11 +159,13 @@ h1 {
 .input-box {
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
-    padding: 15px; /* This line was changed */
+    padding: 15px;
     border-radius: 8px;
     flex: 1;
     min-width: 300px;
-    min-height: 320px;
+    min-height: 350px; /* Base height + 30px extension for ALL boxes */
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- Page Specific Layout Fixes --- */
@@ -1071,4 +1073,5 @@ pre {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension *//* --- Page Specific Layout Fixes --- */
+
 
