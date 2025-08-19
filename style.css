@@ -930,6 +930,7 @@ pre {
 /* --- Relevancy Slider Styles --- */
 /* --- Relevancy Slider Styles --- */
 /* --- Slider Styles --- */
+/* --- Slider Styles --- */
 .sliders-wrapper {
     display: flex;
     gap: 20px;
@@ -937,10 +938,10 @@ pre {
     padding-top: 10px;
     align-items: flex-end;
 }
-/* Move the left slider down by 3px for alignment */
+/* Moves the left slider on the main page down by 5px */
 .sliders-wrapper .relevancy-slider-container:first-child {
     position: relative;
-    top: 3px;
+    top: 5px;
 }
 .relevancy-slider-container {
     flex: 1;
@@ -977,12 +978,12 @@ pre {
     appearance: none;
     width: 100%;
     height: 6px;
-    background: transparent; /* Make slider track invisible */
+    background: transparent;
     outline: none;
     padding: 0;
     margin: 0;
     position: relative;
-    z-index: 2; /* Thumb on top */
+    z-index: 2;
 }
 .relevancy-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -1013,37 +1014,44 @@ pre {
     display: flex;
     justify-content: space-between;
     pointer-events: none;
-    z-index: 1; /* Ticks behind thumb */
-    height: 6px; /* This is the visible bar */
+    z-index: 1;
+    height: 6px;
     background: #3a3a3a;
     border-radius: 3px;
-    padding: 0 9px; /* Align ticks with thumb travel */
+    padding: 0 9px;
 }
 .slider-ticks span {
     width: 2px;
-    height: 10px; /* Tick mark height */
+    height: 10px;
     background-color: #555;
     color: #888;
     font-size: 0.8em;
     position: relative;
-    top: 15px; /* Move number down */
+    top: 15px;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.amount-slider .slider-ticks span {
+    background-color: transparent;
+}
 
-/* Custom Refiner Page Layout Fixes */
+/* --- Page Specific Layout Fixes --- */
+
+/* Main Generator Page Box Extension */
+.main-generator-view .input-box {
+    min-height: 365px; /* Extended by 25px */
+}
+
+/* Custom Refiner Page Box Extensions & Alignment */
 .custom-refiner-inputs .input-box {
-    min-height: 250px; /* Increased height by 15px */
+    min-height: 275px; /* Extended by 25px */
     display: flex;
     flex-direction: column;
 }
 .custom-refiner-inputs #name-to-refine {
-    flex-grow: 0; /* Prevent growing */
-    height: auto;
-    padding-bottom: 20px; /* 15px original + 5px extra */
-    resize: none;
+    padding-bottom: 40px; /* Extended by 20px */
 }
 .custom-refiner-inputs #refinement-instructions {
     flex-grow: 1;
@@ -1052,7 +1060,7 @@ pre {
     margin-top: auto;
     padding-top: 10px;
 }
-/* Move left slider down for alignment */
+/* Aligns the left slider with the right one */
 .custom-refiner-inputs .input-box:first-child .relevancy-slider-container {
     position: relative;
     top: 3px;
@@ -1061,9 +1069,4 @@ pre {
     margin-top: -20px;
     position: relative;
     z-index: 5;
-}
-
-/* style.css (at the end) */
-.custom-refiner-inputs #refinement-instructions {
-    padding-bottom: 25px; /* Adds 15px extra space at the bottom */
 }
