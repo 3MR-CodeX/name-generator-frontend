@@ -925,36 +925,37 @@ pre {
 /* --- Relevancy Slider Styles --- */
 /* --- Relevancy Slider Styles --- */
 /* --- Slider Styles --- */
+.sliders-wrapper {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
 .relevancy-slider-container {
-    margin: 15px 5px 20px 5px; /* Adjusted spacing */
-    padding: 0;
+    flex: 1;
+    padding: 5px;
 }
 .relevancy-slider-container label {
-    font-size: 16px;
-    font-weight: 400;
-    margin-bottom: 8px;
+    font-size: 1em;
+    font-weight: 500;
+    margin-bottom: 10px;
     display: block;
     text-align: center;
 }
-.slider-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
-}
-.slider-labels span {
+.slider-ui-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.slider-track {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.slider-label-end {
     font-size: 0.8em;
-    color: #888;
-    width: 16.66%; /* For 6 labels */
-    text-align: center;
-    transition: color 0.3s ease;
-}
-.slider-labels.amount-labels span {
-    width: 20%; /* For 5 labels */
-}
-.slider-labels span.active {
-    color: #fff;
-    font-weight: 500;
+    color: #aaa;
 }
 .relevancy-slider {
     -webkit-appearance: none;
@@ -964,11 +965,8 @@ pre {
     background: #3a3a3a;
     border-radius: 3px;
     outline: none;
-    opacity: 0.7;
-    transition: opacity .2s;
-}
-.relevancy-slider:hover {
-    opacity: 1;
+    padding: 0;
+    margin: 0;
 }
 .relevancy-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -980,6 +978,8 @@ pre {
     border-radius: 50%;
     border: 2px solid #1a1a1a;
     box-shadow: 0 0 5px var(--line-purple-glow);
+    position: relative;
+    z-index: 2;
 }
 .relevancy-slider::-moz-range-thumb {
     width: 18px;
@@ -989,7 +989,29 @@ pre {
     border-radius: 50%;
     border: 2px solid #1a1a1a;
     box-shadow: 0 0 5px var(--line-purple-glow);
+    position: relative;
+    z-index: 2;
 }
-
-
-
+.slider-ticks {
+    position: absolute;
+    top: 50%;
+    left: 9px; /* Half of thumb width */
+    right: 9px; /* Half of thumb width */
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 1;
+}
+.slider-ticks span {
+    width: 2px;
+    height: 8px;
+    background-color: #555;
+    color: #888;
+    font-size: 0.8em;
+    line-height: 25px;
+    text-align: center;
+}
+#generator-amount-ticks span, #refiner-amount-ticks span {
+    background-color: transparent; /* Hide tick for amount slider */
+}
