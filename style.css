@@ -927,15 +927,13 @@ pre {
 /* --- Slider Styles --- */
 /* --- Slider Styles --- */
 /* --- Slider Styles --- */
+/* --- Slider Styles --- */
 .sliders-wrapper {
     display: flex;
     gap: 20px;
     margin-top: auto;
     padding-top: 10px;
     align-items: flex-end;
-}
-.sliders-wrapper .relevancy-slider-container:first-child {
-    margin-top: -5px; /* Moves relevancy slider up on main page */
 }
 .relevancy-slider-container {
     flex: 1;
@@ -972,7 +970,7 @@ pre {
     appearance: none;
     width: 100%;
     height: 6px;
-    background: transparent; /* Make track invisible */
+    background: transparent;
     outline: none;
     padding: 0;
     margin: 0;
@@ -1009,48 +1007,45 @@ pre {
     justify-content: space-between;
     pointer-events: none;
     z-index: 1;
-    height: 6px; /* Same as slider track */
+    height: 6px;
     background: #3a3a3a;
     border-radius: 3px;
+    padding: 0 9px; /* Aligns ticks with thumb travel */
 }
 .slider-ticks span {
     width: 2px;
-    height: 10px; /* Taller ticks */
+    height: 10px;
     background-color: #555;
     color: #888;
     font-size: 0.8em;
     position: relative;
-    top: 12px;
-    transform: translate(-50%, -50%); /* Center ticks */
+    top: 18px; /* Moves numbers down */
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .amount-slider .slider-ticks span {
-    background-color: transparent; /* No ticks for amount */
+    background-color: transparent;
 }
 
 /* Custom Refiner Page Layout Fixes */
 .custom-refiner-inputs .input-box {
-    min-height: 235px; /* Increased height by 15px */
+    min-height: 235px;
     display: flex;
     flex-direction: column;
 }
-.custom-refiner-inputs .input-box #name-to-refine {
-    padding-bottom: 15px; /* Added 15px bottom padding */
-    flex-grow: 1; /* Allow it to take space */
+.custom-refiner-inputs .input-box textarea,
+.custom-refiner-inputs .input-box input[type="text"] {
+    flex-grow: 1;
     height: auto;
 }
-.custom-refiner-inputs .input-box #refinement-instructions {
-    flex-grow: 1; /* Ensure textarea fills space */
-}
-.custom-refiner-inputs .input-box .relevancy-slider-container {
+.custom-refiner-inputs .relevancy-slider-container {
     margin-top: auto;
     padding-top: 10px;
-    margin-bottom: 4px;
 }
 #custom-refiner-view .button-section {
     margin-top: -20px;
     position: relative;
     z-index: 5;
 }
-
