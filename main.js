@@ -266,6 +266,8 @@ async function generateName(force = false) {
     const seed_names = Array.from(document.getElementById("more-like-this-container").children).map(el => el.textContent.slice(0, -1).trim());
     
     // CORRECTED: Added comma after seed_names
+   // main.js Line 290
+   // main.js Line 290
     const payload = { 
         prompt, 
         keywords: document.getElementById("keywords").value.trim(), 
@@ -273,7 +275,7 @@ async function generateName(force = false) {
         style: document.getElementById("style").value, 
         language: document.getElementById("language").value, 
         pattern: document.getElementById("pattern").value, 
-        seed_names,
+        seed_names, // Comma was missing here
         relevancy: document.getElementById("generator-relevancy").value,
         amount: document.getElementById("generator-amount").value
     };
@@ -708,3 +710,4 @@ function openHistoryModal() {
 
 function closeHistoryModal() { if (historyModal) historyModal.classList.remove('active'); }
 function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active'); }
+
