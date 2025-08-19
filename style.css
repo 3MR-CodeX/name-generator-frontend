@@ -170,7 +170,7 @@ h1 {
 
 /* Main Generator Page Box Extension */
 .main-generator-view .input-box {
-    min-height: 350px !important; /* Base 320px + 30px extension */
+    min-height: 400px !important; /* Base 320px + 30px extension */
 }
 .main-generator-view .input-box .sliders-wrapper {
     margin-top: auto; /* Anchors sliders to the bottom */
@@ -1071,3 +1071,4 @@ pre {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension *//* --- Page Specific Layout Fixes --- */
+
