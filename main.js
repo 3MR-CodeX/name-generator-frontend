@@ -1,9 +1,33 @@
+// main.js
+
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
-const PLATFORM_OPTIONS = ["Twitch", "YouTube", "Rumble", "Instagram", "X", "TikTok", "Facebook", "Pinterest", "Reddit", "GitHub", "SoundCloud", "Behance", "Medium", "Roblox", "Steam"];
+
+// NEW: Unified list for all checkable options with types and icons
+const CHECKABLE_OPTIONS = {
+    ".com Domain":  { type: "domain", value: "com", icon: "fas fa-globe" },
+    ".io Domain":   { type: "domain", value: "io", icon: "fas fa-globe" },
+    ".ai Domain":   { type: "domain", value: "ai", icon: "fas fa-robot" },
+    ".app Domain":  { type: "domain", value: "app", icon: "fas fa-mobile-alt" },
+    "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
+    "Facebook":     { type: "platform", value: "Facebook", icon: "fab fa-facebook" },
+    "GitHub":       { type: "platform", value: "GitHub", icon: "fab fa-github" },
+    "Instagram":    { type: "platform", value: "Instagram", icon: "fab fa-instagram" },
+    "Medium":       { type: "platform", value: "Medium", icon: "fab fa-medium" },
+    "Pinterest":    { type: "platform", value: "Pinterest", icon: "fab fa-pinterest" },
+    "Reddit":       { type: "platform", value: "Reddit", icon: "fab fa-reddit-alien" },
+    "Roblox":       { type: "platform", value: "Roblox", icon: "fas fa-gamepad" },
+    "Rumble":       { type: "platform", value: "Rumble", icon: "fas fa-video" },
+    "SoundCloud":   { type: "platform", value: "SoundCloud", icon: "fab fa-soundcloud" },
+    "Steam":        { type: "platform", value: "Steam", icon: "fab fa-steam" },
+    "TikTok":       { type: "platform", value: "TikTok", icon: "fab fa-tiktok" },
+    "Twitch":       { type: "platform", value: "Twitch", icon: "fab fa-twitch" },
+    "X":            { type: "platform", value: "X", icon: "fab fa-twitter" },
+    "YouTube":      { type: "platform", value: "YouTube", icon: "fab fa-youtube" }
+};
 let customRefineHistoryLog = [];
 
 // --- DOM Element Selectors ---
@@ -715,42 +739,42 @@ function initializePlatformsDropdown() {
     if (!platformsDropdownList || !platformsDropdownBtn) return;
 
     // Populate dropdown with checkboxes
-    PLATFORM_OPTIONS.sort().forEach(platform => {
+    Object.keys(CHECKABLE_OPTIONS).forEach(name => {
+        const option = CHECKABLE_OPTIONS[name];
         const label = document.createElement('label');
         label.className = 'platform-item';
         
+        const icon = document.createElement('i');
+        icon.className = option.icon;
+
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.value = platform;
-        checkbox.checked = true; // Start with all platforms checked
+        checkbox.value = name; // Use the display name as the value
+        checkbox.checked = false; // Default to unchecked
 
+        label.appendChild(icon);
         label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(platform));
+        label.appendChild(document.createTextNode(` ${name}`));
         platformsDropdownList.appendChild(label);
     });
     
-    // Update the button text initially
     updatePlatformsButtonText();
 
-    // Toggle dropdown visibility
     platformsDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         platformsDropdownList.classList.toggle('hidden');
         platformsDropdownBtn.classList.toggle('open');
     });
 
-    // Close dropdown if clicking outside
     document.addEventListener('click', () => {
         platformsDropdownList.classList.add('hidden');
         platformsDropdownBtn.classList.remove('open');
     });
 
-    // Stop propagation when clicking inside the list
     platformsDropdownList.addEventListener('click', (e) => {
         e.stopPropagation();
     });
 
-    // Add event listener to update button text on change
     platformsDropdownList.addEventListener('change', updatePlatformsButtonText);
 }
 
@@ -758,12 +782,12 @@ function updatePlatformsButtonText() {
     const selectedCount = platformsDropdownList.querySelectorAll('input[type="checkbox"]:checked').length;
     const buttonText = platformsDropdownBtn.querySelector('span:first-child');
     
-    if (selectedCount === PLATFORM_OPTIONS.length) {
-        buttonText.textContent = 'All Platforms';
+    if (selectedCount === Object.keys(CHECKABLE_OPTIONS).length) {
+        buttonText.textContent = 'All Options';
     } else if (selectedCount === 0) {
-        buttonText.textContent = 'Select Platforms';
+        buttonText.textContent = 'Select Options';
     } else {
-        buttonText.textContent = `${selectedCount} Platform(s) Selected`;
+        buttonText.textContent = `${selectedCount} Option(s) Selected`;
     }
 }
 
@@ -776,8 +800,20 @@ async function checkAvailability() {
         return;
     }
     
-    // Get the list of selected platforms from the checkboxes
-    const selectedPlatforms = Array.from(platformsDropdownList.querySelectorAll('input:checked')).map(input => input.value);
+    const selectedPlatforms = [];
+    const selectedTlds = [];
+
+    // Get the list of selected options and sort them into platforms and TLDs
+    const checkedBoxes = platformsDropdownList.querySelectorAll('input:checked');
+    checkedBoxes.forEach(box => {
+        const optionKey = box.value;
+        const option = CHECKABLE_OPTIONS[optionKey];
+        if (option.type === 'platform') {
+            selectedPlatforms.push(option.value);
+        } else if (option.type === 'domain') {
+            selectedTlds.push(option.value);
+        }
+    });
 
     const resultsContainer = document.getElementById('availability-results-container');
     resultsContainer.innerHTML = `<div class="loading-dots" style="margin: 40px auto;"><span></span><span></span><span></span></div>`;
@@ -788,10 +824,10 @@ async function checkAvailability() {
         const response = await fetch(`${BACKEND_URL}/check-availability`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            // Send the name AND the list of selected platforms
             body: JSON.stringify({ 
                 name: nameToCheck,
-                platforms: selectedPlatforms 
+                platforms: selectedPlatforms,
+                tlds: selectedTlds
             })
         });
 
@@ -813,36 +849,50 @@ async function checkAvailability() {
 function renderAvailabilityResults(data) {
     const resultsContainer = document.getElementById('availability-results-container');
     
-    let domainsHtml = data.domains.map(d => `
-        <div class="result-item">
-            <span class="result-name">${d.domain}</span>
-            ${d.available
-                ? '<span class="status-available">✅ Available</span>'
-                : '<span class="status-taken">❌ Taken</span>'
-            }
-        </div>
-    `).join('');
+    let htmlContent = '';
 
-    let socialsHtml = data.socials.map(s => `
-        <div class="result-item">
-            <span class="result-name">${s.platform}</span>
-            ${s.available
-                ? `<span class="status-available">✅ Available</span>`
-                : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`
-            }
-        </div>
-    `).join('');
-
-    resultsContainer.innerHTML = `
-        <div class="output-section" style="margin-top: 20px;">
+    if (data.domains.length > 0) {
+        let domainsHtml = data.domains.map(d => `
+            <div class="result-item">
+                <span class="result-name">${d.domain}</span>
+                ${d.available
+                    ? '<span class="status-available">✅ Available</span>'
+                    : '<span class="status-taken">❌ Taken</span>'
+                }
+            </div>
+        `).join('');
+        htmlContent += `
             <div class="output-box">
                 <div class="output-header"><label>Domain Availability</label></div>
                 <div class="results-list">${domainsHtml}</div>
             </div>
+        `;
+    }
+
+    if (data.socials.length > 0) {
+        let socialsHtml = data.socials.map(s => `
+            <div class="result-item">
+                <span class="result-name">
+                    <i class="${CHECKABLE_OPTIONS[s.platform] ? CHECKABLE_OPTIONS[s.platform].icon : 'fas fa-hashtag'}"></i>
+                    ${s.platform}
+                </span>
+                ${s.available
+                    ? `<span class="status-available">✅ Available</span>`
+                    : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`
+                }
+            </div>
+        `).join('');
+        htmlContent += `
             <div class="output-box">
-                <div class="output-header"><label>Social Media</label></div>
+                <div class="output-header"><label>Social Media & Platforms</label></div>
                 <div class="results-list">${socialsHtml}</div>
             </div>
-        </div>
-    `;
+        `;
+    }
+
+    if (htmlContent === '') {
+        resultsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">Please select at least one option from the dropdown to check.</p>';
+    } else {
+        resultsContainer.innerHTML = `<div class="output-section" style="margin-top: 20px;">${htmlContent}</div>`;
+    }
 }
