@@ -163,7 +163,8 @@ h1 {
 .input-box {
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
-    padding: 15px 15px 35px;
+    /* MODIFIED: Reduced bottom padding from 35px to 10px to extend the textarea above it. */
+    padding: 15px 15px 10px;
     border-radius: 8px;
     flex: 1;
     min-width: 300px;
@@ -192,12 +193,7 @@ h1 {
     display: flex;
     flex-direction: column;
 }
-.custom-refiner-inputs #name-to-refine {
-    flex-grow: 0;
-    resize: none;
-    padding-bottom: 60px;
-    /* Extends the inner box by 10px */
-}
+
 .custom-refiner-inputs #refinement-instructions {
     flex-grow: 1;
     /* Allows this textarea to fill the new vertical space */
@@ -969,21 +965,6 @@ pre {
 .input-section.custom-refiner-inputs {
     align-items: stretch;
     /* Makes boxes equal height */
-}
-.custom-refiner-inputs .input-box {
-    min-height: 120px;
-    /* Shorter height */
-    height: 120px;
-    display: flex;
-    /* Added for alignment */
-    flex-direction: column;
-    /* Added for alignment */
-}
-.custom-refiner-inputs .input-box #name-to-refine,
-.custom-refiner-inputs .input-box #refinement-instructions {
-    flex-grow: 1;
-    /* Allows them to fill the parent box */
-    height: 100%;
 }
 .custom-refiner-inputs .input-box #refinement-instructions {
     margin-bottom: 0; /* Remove default margin */
