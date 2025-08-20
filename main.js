@@ -6,13 +6,10 @@ const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company"
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
 
-// NEW: Unified list for all checkable options with types and icons
+// UPDATED: Unified list with a single "Domains" option
 const CHECKABLE_OPTIONS = {
-    ".com Domain":  { type: "domain", value: "com", icon: "fas fa-globe" },
-    ".io Domain":   { type: "domain", value: "io", icon: "fas fa-globe" },
-    ".ai Domain":   { type: "domain", value: "ai", icon: "fas fa-robot" },
-    ".app Domain":  { type: "domain", value: "app", icon: "fas fa-mobile-alt" },
     "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
+    "Domains (.com, .io, .ai, .app)":  { type: "domain_group", value: ["com", "io", "ai", "app"], icon: "fas fa-globe" },
     "Facebook":     { type: "platform", value: "Facebook", icon: "fab fa-facebook" },
     "GitHub":       { type: "platform", value: "GitHub", icon: "fab fa-github" },
     "Instagram":    { type: "platform", value: "Instagram", icon: "fab fa-instagram" },
@@ -738,8 +735,8 @@ function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsMod
 function initializePlatformsDropdown() {
     if (!platformsDropdownList || !platformsDropdownBtn) return;
 
-    // Populate dropdown with checkboxes
-    Object.keys(CHECKABLE_OPTIONS).forEach(name => {
+    // Populate dropdown with checkboxes, sorted alphabetically
+    Object.keys(CHECKABLE_OPTIONS).sort().forEach(name => {
         const option = CHECKABLE_OPTIONS[name];
         const label = document.createElement('label');
         label.className = 'platform-item';
@@ -749,7 +746,7 @@ function initializePlatformsDropdown() {
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.value = name; // Use the display name as the value
+        checkbox.value = name;
         checkbox.checked = false; // Default to unchecked
 
         label.appendChild(icon);
@@ -803,20 +800,20 @@ async function checkAvailability() {
     const selectedPlatforms = [];
     const selectedTlds = [];
 
-    // Get the list of selected options and sort them into platforms and TLDs
     const checkedBoxes = platformsDropdownList.querySelectorAll('input:checked');
     checkedBoxes.forEach(box => {
         const optionKey = box.value;
         const option = CHECKABLE_OPTIONS[optionKey];
         if (option.type === 'platform') {
             selectedPlatforms.push(option.value);
-        } else if (option.type === 'domain') {
-            selectedTlds.push(option.value);
+        } else if (option.type === 'domain_group') {
+            selectedTlds.push(...option.value);
         }
     });
 
     const resultsContainer = document.getElementById('availability-results-container');
-    resultsContainer.innerHTML = `<div class="loading-dots" style="margin: 40px auto;"><span></span><span></span><span></span></div>`;
+    // UPDATED: Wrap loader in a container for centering
+    resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
     disableButtons();
 
     try {
@@ -852,9 +849,15 @@ function renderAvailabilityResults(data) {
     let htmlContent = '';
 
     if (data.domains.length > 0) {
+        const domainsKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].type === 'domain_group');
+        const domainIcon = domainsKey ? CHECKABLE_OPTIONS[domainsKey].icon : 'fas fa-globe';
+
         let domainsHtml = data.domains.map(d => `
             <div class="result-item">
-                <span class="result-name">${d.domain}</span>
+                <span class="result-name">
+                    <i class="${domainIcon}"></i>
+                    ${d.domain}
+                </span>
                 ${d.available
                     ? '<span class="status-available">✅ Available</span>'
                     : '<span class="status-taken">❌ Taken</span>'
@@ -870,18 +873,21 @@ function renderAvailabilityResults(data) {
     }
 
     if (data.socials.length > 0) {
-        let socialsHtml = data.socials.map(s => `
-            <div class="result-item">
-                <span class="result-name">
-                    <i class="${CHECKABLE_OPTIONS[s.platform] ? CHECKABLE_OPTIONS[s.platform].icon : 'fas fa-hashtag'}"></i>
-                    ${s.platform}
-                </span>
-                ${s.available
-                    ? `<span class="status-available">✅ Available</span>`
-                    : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`
-                }
-            </div>
-        `).join('');
+        let socialsHtml = data.socials.map(s => {
+            const option = CHECKABLE_OPTIONS[s.platform];
+            const iconClass = option ? option.icon : 'fas fa-hashtag';
+            return `
+                <div class="result-item">
+                    <span class="result-name">
+                        <i class="${iconClass}"></i>
+                        ${s.platform}
+                    </span>
+                    ${s.available
+                        ? `<span class="status-available">✅ Available</span>`
+                        : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`
+                    }
+                </div>`;
+        }).join('');
         htmlContent += `
             <div class="output-box">
                 <div class="output-header"><label>Social Media & Platforms</label></div>
