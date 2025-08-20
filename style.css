@@ -163,7 +163,6 @@ h1 {
 .input-box {
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
-    /* MODIFIED: Reduced bottom padding from 35px to 10px to extend the textarea above it. */
     padding: 15px 15px 10px;
     border-radius: 8px;
     flex: 1;
@@ -177,8 +176,8 @@ h1 {
 
 /* Main Generator Page Box Extension */
 .main-generator-view .input-box {
-    min-height: 400px !important;
-    /* Base 320px + 30px extension */
+    /* MODIFIED: Increased min-height to 425px to contain the sliders */
+    min-height: 425px !important;
 }
 .main-generator-view .input-box .sliders-wrapper {
     margin-top: auto;
@@ -204,11 +203,7 @@ h1 {
     padding-top: 10px;
 }
 
-/* NEW RULE: Moves the left slider down for better alignment */
-.custom-refiner-inputs .input-box:first-child .relevancy-slider-container {
-    position: relative;
-    top: 10px;
-}
+/* REMOVED: The rule that shifted the left slider down has been removed to restore alignment. */
 
 #custom-refiner-view .button-section {
     margin-top: -20px;
