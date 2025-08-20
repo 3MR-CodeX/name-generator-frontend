@@ -163,11 +163,11 @@ h1 {
 .input-box {
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
-    padding: 15px 15px 10px;
+    padding: 150px 15px 10px;
     border-radius: 8px;
     flex: 1;
     min-width: 300px;
-    min-height: 360px; /* Base height + 30px extension for ALL boxes */
+    min-height: 400px; /* Base height + 30px extension for ALL boxes */
     display: flex;
     flex-direction: column;
 }
@@ -1116,3 +1116,4 @@ pre {
 .amount-slider .slider-ticks span {
     background-color: transparent;
 }
+
