@@ -188,7 +188,7 @@ h1 {
 /* Moves the slider container on the main page up by 20px */
 .main-generator-view .sliders-wrapper {
     position: relative;
-    bottom: 20px;
+    bottom: 100px;
 }
 
 
