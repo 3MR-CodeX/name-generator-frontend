@@ -184,23 +184,24 @@ h1 {
     /* Anchors sliders to the bottom */
 }
 
-
-/* Custom Refiner Page Box Extensions & Alignment */
-.custom-refiner-inputs .input-box {
-    min-height: 350px !important;
-    /* Base 320px + 30px extension */
-    display: flex;
-    flex-direction: column;
-}
-
 .custom-refiner-inputs #refinement-instructions {
     flex-grow: 1;
     /* Allows this textarea to fill the new vertical space */
 }
+/* --- Page Specific Layout Fixes --- */
+
+/* Custom Refiner Page Box Extensions & Alignment */
+.custom-refiner-inputs .input-box {
+    /* MODIFIED: Compressed the outer box by reducing min-height from 350px */
+    min-height: 280px !important;
+    display: flex;
+    flex-direction: column;
+}
+
 .custom-refiner-inputs .relevancy-slider-container {
     margin-top: auto;
-    /* Anchors sliders to the bottom */
-    padding-top: 10px;
+    /* MODIFIED: Reduced padding-top to give more space to the textarea above */
+    padding-top: 0;
 }
 
 /* REMOVED: The rule that shifted the left slider down has been removed to restore alignment. */
@@ -1107,3 +1108,4 @@ pre {
 .amount-slider .slider-ticks span {
     background-color: transparent;
 }
+
