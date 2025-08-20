@@ -1145,3 +1145,12 @@ pre {
     margin-right: 10px;
     cursor: pointer;
 }
+/* in style.css */
+
+/* --- Icon styling for platform dropdown --- */
+.platform-item i {
+    margin-right: 10px;
+    width: 1.2em; /* Gives icons a consistent space */
+    text-align: center;
+    color: #cccccc;
+}
