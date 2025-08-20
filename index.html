@@ -147,7 +147,7 @@
             <div class="input-section custom-refiner-inputs">
                 <div class="input-box">
                      <label for="name-to-refine">Name to be Refined</label>
-                     <textarea id="name-to-refine" placeholder="Type your name here..." style="flex-grow: 1;"></textarea>
+                    <textarea id="name-to-refine" placeholder="Type your name here..." style="flex-grow: 1;"></textarea>
                      <div class="relevancy-slider-container">
                         <label>Creativity</label>
                         <div class="slider-ui-wrapper">
@@ -204,6 +204,24 @@
                     <div id="custom-refine-history" class="history-inner"></div>
                 </div>
             </div>
+        </div>
+
+        <div id="availability-checker-view" class="hidden">
+            <h1>Name Availability Check</h1>
+            <p class="description">Check if your desired name is available as a domain and on social media.</p>
+            
+            <div class="input-section">
+                <div class="input-box" style="flex: 2;">
+                    <label for="name-to-check">Name to Check</label>
+                    <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
+                </div>
+                <div class="button-section" style="flex: 1; margin: 0; align-items: flex-end;">
+                    <button id="check-availability-btn" class="generate-btn" style="width: 100%; margin: 0;">🔍 Check Availability</button>
+                </div>
+            </div>
+        
+            <div id="availability-results-container">
+                </div>
         </div>
 
         <div class="container">
@@ -263,6 +281,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
-
-
