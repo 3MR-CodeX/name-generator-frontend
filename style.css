@@ -185,12 +185,13 @@ h1 {
 .main-generator-view .right-column {
     justify-content: space-evenly;
 }
-
 /* Moves the slider container on the main page up by 20px */
 .main-generator-view .sliders-wrapper {
     position: relative;
     bottom: 20px;
 }
+
+
 /* Custom Refiner Page Box Extensions & Alignment */
 .custom-refiner-inputs .input-box {
     min-height: 280px !important;
