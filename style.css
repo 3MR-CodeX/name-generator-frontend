@@ -186,7 +186,7 @@ h1 {
 
 .custom-refiner-inputs .relevancy-slider-container {
     margin-top: auto;
-    padding-top: 0;
+    padding-top: 20px;
 }
 
 .custom-refiner-inputs .input-box:nth-child(2) .relevancy-slider-container {
@@ -1021,3 +1021,4 @@ pre {
 .amount-slider .slider-ticks span {
     background-color: transparent;
 }
+
