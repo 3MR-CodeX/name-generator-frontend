@@ -163,16 +163,17 @@ h1 {
     border-radius: 8px;
     flex: 1;
     min-width: 300px;
-    min-height: 360px; /* Base height + 30px extension for ALL boxes */
+    min-height: 350px; /* Base height + 30px extension for ALL boxes */
     display: flex;
     flex-direction: column;
 }
 
 /* --- Page Specific Layout Fixes --- */
+/* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension */
 .main-generator-view .input-box {
-    min-height: 400px !important; /* Base 320px + 30px extension */
+    min-height: 350px !important; /* Base 320px + 30px extension */
 }
 .main-generator-view .input-box .sliders-wrapper {
     margin-top: auto; /* Anchors sliders to the bottom */
@@ -186,11 +187,8 @@ h1 {
     flex-direction: column;
 }
 .custom-refiner-inputs #name-to-refine {
-    flex-grow: 0;
+    flex-grow: 0; /* Prevents this input from stretching vertically */
     resize: none;
-    padding-bottom: 60px; /* Extends the inner box by 10px */
-    display: flex;
-    flex-direction: column;
 }
 .custom-refiner-inputs #refinement-instructions {
     flex-grow: 1; /* Allows this textarea to fill the new vertical space */
@@ -1076,6 +1074,7 @@ pre {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension *//* --- Page Specific Layout Fixes --- */
+
 
 
 
