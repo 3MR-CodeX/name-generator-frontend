@@ -188,8 +188,10 @@ h1 {
 .custom-refiner-inputs #name-to-refine {
     flex-grow: 0;
     resize: none;
-    padding-bottom: 50px 60px; /* Extends the inner box by 10px */
-}
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+}/* Extends the inner box by 10px */
 .custom-refiner-inputs #refinement-instructions {
     flex-grow: 1; /* Allows this textarea to fill the new vertical space */
 }
@@ -1074,6 +1076,7 @@ pre {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension *//* --- Page Specific Layout Fixes --- */
+
 
 
 
