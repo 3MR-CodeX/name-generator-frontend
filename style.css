@@ -1022,3 +1022,36 @@ pre {
     background-color: transparent;
 }
 
+/* style.css */
+
+/* --- Availability Checker Results --- */
+.results-list { 
+    padding: 10px; 
+}
+.result-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 8px 5px; 
+    border-bottom: 1px solid #4a4a4a; 
+}
+.result-item:last-child { 
+    border-bottom: none; 
+}
+.result-name { 
+    font-weight: 500; 
+}
+.status-available { 
+    color: #50fa7b; 
+    font-weight: 500;
+}
+.status-taken { 
+    color: #ff5555; 
+}
+.status-taken a { 
+    color: #8be9fd; 
+    text-decoration: none; 
+}
+.status-taken a:hover { 
+    text-decoration: underline; 
+}
