@@ -180,8 +180,9 @@ h1 {
 
 
 /* Custom Refiner Page Box Extensions & Alignment */
+/* Custom Refiner Page Box Extensions & Alignment */
 .custom-refiner-inputs .input-box {
-    min-height: 300px !important; /* Base 320px + 30px extension */
+    min-height: 360px; /* Base 350px + 10px extension */
     display: flex;
     flex-direction: column;
 }
@@ -1076,6 +1077,7 @@ pre {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension *//* --- Page Specific Layout Fixes --- */
+
 
 
 
