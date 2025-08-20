@@ -175,10 +175,19 @@ h1 {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension */
+/* --- Page Specific Layout Fixes --- */
+
+/* Main Generator Page Box Extension */
 .main-generator-view .input-box {
-    /* MODIFIED: Increased min-height to 425px to contain the sliders */
-    min-height: 425px !important;
+    /* MODIFIED: Extended the outer box height by 20px (425px -> 445px) */
+    min-height: 445px !important;
 }
+
+/* ADDED: Stretches the dropdowns to fill the vertical space in the right column */
+.main-generator-view .right-column {
+    justify-content: space-evenly;
+}
+
 .main-generator-view .input-box .sliders-wrapper {
     margin-top: auto;
     /* Anchors sliders to the bottom */
@@ -1114,5 +1123,6 @@ pre {
 .amount-slider .slider-ticks span {
     background-color: transparent;
 }
+
 
 
