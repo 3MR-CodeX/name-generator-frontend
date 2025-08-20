@@ -159,11 +159,11 @@ h1 {
 .input-box {
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
-    padding: 15px 15px 35px;
+    padding: 15px;
     border-radius: 8px;
     flex: 1;
     min-width: 300px;
-    min-height: 350px; /* Base height + 30px extension for ALL boxes */
+    min-height: 350px; /* Base 320px + 30px extension */
     display: flex;
     flex-direction: column;
 }
@@ -205,6 +205,27 @@ h1 {
     margin-top: auto; /* This is the key that pushes sliders to the bottom */
     padding-top: 10px;
 }
+#custom-refiner-view .button-section {
+    margin-top: -20px;
+    position: relative;
+    z-index: 5;
+}
+
+/* --- Page Specific Content Anchoring --- */
+
+/* Anchors sliders to the bottom of their container */
+.sliders-wrapper,
+.custom-refiner-inputs .relevancy-slider-container {
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+/* Allows the main text areas to fill the available vertical space */
+.custom-refiner-inputs #refinement-instructions {
+    flex-grow: 1;
+}
+
+/* Positions the refine button correctly */
 #custom-refiner-view .button-section {
     margin-top: -20px;
     position: relative;
@@ -1082,6 +1103,7 @@ pre {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension *//* --- Page Specific Layout Fixes --- */
+
 
 
 
