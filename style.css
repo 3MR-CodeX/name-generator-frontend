@@ -1055,3 +1055,93 @@ pre {
 .status-taken a:hover { 
     text-decoration: underline; 
 }
+/* in style.css */
+
+/* --- New Styles for Availability Checker --- */
+.availability-input-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-wrapper label {
+    margin-bottom: 5px;
+}
+
+#name-to-check {
+    height: 45px; /* Makes it one line thick */
+}
+
+/* Custom Checkable Dropdown */
+.dropdown-check-container {
+    position: relative;
+}
+
+.dropdown-btn {
+    width: 100%;
+    height: 45px;
+    background-color: rgba(58, 58, 58, 0.75);
+    color: #e0e0e0;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 0 15px;
+    font-size: 16px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdown-btn:hover {
+    border-color: #800080;
+}
+
+.dropdown-btn .arrow {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #e0e0e0;
+    transition: transform 0.3s ease;
+}
+
+.dropdown-btn.open .arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background-color: #3a3a3a;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    z-index: 100;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.dropdown-content .platform-item {
+    display: block;
+    padding: 10px 12px;
+    color: #e0e0e0;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.dropdown-content .platform-item:hover {
+    background-color: #4a4a4a;
+}
+
+.dropdown-content .platform-item input {
+    margin-right: 10px;
+    cursor: pointer;
+}
