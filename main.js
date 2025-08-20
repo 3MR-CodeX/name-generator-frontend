@@ -3,12 +3,12 @@ const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
-
 let customRefineHistoryLog = [];
 
 // --- DOM Element Selectors ---
 const mainGeneratorView = document.getElementById("main-generator-view");
 const customRefinerView = document.getElementById("custom-refiner-view");
+const availabilityCheckerView = document.getElementById("availability-checker-view"); // New
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -22,6 +22,7 @@ const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 const refineBtn = document.querySelector(".refine-btn");
 const customRefineBtn = document.getElementById("custom-refine-btn");
+const checkAvailabilityBtn = document.getElementById("check-availability-btn"); // New
 const historyModal = document.getElementById("history-modal");
 const closeButtonHistoryModal = document.querySelector("#history-modal .close-button");
 const fullHistoryList = document.getElementById("full-history-list");
@@ -87,12 +88,16 @@ function setupEventListeners() {
         };
     }
     if (customRefineBtn) customRefineBtn.onclick = customRefineName;
+    if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability; // New
 
     setTimeout(() => {
         const homeLink = document.getElementById('home-link');
         const customRefineLink = document.getElementById('custom-refine-link');
+        const availabilityCheckLink = document.getElementById('availability-check-link'); // New
+
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); }); // New
     }, 500);
 }
 
@@ -103,7 +108,6 @@ function initializeSliders() {
         { id: 'generator-amount', labelsId: 'generator-amount-labels' },
         { id: 'refiner-amount', labelsId: 'refiner-amount-labels' }
     ];
-
     sliders.forEach(sliderInfo => {
         const slider = document.getElementById(sliderInfo.id);
         const labelsContainer = document.getElementById(sliderInfo.labelsId);
@@ -125,15 +129,18 @@ function initializeSliders() {
 function showView(viewName) {
     if(mainGeneratorView) mainGeneratorView.classList.add('hidden');
     if(customRefinerView) customRefinerView.classList.add('hidden');
+    if(availabilityCheckerView) availabilityCheckerView.classList.add('hidden'); // New
     
     resetDynamicSections(false);
-
+    
     if (viewName === 'generator') {
         if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
     } else if (viewName === 'refiner') {
         if(customRefinerView) customRefinerView.classList.remove('hidden');
         if(refineSection) refineSection.classList.add('hidden');
         if(refineBtn) refineBtn.classList.add('hidden');
+    } else if (viewName === 'availability-checker') { // New
+        if(availabilityCheckerView) availabilityCheckerView.classList.remove('hidden');
     }
 }
 
@@ -155,7 +162,6 @@ function showLoading(targetElement) {
     if (!targetElement) return;
     targetElement.innerHTML = '';
     targetElement.classList.remove("fade-in-content");
-    
     const overlay = document.createElement("div");
     overlay.className = "loading-overlay";
     overlay.innerHTML = '<div class="spinner-overlay show"><div class="spinner"></div></div>';
@@ -169,11 +175,11 @@ function hideLoading(targetElement) {
 }
 
 function disableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn].forEach(btn => { if(btn) btn.disabled = true; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn].forEach(btn => { if(btn) btn.disabled = true; }); // Updated
 }
 
 function enableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn].forEach(btn => { if(btn) btn.disabled = false; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn].forEach(btn => { if(btn) btn.disabled = false; }); // Updated
 }
 
 function showTemporaryPlaceholderError(element, message) {
@@ -218,6 +224,7 @@ function addSeedName(name) {
     const moreLikeThisSection = document.getElementById("more-like-this-section");
     const container = document.getElementById("more-like-this-container");
     if (!moreLikeThisSection || !container) return;
+    
     const existing = Array.from(container.children).map(el => el.textContent.slice(0, -1).trim());
     
     if (existing.includes(name) || existing.length >= 3) {
@@ -228,6 +235,7 @@ function addSeedName(name) {
         return;
     }
     moreLikeThisSection.classList.remove('hidden');
+    
     const tag = document.createElement('div');
     tag.className = 'seed-tag';
     tag.textContent = name;
@@ -248,8 +256,7 @@ function addSeedName(name) {
 }
 
 async function generateName(force = false) {
-    if (generateBtn.disabled && !force) return; 
-
+    if (generateBtn.disabled && !force) return;
     if (!window.auth.currentUser && parseInt(localStorage.getItem('anonGenerations') || '0') >= 10) {
         document.getElementById("error").textContent = "You have used all 10 free generations. Please sign up to continue.";
         if (typeof openSignUpModal === 'function') openSignUpModal();
@@ -265,10 +272,6 @@ async function generateName(force = false) {
     document.getElementById("error").textContent = "";
     const seed_names = Array.from(document.getElementById("more-like-this-container").children).map(el => el.textContent.slice(0, -1).trim());
     
-    // CORRECTED: Added comma after seed_names
-   // main.js Line 290
-   // main.js Line 290
- // main.js Line 290
     const payload = { 
         prompt, 
         keywords: document.getElementById("keywords").value.trim(), 
@@ -276,11 +279,11 @@ async function generateName(force = false) {
         style: document.getElementById("style").value, 
         language: document.getElementById("language").value, 
         pattern: document.getElementById("pattern").value, 
-        seed_names, // This comma was missing
+        seed_names,
         relevancy: document.getElementById("generator-relevancy").value,
         amount: document.getElementById("generator-amount").value
     };
-    
+
     if(outputContainer) outputContainer.classList.remove("hidden");
     showLoading(namesPre);
     showLoading(reasonsPre);
@@ -293,7 +296,6 @@ async function generateName(force = false) {
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify(payload)
         });
-        
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
 
@@ -309,7 +311,7 @@ async function generateName(force = false) {
         if(reasonsPre) reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         if(namesPre) namesPre.classList.add("fade-in-content");
         if(reasonsPre) reasonsPre.classList.add("fade-in-content");
-
+        
         if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
             if(refineSection) refineSection.classList.remove("hidden");
             if(refineBtn) refineBtn.classList.remove("hidden");
@@ -353,10 +355,9 @@ async function refineNames(action, names = null, extra_info = "") {
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ action, names, extra_info })
         });
-
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during name refinement.");
         const data = await response.json();
-
+        
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
@@ -413,14 +414,13 @@ async function surpriseMe() {
         });
         if (!response.ok) throw new Error((await response.json()).detail || "Failed to get a surprise prompt.");
         const data = await response.json();
-
+        
         if(promptInput) promptInput.value = data.prompt;
         document.getElementById("category").value = data.category;
         document.getElementById("style").value = data.style;
         document.getElementById("language").value = "English";
         document.getElementById("pattern").value = "Auto (AI Decides)";
         await generateName(true);
-
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         enableButtons();
@@ -435,10 +435,10 @@ async function customRefineName() {
     const instructionsInput = document.getElementById('refinement-instructions');
     const nameToRefine = nameToRefineInput.value.trim();
     const instructions = instructionsInput.value.trim();
-
+    
     if (!nameToRefine) return showTemporaryPlaceholderError(nameToRefineInput, "Please enter a name to refine.");
     if (!instructions) return showTemporaryPlaceholderError(instructionsInput, "Please enter refinement instructions.");
-
+    
     document.getElementById("error").textContent = "";
     
     if(refinedOutputsCustom) {
@@ -464,12 +464,11 @@ async function customRefineName() {
                 amount: document.getElementById("refiner-amount").value
             })
         });
-
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during custom refinement.");
         const data = await response.json();
         
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
-
+        
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
@@ -520,20 +519,16 @@ function renderCustomRefineHistory() {
     [...customRefineHistoryLog].reverse().forEach(entry => {
         const button = document.createElement('button');
         button.className = 'history-item';
-        
         button.title = `Original: ${entry.originalName}\nInstruction: ${entry.instructions}`;
-        
         const namesHTML = entry.results.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
         const preRefinedHTML = `<small class="pre-refined-history">from: ${cleanNames(entry.originalName)}</small>`;
         button.innerHTML = `${namesHTML}${preRefinedHTML}`;
-
         button.onclick = () => {
             const nameInput = document.getElementById('name-to-refine');
             const instructionsInput = document.getElementById('refinement-instructions');
             if(nameInput) nameInput.value = entry.originalName;
             if(instructionsInput) instructionsInput.value = entry.instructions;
         };
-
         customRefineHistoryDiv.appendChild(button);
     });
 }
@@ -563,13 +558,14 @@ function renderHistory(history, renderToModal = false) {
     if (!targetDiv) return;
     targetDiv.innerHTML = "";
     if (!renderToModal) history = history.slice(0, 50);
+    
     if (history.length === 0) {
         targetDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
         return;
     }
 
     const createTooltip = (entry) => `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}`;
-
+    
     if (renderToModal) {
         const groupedHistory = history.reduce((acc, entry) => {
             const date = new Date(entry.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -585,7 +581,7 @@ function renderHistory(history, renderToModal = false) {
             dateHeading.textContent = date;
             dailyContainer.appendChild(dateHeading);
             groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-                const button = document.createElement('button');
+                 const button = document.createElement('button');
                 button.className = 'history-item';
                 button.title = (entry.category.includes("Refined")) ? `Refine Instruction: ${entry.prompt}` : createTooltip(entry);
                 button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
@@ -658,7 +654,6 @@ function resetDynamicSections(clearInputs = true) {
     sections.forEach(el => {
         if (el) el.classList.add("hidden");
     });
-
     if (clearInputs) {
         const textPres = [namesPre, reasonsPre, refinedNamesPre, refinedReasonsPre, refinedNamesCustomPre, refinedReasonsCustomPre];
         textPres.forEach(el => {
@@ -712,4 +707,93 @@ function openHistoryModal() {
 function closeHistoryModal() { if (historyModal) historyModal.classList.remove('active'); }
 function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active'); }
 
+// --- NEW: Availability Checker Functions ---
+async function checkAvailability() {
+    const nameInput = document.getElementById('name-to-check');
+    const nameToCheck = nameInput.value.trim();
 
+    if (!nameToCheck) {
+        showTemporaryPlaceholderError(nameInput, "Please enter a name to check.");
+        return;
+    }
+    
+    const resultsContainer = document.getElementById('availability-results-container');
+    resultsContainer.innerHTML = `<div class="loading-dots" style="margin: 40px auto;"><span></span><span></span><span></span></div>`;
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const response = await fetch(`${BACKEND_URL}/check-availability`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({ name: nameToCheck })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "An error occurred.");
+        }
+
+        const data = await response.json();
+        renderAvailabilityResults(data);
+
+    } catch (error) {
+        resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
+    } finally {
+        enableButtons();
+    }
+}
+
+function renderAvailabilityResults(data) {
+    const resultsContainer = document.getElementById('availability-results-container');
+    
+    let domainsHtml = data.domains.map(d => `
+        <div class="result-item">
+            <span class="result-name">${d.domain}</span>
+            ${d.available
+                ? '<span class="status-available">✅ Available</span>'
+                : '<span class="status-taken">❌ Taken</span>'
+            }
+        </div>
+    `).join('');
+
+    let socialsHtml = data.socials.map(s => `
+        <div class="result-item">
+            <span class="result-name">${s.platform}</span>
+            ${s.available
+                ? `<span class="status-available">✅ Available</span>`
+                : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`
+            }
+        </div>
+    `).join('');
+
+    resultsContainer.innerHTML = `
+        <div class="output-section" style="margin-top: 20px;">
+            <div class="output-box">
+                <div class="output-header"><label>Domain Availability</label></div>
+                <div class="results-list">${domainsHtml}</div>
+            </div>
+            <div class="output-box">
+                <div class="output-header"><label>Social Media</label></div>
+                <div class="results-list">${socialsHtml}</div>
+            </div>
+        </div>
+    `;
+    
+    // Inject styles if they don't already exist
+    if (!document.getElementById('availability-styles')) {
+        const style = document.createElement('style');
+        style.id = 'availability-styles';
+        style.innerHTML = `
+            .results-list { padding: 10px; }
+            .result-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 5px; border-bottom: 1px solid #4a4a4a; }
+            .result-item:last-child { border-bottom: none; }
+            .result-name { font-weight: 500; }
+            .status-available { color: #50fa7b; }
+            .status-taken { color: #ff5555; }
+            .status-taken a { color: #8be9fd; text-decoration: none; }
+            .status-taken a:hover { text-decoration: underline; }
+        `;
+        document.head.appendChild(style);
+    }
+}
