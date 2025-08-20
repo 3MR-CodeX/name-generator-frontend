@@ -163,7 +163,7 @@ h1 {
     border-radius: 8px;
     flex: 1;
     min-width: 300px;
-    min-height: 360px; /* Base height + 30px extension for ALL boxes */
+    min-height: 350px; /* Base height + 30px extension for ALL boxes */
     display: flex;
     flex-direction: column;
 }
@@ -188,7 +188,7 @@ h1 {
 .custom-refiner-inputs #name-to-refine {
     flex-grow: 0;
     resize: none;
-    min-height: 65px; /* Sets a minimum height, adding ~10px of space */
+    min-height: 100px; /* Sets a minimum height, adding ~10px of space */
 }/* Extends the inner box by 10px */
 .custom-refiner-inputs #refinement-instructions {
     flex-grow: 1; /* Allows this textarea to fill the new vertical space */
@@ -1074,6 +1074,7 @@ pre {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension *//* --- Page Specific Layout Fixes --- */
+
 
 
 
