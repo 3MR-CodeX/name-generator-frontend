@@ -171,30 +171,27 @@ h1 {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension */
-.main-generator-view .input-box {
-    min-height: 350px !important; /* Base 320px + 30px extension */
-}
-.main-generator-view .input-box .sliders-wrapper {
-    margin-top: auto; /* Anchors sliders to the bottom */
-}
-
-
 /* Custom Refiner Page Box Extensions & Alignment */
+.custom-refiner-inputs .input-box:first-child {
+    min-height: 310px !important; /* Base 300px + 10px extension for left box */
+    display: flex;
+    flex-direction: column;
+}
 .custom-refiner-inputs .input-box {
-    min-height: 300px !important; /* Base 320px + 30px extension */
+    min-height: 300px !important; /* Maintain original height for other boxes */
     display: flex;
     flex-direction: column;
 }
 .custom-refiner-inputs #name-to-refine {
     flex-grow: 0;
     resize: none;
-    min-height: 100px; /* Sets a minimum height, adding ~10px of space */
-}/* Extends the inner box by 10px */
+    min-height: 100px;
+}
 .custom-refiner-inputs #refinement-instructions {
-    flex-grow: 1; /* Allows this textarea to fill the new vertical space */
+    flex-grow: 1;
 }
 .custom-refiner-inputs .relevancy-slider-container {
-    margin-top: auto; /* Anchors sliders to the bottom */
+    margin-top: auto;
     padding-top: 10px;
 }
 #custom-refiner-view .button-section {
@@ -1074,6 +1071,7 @@ pre {
 /* --- Page Specific Layout Fixes --- */
 
 /* Main Generator Page Box Extension *//* --- Page Specific Layout Fixes --- */
+
 
 
 
