@@ -3,12 +3,13 @@ const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
+const PLATFORM_OPTIONS = ["Twitch", "YouTube", "Rumble", "Instagram", "X", "TikTok", "Facebook", "Pinterest", "Reddit", "GitHub", "SoundCloud", "Behance", "Medium", "Roblox", "Steam"];
 let customRefineHistoryLog = [];
 
 // --- DOM Element Selectors ---
 const mainGeneratorView = document.getElementById("main-generator-view");
 const customRefinerView = document.getElementById("custom-refiner-view");
-const availabilityCheckerView = document.getElementById("availability-checker-view"); // New
+const availabilityCheckerView = document.getElementById("availability-checker-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -22,7 +23,7 @@ const generateBtn = document.querySelector(".generate-btn");
 const surpriseBtn = document.querySelector(".surprise-btn");
 const refineBtn = document.querySelector(".refine-btn");
 const customRefineBtn = document.getElementById("custom-refine-btn");
-const checkAvailabilityBtn = document.getElementById("check-availability-btn"); // New
+const checkAvailabilityBtn = document.getElementById("check-availability-btn");
 const historyModal = document.getElementById("history-modal");
 const closeButtonHistoryModal = document.querySelector("#history-modal .close-button");
 const fullHistoryList = document.getElementById("full-history-list");
@@ -37,6 +38,8 @@ const refinedOutputsCustom = document.getElementById("refined_outputs_custom");
 const refinedNamesCustomPre = document.getElementById("refined_names_custom");
 const refinedReasonsCustomPre = document.getElementById("refined_reasons_custom");
 const refinerLoadingPlaceholder = document.getElementById("refiner-loading-placeholder");
+const platformsDropdownBtn = document.getElementById("platforms-dropdown-btn");
+const platformsDropdownList = document.getElementById("platforms-dropdown-list");
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
@@ -53,6 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     setupEventListeners();
     initializeSliders();
+    initializePlatformsDropdown();
 });
 
 async function loadComponent(placeholderId, componentUrl) {
@@ -88,16 +92,16 @@ function setupEventListeners() {
         };
     }
     if (customRefineBtn) customRefineBtn.onclick = customRefineName;
-    if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability; // New
+    if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability;
 
     setTimeout(() => {
         const homeLink = document.getElementById('home-link');
         const customRefineLink = document.getElementById('custom-refine-link');
-        const availabilityCheckLink = document.getElementById('availability-check-link'); // New
+        const availabilityCheckLink = document.getElementById('availability-check-link');
 
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); }); // New
+        if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
     }, 500);
 }
 
@@ -129,7 +133,7 @@ function initializeSliders() {
 function showView(viewName) {
     if(mainGeneratorView) mainGeneratorView.classList.add('hidden');
     if(customRefinerView) customRefinerView.classList.add('hidden');
-    if(availabilityCheckerView) availabilityCheckerView.classList.add('hidden'); // New
+    if(availabilityCheckerView) availabilityCheckerView.classList.add('hidden');
     
     resetDynamicSections(false);
     
@@ -139,7 +143,7 @@ function showView(viewName) {
         if(customRefinerView) customRefinerView.classList.remove('hidden');
         if(refineSection) refineSection.classList.add('hidden');
         if(refineBtn) refineBtn.classList.add('hidden');
-    } else if (viewName === 'availability-checker') { // New
+    } else if (viewName === 'availability-checker') {
         if(availabilityCheckerView) availabilityCheckerView.classList.remove('hidden');
     }
 }
@@ -175,11 +179,11 @@ function hideLoading(targetElement) {
 }
 
 function disableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn].forEach(btn => { if(btn) btn.disabled = true; }); // Updated
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn].forEach(btn => { if(btn) btn.disabled = true; });
 }
 
 function enableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn].forEach(btn => { if(btn) btn.disabled = false; }); // Updated
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn].forEach(btn => { if(btn) btn.disabled = false; });
 }
 
 function showTemporaryPlaceholderError(element, message) {
@@ -707,7 +711,62 @@ function openHistoryModal() {
 function closeHistoryModal() { if (historyModal) historyModal.classList.remove('active'); }
 function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active'); }
 
-// --- NEW: Availability Checker Functions ---
+function initializePlatformsDropdown() {
+    if (!platformsDropdownList || !platformsDropdownBtn) return;
+
+    // Populate dropdown with checkboxes
+    PLATFORM_OPTIONS.sort().forEach(platform => {
+        const label = document.createElement('label');
+        label.className = 'platform-item';
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = platform;
+        checkbox.checked = true; // Start with all platforms checked
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(platform));
+        platformsDropdownList.appendChild(label);
+    });
+    
+    // Update the button text initially
+    updatePlatformsButtonText();
+
+    // Toggle dropdown visibility
+    platformsDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        platformsDropdownList.classList.toggle('hidden');
+        platformsDropdownBtn.classList.toggle('open');
+    });
+
+    // Close dropdown if clicking outside
+    document.addEventListener('click', () => {
+        platformsDropdownList.classList.add('hidden');
+        platformsDropdownBtn.classList.remove('open');
+    });
+
+    // Stop propagation when clicking inside the list
+    platformsDropdownList.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Add event listener to update button text on change
+    platformsDropdownList.addEventListener('change', updatePlatformsButtonText);
+}
+
+function updatePlatformsButtonText() {
+    const selectedCount = platformsDropdownList.querySelectorAll('input[type="checkbox"]:checked').length;
+    const buttonText = platformsDropdownBtn.querySelector('span:first-child');
+    
+    if (selectedCount === PLATFORM_OPTIONS.length) {
+        buttonText.textContent = 'All Platforms';
+    } else if (selectedCount === 0) {
+        buttonText.textContent = 'Select Platforms';
+    } else {
+        buttonText.textContent = `${selectedCount} Platform(s) Selected`;
+    }
+}
+
 async function checkAvailability() {
     const nameInput = document.getElementById('name-to-check');
     const nameToCheck = nameInput.value.trim();
@@ -717,6 +776,9 @@ async function checkAvailability() {
         return;
     }
     
+    // Get the list of selected platforms from the checkboxes
+    const selectedPlatforms = Array.from(platformsDropdownList.querySelectorAll('input:checked')).map(input => input.value);
+
     const resultsContainer = document.getElementById('availability-results-container');
     resultsContainer.innerHTML = `<div class="loading-dots" style="margin: 40px auto;"><span></span><span></span><span></span></div>`;
     disableButtons();
@@ -726,7 +788,11 @@ async function checkAvailability() {
         const response = await fetch(`${BACKEND_URL}/check-availability`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ name: nameToCheck })
+            // Send the name AND the list of selected platforms
+            body: JSON.stringify({ 
+                name: nameToCheck,
+                platforms: selectedPlatforms 
+            })
         });
 
         if (!response.ok) {
@@ -779,21 +845,4 @@ function renderAvailabilityResults(data) {
             </div>
         </div>
     `;
-    
-    // Inject styles if they don't already exist
-    if (!document.getElementById('availability-styles')) {
-        const style = document.createElement('style');
-        style.id = 'availability-styles';
-        style.innerHTML = `
-            .results-list { padding: 10px; }
-            .result-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 5px; border-bottom: 1px solid #4a4a4a; }
-            .result-item:last-child { border-bottom: none; }
-            .result-name { font-weight: 500; }
-            .status-available { color: #50fa7b; }
-            .status-taken { color: #ff5555; }
-            .status-taken a { color: #8be9fd; text-decoration: none; }
-            .status-taken a:hover { text-decoration: underline; }
-        `;
-        document.head.appendChild(style);
-    }
 }
