@@ -212,6 +212,12 @@ h1 {
     z-index: 5;
 }
 
+/* Aligns the right slider on the custom refiner page with the left one */
+.custom-refiner-inputs .input-box:nth-child(2) .relevancy-slider-container {
+    position: relative;
+    top: 10px;
+}
+
 
 .textbox-column {
     flex: 3;
@@ -1108,4 +1114,5 @@ pre {
 .amount-slider .slider-ticks span {
     background-color: transparent;
 }
+
 
