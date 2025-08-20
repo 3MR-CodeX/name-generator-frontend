@@ -209,15 +209,28 @@
         <div id="availability-checker-view" class="hidden">
             <h1>Name Availability Check</h1>
             <p class="description">Check if your desired name is available as a domain and on social media.</p>
-            
-            <div class="input-section">
-                <div class="input-box" style="flex: 2;">
+        
+            <div class="availability-input-container">
+                <div class="input-wrapper" style="flex: 2;">
                     <label for="name-to-check">Name to Check</label>
                     <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
                 </div>
-                <div class="button-section" style="flex: 1; margin: 0; align-items: flex-end;">
-                    <button id="check-availability-btn" class="generate-btn" style="width: 100%; margin: 0;">🔍 Check Availability</button>
+        
+                <div class="input-wrapper" style="flex: 1;">
+                    <label>Platforms</label>
+                    <div class="dropdown-check-container">
+                        <button id="platforms-dropdown-btn" class="dropdown-btn">
+                            <span>Select Platforms</span>
+                            <span class="arrow"></span>
+                        </button>
+                        <div id="platforms-dropdown-list" class="dropdown-content hidden">
+                            </div>
+                    </div>
                 </div>
+            </div>
+        
+            <div class="button-section" style="margin-top: 20px;">
+                <button id="check-availability-btn" class="generate-btn">🔍 Check Availability</button>
             </div>
         
             <div id="availability-results-container">
