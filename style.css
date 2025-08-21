@@ -1252,3 +1252,131 @@ pre {
 .import-history-btn:hover {
     background-color: #a020f0;
 }
+
+/* --- Settings Page --- */
+.settings-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.setting-section {
+    background-color: rgba(42, 42, 42, 0.75);
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.setting-section h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #4a4a4a;
+    color: #e0e0e0;
+    text-align: left;
+}
+
+.setting-section h2 i {
+    margin-right: 10px;
+    color: var(--line-purple-default);
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.setting-row label {
+    font-size: 1em;
+    font-weight: 400;
+}
+
+.settings-btn {
+    padding: 8px 16px;
+    font-size: 0.9em;
+    background-color: #4a4a4a;
+}
+.settings-btn:hover {
+    background-color: #5a5a5a;
+}
+.settings-btn.premium-btn {
+    background-color: var(--button-purple);
+}
+.settings-btn.premium-btn:hover {
+    background-color: #a020f0;
+}
+.settings-btn.danger-btn {
+    background-color: #b30000;
+}
+.settings-btn.danger-btn:hover {
+    background-color: #d90000;
+}
+
+/* Toggle Switch for Animations */
+.switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
+input:checked + .slider { background-color: var(--line-purple-glow); }
+input:checked + .slider:before { transform: translateX(22px); }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
+
+
+/* --- Light Theme --- */
+body.light-theme {
+    background: #f0f2f5;
+    color: #1c1e21;
+}
+.light-theme #background-container,
+.light-theme .animated-bar {
+    display: none; /* Hide animated background in light mode */
+}
+.light-theme .input-box,
+.light-theme .output-box,
+.light-theme .refine-section,
+.light-theme .history-section,
+.light-theme .setting-section,
+.light-theme .modal-content {
+    background-color: #ffffff;
+    border-color: #dddfe2;
+}
+.light-theme textarea, 
+.light-theme select, 
+.light-theme input[type="text"],
+.light-theme pre {
+    background-color: #f0f2f5;
+    color: #1c1e21;
+    border-color: #ccd0d5;
+}
+.light-theme h1, .light-theme h2, .light-theme label, .light-theme .topbar-title {
+    color: #1c1e21;
+}
+.light-theme .description, .light-theme .user-profile-info .user-email {
+    color: #606770;
+}
+.light-theme #top-bar {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-bottom-color: #dddfe2;
+    backdrop-filter: blur(5px);
+}
+.light-theme .hamburger-line {
+    background-color: #1c1e21;
+}
+.light-theme .surprise-btn {
+    background-color: #e4e6eb;
+    color: #1c1e21;
+}
+.light-theme .surprise-btn:hover {
+    background-color: #d8dadf;
+}
+.light-theme #sidebar {
+    background-color: rgba(245, 245, 245, 0.9);
+    border-right-color: #dddfe2;
+}
+.light-theme .modal-content {
+    background-color: #f0f2f5;
+}
