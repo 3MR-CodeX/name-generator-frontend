@@ -328,11 +328,9 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-left: 20px;
-    /* This will push the auth section to the right */
+    margin-left: 50px; /* Increased from 20px */
     flex-grow: 1; 
 }
-
 .topbar-title {
     font-size: 1.8em;
     font-weight: 800; /* Makes the font thick */
