@@ -976,9 +976,10 @@ pre {
     height: 18px;
     background: var(--line-purple-default);
     cursor: pointer;
-    border-radius: 50%;
     border: 2px solid #1a1a1a;
     box-shadow: 0 0 5px var(--line-purple-glow);
+    /* Changed from border-radius to clip-path */
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 .relevancy-slider::-moz-range-thumb {
@@ -986,9 +987,10 @@ pre {
     height: 18px;
     background: var(--line-purple-default);
     cursor: pointer;
-    border-radius: 50%;
     border: 2px solid #1a1a1a;
     box-shadow: 0 0 5px var(--line-purple-glow);
+    /* Changed from border-radius to clip-path */
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 .slider-ticks {
@@ -1218,6 +1220,7 @@ pre {
     min-height: 120px;
     resize: none;
 }
+
 
 
 
