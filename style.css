@@ -118,7 +118,7 @@ body {
     height: 180px;
     object-fit: contain;
     position: relative; /* Added */
-    left: 50px;         /* Added */
+    left: 15px;         /* Added */
 }
 
 h1 {
@@ -1218,6 +1218,7 @@ pre {
     min-height: 120px;
     resize: none;
 }
+
 
 
 
