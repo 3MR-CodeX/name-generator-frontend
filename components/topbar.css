@@ -319,12 +319,14 @@
 }
 
 /* --- Topbar Showcase Animation --- */
+/* --- Topbar Showcase Animation --- */
 .topbar-title-container {
     display: flex;
     align-items: center;
     gap: 15px;
     margin-left: 20px;
-    flex-grow: 1; 
+    flex-grow: 1;
+    overflow: hidden; /* Prevent content from overflowing the topbar */
 }
 
 .topbar-title {
@@ -339,14 +341,15 @@
     align-items: center;
     gap: 15px;
     margin-left: 50px;
-    top: 5px;
     position: relative;
+    top: 5px;
 }
 
 #showcase-prompt {
     font-size: 1.1em;
     color: #cccccc;
     position: relative;
+    white-space: nowrap;
 }
 
 #showcase-prompt.typing::after {
@@ -359,39 +362,22 @@
     animation: blink-caret 1s step-end infinite;
 }
 
-@keyframes blink-caret {
-    from, to { background-color: transparent }
-    50% { background-color: rgba(255, 255, 255, 0.75); }
-}
-
-#showcase-name-wrapper {
-    height: 1.5em;
-    overflow: hidden;
-    position: relative;
-}
-
 #showcase-name {
     font-size: 1.1em;
     color: var(--line-purple-default);
     font-weight: 500;
-    position: absolute;
-    left: 0; /* Add this line */
-    width: 100%; /* Add this for better consistency */
+    position: relative;
+    opacity: 0; /* Start hidden */
+    transform: translateY(-20px); /* Start above */
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.slide-in-down {
-    animation: slideInDown 0.4s forwards ease-out;
-}
-.slide-out-down {
-    animation: slideOutDown 0.4s forwards ease-in;
+#showcase-name.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-@keyframes slideInDown {
-    from { opacity: 0; transform: translateY(-100%); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideOutDown {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(100%); }
+@keyframes blink-caret {
+    from, to { background-color: transparent }
+    50% { background-color: rgba(255, 255, 255, 0.75); }
 }
