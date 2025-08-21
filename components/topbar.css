@@ -324,22 +324,37 @@
 }
 
 /* --- Topbar Showcase Animation --- */
+/* --- Topbar Showcase Animation --- */
 .showcase-container {
     display: flex;
-    flex-direction: column;
+    align-items: center; /* Aligns prompt and name vertically */
+    gap: 15px;
     margin-left: 50px;
     top: 5px;
     position: relative;
+}
+
+.topbar-title-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 20px;
+    flex-grow: 1; 
+}
+
+.topbar-title {
+    font-size: 2.2em;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1.5px;
 }
 
 #showcase-prompt {
     font-size: 1.1em;
     color: #cccccc;
     position: relative;
-    height: 1.5em; /* Reserve space */
 }
 
-/* Blinking cursor effect */
 #showcase-prompt.typing::after {
     content: '';
     position: absolute;
@@ -355,34 +370,34 @@
     50% { background-color: rgba(255, 255, 255, 0.75); }
 }
 
-#showcase-names {
-    display: flex;
-    gap: 20px;
-    height: 1.5em; /* Reserve space */
-    margin-top: 5px;
+#showcase-name-wrapper {
+    height: 1.5em; /* Fixed height for the animation */
+    overflow: hidden; /* Hides the text as it slides */
+    position: relative;
 }
 
-#showcase-names span {
-    font-size: 1em;
+#showcase-name {
+    font-size: 1.1em;
     color: var(--line-purple-default);
     font-weight: 500;
+    position: absolute;
     opacity: 0; /* Start hidden */
 }
 
-/* Animation classes */
-.fade-in {
-    animation: fadeIn 0.5s forwards ease-out;
+/* New Animation Classes */
+.slide-in-down {
+    animation: slideInDown 0.4s forwards ease-out;
 }
-.fade-out {
-    animation: fadeOut 0.5s forwards ease-in;
+.slide-out-down {
+    animation: slideOutDown 0.4s forwards ease-in;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
+@keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-100%); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeOut {
+@keyframes slideOutDown {
     from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(10px); }
+    to { opacity: 0; transform: translateY(100%); }
 }
