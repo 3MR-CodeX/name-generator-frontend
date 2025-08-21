@@ -99,7 +99,8 @@ body {
 .banner-col {
     text-align: center;
     margin-bottom: 20px;
-    padding: 10px;
+    background-color: transparent; /* Changed */
+    padding: 0;                   /* Changed */
     border-radius: 8px;
     transition: background-color 0.3s;
     width: 100%;
@@ -107,13 +108,13 @@ body {
 }
 
 .banner-col:hover {
-    background-color: #a020f0;
+    background-color: transparent; /* Changed */
 }
 
 #banner {
     width: 100%;
-    max-width: 800px;
-    height: 120px;
+    max-width: 900px; /* Increased from 800px */
+    height: 150px;  /* Increased from 120px */
     object-fit: contain;
 }
 
@@ -1214,4 +1215,5 @@ pre {
     min-height: 120px;
     resize: none;
 }
+
 
