@@ -349,8 +349,9 @@
     font-size: 1.1em;
     color: #cccccc;
     position: absolute;
-    /* Start off-screen at the top */
-    transform: translateY(-100%);
+    width: 100%; /* Helps prevent text wrapping issues */
+    left: 0;
+    opacity: 0; /* Start invisible by default */
 }
 
 /* Animation Classes */
