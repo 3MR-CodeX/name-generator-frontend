@@ -75,7 +75,7 @@ function initializeTopbar() {
             await type(promptSpan, data.prompt);
             await sleep(2000);
             await cycleNames(data.names);
-            await sleep(1000);
+            await sleep(1500);
             await erase(promptSpan);
             await sleep(2000);
             
