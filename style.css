@@ -98,9 +98,10 @@ body {
 
 .banner-col {
     text-align: center;
+    margin-top: 20px; /* Added */
     margin-bottom: 20px;
-    background-color: transparent; /* Changed */
-    padding: 0;                   /* Changed */
+    background-color: transparent;
+    padding: 0;
     border-radius: 8px;
     transition: background-color 0.3s;
     width: 100%;
@@ -113,8 +114,8 @@ body {
 
 #banner {
     width: 100%;
-    max-width: 900px; /* Increased from 800px */
-    height: 150px;  /* Increased from 120px */
+    max-width: 1000px; /* Increased from 900px */
+    height: 180px;     /* Increased from 150px */
     object-fit: contain;
 }
 
@@ -1215,5 +1216,6 @@ pre {
     min-height: 120px;
     resize: none;
 }
+
 
 
