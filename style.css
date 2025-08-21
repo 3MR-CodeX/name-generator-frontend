@@ -917,7 +917,7 @@ pre {
 
 .sliders-wrapper .relevancy-slider-container:first-child {
     position: relative;
-    top: 5px;
+    top: 15px;
 }
 
 .relevancy-slider-container {
@@ -1012,7 +1012,7 @@ pre {
     color: #888;
     font-size: 0.8em;
     position: relative;
-    top: 15px;
+    top: 30px;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
@@ -1380,3 +1380,4 @@ body.light-theme {
 .light-theme .modal-content {
     background-color: #f0f2f5;
 }
+
