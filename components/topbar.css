@@ -349,11 +349,10 @@
     font-size: 1.1em;
     color: #cccccc;
     position: absolute;
-    width: 100%; /* Helps prevent text wrapping issues */
+    width: 100%;
     left: 0;
-    opacity: 0; /* Start invisible by default */
+    /* The animation keyframes will now control the opacity */
 }
-
 /* Animation Classes */
 .slide-in {
     animation: slideIn 0.5s forwards ease-out;
