@@ -972,21 +972,23 @@ pre {
 .relevancy-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 14px;   /* Decreased size */
-    height: 14px;  /* Decreased size */
+    width: 18px;
+    height: 18px;
     background: var(--line-purple-default);
     cursor: pointer;
-    /* border and box-shadow removed for a sharper look */
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border-radius: 50%;
+    border: 2px solid #1a1a1a;
+    box-shadow: 0 0 5px var(--line-purple-glow);
 }
 
 .relevancy-slider::-moz-range-thumb {
-    width: 14px;   /* Decreased size */
-    height: 14px;  /* Decreased size */
+    width: 18px;
+    height: 18px;
     background: var(--line-purple-default);
     cursor: pointer;
-    /* border and box-shadow removed for a sharper look */
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border-radius: 50%;
+    border: 2px solid #1a1a1a;
+    box-shadow: 0 0 5px var(--line-purple-glow);
 }
 
 .slider-ticks {
@@ -1216,6 +1218,7 @@ pre {
     min-height: 120px;
     resize: none;
 }
+
 
 
 
