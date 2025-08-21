@@ -29,6 +29,7 @@ const mainGeneratorView = document.getElementById("main-generator-view");
 const customRefinerView = document.getElementById("custom-refiner-view");
 const availabilityCheckerView = document.getElementById("availability-checker-view");
 const nameAnalyzerView = document.getElementById("name-analyzer-view");
+const settingsView = document.getElementById("settings-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -64,6 +65,17 @@ const refinerLoadingPlaceholder = document.getElementById("refiner-loading-place
 const platformsDropdownBtn = document.getElementById("platforms-dropdown-btn");
 const platformsDropdownList = document.getElementById("platforms-dropdown-list");
 
+// --- Settings Page Selectors ---
+const themeSelect = document.getElementById('theme-select');
+const fontSelect = document.getElementById('font-select');
+const fontSizeSlider = document.getElementById('font-size-slider');
+const animationsToggle = document.getElementById('animations-toggle');
+const changePasswordBtn = document.getElementById('change-password-btn');
+const manageSubscriptionBtn = document.getElementById('manage-subscription-btn');
+const exportHistoryBtn = document.getElementById('export-history-btn');
+const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
     await loadComponent('sidebar-placeholder', 'components/sidebar.html');
@@ -73,6 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof initializeAuth === 'function') initializeAuth();
     
     initializeUI();
+    initializeSettings();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
     populateDropdown("pattern", PATTERN_OPTIONS);
@@ -122,16 +135,28 @@ function setupEventListeners() {
     if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability;
     if (analyzeNameBtn) analyzeNameBtn.onclick = analyzeName;
 
+    // Settings event listeners
+    if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
+    if (fontSelect) fontSelect.addEventListener('change', (e) => applyFont(e.target.value));
+    if (fontSizeSlider) fontSizeSlider.addEventListener('input', (e) => applyFontSize(e.target.value));
+    if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
+    if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
+    if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
+    if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
+
+
     setTimeout(() => {
         const homeLink = document.getElementById('home-link');
         const customRefineLink = document.getElementById('custom-refine-link');
         const availabilityCheckLink = document.getElementById('availability-check-link');
         const nameAnalyzerLink = document.getElementById('name-analyzer-link');
+        const settingsLink = document.getElementById('settings-link');
 
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
     }, 500);
 }
 
@@ -165,6 +190,7 @@ function showView(viewName) {
     if(customRefinerView) customRefinerView.classList.add('hidden');
     if(availabilityCheckerView) availabilityCheckerView.classList.add('hidden');
     if(nameAnalyzerView) nameAnalyzerView.classList.add('hidden');
+    if(settingsView) settingsView.classList.add('hidden');
     
     resetDynamicSections(false);
     
@@ -176,6 +202,8 @@ function showView(viewName) {
         if(availabilityCheckerView) availabilityCheckerView.classList.remove('hidden');
     } else if (viewName === 'name-analyzer') {
         if(nameAnalyzerView) nameAnalyzerView.classList.remove('hidden');
+    } else if (viewName === 'settings') {
+        if(settingsView) settingsView.classList.remove('hidden');
     }
 }
 
@@ -1053,5 +1081,120 @@ async function fetchHistoryForImport() {
 
     } catch (error) {
         historyImportList.innerHTML = `<p>*${error.message}*</p>`;
+    }
+}
+
+function initializeSettings() {
+    const settings = {
+        theme: localStorage.getItem('nameit-theme') || 'system',
+        font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
+        fontSize: localStorage.getItem('nameit-fontSize') || '100',
+        animations: localStorage.getItem('nameit-animations') !== 'false'
+    };
+
+    if (themeSelect) themeSelect.value = settings.theme;
+    if (fontSelect) fontSelect.value = settings.font;
+    if (fontSizeSlider) fontSizeSlider.value = settings.fontSize;
+    if (animationsToggle) animationsToggle.checked = settings.animations;
+
+    applyTheme(settings.theme, false);
+    applyFont(settings.font, false);
+    applyFontSize(settings.fontSize, false);
+    applyAnimationSetting(settings.animations, false);
+}
+
+function applyTheme(theme, save = true) {
+    if (save) localStorage.setItem('nameit-theme', theme);
+    
+    if (theme === 'light') {
+        document.body.classList.add('light-theme');
+    } else if (theme === 'dark') {
+        document.body.classList.remove('light-theme');
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            document.body.classList.add('light-theme');
+        } else {
+            document.body.classList.remove('light-theme');
+        }
+    }
+}
+
+function applyFont(font, save = true) {
+    if (save) localStorage.setItem('nameit-font', font);
+    document.body.style.fontFamily = font;
+}
+
+function applyFontSize(size, save = true) {
+    if (save) localStorage.setItem('nameit-fontSize', size);
+    document.documentElement.style.fontSize = `${size}%`;
+}
+
+function applyAnimationSetting(enabled, save = true) {
+    if (save) localStorage.setItem('nameit-animations', enabled);
+    const showcaseContainer = document.querySelector('.showcase-container');
+    if (enabled) {
+        document.body.classList.remove('animations-disabled');
+        if (showcaseContainer) showcaseContainer.style.display = 'flex';
+    } else {
+        document.body.classList.add('animations-disabled');
+        if (showcaseContainer) showcaseContainer.style.display = 'none';
+    }
+}
+
+async function exportHistory() {
+    const token = await getUserToken();
+    if (!token) {
+        alert("You must be signed in to export history.");
+        return;
+    }
+    const historyData = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } }).then(res => res.json());
+    
+    const blob = new Blob([JSON.stringify(historyData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'nameit_history.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+async function clearHistory() {
+    if (!confirm("Are you sure you want to permanently delete your entire history? This action cannot be undone.")) {
+        return;
+    }
+    const token = await getUserToken();
+    if (!token) {
+        alert("You must be signed in to clear history.");
+        return;
+    }
+    try {
+        const response = await fetch(`${BACKEND_URL}/clear-history`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error("Failed to clear history.");
+        
+        if(recentHistoryDiv) recentHistoryDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
+        alert("Your history has been cleared.");
+
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+}
+
+function sendPasswordReset() {
+    const user = window.auth.currentUser;
+    if (user && user.email) {
+        window.auth.sendPasswordResetEmail(user.email)
+            .then(() => {
+                alert(`A password reset link has been sent to ${user.email}.`);
+            })
+            .catch((error) => {
+                alert(`Error: ${error.message}`);
+            });
+    } else {
+        alert("You must be signed in with an email account to reset your password.");
     }
 }
