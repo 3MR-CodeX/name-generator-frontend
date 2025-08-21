@@ -1162,3 +1162,51 @@ pre {
     align-items: center;
     padding: 40px 0;
 }
+
+/* in style.css */
+
+/* --- Name Analyzer Results --- */
+.analysis-report {
+    margin-top: 20px;
+    background-color: rgba(42, 42, 42, 0.75);
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 20px;
+}
+.analysis-report h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+.analysis-report .risk-badge {
+    font-size: 0.7em;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-left: 15px;
+    font-weight: 500;
+}
+.risk-clear { background-color: #50fa7b; color: #1a1a1a; }
+.risk-medium { background-color: #f1fa8c; color: #1a1a1a; }
+.risk-high { background-color: #ff5555; color: white; }
+
+.analysis-section {
+    margin-top: 20px;
+    border-top: 1px solid #4a4a4a;
+    padding-top: 20px;
+}
+.analysis-section h4 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #cccccc;
+}
+.analysis-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+.analysis-section li {
+    margin-bottom: 12px;
+}
+.analysis-section strong {
+    color: #e0e0e0;
+}
