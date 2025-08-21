@@ -1,6 +1,3 @@
-// topbar.js
-
-// This function will be called by main.js after the HTML is loaded
 function initializeTopbar() {
     const hexagonButton = document.getElementById("hexagon-button");
     if (hexagonButton) {
@@ -8,10 +5,11 @@ function initializeTopbar() {
     }
 
     const promptSpan = document.getElementById("showcase-prompt");
-    const nameSpans = document.querySelectorAll("#showcase-names span");
+    const nameSpan = document.getElementById("showcase-name");
 
-    if (promptSpan && nameSpans.length === 3) {
+    if (promptSpan && nameSpan) {
         const type = (element, text, speed, callback) => {
+            element.textContent = '';
             element.classList.add('typing');
             let i = 0;
             const interval = setInterval(() => {
@@ -38,16 +36,27 @@ function initializeTopbar() {
                 }
             }, speed);
         };
-        
-        const animateItems = (items, animationClass, delay, callback) => {
-            items.forEach((item, index) => {
+
+        const cycleNames = (names, index = 0) => {
+            if (index >= names.length) {
+                // All names have been shown, trigger prompt deletion
                 setTimeout(() => {
-                    item.className = animationClass;
-                }, index * delay);
-            });
-            if (callback) {
-                setTimeout(callback, items.length * delay);
+                    erase(promptSpan, 25, () => {
+                        // Wait 2 seconds and start the next cycle
+                        setTimeout(runAnimationCycle, 2000);
+                    });
+                }, 1000);
+                return;
             }
+
+            nameSpan.textContent = names[index];
+            nameSpan.className = 'slide-in-down';
+
+            setTimeout(() => {
+                nameSpan.className = 'slide-out-down';
+                // After slide out, call the next name in the cycle
+                setTimeout(() => cycleNames(names, index + 1), 400);
+            }, 2000); // How long each name stays on screen
         };
 
         async function runAnimationCycle() {
@@ -57,26 +66,11 @@ function initializeTopbar() {
 
                 // 1. Type the prompt
                 type(promptSpan, data.prompt, 50, () => {
-                    // 2. Show the names one by one
-                    nameSpans.forEach((span, i) => span.textContent = data.names[i]);
-                    animateItems([...nameSpans], 'fade-in', 1000, () => {
-                        // 3. Wait, then hide the names one by one
-                        setTimeout(() => {
-                            animateItems([...nameSpans].reverse(), 'fade-out', 500, () => {
-                                // 4. Wait, then erase the prompt
-                                setTimeout(() => {
-                                    erase(promptSpan, 25, () => {
-                                        // 5. Wait, then start the next cycle
-                                        setTimeout(runAnimationCycle, 2000);
-                                    });
-                                }, 1000);
-                            });
-                        }, 3000);
-                    });
+                    // 2. Start cycling through the names
+                    cycleNames(data.names);
                 });
             } catch (error) {
                 console.error("Showcase animation failed:", error);
-                // If there's an error, wait a bit and try again
                 setTimeout(runAnimationCycle, 10000);
             }
         }
