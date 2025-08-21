@@ -38,6 +38,13 @@
             <div id="details-content"></div>
         </div>
     </div>
+    <div id="history-import-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Import a Name from History</h2>
+            <div id="history-import-list" class="history-inner"></div>
+        </div>
+    </div>
     <div id="sign-in-modal" class="modal auth-modal">
         <div class="modal-content auth-modal-content">
             <span class="close-button">&times;</span>
@@ -210,27 +217,32 @@
             <h1>Name Availability Check</h1>
             <p class="description">Check if your desired name is available as a domain and on social media.</p>
         
-            <div class="availability-input-container">
-                <div class="input-wrapper" style="flex: 2;">
-                    <label for="name-to-check">Name to Check</label>
-                    <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
-                </div>
-        
-                <div class="input-wrapper" style="flex: 1;">
-                    <label>Platforms</label>
-                    <div class="dropdown-check-container">
-                        <button id="platforms-dropdown-btn" class="dropdown-btn">
-                            <span>Select Platforms</span>
-                            <span class="arrow"></span>
-                        </button>
-                        <div id="platforms-dropdown-list" class="dropdown-content hidden">
-                            </div>
+            <div class="outer-input-box">
+                <div class="availability-input-container">
+                    <div class="input-wrapper" style="flex: 2;">
+                        <div class="label-with-button">
+                            <label for="name-to-check">Name to Check</label>
+                            <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-check')">+</button>
+                        </div>
+                        <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
+                    </div>
+            
+                    <div class="input-wrapper" style="flex: 1;">
+                        <label>Platforms</label>
+                        <div class="dropdown-check-container">
+                            <button id="platforms-dropdown-btn" class="dropdown-btn">
+                                <span>Select Platforms</span>
+                                <span class="arrow"></span>
+                            </button>
+                            <div id="platforms-dropdown-list" class="dropdown-content hidden">
+                                </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        
-            <div class="button-section" style="margin-top: 20px;">
-                <button id="check-availability-btn" class="generate-btn">🔍 Check Availability</button>
+            
+                <div class="button-section" style="margin-top: 20px; margin-bottom: 0;">
+                    <button id="check-availability-btn" class="generate-btn">🔍 Check Availability</button>
+                </div>
             </div>
         
             <div id="availability-results-container">
@@ -242,7 +254,10 @@
             <p class="description">Get an AI-powered brandability check. See potential conflicts and get tips to improve your name.</p>
             <div class="input-section">
                 <div class="input-box">
-                    <label for="name-to-analyze">Name to Analyze</label>
+                    <div class="label-with-button">
+                        <label for="name-to-analyze">Name to Analyze</label>
+                        <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-analyze')">+</button>
+                    </div>
                     <input type="text" id="name-to-analyze" placeholder="e.g., AlphaTech">
         
                     <label for="analysis-context" style="margin-top: 15px;">Context</label>
@@ -313,4 +328,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
