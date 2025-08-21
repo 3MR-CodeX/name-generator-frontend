@@ -37,7 +37,7 @@ function initializeTopbar() {
             }
 
             // Determine the typing speed
-            let typeSpeed = 150;
+            let typeSpeed = 80; // Decreased from 150 for faster typing
             if (isDeleting) {
                 typeSpeed /= 2; // Deleting is faster
             }
