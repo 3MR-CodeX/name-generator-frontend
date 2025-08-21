@@ -978,7 +978,6 @@ pre {
     cursor: pointer;
     border-radius: 50%;
     border: 2px solid #1a1a1a;
-    box-shadow: 0 0 5px var(--line-purple-glow);
 }
 
 .relevancy-slider::-moz-range-thumb {
@@ -988,7 +987,6 @@ pre {
     cursor: pointer;
     border-radius: 50%;
     border: 2px solid #1a1a1a;
-    box-shadow: 0 0 5px var(--line-purple-glow);
 }
 
 .slider-ticks {
@@ -1218,6 +1216,7 @@ pre {
     min-height: 120px;
     resize: none;
 }
+
 
 
 
