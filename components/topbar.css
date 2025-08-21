@@ -323,42 +323,66 @@
     50% { background-color: #ff0090; box-shadow: 0 0 15px #ff0090; }
 }
 
-/* --- Topbar Title and Animated Text --- */
-.topbar-title-container {
+/* --- Topbar Showcase Animation --- */
+.showcase-container {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-left: 20px; /* Reverted */
-    flex-grow: 1; 
-}
-.topbar-title {
-    font-size: 2.5em;      /* Increased from 1.8em */
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: 1.5px; /* Added to make it wider */
-    top: 20px;
-}
-
-.animated-text-container {
-    height: 2.0em;
-    overflow: hidden;
+    flex-direction: column;
+    margin-left: 50px;
+    top: 5px;
     position: relative;
-    margin-left: 50px; /* Added */
-    top: 15px;
 }
 
-/* --- Topbar Title and Typing Animation --- */
-#animated-text-span {
+#showcase-prompt {
     font-size: 1.1em;
     color: #cccccc;
     position: relative;
-    /* This creates the blinking cursor */
-    border-right: 2px solid rgba(255, 255, 255, 0.75);
+    height: 1.5em; /* Reserve space */
+}
+
+/* Blinking cursor effect */
+#showcase-prompt.typing::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    width: 2px;
+    height: 1em;
+    background-color: rgba(255, 255, 255, 0.75);
     animation: blink-caret 1s step-end infinite;
 }
 
-/* Blinking cursor animation */
 @keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: rgba(255, 255, 255, 0.75); }
+    from, to { background-color: transparent }
+    50% { background-color: rgba(255, 255, 255, 0.75); }
+}
+
+#showcase-names {
+    display: flex;
+    gap: 20px;
+    height: 1.5em; /* Reserve space */
+    margin-top: 5px;
+}
+
+#showcase-names span {
+    font-size: 1em;
+    color: var(--line-purple-default);
+    font-weight: 500;
+    opacity: 0; /* Start hidden */
+}
+
+/* Animation classes */
+.fade-in {
+    animation: fadeIn 0.5s forwards ease-out;
+}
+.fade-out {
+    animation: fadeOut 0.5s forwards ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(10px); }
 }
