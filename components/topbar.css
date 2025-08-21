@@ -10,10 +10,9 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
-    border-bottom: 2px solid #2a2a2a; /* Replaces box-shadow */
+    border-bottom: 2px solid #2a2a2a;
 }
 
-/* All other topbar styles remain the same */
 /* Hexagon Button Styling */
 #hexagon-button {
     position: relative;
@@ -108,7 +107,6 @@
 }
 
 /* --- Auth UI Styling --- */
-/* --- Auth UI Styling --- */
 #auth-section {
     position: absolute;
     right: 20px;
@@ -125,10 +123,9 @@
     padding: 8px 16px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Added transition */
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
-/* --- NEW: Focus effect for top-bar buttons --- */
 .auth-buttons-container button:focus {
     outline: none;
     box-shadow: 0 0 8px 2px var(--line-purple-glow);
@@ -146,8 +143,6 @@
 .auth-buttons-container .sign-up-btn:hover {
     background-color: #a020f0;
 }
-
-/* Other existing styles remain the same... */
 
 .user-profile-container {
     display: flex;
@@ -194,7 +189,7 @@
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
-    position: relative; /* Needed for dropdown positioning */
+    position: relative;
 }
 
 .tier-badge {
@@ -324,9 +319,6 @@
 }
 
 /* --- Topbar Showcase Animation --- */
-
-/* --- Topbar Showcase Animation --- */
-/* --- Topbar Showcase Animation --- */
 .topbar-title-container {
     display: flex;
     align-items: center;
@@ -344,7 +336,7 @@
 
 .showcase-container {
     display: flex;
-    align-items: center; /* This is the key change */
+    align-items: center;
     gap: 15px;
     margin-left: 50px;
     top: 5px;
@@ -373,8 +365,8 @@
 }
 
 #showcase-name-wrapper {
-    height: 1.5em; /* Fixed height for the animation */
-    overflow: hidden; /* Hides the text as it slides */
+    height: 1.5em;
+    overflow: hidden;
     position: relative;
 }
 
@@ -385,7 +377,6 @@
     position: absolute;
 }
 
-/* New Animation Classes */
 .slide-in-down {
     animation: slideInDown 0.4s forwards ease-out;
 }
