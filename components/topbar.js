@@ -8,72 +8,63 @@ function initializeTopbar() {
     const nameSpan = document.getElementById("showcase-name");
 
     if (promptSpan && nameSpan) {
-        const type = (element, text, speed, callback) => {
-            element.textContent = '';
-            element.classList.add('typing');
-            let i = 0;
-            const interval = setInterval(() => {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(interval);
-                    element.classList.remove('typing');
-                    if (callback) callback();
-                }
-            }, speed);
-        };
+        // Helper function to create a delay
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-        const erase = (element, speed, callback) => {
+        const type = async (element, text, speed) => {
             element.classList.add('typing');
-            const interval = setInterval(() => {
-                if (element.textContent.length > 0) {
-                    element.textContent = element.textContent.slice(0, -1);
-                } else {
-                    clearInterval(interval);
-                    element.classList.remove('typing');
-                    if (callback) callback();
-                }
-            }, speed);
-        };
-
-        const cycleNames = (names, index = 0) => {
-            if (index >= names.length) {
-                // All names have been shown, trigger prompt deletion
-                setTimeout(() => {
-                    erase(promptSpan, 25, () => {
-                        // Wait 2 seconds and start the next cycle
-                        setTimeout(runAnimationCycle, 2000);
-                    });
-                }, 1000);
-                return;
+            for (let i = 0; i < text.length; i++) {
+                element.textContent += text.charAt(i);
+                await sleep(speed);
             }
-
-            nameSpan.textContent = names[index];
-            nameSpan.className = 'slide-in-down';
-
-            setTimeout(() => {
-                nameSpan.className = 'slide-out-down';
-                // After slide out, call the next name in the cycle
-                setTimeout(() => cycleNames(names, index + 1), 400);
-            }, 2000); // How long each name stays on screen
+            element.classList.remove('typing');
         };
 
-        async function runAnimationCycle() {
+        const erase = async (element, speed) => {
+            element.classList.add('typing');
+            while (element.textContent.length > 0) {
+                element.textContent = element.textContent.slice(0, -1);
+                await sleep(speed);
+            }
+            element.classList.remove('typing');
+        };
+
+        const cycleNames = async (names) => {
+            for (const name of names) {
+                nameSpan.textContent = name;
+                nameSpan.className = 'slide-in-down';
+                await sleep(2000); // Wait 2 seconds while name is visible
+                nameSpan.className = 'slide-out-down';
+                await sleep(400); // Wait for slide-out animation to finish
+            }
+        };
+
+        const runAnimationCycle = async () => {
             try {
                 const response = await fetch(`${BACKEND_URL}/generate-for-showcase`, { method: "POST" });
+                if (!response.ok) throw new Error("API request failed");
                 const data = await response.json();
 
                 // 1. Type the prompt
-                type(promptSpan, data.prompt, 50, () => {
-                    // 2. Start cycling through the names
-                    cycleNames(data.names);
-                });
+                await type(promptSpan, data.prompt, 50);
+                
+                // 2. Cycle through the names
+                await cycleNames(data.names);
+                
+                // 3. Erase the prompt
+                await sleep(1000); // Pause before erasing
+                await erase(promptSpan, 25);
+                
+                // 4. Wait and start the next cycle
+                await sleep(2000);
+                runAnimationCycle();
+
             } catch (error) {
                 console.error("Showcase animation failed:", error);
-                setTimeout(runAnimationCycle, 10000);
+                await sleep(10000); // Wait longer on error before retrying
+                runAnimationCycle();
             }
-        }
+        };
 
         runAnimationCycle();
     }
