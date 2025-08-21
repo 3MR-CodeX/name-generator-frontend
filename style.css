@@ -114,9 +114,11 @@ body {
 
 #banner {
     width: 100%;
-    max-width: 1000px; /* Increased from 900px */
-    height: 180px;     /* Increased from 150px */
+    max-width: 1000px;
+    height: 180px;
     object-fit: contain;
+    position: relative; /* Added */
+    left: 50px;         /* Added */
 }
 
 h1 {
@@ -1216,6 +1218,7 @@ pre {
     min-height: 120px;
     resize: none;
 }
+
 
 
 
