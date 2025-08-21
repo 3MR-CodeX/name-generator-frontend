@@ -351,22 +351,17 @@
     position: absolute;
     width: 100%;
     left: 0;
-    /* The animation keyframes will now control the opacity */
-}
-/* Animation Classes */
-.slide-in {
-    animation: slideIn 0.5s forwards ease-out;
-}
-.slide-out {
-    animation: slideOut 0.5s forwards ease-in;
+    /* This new animation will run in a continuous loop */
+    animation: slide-cycle 5s infinite ease-in-out;
 }
 
-@keyframes slideIn {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes slideOut {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(100%); opacity: 0; }
+/* A single keyframe to handle the entire cycle */
+@keyframes slide-cycle {
+    /* Stay hidden at the top for a moment */
+    0% { transform: translateY(-100%); opacity: 0; }
+    /* Slide in and stay visible */
+    10% { transform: translateY(0); opacity: 1; }
+    90% { transform: translateY(0); opacity: 1; }
+    /* Slide out at the end */
+    100% { transform: translateY(100%); opacity: 0; }
 }
