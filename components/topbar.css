@@ -345,23 +345,18 @@
     position: relative;
 }
 
+/* --- Topbar Title and Typing Animation --- */
 #animated-text-span {
     font-size: 1.1em;
     color: #cccccc;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    /* This new animation will run in a continuous loop */
-    animation: slide-cycle 5s infinite ease-in-out;
+    position: relative;
+    /* This creates the blinking cursor */
+    border-right: 2px solid rgba(255, 255, 255, 0.75);
+    animation: blink-caret 1s step-end infinite;
 }
 
-/* A single keyframe to handle the entire cycle */
-@keyframes slide-cycle {
-    /* Stay hidden at the top for a moment */
-    0% { transform: translateY(-100%); opacity: 0; }
-    /* Slide in and stay visible */
-    10% { transform: translateY(0); opacity: 1; }
-    90% { transform: translateY(0); opacity: 1; }
-    /* Slide out at the end */
-    100% { transform: translateY(100%); opacity: 0; }
+/* Blinking cursor animation */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: rgba(255, 255, 255, 0.75); }
 }
