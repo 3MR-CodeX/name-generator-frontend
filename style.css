@@ -1154,3 +1154,11 @@ pre {
     text-align: center;
     color: #cccccc;
 }
+
+.loader-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+}
