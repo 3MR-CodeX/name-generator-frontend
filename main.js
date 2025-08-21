@@ -50,6 +50,9 @@ const fullHistoryList = document.getElementById("full-history-list");
 const historyDetailsModal = document.getElementById("history-details-modal");
 const closeButtonDetailsModal = document.querySelector("#history-details-modal .close-button");
 const detailsContent = document.getElementById("details-content");
+const historyImportModal = document.getElementById("history-import-modal");
+const closeButtonImportModal = document.querySelector("#history-import-modal .close-button");
+const historyImportList = document.getElementById("history-import-list");
 const recentHistorySection = document.getElementById("history_section");
 const recentHistoryDiv = document.getElementById("history");
 const customRefineHistorySection = document.getElementById("custom-refine-history-section");
@@ -103,6 +106,10 @@ function setupEventListeners() {
     if (historyDetailsModal && closeButtonDetailsModal) {
         closeButtonDetailsModal.addEventListener('click', () => { closeHistoryDetailsModal(); openHistoryModal(); });
         window.addEventListener('click', (event) => { if (event.target == historyDetailsModal) { closeHistoryDetailsModal(); openHistoryModal(); } });
+    }
+    if (historyImportModal && closeButtonImportModal) {
+        closeButtonImportModal.addEventListener('click', closeHistoryImportModal);
+        window.addEventListener('click', (event) => { if (event.target == historyImportModal) closeHistoryImportModal(); });
     }
     if(refineBtn) {
         refineBtn.onclick = () => {
@@ -867,7 +874,6 @@ function renderAvailabilityResults(data) {
     if (data.socials.length > 0) {
         let socialsHtml = data.socials.map(s => {
             let iconClass = 'fas fa-hashtag';
-            // Find the key in CHECKABLE_OPTIONS that corresponds to the platform value
             const optionKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].value === s.platform);
             if (optionKey) {
                 iconClass = CHECKABLE_OPTIONS[optionKey].icon;
@@ -994,4 +1000,58 @@ function renderAnalysisResults(data) {
             ${tipsHtml}
         </div>
     `;
+}
+
+function openHistoryImportModal(targetInputId) {
+    if (historyImportModal) {
+        historyImportModal.dataset.targetInput = targetInputId;
+        historyImportModal.classList.add('active');
+        fetchHistoryForImport();
+    }
+}
+
+function closeHistoryImportModal() {
+    if (historyImportModal) historyImportModal.classList.remove('active');
+}
+
+async function fetchHistoryForImport() {
+    if (!historyImportList) return;
+    historyImportList.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    const token = await getUserToken();
+    if (!token) {
+        historyImportList.innerHTML = "<p>*Sign in to see your history.*</p>";
+        return;
+    }
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } });
+        if (!response.ok) throw new Error("Could not load history.");
+        const history = await response.json();
+
+        historyImportList.innerHTML = "";
+        if (history.length === 0) {
+            historyImportList.innerHTML = "<p>*No history yet. Generate some names!*</p>";
+            return;
+        }
+
+        history.forEach(entry => {
+            entry.names.forEach(name => {
+                const nameButton = document.createElement('button');
+                nameButton.className = 'history-item';
+                nameButton.textContent = cleanNames(name);
+                nameButton.onclick = () => {
+                    const targetInputId = historyImportModal.dataset.targetInput;
+                    const targetInput = document.getElementById(targetInputId);
+                    if (targetInput) {
+                        targetInput.value = cleanNames(name);
+                    }
+                    closeHistoryImportModal();
+                };
+                historyImportList.appendChild(nameButton);
+            });
+        });
+
+    } catch (error) {
+        historyImportList.innerHTML = `<p>*${error.message}*</p>`;
+    }
 }
