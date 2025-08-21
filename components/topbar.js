@@ -73,6 +73,7 @@ function initializeTopbar() {
             dataIndex = (dataIndex + 1) % showcaseData.length;
 
             await type(promptSpan, data.prompt);
+            await sleep(2000);
             await cycleNames(data.names);
             await sleep(1000);
             await erase(promptSpan);
