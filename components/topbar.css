@@ -328,7 +328,7 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-left: 50px; /* Increased from 20px */
+    margin-left: 20px; /* Reverted */
     flex-grow: 1; 
 }
 .topbar-title {
@@ -338,9 +338,11 @@
 }
 
 .animated-text-container {
-    height: 1.5em; /* Set a fixed height to contain the animation */
-    overflow: hidden; /* This is crucial for the sliding effect */
+    height: 1.5em;
+    overflow: hidden;
     position: relative;
+    margin-left: 50px; /* Added */
+    top: 5px;
 }
 
 /* --- Topbar Title and Typing Animation --- */
