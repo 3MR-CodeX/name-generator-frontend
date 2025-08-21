@@ -41,7 +41,6 @@ function initializeTopbar() {
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         const type = async (element, text) => {
-            element.textContent = '';
             element.classList.add('typing');
             for (let i = 0; i < text.length; i++) {
                 element.textContent += text.charAt(i);
@@ -61,18 +60,11 @@ function initializeTopbar() {
 
         const cycleNames = async (names) => {
             for (const name of names) {
-                // --- THIS IS THE FIX ---
-                // We remove the old animation classes and then force the browser to repaint
-                // before adding the new class. This guarantees the animation restarts.
-                nameSpan.className = '';
-                void nameSpan.offsetHeight; // This forces the browser to repaint
-
                 nameSpan.textContent = name;
-                nameSpan.className = 'slide-in-down';
+                nameSpan.classList.add('visible');
                 await sleep(2000); // How long name is visible
-                
-                nameSpan.className = 'slide-out-down';
-                await sleep(400); // Animation duration
+                nameSpan.classList.remove('visible');
+                await sleep(400); // Wait for fade-out transition
             }
         };
 
@@ -82,8 +74,6 @@ function initializeTopbar() {
 
             await type(promptSpan, data.prompt);
             await cycleNames(data.names);
-            
-            nameSpan.className = ''; // Final reset before erasing prompt
             await sleep(1000);
             await erase(promptSpan);
             await sleep(2000);
