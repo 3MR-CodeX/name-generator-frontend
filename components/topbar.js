@@ -40,53 +40,44 @@ function initializeTopbar() {
 
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-        const type = async (element, text, speed) => {
-            element.textContent = '';
+        const type = async (element, text) => {
             element.classList.add('typing');
             for (let i = 0; i < text.length; i++) {
                 element.textContent += text.charAt(i);
-                await sleep(speed);
+                await sleep(50);
             }
             element.classList.remove('typing');
         };
 
-        const erase = async (element, speed) => {
+        const erase = async (element) => {
             element.classList.add('typing');
             while (element.textContent.length > 0) {
                 element.textContent = element.textContent.slice(0, -1);
-                await sleep(speed);
+                await sleep(25);
             }
             element.classList.remove('typing');
         };
 
-        const cycleNames = async (names) => {
-            for (const name of names) {
+        const runAnimationCycle = async () => {
+            const data = showcaseData[dataIndex];
+            dataIndex = (dataIndex + 1) % showcaseData.length;
+
+            await type(promptSpan, data.prompt);
+            
+            for (const name of data.names) {
                 nameSpan.textContent = name;
                 nameSpan.className = 'slide-in-down';
                 await sleep(2000);
                 nameSpan.className = 'slide-out-down';
                 await sleep(400);
-                nameSpan.className = '';
             }
-        };
-
-        const runAnimationCycle = async () => {
-            try {
-                const data = showcaseData[dataIndex];
-                dataIndex = (dataIndex + 1) % showcaseData.length;
-
-                await type(promptSpan, data.prompt, 50);
-                await cycleNames(data.names);
-                await sleep(1000);
-                await erase(promptSpan, 25);
-                await sleep(2000);
-                runAnimationCycle();
-
-            } catch (error) {
-                console.error("Showcase animation failed:", error);
-                await sleep(10000);
-                runAnimationCycle();
-            }
+            
+            nameSpan.className = ''; // Reset class
+            await sleep(1000);
+            await erase(promptSpan);
+            await sleep(2000);
+            
+            runAnimationCycle(); // Start next loop
         };
 
         runAnimationCycle();
