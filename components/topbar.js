@@ -22,33 +22,32 @@ function initializeTopbar() {
         ];
         let currentIndex = 0;
 
-        function cycleText() {
-            // 1. Add the slide-out class to animate the current text away
-            animatedTextSpan.classList.add('slide-out');
+        function showNextSentence() {
+            // Update text and apply the slide-in animation
+            animatedTextSpan.textContent = sentences[currentIndex];
+            animatedTextSpan.className = 'slide-in';
 
-            // 2. After the slide-out animation finishes...
-            setTimeout(() => {
-                // ...update the text content...
-                currentIndex = (currentIndex + 1) % sentences.length;
-                animatedTextSpan.textContent = sentences[currentIndex];
-                
-                // ...and swap the classes to trigger the slide-in animation.
-                animatedTextSpan.classList.remove('slide-out');
-                animatedTextSpan.classList.add('slide-in');
-            }, 500); // This must match the animation duration in your CSS
+            // When the slide-in animation finishes...
+            animatedTextSpan.addEventListener('animationend', function onSlideInEnd() {
+                // Remove this event listener so it only runs once
+                animatedTextSpan.removeEventListener('animationend', onSlideInEnd);
 
-            // 3. After a few seconds, remove the slide-in class to prepare for the next cycle
-            setTimeout(() => {
-                animatedTextSpan.classList.remove('slide-in');
-            }, 4500); // This should be slightly less than the setInterval delay
+                // Wait for a few seconds before sliding out
+                setTimeout(() => {
+                    animatedTextSpan.className = 'slide-out';
+                    
+                    // When the slide-out animation finishes, start the next cycle
+                    animatedTextSpan.addEventListener('animationend', function onSlideOutEnd() {
+                        animatedTextSpan.removeEventListener('animationend', onSlideOutEnd);
+                        currentIndex = (currentIndex + 1) % sentences.length;
+                        showNextSentence();
+                    });
+
+                }, 4000); // How long the text stays on screen
+            });
         }
 
-        // Start the first animation immediately
-        animatedTextSpan.textContent = sentences[currentIndex];
-        animatedTextSpan.classList.add('slide-in');
-        setTimeout(() => { animatedTextSpan.classList.remove('slide-in'); }, 4500);
-
-        // Set the interval for cycling
-        setInterval(cycleText, 5000); // Change text every 5 seconds
+        // Start the animation cycle
+        showNextSentence();
     }
 }
