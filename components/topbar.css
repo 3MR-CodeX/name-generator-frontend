@@ -383,7 +383,6 @@
     color: var(--line-purple-default);
     font-weight: 500;
     position: absolute;
-    opacity: 0; /* Start hidden */
 }
 
 /* New Animation Classes */
