@@ -238,6 +238,26 @@
                 </div>
         </div>
 
+        <div id="name-analyzer-view" class="hidden">
+            <h1>Name Analyzer</h1>
+            <p class="description">Get an AI-powered brandability check. See potential conflicts and get tips to improve your name.</p>
+            <div class="input-section">
+                <div class="input-box" style="flex-grow: 2;">
+                    <label for="name-to-analyze">Name to Analyze</label>
+                    <input type="text" id="name-to-analyze" placeholder="e.g., AlphaTech">
+                </div>
+                <div class="input-box" style="flex-grow: 3;">
+                    <label for="analysis-context">Context</label>
+                    <textarea id="analysis-context" placeholder="What is this name for? e.g., A tech startup focused on AI" style="height: 45px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="button-section" style="margin-top: 20px;">
+                <button id="analyze-name-btn" class="generate-btn">🔬 Analyze Name</button>
+            </div>
+            <div id="analyzer-results-container">
+                </div>
+        </div>
+
         <div class="container">
             <div id="output_container" class="output-section hidden">
                 <div class="output-box">
