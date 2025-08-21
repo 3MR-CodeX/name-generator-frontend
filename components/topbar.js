@@ -20,15 +20,44 @@ function initializeTopbar() {
             "For Companies, Products, and Pets.", "Naming Your Next Masterpiece.", "Where Great Names Are Born.",
             "Secure Your Brand Identity.", "Inspiration on Demand."
         ];
-        let currentIndex = 0;
+        let sentenceIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
 
-        // Set the first sentence immediately
-        animatedTextSpan.textContent = sentences[currentIndex];
+        function type() {
+            const currentSentence = sentences[sentenceIndex];
+            
+            // If deleting, remove a character. If typing, add a character.
+            if (isDeleting) {
+                animatedTextSpan.textContent = currentSentence.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                animatedTextSpan.textContent = currentSentence.substring(0, charIndex + 1);
+                charIndex++;
+            }
 
-        // Set an interval to change the text. The CSS handles all the animation.
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % sentences.length;
-            animatedTextSpan.textContent = sentences[currentIndex];
-        }, 5000); // This must match the animation duration in the CSS
+            // Determine the typing speed
+            let typeSpeed = 150;
+            if (isDeleting) {
+                typeSpeed /= 2; // Deleting is faster
+            }
+
+            // If sentence is fully typed
+            if (!isDeleting && charIndex === currentSentence.length) {
+                typeSpeed = 3000; // Wait 3 seconds
+                isDeleting = true;
+            } 
+            // If sentence is fully deleted
+            else if (isDeleting && charIndex === 0) {
+                typeSpeed = 2000; // Wait 2 seconds
+                isDeleting = false;
+                sentenceIndex = (sentenceIndex + 1) % sentences.length;
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        // Start the typing effect
+        type();
     }
 }
