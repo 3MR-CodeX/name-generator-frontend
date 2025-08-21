@@ -5,59 +5,82 @@ function initializeTopbar() {
     const hexagonButton = document.getElementById("hexagon-button");
     if (hexagonButton) {
         hexagonButton.addEventListener('click', window.toggleSidebar); 
-    } else {
-        console.error("Hexagon button not found in topbar.html");
     }
 
-    const animatedTextSpan = document.getElementById("animated-text-span");
-    if (animatedTextSpan) {
-        const sentences = [
-            "Name Anything And Everything.", "Describe It, We NameIT.", "Find The Perfect Name.",
-            "Your Next Big Idea Starts Here.", "Brand Names, App Names, and More.", "From Startups to Side Projects.",
-            "Unlock Your Creative Potential.", "Intelligent Naming, Instantly.", "Crafting Names That Resonate.",
-            "Beyond the Dictionary.", "The Art of Naming, Simplified.", "Your Personal Branding Expert.",
-            "Check Availability in Seconds.", "Analyze Your Brand's Strength.", "Refine Your Ideas with AI.",
-            "For Companies, Products, and Pets.", "Naming Your Next Masterpiece.", "Where Great Names Are Born.",
-            "Secure Your Brand Identity.", "Inspiration on Demand."
-        ];
-        let sentenceIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+    const promptSpan = document.getElementById("showcase-prompt");
+    const nameSpans = document.querySelectorAll("#showcase-names span");
 
-        function type() {
-            const currentSentence = sentences[sentenceIndex];
-            
-            // If deleting, remove a character. If typing, add a character.
-            if (isDeleting) {
-                animatedTextSpan.textContent = currentSentence.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                animatedTextSpan.textContent = currentSentence.substring(0, charIndex + 1);
-                charIndex++;
+    if (promptSpan && nameSpans.length === 3) {
+        const type = (element, text, speed, callback) => {
+            element.classList.add('typing');
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    element.classList.remove('typing');
+                    if (callback) callback();
+                }
+            }, speed);
+        };
+
+        const erase = (element, speed, callback) => {
+            element.classList.add('typing');
+            const interval = setInterval(() => {
+                if (element.textContent.length > 0) {
+                    element.textContent = element.textContent.slice(0, -1);
+                } else {
+                    clearInterval(interval);
+                    element.classList.remove('typing');
+                    if (callback) callback();
+                }
+            }, speed);
+        };
+        
+        const animateItems = (items, animationClass, delay, callback) => {
+            items.forEach((item, index) => {
+                setTimeout(() => {
+                    item.className = animationClass;
+                }, index * delay);
+            });
+            if (callback) {
+                setTimeout(callback, items.length * delay);
             }
+        };
 
-            // Determine the typing speed
-            let typeSpeed = 80; // Decreased from 150 for faster typing
-            if (isDeleting) {
-                typeSpeed /= 2; // Deleting is faster
+        async function runAnimationCycle() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/generate-for-showcase`, { method: "POST" });
+                const data = await response.json();
+
+                // 1. Type the prompt
+                type(promptSpan, data.prompt, 50, () => {
+                    // 2. Show the names one by one
+                    nameSpans.forEach((span, i) => span.textContent = data.names[i]);
+                    animateItems([...nameSpans], 'fade-in', 1000, () => {
+                        // 3. Wait, then hide the names one by one
+                        setTimeout(() => {
+                            animateItems([...nameSpans].reverse(), 'fade-out', 500, () => {
+                                // 4. Wait, then erase the prompt
+                                setTimeout(() => {
+                                    erase(promptSpan, 25, () => {
+                                        // 5. Wait, then start the next cycle
+                                        setTimeout(runAnimationCycle, 2000);
+                                    });
+                                }, 1000);
+                            });
+                        }, 3000);
+                    });
+                });
+            } catch (error) {
+                console.error("Showcase animation failed:", error);
+                // If there's an error, wait a bit and try again
+                setTimeout(runAnimationCycle, 10000);
             }
-
-            // If sentence is fully typed
-            if (!isDeleting && charIndex === currentSentence.length) {
-                typeSpeed = 3000; // Wait 3 seconds
-                isDeleting = true;
-            } 
-            // If sentence is fully deleted
-            else if (isDeleting && charIndex === 0) {
-                typeSpeed = 2000; // Wait 2 seconds
-                isDeleting = false;
-                sentenceIndex = (sentenceIndex + 1) % sentences.length;
-            }
-
-            setTimeout(type, typeSpeed);
         }
 
-        // Start the typing effect
-        type();
+        runAnimationCycle();
     }
 }
