@@ -36,7 +36,6 @@ function initializeTopbar() {
             { prompt: "A speakeasy-style cocktail bar", names: ["The Gilded Lily", "Whisper & Rye", "The Alchemist's Folly"] }
         ];
         
-        // THIS IS THE FIX: The index must be outside the loop function
         let dataIndex = 0;
 
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -74,7 +73,7 @@ function initializeTopbar() {
         const runAnimationCycle = async () => {
             try {
                 const data = showcaseData[dataIndex];
-                dataIndex = (dataIndex + 1) % showcaseData.length; // Increment for the next cycle
+                dataIndex = (dataIndex + 1) % showcaseData.length;
 
                 await type(promptSpan, data.prompt, 50);
                 await cycleNames(data.names);
