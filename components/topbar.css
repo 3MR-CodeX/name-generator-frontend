@@ -332,15 +332,15 @@
     flex-grow: 1; 
 }
 .topbar-title {
-    font-size: 2.2em;      /* Increased from 1.8em */
+    font-size: 2.5em;      /* Increased from 1.8em */
     font-weight: 800;
     color: #ffffff;
     letter-spacing: 1.5px; /* Added to make it wider */
-    top: 10px;
+    top: 20px;
 }
 
 .animated-text-container {
-    height: 1.5em;
+    height: 2.0em;
     overflow: hidden;
     position: relative;
     margin-left: 50px; /* Added */
