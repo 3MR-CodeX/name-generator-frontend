@@ -22,32 +22,13 @@ function initializeTopbar() {
         ];
         let currentIndex = 0;
 
-        function showNextSentence() {
-            // Update text and apply the slide-in animation
+        // Set the first sentence immediately
+        animatedTextSpan.textContent = sentences[currentIndex];
+
+        // Set an interval to change the text. The CSS handles all the animation.
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % sentences.length;
             animatedTextSpan.textContent = sentences[currentIndex];
-            animatedTextSpan.className = 'slide-in';
-
-            // When the slide-in animation finishes...
-            animatedTextSpan.addEventListener('animationend', function onSlideInEnd() {
-                // Remove this event listener so it only runs once
-                animatedTextSpan.removeEventListener('animationend', onSlideInEnd);
-
-                // Wait for a few seconds before sliding out
-                setTimeout(() => {
-                    animatedTextSpan.className = 'slide-out';
-                    
-                    // When the slide-out animation finishes, start the next cycle
-                    animatedTextSpan.addEventListener('animationend', function onSlideOutEnd() {
-                        animatedTextSpan.removeEventListener('animationend', onSlideOutEnd);
-                        currentIndex = (currentIndex + 1) % sentences.length;
-                        showNextSentence();
-                    });
-
-                }, 4000); // How long the text stays on screen
-            });
-        }
-
-        // Start the animation cycle
-        showNextSentence();
+        }, 5000); // This must match the animation duration in the CSS
     }
 }
