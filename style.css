@@ -1210,3 +1210,8 @@ pre {
 .analysis-section strong {
     color: #e0e0e0;
 }
+
+#analysis-context {
+    min-height: 120px;
+    resize: none;
+}
