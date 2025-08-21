@@ -326,10 +326,26 @@
 /* --- Topbar Showcase Animation --- */
 
 /* --- Topbar Showcase Animation --- */
+/* --- Topbar Showcase Animation --- */
+.topbar-title-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 20px;
+    flex-grow: 1; 
+}
+
+.topbar-title {
+    font-size: 2.2em;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+}
+
 .showcase-container {
     display: flex;
-    align-items: center; /* Aligns prompt and name vertically */
-    gap: 15px;           /* Adds space between prompt and name */
+    align-items: center; /* This is the key change */
+    gap: 15px;
     margin-left: 50px;
     top: 5px;
     position: relative;
