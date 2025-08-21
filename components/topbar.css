@@ -375,6 +375,8 @@
     color: var(--line-purple-default);
     font-weight: 500;
     position: absolute;
+    left: 0; /* Add this line */
+    width: 100%; /* Add this for better consistency */
 }
 
 .slide-in-down {
