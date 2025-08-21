@@ -324,15 +324,6 @@
 }
 
 /* --- Topbar Showcase Animation --- */
-/* --- Topbar Showcase Animation --- */
-.showcase-container {
-    display: flex;
-    align-items: center; /* Aligns prompt and name vertically */
-    gap: 15px;
-    margin-left: 50px;
-    top: 5px;
-    position: relative;
-}
 
 .topbar-title-container {
     display: flex;
