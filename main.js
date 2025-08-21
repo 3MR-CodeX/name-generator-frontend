@@ -1,12 +1,9 @@
-// main.js
-
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
 
-// UPDATED: Unified list with a single "Domains" option
 const CHECKABLE_OPTIONS = {
     "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
     "Domains (.com, .io, .ai, .app)":  { type: "domain_group", value: ["com", "io", "ai", "app"], icon: "fas fa-globe" },
@@ -31,6 +28,7 @@ let customRefineHistoryLog = [];
 const mainGeneratorView = document.getElementById("main-generator-view");
 const customRefinerView = document.getElementById("custom-refiner-view");
 const availabilityCheckerView = document.getElementById("availability-checker-view");
+const nameAnalyzerView = document.getElementById("name-analyzer-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -45,6 +43,7 @@ const surpriseBtn = document.querySelector(".surprise-btn");
 const refineBtn = document.querySelector(".refine-btn");
 const customRefineBtn = document.getElementById("custom-refine-btn");
 const checkAvailabilityBtn = document.getElementById("check-availability-btn");
+const analyzeNameBtn = document.getElementById("analyze-name-btn");
 const historyModal = document.getElementById("history-modal");
 const closeButtonHistoryModal = document.querySelector("#history-modal .close-button");
 const fullHistoryList = document.getElementById("full-history-list");
@@ -114,15 +113,18 @@ function setupEventListeners() {
     }
     if (customRefineBtn) customRefineBtn.onclick = customRefineName;
     if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability;
+    if (analyzeNameBtn) analyzeNameBtn.onclick = analyzeName;
 
     setTimeout(() => {
         const homeLink = document.getElementById('home-link');
         const customRefineLink = document.getElementById('custom-refine-link');
         const availabilityCheckLink = document.getElementById('availability-check-link');
+        const nameAnalyzerLink = document.getElementById('name-analyzer-link');
 
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
     }, 500);
 }
 
@@ -155,6 +157,7 @@ function showView(viewName) {
     if(mainGeneratorView) mainGeneratorView.classList.add('hidden');
     if(customRefinerView) customRefinerView.classList.add('hidden');
     if(availabilityCheckerView) availabilityCheckerView.classList.add('hidden');
+    if(nameAnalyzerView) nameAnalyzerView.classList.add('hidden');
     
     resetDynamicSections(false);
     
@@ -162,10 +165,10 @@ function showView(viewName) {
         if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
     } else if (viewName === 'refiner') {
         if(customRefinerView) customRefinerView.classList.remove('hidden');
-        if(refineSection) refineSection.classList.add('hidden');
-        if(refineBtn) refineBtn.classList.add('hidden');
     } else if (viewName === 'availability-checker') {
         if(availabilityCheckerView) availabilityCheckerView.classList.remove('hidden');
+    } else if (viewName === 'name-analyzer') {
+        if(nameAnalyzerView) nameAnalyzerView.classList.remove('hidden');
     }
 }
 
@@ -200,11 +203,11 @@ function hideLoading(targetElement) {
 }
 
 function disableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn].forEach(btn => { if(btn) btn.disabled = true; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn].forEach(btn => { if(btn) btn.disabled = true; });
 }
 
 function enableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn].forEach(btn => { if(btn) btn.disabled = false; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn].forEach(btn => { if(btn) btn.disabled = false; });
 }
 
 function showTemporaryPlaceholderError(element, message) {
@@ -735,7 +738,6 @@ function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsMod
 function initializePlatformsDropdown() {
     if (!platformsDropdownList || !platformsDropdownBtn) return;
 
-    // Populate dropdown with checkboxes, sorted alphabetically
     Object.keys(CHECKABLE_OPTIONS).sort().forEach(name => {
         const option = CHECKABLE_OPTIONS[name];
         const label = document.createElement('label');
@@ -747,7 +749,7 @@ function initializePlatformsDropdown() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = name;
-        checkbox.checked = false; // Default to unchecked
+        checkbox.checked = false;
 
         label.appendChild(icon);
         label.appendChild(checkbox);
@@ -812,7 +814,6 @@ async function checkAvailability() {
     });
 
     const resultsContainer = document.getElementById('availability-results-container');
-    // UPDATED: Wrap loader in a container for centering
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
     disableButtons();
 
@@ -845,7 +846,6 @@ async function checkAvailability() {
 
 function renderAvailabilityResults(data) {
     const resultsContainer = document.getElementById('availability-results-container');
-    
     let htmlContent = '';
 
     if (data.domains.length > 0) {
@@ -858,42 +858,30 @@ function renderAvailabilityResults(data) {
                     <i class="${domainIcon}"></i>
                     ${d.domain}
                 </span>
-                ${d.available
-                    ? '<span class="status-available">✅ Available</span>'
-                    : '<span class="status-taken">❌ Taken</span>'
-                }
+                ${d.available ? '<span class="status-available">✅ Available</span>' : '<span class="status-taken">❌ Taken</span>'}
             </div>
         `).join('');
-        htmlContent += `
-            <div class="output-box">
-                <div class="output-header"><label>Domain Availability</label></div>
-                <div class="results-list">${domainsHtml}</div>
-            </div>
-        `;
+        htmlContent += `<div class="output-box"><div class="output-header"><label>Domain Availability</label></div><div class="results-list">${domainsHtml}</div></div>`;
     }
 
     if (data.socials.length > 0) {
         let socialsHtml = data.socials.map(s => {
-            const option = CHECKABLE_OPTIONS[s.platform];
-            const iconClass = option ? option.icon : 'fas fa-hashtag';
+            let iconClass = 'fas fa-hashtag';
+            // Find the key in CHECKABLE_OPTIONS that corresponds to the platform value
+            const optionKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].value === s.platform);
+            if (optionKey) {
+                iconClass = CHECKABLE_OPTIONS[optionKey].icon;
+            }
             return `
                 <div class="result-item">
                     <span class="result-name">
                         <i class="${iconClass}"></i>
                         ${s.platform}
                     </span>
-                    ${s.available
-                        ? `<span class="status-available">✅ Available</span>`
-                        : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`
-                    }
+                    ${s.available ? `<span class="status-available">✅ Available</span>` : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`}
                 </div>`;
         }).join('');
-        htmlContent += `
-            <div class="output-box">
-                <div class="output-header"><label>Social Media & Platforms</label></div>
-                <div class="results-list">${socialsHtml}</div>
-            </div>
-        `;
+        htmlContent += `<div class="output-box"><div class="output-header"><label>Social Media & Platforms</label></div><div class="results-list">${socialsHtml}</div></div>`;
     }
 
     if (htmlContent === '') {
@@ -901,4 +889,109 @@ function renderAvailabilityResults(data) {
     } else {
         resultsContainer.innerHTML = `<div class="output-section" style="margin-top: 20px;">${htmlContent}</div>`;
     }
+}
+
+async function analyzeName() {
+    const nameInput = document.getElementById('name-to-analyze');
+    const contextInput = document.getElementById('analysis-context');
+    const nameToAnalyze = nameInput.value.trim();
+    const context = contextInput.value.trim();
+
+    if (!nameToAnalyze) {
+        showTemporaryPlaceholderError(nameInput, "Please enter a name to analyze.");
+        return;
+    }
+    if (!context) {
+        showTemporaryPlaceholderError(contextInput, "Please provide context for the name.");
+        return;
+    }
+
+    const resultsContainer = document.getElementById('analyzer-results-container');
+    resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const response = await fetch(`${BACKEND_URL}/analyze-name`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({ name: nameToAnalyze, context: context })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "An error occurred during analysis.");
+        }
+        
+        const data = await response.json();
+        
+        if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
+            const maxGenerations = window.auth.currentUser ? 100 : 10;
+            window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
+        }
+        
+        renderAnalysisResults(data.analysis);
+
+    } catch (error) {
+        resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
+    } finally {
+        enableButtons();
+    }
+}
+
+function renderAnalysisResults(data) {
+    const resultsContainer = document.getElementById('analyzer-results-container');
+    let riskClass = '';
+    if (data.conflict_risk === 'Clear') riskClass = 'risk-clear';
+    if (data.conflict_risk === 'Medium Risk') riskClass = 'risk-medium';
+    if (data.conflict_risk === 'High Risk') riskClass = 'risk-high';
+
+    let alternativesHtml = '';
+    if (data.alternative_names) {
+        alternativesHtml = `
+            <div class="analysis-section">
+                <h4>Alternative Suggestions</h4>
+                <ul>
+                    ${data.alternative_names.map(item => `<li><strong>${item.name}:</strong> ${item.reason}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    let creativeAuditHtml = '';
+    if (data.creative_analysis) {
+        creativeAuditHtml = `
+            <div class="analysis-section">
+                <h4>Creative Audit</h4>
+                <ul>
+                    ${Object.keys(data.creative_analysis).map(key => `<li><strong>${key}:</strong> ${data.creative_analysis[key]}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    let tipsHtml = '';
+    if (data.improvement_tips) {
+        tipsHtml = `
+            <div class="analysis-section">
+                <h4>Improvement Tips</h4>
+                <ul>
+                    ${data.improvement_tips.map(tip => `<li>${tip}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    resultsContainer.innerHTML = `
+        <div class="analysis-report">
+            <h3>
+                Conflict Risk: 
+                <span class="risk-badge ${riskClass}">${data.conflict_risk}</span>
+            </h3>
+            <p>${data.conflict_explanation}</p>
+            ${alternativesHtml}
+            ${creativeAuditHtml}
+            ${tipsHtml}
+        </div>
+    `;
 }
