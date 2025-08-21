@@ -322,3 +322,51 @@
     0%, 100% { background-color: #a500ff; box-shadow: 0 0 5px #a500ff; }
     50% { background-color: #ff0090; box-shadow: 0 0 15px #ff0090; }
 }
+
+/* --- Topbar Title and Animated Text --- */
+.topbar-title-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 20px;
+    /* This will push the auth section to the right */
+    flex-grow: 1; 
+}
+
+.topbar-title {
+    font-size: 1.8em;
+    font-weight: 800; /* Makes the font thick */
+    color: #ffffff;
+}
+
+.animated-text-container {
+    height: 1.5em; /* Set a fixed height to contain the animation */
+    overflow: hidden; /* This is crucial for the sliding effect */
+    position: relative;
+}
+
+#animated-text-span {
+    font-size: 1.1em;
+    color: #cccccc;
+    position: absolute;
+    /* Start off-screen at the top */
+    transform: translateY(-100%);
+}
+
+/* Animation Classes */
+.slide-in {
+    animation: slideIn 0.5s forwards ease-out;
+}
+.slide-out {
+    animation: slideOut 0.5s forwards ease-in;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(100%); opacity: 0; }
+}
