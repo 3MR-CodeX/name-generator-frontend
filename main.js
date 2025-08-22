@@ -4,6 +4,19 @@ const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company"
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
 
+const FONT_OPTIONS = {
+    "Roboto": "'Roboto', sans-serif",
+    "Lato": "'Lato', sans-serif",
+    "Montserrat": "'Montserrat', sans-serif",
+    "Oswald": "'Oswald', sans-serif",
+    "Raleway": "'Raleway', sans-serif",
+    "Poppins": "'Poppins', sans-serif",
+    "Nunito": "'Nunito', sans-serif",
+    "Merriweather": "'Merriweather', serif",
+    "Georgia": "'Georgia', serif",
+    "Verdana": "'Verdana', sans-serif"
+};
+
 const CHECKABLE_OPTIONS = {
     "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
     "Domains (.com, .io, .ai, .app)":  { type: "domain_group", value: ["com", "io", "ai", "app"], icon: "fas fa-globe" },
@@ -69,6 +82,8 @@ const platformsDropdownList = document.getElementById("platforms-dropdown-list")
 const themeSelect = document.getElementById('theme-select');
 const fontSelect = document.getElementById('font-select');
 const fontSizeSlider = document.getElementById('font-size-slider');
+const resultsFontSelect = document.getElementById('results-font-select');
+const resultsFontSizeSlider = document.getElementById('results-font-size-slider');
 const animationsToggle = document.getElementById('animations-toggle');
 const changePasswordBtn = document.getElementById('change-password-btn');
 const manageSubscriptionBtn = document.getElementById('manage-subscription-btn');
@@ -89,6 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
     populateDropdown("pattern", PATTERN_OPTIONS);
+    populateFontDropdowns();
     
     setupEventListeners();
     initializeSliders();
@@ -139,6 +155,8 @@ function setupEventListeners() {
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
     if (fontSelect) fontSelect.addEventListener('change', (e) => applyFont(e.target.value));
     if (fontSizeSlider) fontSizeSlider.addEventListener('input', (e) => applyFontSize(e.target.value));
+    if (resultsFontSelect) resultsFontSelect.addEventListener('change', (e) => applyResultsFont(e.target.value));
+    if (resultsFontSizeSlider) resultsFontSizeSlider.addEventListener('input', (e) => applyResultsFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
@@ -216,6 +234,21 @@ function populateDropdown(id, options) {
         opt.value = option;
         opt.textContent = option;
         select.appendChild(opt);
+    });
+}
+
+function populateFontDropdowns() {
+    const fontSelectors = [fontSelect, resultsFontSelect];
+    fontSelectors.forEach(selector => {
+        if (selector) {
+            selector.innerHTML = '';
+            for (const fontName in FONT_OPTIONS) {
+                const option = document.createElement('option');
+                option.value = FONT_OPTIONS[fontName];
+                option.textContent = fontName;
+                selector.appendChild(option);
+            }
+        }
     });
 }
 
@@ -705,7 +738,7 @@ function copyToClipboard(elementId) {
     navigator.clipboard.writeText(text).then(() => {
         const copyMessage = document.createElement('div');
         copyMessage.textContent = "Copied to clipboard!";
-        copyMessage.style.cssText = `position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--button-purple); color: white; padding: 10px 20px; border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-out;`;
+        copyMessage.style.cssText = `position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-accent); color: white; padding: 10px 20px; border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-out;`;
         document.body.appendChild(copyMessage);
         setTimeout(() => { copyMessage.style.opacity = 1; }, 10);
         setTimeout(() => { copyMessage.style.opacity = 0; copyMessage.addEventListener('transitionend', () => copyMessage.remove()); }, 2000);
@@ -1086,36 +1119,38 @@ async function fetchHistoryForImport() {
 
 function initializeSettings() {
     const settings = {
-        theme: localStorage.getItem('nameit-theme') || 'system',
+        theme: localStorage.getItem('nameit-theme') || 'default',
         font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
         fontSize: localStorage.getItem('nameit-fontSize') || '100',
+        resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
+        resultsFontSize: localStorage.getItem('nameit-results-fontSize') || '100',
         animations: localStorage.getItem('nameit-animations') !== 'false'
     };
 
     if (themeSelect) themeSelect.value = settings.theme;
     if (fontSelect) fontSelect.value = settings.font;
     if (fontSizeSlider) fontSizeSlider.value = settings.fontSize;
+    if (resultsFontSelect) resultsFontSelect.value = settings.resultsFont;
+    if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
     if (animationsToggle) animationsToggle.checked = settings.animations;
 
     applyTheme(settings.theme, false);
     applyFont(settings.font, false);
     applyFontSize(settings.fontSize, false);
+    applyResultsFont(settings.resultsFont, false);
+    applyResultsFontSize(settings.resultsFontSize, false);
     applyAnimationSetting(settings.animations, false);
 }
 
 function applyTheme(theme, save = true) {
     if (save) localStorage.setItem('nameit-theme', theme);
+    document.body.dataset.theme = theme;
     
+    // This handles the special case for the system/light theme toggle
     if (theme === 'light') {
         document.body.classList.add('light-theme');
-    } else if (theme === 'dark') {
-        document.body.classList.remove('light-theme');
     } else {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-            document.body.classList.add('light-theme');
-        } else {
-            document.body.classList.remove('light-theme');
-        }
+        document.body.classList.remove('light-theme');
     }
 }
 
@@ -1126,7 +1161,17 @@ function applyFont(font, save = true) {
 
 function applyFontSize(size, save = true) {
     if (save) localStorage.setItem('nameit-fontSize', size);
-    document.documentElement.style.fontSize = `${size}%`;
+    document.body.style.fontSize = `${size}%`;
+}
+
+function applyResultsFont(font, save = true) {
+    if (save) localStorage.setItem('nameit-results-font', font);
+    document.documentElement.style.setProperty('--results-font-family', font);
+}
+
+function applyResultsFontSize(size, save = true) {
+    if (save) localStorage.setItem('nameit-results-fontSize', size);
+    document.documentElement.style.setProperty('--results-font-size', `${size}%`);
 }
 
 function applyAnimationSetting(enabled, save = true) {
