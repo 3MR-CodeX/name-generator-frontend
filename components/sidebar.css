@@ -20,7 +20,7 @@ body[data-theme='light'] #sidebar {
 
 #sidebar.sidebar-open { left: 0; }
 .sidebar-content { color: var(--text-color); }
-.sidebar-content h2 { color: var(--text-color); }
+.sidebar-content h2 { font-size: 1.8em; margin-bottom: 15px; color: var(--text-color); text-align: center; }
 .sidebar-content ul { list-style: none; padding: 0; margin-bottom: 20px; }
 .sidebar-content ul li { margin-bottom: 8px; }
 
@@ -35,7 +35,7 @@ body[data-theme='light'] #sidebar {
     font-size: 0.95em;
 }
 body[data-theme='classic_contrast'] .sidebar-content ul li a {
-    color: var(--bg-color);
+    color: var(--bg-color); /* Make text black on light-colored buttons */
 }
 
 .sidebar-content ul li a:hover {
