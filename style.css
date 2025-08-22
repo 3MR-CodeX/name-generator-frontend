@@ -4,13 +4,12 @@
     --hexagon-button-size: 80px;
 
     /* Default Theme: Purple */
-    --primary-accent: #800080; /* button-purple */
-    --secondary-accent: #a020f0; /* button-purple-hover */
-    --line-accent-default: #ff00ff; /* line-purple-default */
-    --line-accent-glow: #a500ff; /* line-purple-glow */
+    --primary-accent: #800080;
+    --secondary-accent: #a020f0;
+    --line-accent-default: #ff00ff;
+    --line-accent-glow: #a500ff;
     --tag-background: #7f00f7;
-    --progress-bar-glow-1: #ff00ff;
-    --progress-bar-glow-2: #a500ff;
+    --animated-bar-color: rgba(255, 0, 255, 0.3);
 
     /* Font variables for results */
     --results-font-family: 'Roboto', sans-serif;
@@ -24,8 +23,7 @@ body[data-theme="sunset-blaze"] {
     --line-accent-default: #f77f00;
     --line-accent-glow: #fcbf49;
     --tag-background: #d62828;
-    --progress-bar-glow-1: #f77f00;
-    --progress-bar-glow-2: #fcbf49;
+    --animated-bar-color: rgba(247, 127, 0, 0.3);
 }
 
 /* Oceanic Citrus Theme */
@@ -35,8 +33,7 @@ body[data-theme="oceanic-citrus"] {
     --line-accent-default: #ffaa00;
     --line-accent-glow: #ffc300;
     --tag-background: #0077b6;
-    --progress-bar-glow-1: #ffaa00;
-    --progress-bar-glow-2: #ffc300;
+    --animated-bar-color: rgba(0, 119, 182, 0.3);
 }
 
 /* Classic Noir Theme */
@@ -46,8 +43,7 @@ body[data-theme="classic-noir"] {
     --line-accent-default: #ffffff;
     --line-accent-glow: #e0e0e0;
     --tag-background: #444444;
-    --progress-bar-glow-1: #ffffff;
-    --progress-bar-glow-2: #e0e0e0;
+    --animated-bar-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Synthwave Theme */
@@ -57,8 +53,7 @@ body[data-theme="synthwave"] {
     --line-accent-default: #ff00ff;
     --line-accent-glow: #f0f;
     --tag-background: #a500ff;
-    --progress-bar-glow-1: #ff00ff;
-    --progress-bar-glow-2: #a500ff;
+    --animated-bar-color: rgba(255, 0, 255, 0.3);
 }
 
 /* Crimson Tide Theme */
@@ -68,8 +63,7 @@ body[data-theme="crimson-tide"] {
     --line-accent-default: #00aaff;
     --line-accent-glow: #33bbff;
     --tag-background: #FF0090;
-    --progress-bar-glow-1: #00aaff;
-    --progress-bar-glow-2: #FF0090;
+    --animated-bar-color: rgba(255, 0, 144, 0.3);
 }
 
 /* Azure Sky Theme */
@@ -79,8 +73,7 @@ body[data-theme="azure-sky"] {
     --line-accent-default: #00aaff;
     --line-accent-glow: #33bbff;
     --tag-background: #005fcc;
-    --progress-bar-glow-1: #00aaff;
-    --progress-bar-glow-2: #007bff;
+    --animated-bar-color: rgba(0, 95, 204, 0.3);
 }
 
 
@@ -139,7 +132,7 @@ body {
     width: 20%;
     z-index: 1;
     opacity: 0;
-    background: linear-gradient(to right, transparent, rgba(255, 0, 255, 0.5), transparent);
+    background: linear-gradient(to right, transparent, var(--animated-bar-color), transparent);
 }
 
 .animated-bar.left {
