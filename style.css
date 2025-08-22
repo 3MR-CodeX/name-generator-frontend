@@ -1204,7 +1204,6 @@ pre {
 }
 
 /* --- SLIDER UI FIX --- */
-/* --- SLIDER UI FIX --- */
 .slider-ticks span {
     width: 2px;
     height: 10px;
@@ -1219,14 +1218,13 @@ pre {
     align-items: center;
 }
 
-/* This new rule specifically hides the numbers on the generator relevancy slider */
-#generator-relevancy + .slider-ticks span {
-    font-size: 0;
-    color: transparent;
-}
-
 .amount-slider .slider-ticks span {
     background-color: transparent;
+}
+
+.hide-slider-numbers .slider-ticks span {
+    font-size: 0;
+    color: transparent;
 }
 /* --- END SLIDER UI FIX --- */
 
@@ -1591,4 +1589,5 @@ body.light-theme {
 .light-theme .modal-content {
     background-color: #f0f2f5;
 }
+
 
