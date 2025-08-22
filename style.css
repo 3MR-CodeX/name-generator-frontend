@@ -2,10 +2,87 @@
     --top-bar-height: 60px;
     --sidebar-width: 280px;
     --hexagon-button-size: 80px;
-    --button-purple: #800080;
-    --line-purple-default: #ff00ff;
-    --line-purple-glow: #a500ff;
+
+    /* Default Theme: Purple */
+    --primary-accent: #800080; /* button-purple */
+    --secondary-accent: #a020f0; /* button-purple-hover */
+    --line-accent-default: #ff00ff; /* line-purple-default */
+    --line-accent-glow: #a500ff; /* line-purple-glow */
+    --tag-background: #7f00f7;
+    --progress-bar-glow-1: #ff00ff;
+    --progress-bar-glow-2: #a500ff;
+
+    /* Font variables for results */
+    --results-font-family: 'Roboto', sans-serif;
+    --results-font-size: 100%;
 }
+
+/* Sunset Blaze Theme */
+body[data-theme="sunset-blaze"] {
+    --primary-accent: #d62828;
+    --secondary-accent: #e05252;
+    --line-accent-default: #f77f00;
+    --line-accent-glow: #fcbf49;
+    --tag-background: #d62828;
+    --progress-bar-glow-1: #f77f00;
+    --progress-bar-glow-2: #fcbf49;
+}
+
+/* Oceanic Citrus Theme */
+body[data-theme="oceanic-citrus"] {
+    --primary-accent: #0077b6;
+    --secondary-accent: #0096c7;
+    --line-accent-default: #ffaa00;
+    --line-accent-glow: #ffc300;
+    --tag-background: #0077b6;
+    --progress-bar-glow-1: #ffaa00;
+    --progress-bar-glow-2: #ffc300;
+}
+
+/* Classic Noir Theme */
+body[data-theme="classic-noir"] {
+    --primary-accent: #333333;
+    --secondary-accent: #555555;
+    --line-accent-default: #ffffff;
+    --line-accent-glow: #e0e0e0;
+    --tag-background: #444444;
+    --progress-bar-glow-1: #ffffff;
+    --progress-bar-glow-2: #e0e0e0;
+}
+
+/* Synthwave Theme */
+body[data-theme="synthwave"] {
+    --primary-accent: #a500ff;
+    --secondary-accent: #b733ff;
+    --line-accent-default: #ff00ff;
+    --line-accent-glow: #f0f;
+    --tag-background: #a500ff;
+    --progress-bar-glow-1: #ff00ff;
+    --progress-bar-glow-2: #a500ff;
+}
+
+/* Crimson Tide Theme */
+body[data-theme="crimson-tide"] {
+    --primary-accent: #FF0090;
+    --secondary-accent: #ff33a6;
+    --line-accent-default: #00aaff;
+    --line-accent-glow: #33bbff;
+    --tag-background: #FF0090;
+    --progress-bar-glow-1: #00aaff;
+    --progress-bar-glow-2: #FF0090;
+}
+
+/* Azure Sky Theme */
+body[data-theme="azure-sky"] {
+    --primary-accent: #005fcc;
+    --secondary-accent: #007bff;
+    --line-accent-default: #00aaff;
+    --line-accent-glow: #33bbff;
+    --tag-background: #005fcc;
+    --progress-bar-glow-1: #00aaff;
+    --progress-bar-glow-2: #007bff;
+}
+
 
 * {
     margin: 0;
@@ -27,7 +104,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    transition: padding-left 0.5s ease-in-out;
+    transition: padding-left 0.5s ease-in-out, background-color 0.3s, color 0.3s;
 }
 
 #background-container {
@@ -98,7 +175,7 @@ body {
 
 .banner-col {
     text-align: center;
-    margin-top: 20px; /* Added */
+    margin-top: 20px;
     margin-bottom: 20px;
     background-color: transparent;
     padding: 0;
@@ -109,7 +186,7 @@ body {
 }
 
 .banner-col:hover {
-    background-color: transparent; /* Changed */
+    background-color: transparent;
 }
 
 #banner {
@@ -117,8 +194,8 @@ body {
     max-width: 1000px;
     height: 180px;
     object-fit: contain;
-    position: relative; /* Added */
-    left: 15px;         /* Added */
+    position: relative;
+    left: 15px;
 }
 
 h1 {
@@ -274,41 +351,28 @@ button:disabled {
     opacity: 1;
 }
 
-.generate-btn {
+.generate-btn, .refine-btn {
     flex: 3;
-    background-color: #ff00ff;
+    background-color: var(--line-accent-default);
     padding: 15px;
     font-weight: 500;
-    border: 2px solid #ff00ff;
+    border: 2px solid var(--line-accent-default);
 }
 
-.generate-btn:hover:not(:disabled) {
-    background-color: #c400c4;
-    border-color: #c400c4;
+.generate-btn:hover:not(:disabled), .refine-btn:hover:not(:disabled) {
+    background-color: var(--secondary-accent);
+    border-color: var(--secondary-accent);
 }
 
 .surprise-btn {
     flex: 1;
     background-color: #1a1a1a;
-    border: 2px solid #ff00ff;
+    border: 2px solid var(--line-accent-default);
     padding: 15px;
 }
 
 .surprise-btn:hover:not(:disabled) {
-    background-color: #ff00ff;
-}
-
-.refine-btn {
-    width: 100%;
-    background-color: #ff00ff;
-    padding: 15px;
-    font-weight: 500;
-    border: 2px solid #ff00ff;
-}
-
-.refine-btn:hover:not(:disabled) {
-    background-color: #c400c4;
-    border-color: #c400c4;
+    background-color: var(--line-accent-default);
 }
 
 #output_container {
@@ -332,9 +396,9 @@ pre#names {
 }
 
 #names.clickable .generated-name:hover {
-    border-color: #ff00ff;
+    border-color: var(--line-accent-default);
     background-color: rgba(255, 0, 255, 0.1);
-    box-shadow: 0 0 10px 2px #ff00ff;
+    box-shadow: 0 0 10px 2px var(--line-accent-default);
 }
 
 #more-like-this-section {
@@ -368,7 +432,7 @@ pre#names {
 .seed-tag {
     display: inline-flex;
     align-items: center;
-    background-color: #7f00f7;
+    background-color: var(--tag-background);
     color: white;
     padding: 8px 16px;
     border-radius: 20px;
@@ -501,7 +565,7 @@ pre#names {
 }
 
 .copy-button {
-    background-color: var(--button-purple);
+    background-color: var(--primary-accent);
     padding: 5px;
     border-radius: 5px;
     width: 24px;
@@ -513,7 +577,7 @@ pre#names {
 }
 
 .copy-button:hover {
-    background-color: #a020f0;
+    background-color: var(--secondary-accent);
 }
 
 pre {
@@ -525,9 +589,10 @@ pre {
     height: 200px;
     overflow-y: auto;
     margin: 0;
-    font-size: 18px;
     font-weight: 400;
     border: 1px solid #4a4a4a;
+    font-family: var(--results-font-family);
+    font-size: var(--results-font-size);
 }
 
 .refine-section {
@@ -573,7 +638,7 @@ pre {
 
 .spinner {
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid var(--button-purple);
+    border-top: 4px solid var(--primary-accent);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -605,12 +670,12 @@ pre {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--button-purple);
+    background: var(--primary-accent);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #a020f0;
+    background: var(--secondary-accent);
 }
 
 @media (max-width: 768px) {
@@ -673,7 +738,7 @@ pre {
     background-color: #333333;
     margin: auto;
     padding: 20px;
-    border: 2px solid var(--line-purple-default);
+    border: 2px solid var(--line-accent-default);
     border-radius: 12px;
     width: 90%;
     max-width: 700px;
@@ -710,7 +775,7 @@ pre {
 
 .close-button:hover,
 .close-button:focus {
-    color: var(--line-purple-glow);
+    color: var(--line-accent-glow);
     text-decoration: none;
     cursor: pointer;
 }
@@ -798,7 +863,7 @@ pre {
 }
 
 #details-content strong {
-    color: var(--line-purple-default);
+    color: var(--line-accent-default);
 }
 
 #details-content pre {
@@ -883,7 +948,7 @@ pre {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: var(--line-purple-glow);
+    background-color: var(--line-accent-glow);
     margin: 0 5px;
     animation: pulse-dots 1.4s infinite ease-in-out both;
 }
@@ -974,7 +1039,7 @@ pre {
     appearance: none;
     width: 18px;
     height: 18px;
-    background: var(--line-purple-default);
+    background: var(--line-accent-default);
     cursor: pointer;
     border-radius: 50%;
     border: 2px solid #1a1a1a;
@@ -983,7 +1048,7 @@ pre {
 .relevancy-slider::-moz-range-thumb {
     width: 18px;
     height: 18px;
-    background: var(--line-purple-default);
+    background: var(--line-accent-default);
     cursor: pointer;
     border-radius: 50%;
     border: 2px solid #1a1a1a;
@@ -1023,8 +1088,6 @@ pre {
     background-color: transparent;
 }
 
-/* style.css */
-
 /* --- Availability Checker Results --- */
 .results-list { 
     padding: 10px; 
@@ -1056,7 +1119,6 @@ pre {
 .status-taken a:hover { 
     text-decoration: underline; 
 }
-/* in style.css */
 
 /* --- New Styles for Availability Checker --- */
 .availability-input-container {
@@ -1075,7 +1137,7 @@ pre {
 }
 
 #name-to-check {
-    height: 45px; /* Makes it one line thick */
+    height: 45px;
 }
 
 /* Custom Checkable Dropdown */
@@ -1100,7 +1162,7 @@ pre {
 }
 
 .dropdown-btn:hover {
-    border-color: #800080;
+    border-color: var(--primary-accent);
 }
 
 .dropdown-btn .arrow {
@@ -1146,12 +1208,11 @@ pre {
     margin-right: 10px;
     cursor: pointer;
 }
-/* in style.css */
 
 /* --- Icon styling for platform dropdown --- */
 .platform-item i {
     margin-right: 10px;
-    width: 1.2em; /* Gives icons a consistent space */
+    width: 1.2em;
     text-align: center;
     color: #cccccc;
 }
@@ -1163,8 +1224,6 @@ pre {
     align-items: center;
     padding: 40px 0;
 }
-
-/* in style.css */
 
 /* --- Name Analyzer Results --- */
 .analysis-report {
@@ -1218,7 +1277,6 @@ pre {
 }
 
 /* --- Styles for Outer Box and Import Button --- */
-
 .outer-input-box {
     background-color: #2a2a2a;
     padding: 20px;
@@ -1234,7 +1292,7 @@ pre {
 }
 
 .import-history-btn {
-    background-color: var(--button-purple);
+    background-color: var(--primary-accent);
     color: white;
     border: none;
     border-radius: 50%;
@@ -1250,7 +1308,7 @@ pre {
 }
 
 .import-history-btn:hover {
-    background-color: #a020f0;
+    background-color: var(--secondary-accent);
 }
 
 /* --- Settings Page --- */
@@ -1279,19 +1337,30 @@ pre {
 
 .setting-section h2 i {
     margin-right: 10px;
-    color: var(--line-purple-default);
+    color: var(--line-accent-default);
 }
 
 .setting-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .setting-row label {
+    flex-basis: 45%;
     font-size: 1em;
     font-weight: 400;
+}
+
+.settings-select {
+    flex-basis: 50%;
+    background-color: rgba(58, 58, 58, 0.75);
+    color: #e0e0e0;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 15px;
 }
 
 .settings-btn {
@@ -1303,10 +1372,10 @@ pre {
     background-color: #5a5a5a;
 }
 .settings-btn.premium-btn {
-    background-color: var(--button-purple);
+    background-color: var(--primary-accent);
 }
 .settings-btn.premium-btn:hover {
-    background-color: #a020f0;
+    background-color: var(--secondary-accent);
 }
 .settings-btn.danger-btn {
     background-color: #b30000;
@@ -1320,7 +1389,7 @@ pre {
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; transition: .4s; }
 .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
-input:checked + .slider { background-color: var(--line-purple-glow); }
+input:checked + .slider { background-color: var(--line-accent-glow); }
 input:checked + .slider:before { transform: translateX(22px); }
 .slider.round { border-radius: 34px; }
 .slider.round:before { border-radius: 50%; }
@@ -1333,7 +1402,7 @@ body.light-theme {
 }
 .light-theme #background-container,
 .light-theme .animated-bar {
-    display: none; /* Hide animated background in light mode */
+    display: none;
 }
 .light-theme .input-box,
 .light-theme .output-box,
