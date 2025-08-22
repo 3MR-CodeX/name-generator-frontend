@@ -109,6 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     setupEventListeners();
     initializeSliders();
     initializePlatformsDropdown();
+    initializeBannerAnimation();
 });
 
 async function loadComponent(placeholderId, componentUrl) {
@@ -1146,7 +1147,6 @@ function applyTheme(theme, save = true) {
     if (save) localStorage.setItem('nameit-theme', theme);
     document.body.dataset.theme = theme;
     
-    // This handles the special case for the system/light theme toggle
     if (theme === 'light') {
         document.body.classList.add('light-theme');
     } else {
@@ -1242,4 +1242,42 @@ function sendPasswordReset() {
     } else {
         alert("You must be signed in with an email account to reset your password.");
     }
+}
+
+function initializeBannerAnimation() {
+    const canvas = document.getElementById('banner-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let time = 0;
+
+    function resizeCanvas() {
+        const container = document.getElementById('banner-container');
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+    }
+
+    function animate() {
+        const color1 = getComputedStyle(document.body).getPropertyValue('--banner-bg-color-1').trim();
+        const color2 = getComputedStyle(document.body).getPropertyValue('--banner-bg-color-2').trim();
+
+        const gradient = ctx.createLinearGradient(
+            canvas.width * Math.abs(Math.sin(time * 0.0005)), 
+            0, 
+            canvas.width * Math.abs(Math.cos(time * 0.0005)), 
+            canvas.height
+        );
+        
+        gradient.addColorStop(0, color1);
+        gradient.addColorStop(1, color2);
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        time++;
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    animate();
 }
