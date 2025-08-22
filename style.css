@@ -1583,5 +1583,9 @@ body.light-theme {
 }
 
 
+#generator-relevancy ~ .slider-ticks span {
+    font-size: 0;
+    color: transparent;
+}
 
 
