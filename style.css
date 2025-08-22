@@ -1203,9 +1203,6 @@ pre {
     padding: 0 9px;
 }
 
-/* --- SLIDER UI STYLING --- */
-
-/* This is the base style for ALL slider ticks and numbers */
 .slider-ticks span {
     width: 2px;
     height: 10px;
@@ -1220,16 +1217,9 @@ pre {
     align-items: center;
 }
 
-/* This rule specifically targets ONLY the Keyword Relevancy slider's ticks */
-.slider-track:has(#generator-relevancy) .slider-ticks span {
-    font-size: 0;
-    color: transparent;
-}
 .amount-slider .slider-ticks span {
     background-color: transparent;
 }
-/* --- END SLIDER UI FIX --- */
-
 /* --- Availability Checker Results --- */
 .results-list { 
     padding: 10px; 
@@ -1591,6 +1581,7 @@ body.light-theme {
 .light-theme .modal-content {
     background-color: #f0f2f5;
 }
+
 
 
 
