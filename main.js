@@ -13,6 +13,9 @@ const FONT_OPTIONS = {
     "Poppins": "'Poppins', sans-serif",
     "Nunito": "'Nunito', sans-serif",
     "Merriweather": "'Merriweather', serif",
+    "Playfair Display": "'Playfair Display', serif",
+    "Ubuntu": "'Ubuntu', sans-serif",
+    "Source Code Pro": "'Source Code Pro', monospace",
     "Georgia": "'Georgia', serif",
     "Verdana": "'Verdana', sans-serif"
 };
@@ -1242,3 +1245,4 @@ function sendPasswordReset() {
         alert("You must be signed in with an email account to reset your password.");
     }
 }
+
