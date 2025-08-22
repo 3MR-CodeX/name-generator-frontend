@@ -137,6 +137,45 @@ body[data-theme="sakura-dream"] {
     --animated-bar-color-1: rgba(255, 105, 180, 0.5);
     --animated-bar-color-2: rgba(219, 112, 147, 0.5);
 }
+
+/* Cosmic Lilac Theme */
+body[data-theme="cosmic-lilac"] {
+    --primary-accent: #9b59b6;
+    --secondary-accent: #8e44ad;
+    --line-accent-default: #e67e22;   /* Orange */
+    --line-accent-glow: #f1c40f;     /* Yellow */
+    --tag-background: #9b59b6;
+    --disabled-accent: #5e336e;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(155, 89, 182, 0.5);
+    --animated-bar-color-2: rgba(230, 126, 34, 0.5);
+}
+
+/* Solar Flare Theme */
+body[data-theme="solar-flare"] {
+    --primary-accent: #e74c3c;
+    --secondary-accent: #c0392b;
+    --line-accent-default: #f39c12; /* Yellow-Orange */
+    --line-accent-glow: #e67e22;   /* Orange */
+    --tag-background: #e74c3c;
+    --disabled-accent: #8f2d22;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(243, 156, 18, 0.5);
+    --animated-bar-color-2: rgba(231, 76, 60, 0.5);
+}
+
+/* Arctic Night Theme */
+body[data-theme="arctic-night"] {
+    --primary-accent: #2c3e50;
+    --secondary-accent: #34495e;
+    --line-accent-default: #1abc9c; /* Turquoise */
+    --line-accent-glow: #16a085;   /* Greener Turquoise */
+    --tag-background: #2c3e50;
+    --disabled-accent: #1a2530;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(26, 188, 156, 0.5);
+    --animated-bar-color-2: rgba(22, 160, 133, 0.5);
+}
 /* --- END NEW THEMES --- */
 
 * {
@@ -1165,12 +1204,25 @@ pre {
 }
 
 /* --- SLIDER UI FIX --- */
+/* --- SLIDER UI FIX --- */
 .slider-ticks span {
     width: 2px;
     height: 10px;
     background-color: #555;
-    font-size: 0; /* This hides the numbers */
-    color: transparent; /* Fallback for hiding text */
+    color: #888;
+    font-size: 0.8em;
+    position: relative;
+    top: 15px;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* This new rule specifically hides the numbers on the generator relevancy slider */
+#generator-relevancy + .slider-ticks span {
+    font-size: 0;
+    color: transparent;
 }
 
 .amount-slider .slider-ticks span {
@@ -1539,3 +1591,4 @@ body.light-theme {
 .light-theme .modal-content {
     background-color: #f0f2f5;
 }
+
