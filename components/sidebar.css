@@ -1,4 +1,3 @@
-
 #sidebar {
     position: fixed;
     top: var(--top-bar-height);
@@ -43,7 +42,7 @@
 .sidebar-content ul li a {
     display: block;
     padding: 8px 12px;
-    background-color: rgba(128, 0, 128, 0.7);
+    background-color: var(--primary-accent);
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -52,7 +51,7 @@
 }
 
 .sidebar-content ul li a:hover {
-    background-color: #a020f0;
+    background-color: var(--secondary-accent);
     transform: translateX(5px);
 }
 
@@ -74,25 +73,25 @@
     visibility: visible;
 }
 
-/* UPDATED: Style for the eye-catching premium link */
+/* Style for the eye-catching premium link */
 .sidebar-content ul li a.premium-link {
-    background-color: #a500ff;
+    background-color: var(--line-accent-glow);
     animation: premium-color-shift 3s infinite ease-in-out;
 }
 
 .sidebar-content ul li a.premium-link:hover {
     transform: translateX(5px) scale(1.02);
     animation-play-state: paused;
-    background-color: #ff00ff;
+    background-color: var(--line-accent-default);
 }
 
 @keyframes premium-color-shift {
     0%, 100% {
-        background-color: #a500ff;
-        box-shadow: 0 0 15px 2px rgba(165, 0, 255, 0.7);
+        background-color: var(--line-accent-glow);
+        box-shadow: 0 0 15px 2px var(--line-accent-glow);
     }
     50% {
-        background-color: #ff00ff;
-        box-shadow: 0 0 15px 5px rgba(255, 0, 255, 0.8);
+        background-color: var(--line-accent-default);
+        box-shadow: 0 0 15px 5px var(--line-accent-default);
     }
 }
