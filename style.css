@@ -97,8 +97,6 @@ body[data-theme="azure-sky"] {
     --animated-bar-color-2: rgba(0, 170, 255, 0.5);
 }
 
-/* --- NEW THEMES --- */
-
 /* Emerald Forest Theme */
 body[data-theme="emerald-forest"] {
     --primary-accent: #008080;
@@ -176,7 +174,6 @@ body[data-theme="arctic-night"] {
     --animated-bar-color-1: rgba(26, 188, 156, 0.5);
     --animated-bar-color-2: rgba(22, 160, 133, 0.5);
 }
-/* --- END NEW THEMES --- */
 
 * {
     margin: 0;
@@ -1579,13 +1576,4 @@ body.light-theme {
     border-right-color: #dddfe2;
 }
 .light-theme .modal-content {
-    background-color: #f0f2f5;
-}
-
-
-#generator-relevancy ~ .slider-ticks span {
-    font-size: 0;
-    color: transparent;
-}
-
-
+    background-color: #f0f2f5
