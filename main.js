@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateFontDropdowns();
     
     setupEventListeners();
-    initializeSliders();
+    initializeSliders(); // This will now run the corrected function
     initializePlatformsDropdown();
 });
 
@@ -181,41 +181,24 @@ function setupEventListeners() {
     }, 500);
 }
 
+// --- NEW AND CORRECTED SLIDER FUNCTION ---
 function initializeSliders() {
-    const sliders = [
-        { id: 'generator-relevancy', labelsId: 'generator-relevancy-labels' },
-        { id: 'refiner-relevancy', labelsId: 'refiner-relevancy-labels' },
-        { id: 'generator-amount', labelsId: 'generator-amount-labels' },
-        { id: 'refiner-amount', labelsId: 'refiner-amount-labels' }
-    ];
-    sliders.forEach(sliderInfo => {
-        const slider = document.getElementById(sliderInfo.id);
-        const labelsContainer = document.getElementById(sliderInfo.labelsId);
+    // This function now correctly targets the sliders and applies the visual fix.
+    const slidersToProcess = ['generator-relevancy', 'refiner-relevancy'];
 
-        if (slider && labelsContainer) {
-            const labels = labelsContainer.querySelectorAll('span');
-            const updateValue = () => {
-                labels.forEach(label => label.classList.remove('active'));
-                if (labels[slider.value - 1]) {
-                    labels[slider.value - 1].classList.add('active');
-                }
-            };
-            slider.addEventListener('input', updateValue);
-            updateValue();
+    slidersToProcess.forEach(sliderId => {
+        const sliderElement = document.getElementById(sliderId);
+        if (sliderElement) {
+            // Traverse up to the container, then find the ticks within it.
+            const container = sliderElement.closest('.relevancy-slider-container');
+            if (container) {
+                const ticks = container.querySelectorAll('.slider-ticks span');
+                ticks.forEach(tick => {
+                    tick.style.fontSize = '0'; // This hides the number text
+                });
+            }
         }
     });
-
-    // --- THIS IS THE NEW CODE ---
-    // This code directly finds the Keyword Relevancy slider's ticks and hides the numbers.
-    const keywordRelevancySlider = document.getElementById('generator-relevancy');
-    if (keywordRelevancySlider) {
-        const ticks = keywordRelevancySlider.parentElement.querySelectorAll('.slider-ticks span');
-        ticks.forEach(tick => {
-            tick.style.fontSize = '0';
-            tick.style.color = 'transparent';
-        });
-    }
-    // --- END OF NEW CODE ---
 }
 
 function showView(viewName) {
@@ -1257,5 +1240,3 @@ function sendPasswordReset() {
         alert("You must be signed in with an email account to reset your password.");
     }
 }
-
-
