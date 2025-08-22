@@ -204,6 +204,18 @@ function initializeSliders() {
             updateValue();
         }
     });
+
+    // --- THIS IS THE NEW CODE ---
+    // This code directly finds the Keyword Relevancy slider's ticks and hides the numbers.
+    const keywordRelevancySlider = document.getElementById('generator-relevancy');
+    if (keywordRelevancySlider) {
+        const ticks = keywordRelevancySlider.parentElement.querySelectorAll('.slider-ticks span');
+        ticks.forEach(tick => {
+            tick.style.fontSize = '0';
+            tick.style.color = 'transparent';
+        });
+    }
+    // --- END OF NEW CODE ---
 }
 
 function showView(viewName) {
@@ -1245,4 +1257,5 @@ function sendPasswordReset() {
         alert("You must be signed in with an email account to reset your password.");
     }
 }
+
 
