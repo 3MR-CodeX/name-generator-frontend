@@ -10,6 +10,7 @@
     --line-accent-glow: #a500ff;
     --tag-background: #7f00f7;
     --disabled-accent: #4d004d;
+    --button-text-color: white;
     --animated-bar-color-1: rgba(255, 0, 255, 0.5);
     --animated-bar-color-2: rgba(165, 0, 255, 0.5);
 
@@ -26,6 +27,7 @@ body[data-theme="sunset-blaze"] {
     --line-accent-glow: #fcbf49;
     --tag-background: #d62828;
     --disabled-accent: #8a1a1a;
+    --button-text-color: white;
     --animated-bar-color-1: rgba(247, 127, 0, 0.5);
     --animated-bar-color-2: rgba(252, 191, 73, 0.5);
 }
@@ -38,6 +40,7 @@ body[data-theme="oceanic-citrus"] {
     --line-accent-glow: #ffc300;
     --tag-background: #0077b6;
     --disabled-accent: #004a74;
+    --button-text-color: white;
     --animated-bar-color-1: rgba(0, 119, 182, 0.5);
     --animated-bar-color-2: rgba(255, 170, 0, 0.5);
 }
@@ -50,6 +53,7 @@ body[data-theme="classic-noir"] {
     --line-accent-glow: #e0e0e0;
     --tag-background: #444444;
     --disabled-accent: #222222;
+    --button-text-color: black;
     --animated-bar-color-1: rgba(255, 255, 255, 0.2);
     --animated-bar-color-2: rgba(224, 224, 224, 0.2);
 }
@@ -62,6 +66,7 @@ body[data-theme="synthwave"] {
     --line-accent-glow: #f0f;
     --tag-background: #a500ff;
     --disabled-accent: #620099;
+    --button-text-color: white;
     --animated-bar-color-1: rgba(255, 0, 255, 0.5);
     --animated-bar-color-2: rgba(165, 0, 255, 0.5);
 }
@@ -74,6 +79,7 @@ body[data-theme="crimson-tide"] {
     --line-accent-glow: #33bbff;
     --tag-background: #FF0090;
     --disabled-accent: #b30065;
+    --button-text-color: white;
     --animated-bar-color-1: rgba(255, 0, 144, 0.5);
     --animated-bar-color-2: rgba(0, 170, 255, 0.5);
 }
@@ -86,6 +92,7 @@ body[data-theme="azure-sky"] {
     --line-accent-glow: #33bbff;
     --tag-background: #005fcc;
     --disabled-accent: #003c80;
+    --button-text-color: black;
     --animated-bar-color-1: rgba(0, 95, 204, 0.5);
     --animated-bar-color-2: rgba(0, 170, 255, 0.5);
 }
@@ -364,6 +371,7 @@ button:disabled {
     padding: 15px;
     font-weight: 500;
     border: 2px solid var(--line-accent-default);
+    color: var(--button-text-color);
 }
 
 .generate-btn:hover:not(:disabled), .refine-btn:hover:not(:disabled) {
@@ -380,6 +388,7 @@ button:disabled {
 
 .surprise-btn:hover:not(:disabled) {
     background-color: var(--line-accent-default);
+    color: var(--button-text-color);
 }
 
 #output_container {
@@ -536,6 +545,7 @@ pre#names {
     gap: 20px;
     flex-wrap: wrap;
     width: 100%;
+    margin-top: 20px;
 }
 
 .output-section .output-box {
