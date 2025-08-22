@@ -3,13 +3,14 @@ const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
+
 const CHECKABLE_OPTIONS = {
     "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
     "Domains (.com, .io, .ai, .app)":  { type: "domain_group", value: ["com", "io", "ai", "app"], icon: "fas fa-globe" },
     "Facebook":     { type: "platform", value: "Facebook", icon: "fab fa-facebook" },
     "GitHub":       { type: "platform", value: "GitHub", icon: "fab fa-github" },
     "Instagram":    { type: "platform", value: "Instagram", icon: "fab fa-instagram" },
-    "Medium":      { type: "platform", value: "Medium", icon: "fab fa-medium" },
+    "Medium":       { type: "platform", value: "Medium", icon: "fab fa-medium" },
     "Pinterest":    { type: "platform", value: "Pinterest", icon: "fab fa-pinterest" },
     "Reddit":       { type: "platform", value: "Reddit", icon: "fab fa-reddit-alien" },
     "Roblox":       { type: "platform", value: "Roblox", icon: "fas fa-gamepad" },
@@ -68,13 +69,12 @@ const platformsDropdownList = document.getElementById("platforms-dropdown-list")
 const themeSelect = document.getElementById('theme-select');
 const fontSelect = document.getElementById('font-select');
 const fontSizeSlider = document.getElementById('font-size-slider');
-const outputFontSelect = document.getElementById('output-font-select');
-const outputFontSizeSlider = document.getElementById('output-font-size-slider');
 const animationsToggle = document.getElementById('animations-toggle');
 const changePasswordBtn = document.getElementById('change-password-btn');
 const manageSubscriptionBtn = document.getElementById('manage-subscription-btn');
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
+
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
@@ -139,8 +139,6 @@ function setupEventListeners() {
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
     if (fontSelect) fontSelect.addEventListener('change', (e) => applyFont(e.target.value));
     if (fontSizeSlider) fontSizeSlider.addEventListener('input', (e) => applyFontSize(e.target.value));
-    if (outputFontSelect) outputFontSelect.addEventListener('change', (e) => applyOutputFont(e.target.value));
-    if (outputFontSizeSlider) outputFontSizeSlider.addEventListener('input', (e) => applyOutputFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
@@ -195,6 +193,7 @@ function showView(viewName) {
     if(settingsView) settingsView.classList.add('hidden');
     
     resetDynamicSections(false);
+    
     if (viewName === 'generator') {
         if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
     } else if (viewName === 'refiner') {
@@ -288,6 +287,7 @@ function addSeedName(name) {
     const moreLikeThisSection = document.getElementById("more-like-this-section");
     const container = document.getElementById("more-like-this-container");
     if (!moreLikeThisSection || !container) return;
+    
     const existing = Array.from(container.children).map(el => el.textContent.slice(0, -1).trim());
     
     if (existing.includes(name) || existing.length >= 3) {
@@ -298,6 +298,7 @@ function addSeedName(name) {
         return;
     }
     moreLikeThisSection.classList.remove('hidden');
+    
     const tag = document.createElement('div');
     tag.className = 'seed-tag';
     tag.textContent = name;
@@ -333,6 +334,7 @@ async function generateName(force = false) {
 
     document.getElementById("error").textContent = "";
     const seed_names = Array.from(document.getElementById("more-like-this-container").children).map(el => el.textContent.slice(0, -1).trim());
+    
     const payload = { 
         prompt, 
         keywords: document.getElementById("keywords").value.trim(), 
@@ -344,6 +346,7 @@ async function generateName(force = false) {
         relevancy: document.getElementById("generator-relevancy").value,
         amount: document.getElementById("generator-amount").value
     };
+
     if(outputContainer) outputContainer.classList.remove("hidden");
     showLoading(namesPre);
     showLoading(reasonsPre);
@@ -358,6 +361,7 @@ async function generateName(force = false) {
         });
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
+
         if (!window.auth.currentUser) {
             let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0') + 1;
             localStorage.setItem('anonGenerations', anonGenerations);
@@ -370,6 +374,7 @@ async function generateName(force = false) {
         if(reasonsPre) reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         if(namesPre) namesPre.classList.add("fade-in-content");
         if(reasonsPre) reasonsPre.classList.add("fade-in-content");
+        
         if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
             if(refineSection) refineSection.classList.remove("hidden");
             if(refineBtn) refineBtn.classList.remove("hidden");
@@ -415,6 +420,7 @@ async function refineNames(action, names = null, extra_info = "") {
         });
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during name refinement.");
         const data = await response.json();
+        
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
@@ -471,6 +477,7 @@ async function surpriseMe() {
         });
         if (!response.ok) throw new Error((await response.json()).detail || "Failed to get a surprise prompt.");
         const data = await response.json();
+        
         if(promptInput) promptInput.value = data.prompt;
         document.getElementById("category").value = data.category;
         document.getElementById("style").value = data.style;
@@ -491,8 +498,10 @@ async function customRefineName() {
     const instructionsInput = document.getElementById('refinement-instructions');
     const nameToRefine = nameToRefineInput.value.trim();
     const instructions = instructionsInput.value.trim();
+    
     if (!nameToRefine) return showTemporaryPlaceholderError(nameToRefineInput, "Please enter a name to refine.");
     if (!instructions) return showTemporaryPlaceholderError(instructionsInput, "Please enter refinement instructions.");
+    
     document.getElementById("error").textContent = "";
     
     if(refinedOutputsCustom) {
@@ -522,6 +531,7 @@ async function customRefineName() {
         const data = await response.json();
         
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
+        
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
@@ -579,4 +589,612 @@ function renderCustomRefineHistory() {
         button.onclick = () => {
             const nameInput = document.getElementById('name-to-refine');
             const instructionsInput = document.getElementById('refinement-instructions');
-            if(nameInput) nameInput.value = entry.originalName
+            if(nameInput) nameInput.value = entry.originalName;
+            if(instructionsInput) instructionsInput.value = entry.instructions;
+        };
+        customRefineHistoryDiv.appendChild(button);
+    });
+}
+
+async function fetchHistory(renderToModal = false) {
+    const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
+    if(!targetDiv) return;
+    targetDiv.innerHTML = "";
+    const token = await getUserToken();
+    if (!token) {
+        targetDiv.innerHTML = "<p>*Sign in to see your history.*</p>";
+        return;
+    }
+    try {
+        const response = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } });
+        if (!response.ok) throw new Error((await response.json()).detail || "Unknown error fetching history.");
+        const history = await response.json();
+        renderHistory(history, renderToModal);
+    } catch (error) {
+        document.getElementById("error").textContent = "Error fetching history: " + error.message;
+        targetDiv.innerHTML = "<p>*Could not load history.*</p>";
+    }
+}
+
+function renderHistory(history, renderToModal = false) {
+    const targetDiv = renderToModal ? fullHistoryList : recentHistoryDiv;
+    if (!targetDiv) return;
+    targetDiv.innerHTML = "";
+    if (!renderToModal) history = history.slice(0, 50);
+    
+    if (history.length === 0) {
+        targetDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
+        return;
+    }
+
+    const createTooltip = (entry) => `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}`;
+    
+    if (renderToModal) {
+        const groupedHistory = history.reduce((acc, entry) => {
+            const date = new Date(entry.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            if (!acc[date]) acc[date] = [];
+            acc[date].push(entry);
+            return acc;
+        }, {});
+        const sortedDates = Object.keys(groupedHistory).sort((a, b) => new Date(b) - new Date(a));
+        sortedDates.forEach(date => {
+            const dailyContainer = document.createElement('div');
+            dailyContainer.className = 'daily-history-container';
+            const dateHeading = document.createElement('h3');
+            dateHeading.textContent = date;
+            dailyContainer.appendChild(dateHeading);
+            groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
+                 const button = document.createElement('button');
+                button.className = 'history-item';
+                button.title = (entry.category.includes("Refined")) ? `Refine Instruction: ${entry.prompt}` : createTooltip(entry);
+                button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
+                button.onclick = () => showHistoryDetails(entry.id);
+                dailyContainer.appendChild(button);
+            });
+            targetDiv.appendChild(dailyContainer);
+        });
+    } else {
+        history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
+            const button = document.createElement('button');
+            button.className = 'history-item';
+            button.title = (entry.category.includes("Refined")) ? `Refine Instruction: ${entry.prompt}` : createTooltip(entry);
+            const names = entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ");
+            let preRefinedHTML = '';
+            if (entry.category.includes("Refined") && entry.pre_refined_names && entry.pre_refined_names.length > 0) {
+                preRefinedHTML = `<small class="pre-refined-history">from: ${entry.pre_refined_names.map(cleanNames).join(", ")}</small>`;
+            }
+            button.innerHTML = `${names}${preRefinedHTML}`;
+            button.onclick = () => restoreHistory(entry.id);
+            targetDiv.appendChild(button);
+        });
+    }
+}
+
+async function restoreHistory(id) {
+    document.getElementById("error").textContent = "";
+    closeHistoryModal();
+    closeHistoryDetailsModal();
+    const token = await getUserToken();
+    if (!token) return;
+    
+    const historyData = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } }).then(res => res.json());
+    const entry = historyData.find(e => e.id === id);
+    if (entry && !entry.category.includes("Refined")) {
+        showView('generator');
+        if(promptInput) promptInput.value = entry.prompt;
+        document.getElementById("keywords").value = entry.keywords || '';
+        document.getElementById("category").value = entry.category;
+        document.getElementById("style").value = entry.style;
+        document.getElementById("language").value = entry.language || 'English';
+        renderClickableNames(entry.names.map(cleanNames)); 
+        if(reasonsPre) reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
+        if(outputContainer) outputContainer.classList.remove("hidden");
+        if(refineSection) refineSection.classList.remove("hidden");
+        if(refineBtn) refineBtn.classList.remove("hidden");
+        if(recentHistorySection) recentHistorySection.classList.remove("hidden");
+        if (window.isSidebarOpen) toggleSidebar();
+    } else {
+        document.getElementById("error").textContent = "Cannot restore a refinement history item.";
+    }
+}
+
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    const text = element.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        const copyMessage = document.createElement('div');
+        copyMessage.textContent = "Copied to clipboard!";
+        copyMessage.style.cssText = `position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--button-purple); color: white; padding: 10px 20px; border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-out;`;
+        document.body.appendChild(copyMessage);
+        setTimeout(() => { copyMessage.style.opacity = 1; }, 10);
+        setTimeout(() => { copyMessage.style.opacity = 0; copyMessage.addEventListener('transitionend', () => copyMessage.remove()); }, 2000);
+    });
+}
+
+function resetDynamicSections(clearInputs = true) {
+    const sections = [outputContainer, refineSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection];
+    sections.forEach(el => {
+        if (el) el.classList.add("hidden");
+    });
+    if (clearInputs) {
+        const textPres = [namesPre, reasonsPre, refinedNamesPre, refinedReasonsPre, refinedNamesCustomPre, refinedReasonsCustomPre];
+        textPres.forEach(el => {
+            if (el) el.textContent = "";
+        });
+    }
+    const errorDiv = document.getElementById("error");
+    if (errorDiv) errorDiv.textContent = "";
+}
+
+async function showHistoryDetails(id) {
+    if (!historyDetailsModal || !detailsContent) return;
+    const token = await getUserToken();
+    try {
+        const historyData = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } }).then(res => res.json());
+        const entry = historyData.find(e => e.id === id);
+        if (entry) {
+            let contentHtml = `<p><strong>Timestamp:</strong> ${new Date(entry.timestamp).toLocaleString()}</p>`;
+            if (entry.category.includes("Refined")) {
+                contentHtml += `<p><strong>Refine Instruction:</strong> ${entry.prompt}</p>`;
+                contentHtml += `<p><strong>Refined Names:</strong></p><pre>${entry.names.map(cleanNames).join("\n")}</pre>`;
+                if (entry.pre_refined_names && entry.pre_refined_names.length > 0) {
+                    contentHtml += `<p><strong>Original Name(s):</strong></p><pre>${entry.pre_refined_names.map(cleanNames).join("\n")}</pre>`;
+                }
+            } else {
+                contentHtml += `<p><strong>Prompt:</strong> ${entry.prompt}</p>`;
+                if (entry.keywords) contentHtml += `<p><strong>Keywords:</strong> ${entry.keywords}</p>`;
+                contentHtml += `<p><strong>Category:</strong> ${entry.category}</p>`;
+                contentHtml += `<p><strong>Style:</strong> ${entry.style}</p>`;
+                contentHtml += `<p><strong>Generated Names:</strong></p><pre>${entry.names.map(cleanNames).join("\n")}</pre>`;
+            }
+            detailsContent.innerHTML = contentHtml;
+            historyDetailsModal.classList.add('active');
+            closeHistoryModal();
+        }
+    } catch (error) {
+        document.getElementById("error").textContent = "Error displaying history details.";
+    }
+}
+
+function openHistoryModal() {
+    if (historyModal) {
+        historyModal.classList.add('active');
+        fetchHistory(true);
+    }
+    if (typeof toggleSidebar === 'function' && window.isSidebarOpen) {
+        toggleSidebar();
+    }
+}
+
+function closeHistoryModal() { if (historyModal) historyModal.classList.remove('active'); }
+function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active'); }
+
+function initializePlatformsDropdown() {
+    if (!platformsDropdownList || !platformsDropdownBtn) return;
+
+    Object.keys(CHECKABLE_OPTIONS).sort().forEach(name => {
+        const option = CHECKABLE_OPTIONS[name];
+        const label = document.createElement('label');
+        label.className = 'platform-item';
+        
+        const icon = document.createElement('i');
+        icon.className = option.icon;
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = name;
+        checkbox.checked = false;
+
+        label.appendChild(icon);
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(` ${name}`));
+        platformsDropdownList.appendChild(label);
+    });
+    
+    updatePlatformsButtonText();
+
+    platformsDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        platformsDropdownList.classList.toggle('hidden');
+        platformsDropdownBtn.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+        platformsDropdownList.classList.add('hidden');
+        platformsDropdownBtn.classList.remove('open');
+    });
+
+    platformsDropdownList.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    platformsDropdownList.addEventListener('change', updatePlatformsButtonText);
+}
+
+function updatePlatformsButtonText() {
+    const selectedCount = platformsDropdownList.querySelectorAll('input[type="checkbox"]:checked').length;
+    const buttonText = platformsDropdownBtn.querySelector('span:first-child');
+    
+    if (selectedCount === Object.keys(CHECKABLE_OPTIONS).length) {
+        buttonText.textContent = 'All Options';
+    } else if (selectedCount === 0) {
+        buttonText.textContent = 'Select Options';
+    } else {
+        buttonText.textContent = `${selectedCount} Option(s) Selected`;
+    }
+}
+
+async function checkAvailability() {
+    const nameInput = document.getElementById('name-to-check');
+    const nameToCheck = nameInput.value.trim();
+
+    if (!nameToCheck) {
+        showTemporaryPlaceholderError(nameInput, "Please enter a name to check.");
+        return;
+    }
+    
+    const selectedPlatforms = [];
+    const selectedTlds = [];
+
+    const checkedBoxes = platformsDropdownList.querySelectorAll('input:checked');
+    checkedBoxes.forEach(box => {
+        const optionKey = box.value;
+        const option = CHECKABLE_OPTIONS[optionKey];
+        if (option.type === 'platform') {
+            selectedPlatforms.push(option.value);
+        } else if (option.type === 'domain_group') {
+            selectedTlds.push(...option.value);
+        }
+    });
+
+    const resultsContainer = document.getElementById('availability-results-container');
+    resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const response = await fetch(`${BACKEND_URL}/check-availability`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({ 
+                name: nameToCheck,
+                platforms: selectedPlatforms,
+                tlds: selectedTlds
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "An error occurred.");
+        }
+
+        const data = await response.json();
+        renderAvailabilityResults(data);
+
+    } catch (error) {
+        resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
+    } finally {
+        enableButtons();
+    }
+}
+
+function renderAvailabilityResults(data) {
+    const resultsContainer = document.getElementById('availability-results-container');
+    let htmlContent = '';
+
+    if (data.domains.length > 0) {
+        const domainsKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].type === 'domain_group');
+        const domainIcon = domainsKey ? CHECKABLE_OPTIONS[domainsKey].icon : 'fas fa-globe';
+
+        let domainsHtml = data.domains.map(d => `
+            <div class="result-item">
+                <span class="result-name">
+                    <i class="${domainIcon}"></i>
+                    ${d.domain}
+                </span>
+                ${d.available ? '<span class="status-available">✅ Available</span>' : '<span class="status-taken">❌ Taken</span>'}
+            </div>
+        `).join('');
+        htmlContent += `<div class="output-box"><div class="output-header"><label>Domain Availability</label></div><div class="results-list">${domainsHtml}</div></div>`;
+    }
+
+    if (data.socials.length > 0) {
+        let socialsHtml = data.socials.map(s => {
+            let iconClass = 'fas fa-hashtag';
+            const optionKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].value === s.platform);
+            if (optionKey) {
+                iconClass = CHECKABLE_OPTIONS[optionKey].icon;
+            }
+            return `
+                <div class="result-item">
+                    <span class="result-name">
+                        <i class="${iconClass}"></i>
+                        ${s.platform}
+                    </span>
+                    ${s.available ? `<span class="status-available">✅ Available</span>` : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`}
+                </div>`;
+        }).join('');
+        htmlContent += `<div class="output-box"><div class="output-header"><label>Social Media & Platforms</label></div><div class="results-list">${socialsHtml}</div></div>`;
+    }
+
+    if (htmlContent === '') {
+        resultsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">Please select at least one option from the dropdown to check.</p>';
+    } else {
+        resultsContainer.innerHTML = `<div class="output-section" style="margin-top: 20px;">${htmlContent}</div>`;
+    }
+}
+
+async function analyzeName() {
+    const nameInput = document.getElementById('name-to-analyze');
+    const contextInput = document.getElementById('analysis-context');
+    const nameToAnalyze = nameInput.value.trim();
+    const context = contextInput.value.trim();
+
+    if (!nameToAnalyze) {
+        showTemporaryPlaceholderError(nameInput, "Please enter a name to analyze.");
+        return;
+    }
+    if (!context) {
+        showTemporaryPlaceholderError(contextInput, "Please provide context for the name.");
+        return;
+    }
+
+    const resultsContainer = document.getElementById('analyzer-results-container');
+    resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const response = await fetch(`${BACKEND_URL}/analyze-name`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({ name: nameToAnalyze, context: context })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "An error occurred during analysis.");
+        }
+        
+        const data = await response.json();
+        
+        if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
+            const maxGenerations = window.auth.currentUser ? 100 : 10;
+            window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
+        }
+        
+        renderAnalysisResults(data.analysis);
+
+    } catch (error) {
+        resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
+    } finally {
+        enableButtons();
+    }
+}
+
+function renderAnalysisResults(data) {
+    const resultsContainer = document.getElementById('analyzer-results-container');
+    let riskClass = '';
+    if (data.conflict_risk === 'Clear') riskClass = 'risk-clear';
+    if (data.conflict_risk === 'Medium Risk') riskClass = 'risk-medium';
+    if (data.conflict_risk === 'High Risk') riskClass = 'risk-high';
+
+    let alternativesHtml = '';
+    if (data.alternative_names) {
+        alternativesHtml = `
+            <div class="analysis-section">
+                <h4>Alternative Suggestions</h4>
+                <ul>
+                    ${data.alternative_names.map(item => `<li><strong>${item.name}:</strong> ${item.reason}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    let creativeAuditHtml = '';
+    if (data.creative_analysis) {
+        creativeAuditHtml = `
+            <div class="analysis-section">
+                <h4>Creative Audit</h4>
+                <ul>
+                    ${Object.keys(data.creative_analysis).map(key => `<li><strong>${key}:</strong> ${data.creative_analysis[key]}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    let tipsHtml = '';
+    if (data.improvement_tips) {
+        tipsHtml = `
+            <div class="analysis-section">
+                <h4>Improvement Tips</h4>
+                <ul>
+                    ${data.improvement_tips.map(tip => `<li>${tip}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    resultsContainer.innerHTML = `
+        <div class="analysis-report">
+            <h3>
+                Conflict Risk: 
+                <span class="risk-badge ${riskClass}">${data.conflict_risk}</span>
+            </h3>
+            <p>${data.conflict_explanation}</p>
+            ${alternativesHtml}
+            ${creativeAuditHtml}
+            ${tipsHtml}
+        </div>
+    `;
+}
+
+function openHistoryImportModal(targetInputId) {
+    if (historyImportModal) {
+        historyImportModal.dataset.targetInput = targetInputId;
+        historyImportModal.classList.add('active');
+        fetchHistoryForImport();
+    }
+}
+
+function closeHistoryImportModal() {
+    if (historyImportModal) historyImportModal.classList.remove('active');
+}
+
+async function fetchHistoryForImport() {
+    if (!historyImportList) return;
+    historyImportList.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    const token = await getUserToken();
+    if (!token) {
+        historyImportList.innerHTML = "<p>*Sign in to see your history.*</p>";
+        return;
+    }
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } });
+        if (!response.ok) throw new Error("Could not load history.");
+        const history = await response.json();
+
+        historyImportList.innerHTML = "";
+        if (history.length === 0) {
+            historyImportList.innerHTML = "<p>*No history yet. Generate some names!*</p>";
+            return;
+        }
+
+        history.forEach(entry => {
+            entry.names.forEach(name => {
+                const nameButton = document.createElement('button');
+                nameButton.className = 'history-item';
+                nameButton.textContent = cleanNames(name);
+                nameButton.onclick = () => {
+                    const targetInputId = historyImportModal.dataset.targetInput;
+                    const targetInput = document.getElementById(targetInputId);
+                    if (targetInput) {
+                        targetInput.value = cleanNames(name);
+                    }
+                    closeHistoryImportModal();
+                };
+                historyImportList.appendChild(nameButton);
+            });
+        });
+
+    } catch (error) {
+        historyImportList.innerHTML = `<p>*${error.message}*</p>`;
+    }
+}
+
+function initializeSettings() {
+    const settings = {
+        theme: localStorage.getItem('nameit-theme') || 'system',
+        font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
+        fontSize: localStorage.getItem('nameit-fontSize') || '100',
+        animations: localStorage.getItem('nameit-animations') !== 'false'
+    };
+
+    if (themeSelect) themeSelect.value = settings.theme;
+    if (fontSelect) fontSelect.value = settings.font;
+    if (fontSizeSlider) fontSizeSlider.value = settings.fontSize;
+    if (animationsToggle) animationsToggle.checked = settings.animations;
+
+    applyTheme(settings.theme, false);
+    applyFont(settings.font, false);
+    applyFontSize(settings.fontSize, false);
+    applyAnimationSetting(settings.animations, false);
+}
+
+function applyTheme(theme, save = true) {
+    if (save) localStorage.setItem('nameit-theme', theme);
+    
+    if (theme === 'light') {
+        document.body.classList.add('light-theme');
+    } else if (theme === 'dark') {
+        document.body.classList.remove('light-theme');
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            document.body.classList.add('light-theme');
+        } else {
+            document.body.classList.remove('light-theme');
+        }
+    }
+}
+
+function applyFont(font, save = true) {
+    if (save) localStorage.setItem('nameit-font', font);
+    document.body.style.fontFamily = font;
+}
+
+function applyFontSize(size, save = true) {
+    if (save) localStorage.setItem('nameit-fontSize', size);
+    document.documentElement.style.fontSize = `${size}%`;
+}
+
+function applyAnimationSetting(enabled, save = true) {
+    if (save) localStorage.setItem('nameit-animations', enabled);
+    const showcaseContainer = document.querySelector('.showcase-container');
+    if (enabled) {
+        document.body.classList.remove('animations-disabled');
+        if (showcaseContainer) showcaseContainer.style.display = 'flex';
+    } else {
+        document.body.classList.add('animations-disabled');
+        if (showcaseContainer) showcaseContainer.style.display = 'none';
+    }
+}
+
+async function exportHistory() {
+    const token = await getUserToken();
+    if (!token) {
+        alert("You must be signed in to export history.");
+        return;
+    }
+    const historyData = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } }).then(res => res.json());
+    
+    const blob = new Blob([JSON.stringify(historyData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'nameit_history.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+async function clearHistory() {
+    if (!confirm("Are you sure you want to permanently delete your entire history? This action cannot be undone.")) {
+        return;
+    }
+    const token = await getUserToken();
+    if (!token) {
+        alert("You must be signed in to clear history.");
+        return;
+    }
+    try {
+        const response = await fetch(`${BACKEND_URL}/clear-history`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error("Failed to clear history.");
+        
+        if(recentHistoryDiv) recentHistoryDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
+        alert("Your history has been cleared.");
+
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+}
+
+function sendPasswordReset() {
+    const user = window.auth.currentUser;
+    if (user && user.email) {
+        window.auth.sendPasswordResetEmail(user.email)
+            .then(() => {
+                alert(`A password reset link has been sent to ${user.email}.`);
+            })
+            .catch((error) => {
+                alert(`Error: ${error.message}`);
+            });
+    } else {
+        alert("You must be signed in with an email account to reset your password.");
+    }
+}
