@@ -23,26 +23,26 @@
 body[data-theme="sunset-blaze"] {
     --primary-accent: #d62828;
     --secondary-accent: #e05252;
-    --line-accent-default: #f77f00;
-    --line-accent-glow: #fcbf49;
+    --line-accent-default: #f77f00; /* Orange */
+    --line-accent-glow: #d62828;    /* Red */
     --tag-background: #d62828;
     --disabled-accent: #8a1a1a;
     --button-text-color: white;
     --animated-bar-color-1: rgba(247, 127, 0, 0.5);
-    --animated-bar-color-2: rgba(252, 191, 73, 0.5);
+    --animated-bar-color-2: rgba(214, 40, 40, 0.5);
 }
 
 /* Oceanic Citrus Theme */
 body[data-theme="oceanic-citrus"] {
     --primary-accent: #0077b6;
     --secondary-accent: #0096c7;
-    --line-accent-default: #ffaa00;
-    --line-accent-glow: #ffc300;
+    --line-accent-default: #ffaa00; /* Orange */
+    --line-accent-glow: #0077b6;   /* Blue */
     --tag-background: #0077b6;
     --disabled-accent: #004a74;
     --button-text-color: white;
-    --animated-bar-color-1: rgba(0, 119, 182, 0.5);
-    --animated-bar-color-2: rgba(255, 170, 0, 0.5);
+    --animated-bar-color-1: rgba(255, 170, 0, 0.5);
+    --animated-bar-color-2: rgba(0, 119, 182, 0.5);
 }
 
 /* Classic Noir Theme */
@@ -97,6 +97,47 @@ body[data-theme="azure-sky"] {
     --animated-bar-color-2: rgba(0, 170, 255, 0.5);
 }
 
+/* --- NEW THEMES --- */
+
+/* Emerald Forest Theme */
+body[data-theme="emerald-forest"] {
+    --primary-accent: #008080;
+    --secondary-accent: #20B2AA;
+    --line-accent-default: #32CD32; /* Lime Green */
+    --line-accent-glow: #00CED1;   /* Dark Turquoise */
+    --tag-background: #008080;
+    --disabled-accent: #004d4d;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(50, 205, 50, 0.5);
+    --animated-bar-color-2: rgba(0, 206, 209, 0.5);
+}
+
+/* Royal Gold Theme */
+body[data-theme="royal-gold"] {
+    --primary-accent: #D4AF37;
+    --secondary-accent: #FFD700;
+    --line-accent-default: #FFD700; /* Gold */
+    --line-accent-glow: #FFFFFF;   /* White */
+    --tag-background: #D4AF37;
+    --disabled-accent: #8b7500;
+    --button-text-color: black;
+    --animated-bar-color-1: rgba(255, 215, 0, 0.5);
+    --animated-bar-color-2: rgba(255, 255, 255, 0.4);
+}
+
+/* Sakura Dream Theme */
+body[data-theme="sakura-dream"] {
+    --primary-accent: #FFC0CB;
+    --secondary-accent: #FFB6C1;
+    --line-accent-default: #FF69B4; /* Hot Pink */
+    --line-accent-glow: #DB7093;   /* Pale Violet Red */
+    --tag-background: #FFC0CB;
+    --disabled-accent: #b3868d;
+    --button-text-color: black;
+    --animated-bar-color-1: rgba(255, 105, 180, 0.5);
+    --animated-bar-color-2: rgba(219, 112, 147, 0.5);
+}
+/* --- END NEW THEMES --- */
 
 * {
     margin: 0;
@@ -205,7 +246,6 @@ body {
     place-items: center;
 }
 
-/* --- NEW BANNER STYLES --- */
 #banner-background-effect {
     grid-area: 1 / 1;
     width: 100%;
@@ -216,7 +256,6 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     z-index: 1;
-    /* Apply initial blur and glow, and start the animation */
     filter: blur(2px) drop-shadow(0 0 15px var(--line-accent-default));
     animation: color-shift-glow 6s infinite alternate ease-in-out;
 }
@@ -227,7 +266,7 @@ body {
     height: 180px;
     max-width: 1000px;
     object-fit: contain;
-    z-index: 2; /* Keep the solid logo on top */
+    z-index: 2;
 }
 
 @keyframes color-shift-glow {
@@ -245,13 +284,10 @@ body {
     }
 }
 
-/* Special override for Classic Noir theme to keep the glow white and static */
 body[data-theme="classic-noir"] #banner-background-effect {
-    animation: none; /* Disable the color shifting animation */
+    animation: none;
     filter: blur(2px) drop-shadow(0 0 20px white);
 }
-/* --- END NEW BANNER STYLES --- */
-
 
 h1 {
     font-size: 3em;
@@ -1128,23 +1164,19 @@ pre {
     padding: 0 9px;
 }
 
+/* --- SLIDER UI FIX --- */
 .slider-ticks span {
     width: 2px;
     height: 10px;
     background-color: #555;
-    color: #888;
-    font-size: 0.8em;
-    position: relative;
-    top: 15px;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 0; /* This hides the numbers */
+    color: transparent; /* Fallback for hiding text */
 }
 
 .amount-slider .slider-ticks span {
     background-color: transparent;
 }
+/* --- END SLIDER UI FIX --- */
 
 /* --- Availability Checker Results --- */
 .results-list { 
