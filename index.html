@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NameIT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lato&family=Montserrat&family=Oswald&family=Raleway&family=Poppins&family=Nunito&family=Merriweather&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.png">
     
     <link rel="stylesheet" href="style.css">
@@ -283,24 +283,36 @@
                 <div class="setting-section">
                     <h2><i class="fas fa-paint-brush"></i> Appearance</h2>
                     <div class="setting-row">
-                        <label for="theme-select">Theme</label>
-                        <select id="theme-select">
-                            <option value="system">System</option>
-                            <option value="dark">Dark</option>
-                            <option value="light">Light</option>
+                        <label for="theme-select">Color Theme</label>
+                        <select id="theme-select" class="settings-select">
+                            <option value="default">Default Purple</option>
+                            <option value="sunset-blaze">Sunset Blaze</option>
+                            <option value="oceanic-citrus">Oceanic Citrus</option>
+                            <option value="classic-noir">Classic Noir</option>
+                            <option value="synthwave">Synthwave</option>
+                            <option value="crimson-tide">Crimson Tide</option>
+                            <option value="azure-sky">Azure Sky</option>
                         </select>
                     </div>
                     <div class="setting-row">
-                        <label for="font-select">Font Family</label>
-                        <select id="font-select">
-                            <option value="'Roboto', sans-serif">Roboto (Default)</option>
-                            <option value="'Georgia', serif">Georgia</option>
-                            <option value="'Verdana', sans-serif">Verdana</option>
+                        <label for="font-select">UI Font Family</label>
+                        <select id="font-select" class="settings-select">
+                            <!-- Options will be populated by JS -->
+                        </select>
+                    </div>
+                     <div class="setting-row">
+                        <label for="font-size-slider">UI Font Size</label>
+                        <input type="range" id="font-size-slider" min="80" max="120" value="100" step="5">
+                    </div>
+                    <div class="setting-row">
+                        <label for="results-font-select">Results Font Family</label>
+                        <select id="results-font-select" class="settings-select">
+                            <!-- Options will be populated by JS -->
                         </select>
                     </div>
                     <div class="setting-row">
-                        <label for="font-size-slider">Font Size</label>
-                        <input type="range" id="font-size-slider" min="80" max="120" value="100" step="10">
+                        <label for="results-font-size-slider">Results Font Size</label>
+                        <input type="range" id="results-font-size-slider" min="80" max="140" value="100" step="5">
                     </div>
                 </div>
         
