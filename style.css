@@ -63,7 +63,7 @@ body[data-theme="synthwave"] {
     --primary-accent: #a500ff;
     --secondary-accent: #b733ff;
     --line-accent-default: #ff00ff;
-    --line-accent-glow: #f0f;
+    --line-accent-glow: #a500ff;
     --tag-background: #a500ff;
     --disabled-accent: #620099;
     --button-text-color: white;
@@ -75,8 +75,8 @@ body[data-theme="synthwave"] {
 body[data-theme="crimson-tide"] {
     --primary-accent: #FF0090;
     --secondary-accent: #ff33a6;
-    --line-accent-default: #00aaff;
-    --line-accent-glow: #33bbff;
+    --line-accent-default: #FF0090; /* Crimson */
+    --line-accent-glow: #00aaff;   /* Cyan */
     --tag-background: #FF0090;
     --disabled-accent: #b30065;
     --button-text-color: white;
@@ -89,7 +89,7 @@ body[data-theme="azure-sky"] {
     --primary-accent: #005fcc;
     --secondary-accent: #007bff;
     --line-accent-default: #00aaff;
-    --line-accent-glow: #33bbff;
+    --line-accent-glow: #007bff;
     --tag-background: #005fcc;
     --disabled-accent: #003c80;
     --button-text-color: black;
@@ -199,42 +199,43 @@ body {
     position: relative;
     width: 100%;
     max-width: 1000px;
+    height: 180px; /* Restored fixed height */
     margin: 0 auto;
-    display: grid; /* Use grid to perfectly stack images */
+    display: grid;
     place-items: center;
 }
 
 #banner-img, #banner-glow-img {
-    grid-area: 1 / 1; /* Place both images in the same cell */
+    grid-area: 1 / 1;
     width: 100%;
-    height: auto; /* This prevents distortion */
+    height: 180px; /* Restored fixed height */
     max-width: 1000px;
     object-fit: contain;
 }
 
 #banner-img {
-    z-index: 2; /* The sharp logo is on top */
+    z-index: 2;
 }
 
 #banner-glow-img {
-    z-index: 1; /* The glow is underneath */
-    /* Create a colored shadow from the image content */
-    filter: drop-shadow(0 0 10px var(--line-accent-default));
-    /* Animate the glow effect */
-    animation: pulse-glow 5s infinite alternate ease-in-out;
+    z-index: 1;
+    animation: aurora-glow 6s infinite alternate ease-in-out;
 }
 
-@keyframes pulse-glow {
-    from {
-        filter: drop-shadow(0 0 10px var(--line-accent-default)) drop-shadow(0 0 15px var(--line-accent-default)) brightness(1.2);
-        opacity: 0.8;
+@keyframes aurora-glow {
+    0% {
+        filter: drop-shadow(0 0 15px var(--line-accent-default)) brightness(1.3);
+        transform: scale(1.0);
     }
-    to {
-        filter: drop-shadow(0 0 15px var(--line-accent-glow)) drop-shadow(0 0 25px var(--line-accent-glow)) brightness(1.5);
-        opacity: 1;
+    50% {
+        filter: drop-shadow(0 0 25px var(--line-accent-glow)) brightness(1.6);
+        transform: scale(1.02);
+    }
+    100% {
+        filter: drop-shadow(0 0 15px var(--line-accent-default)) brightness(1.3);
+        transform: scale(1.0);
     }
 }
-
 
 h1 {
     font-size: 3em;
