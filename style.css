@@ -200,10 +200,12 @@ body {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
-    /* The container's height will be set by the image's aspect ratio */
+    display: grid; /* Use grid to perfectly stack images */
+    place-items: center;
 }
 
 #banner-img, #banner-glow-img {
+    grid-area: 1 / 1; /* Place both images in the same cell */
     width: 100%;
     height: auto; /* This prevents distortion */
     max-width: 1000px;
@@ -211,30 +213,28 @@ body {
 }
 
 #banner-img {
-    position: relative; /* Changed from absolute */
-    z-index: 2;
+    z-index: 2; /* The sharp logo is on top */
 }
 
 #banner-glow-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    filter: blur(20px) brightness(1.2);
-    /* Animation for the lively effect */
-    animation: pulse-glow 4s infinite alternate ease-in-out;
+    z-index: 1; /* The glow is underneath */
+    /* Create a colored shadow from the image content */
+    filter: drop-shadow(0 0 10px var(--line-accent-default));
+    /* Animate the glow effect */
+    animation: pulse-glow 5s infinite alternate ease-in-out;
 }
 
 @keyframes pulse-glow {
     from {
-        opacity: 0.7;
-        transform: scale(1.0);
+        filter: drop-shadow(0 0 10px var(--line-accent-default)) drop-shadow(0 0 15px var(--line-accent-default)) brightness(1.2);
+        opacity: 0.8;
     }
     to {
+        filter: drop-shadow(0 0 15px var(--line-accent-glow)) drop-shadow(0 0 25px var(--line-accent-glow)) brightness(1.5);
         opacity: 1;
-        transform: scale(1.03);
     }
 }
+
 
 h1 {
     font-size: 3em;
