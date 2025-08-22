@@ -155,7 +155,9 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid var(--line-accent-default);
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--line-accent-default);
     object-fit: cover;
     transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
@@ -193,7 +195,7 @@
 }
 
 .tier-badge {
-    color: white;
+    color: var(--button-text-color);
     padding: 5px 10px;
     border-radius: 12px;
     font-weight: 500;
