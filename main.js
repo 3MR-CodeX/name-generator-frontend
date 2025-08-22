@@ -65,6 +65,8 @@ const platformsDropdownBtn = document.getElementById("platforms-dropdown-btn");
 const platformsDropdownList = document.getElementById("platforms-dropdown-list");
 
 // --- Settings Page Selectors ---
+const outputFontSelect = document.getElementById('output-font-select');
+const outputFontSizeSlider = document.getElementById('output-font-size-slider');
 const themeSelect = document.getElementById('theme-select');
 const fontSelect = document.getElementById('font-select');
 const fontSizeSlider = document.getElementById('font-size-slider');
@@ -1175,3 +1177,4 @@ function sendPasswordReset() {
         alert("You must be signed in with an email account to reset your password.");
     }
 }
+
