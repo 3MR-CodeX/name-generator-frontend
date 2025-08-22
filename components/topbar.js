@@ -1,3 +1,5 @@
+// topbar.js
+
 function initializeTopbar() {
     const hexagonButton = document.getElementById("hexagon-button");
     if (hexagonButton) {
