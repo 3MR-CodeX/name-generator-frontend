@@ -3,14 +3,13 @@ const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
-
 const CHECKABLE_OPTIONS = {
     "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
     "Domains (.com, .io, .ai, .app)":  { type: "domain_group", value: ["com", "io", "ai", "app"], icon: "fas fa-globe" },
     "Facebook":     { type: "platform", value: "Facebook", icon: "fab fa-facebook" },
     "GitHub":       { type: "platform", value: "GitHub", icon: "fab fa-github" },
     "Instagram":    { type: "platform", value: "Instagram", icon: "fab fa-instagram" },
-    "Medium":       { type: "platform", value: "Medium", icon: "fab fa-medium" },
+    "Medium":      { type: "platform", value: "Medium", icon: "fab fa-medium" },
     "Pinterest":    { type: "platform", value: "Pinterest", icon: "fab fa-pinterest" },
     "Reddit":       { type: "platform", value: "Reddit", icon: "fab fa-reddit-alien" },
     "Roblox":       { type: "platform", value: "Roblox", icon: "fas fa-gamepad" },
@@ -69,12 +68,13 @@ const platformsDropdownList = document.getElementById("platforms-dropdown-list")
 const themeSelect = document.getElementById('theme-select');
 const fontSelect = document.getElementById('font-select');
 const fontSizeSlider = document.getElementById('font-size-slider');
+const outputFontSelect = document.getElementById('output-font-select');
+const outputFontSizeSlider = document.getElementById('output-font-size-slider');
 const animationsToggle = document.getElementById('animations-toggle');
 const changePasswordBtn = document.getElementById('change-password-btn');
 const manageSubscriptionBtn = document.getElementById('manage-subscription-btn');
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
-
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadComponent('top-bar-placeholder', 'components/topbar.html');
@@ -139,6 +139,8 @@ function setupEventListeners() {
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
     if (fontSelect) fontSelect.addEventListener('change', (e) => applyFont(e.target.value));
     if (fontSizeSlider) fontSizeSlider.addEventListener('input', (e) => applyFontSize(e.target.value));
+    if (outputFontSelect) outputFontSelect.addEventListener('change', (e) => applyOutputFont(e.target.value));
+    if (outputFontSizeSlider) outputFontSizeSlider.addEventListener('input', (e) => applyOutputFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
@@ -193,7 +195,6 @@ function showView(viewName) {
     if(settingsView) settingsView.classList.add('hidden');
     
     resetDynamicSections(false);
-    
     if (viewName === 'generator') {
         if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
     } else if (viewName === 'refiner') {
@@ -287,7 +288,6 @@ function addSeedName(name) {
     const moreLikeThisSection = document.getElementById("more-like-this-section");
     const container = document.getElementById("more-like-this-container");
     if (!moreLikeThisSection || !container) return;
-    
     const existing = Array.from(container.children).map(el => el.textContent.slice(0, -1).trim());
     
     if (existing.includes(name) || existing.length >= 3) {
@@ -298,7 +298,6 @@ function addSeedName(name) {
         return;
     }
     moreLikeThisSection.classList.remove('hidden');
-    
     const tag = document.createElement('div');
     tag.className = 'seed-tag';
     tag.textContent = name;
@@ -334,7 +333,6 @@ async function generateName(force = false) {
 
     document.getElementById("error").textContent = "";
     const seed_names = Array.from(document.getElementById("more-like-this-container").children).map(el => el.textContent.slice(0, -1).trim());
-    
     const payload = { 
         prompt, 
         keywords: document.getElementById("keywords").value.trim(), 
@@ -346,7 +344,6 @@ async function generateName(force = false) {
         relevancy: document.getElementById("generator-relevancy").value,
         amount: document.getElementById("generator-amount").value
     };
-
     if(outputContainer) outputContainer.classList.remove("hidden");
     showLoading(namesPre);
     showLoading(reasonsPre);
@@ -361,7 +358,6 @@ async function generateName(force = false) {
         });
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
-
         if (!window.auth.currentUser) {
             let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0') + 1;
             localStorage.setItem('anonGenerations', anonGenerations);
@@ -374,7 +370,6 @@ async function generateName(force = false) {
         if(reasonsPre) reasonsPre.textContent = data.reasons.map(cleanNames).join("\n\n");
         if(namesPre) namesPre.classList.add("fade-in-content");
         if(reasonsPre) reasonsPre.classList.add("fade-in-content");
-        
         if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
             if(refineSection) refineSection.classList.remove("hidden");
             if(refineBtn) refineBtn.classList.remove("hidden");
@@ -420,7 +415,6 @@ async function refineNames(action, names = null, extra_info = "") {
         });
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during name refinement.");
         const data = await response.json();
-        
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
@@ -477,7 +471,6 @@ async function surpriseMe() {
         });
         if (!response.ok) throw new Error((await response.json()).detail || "Failed to get a surprise prompt.");
         const data = await response.json();
-        
         if(promptInput) promptInput.value = data.prompt;
         document.getElementById("category").value = data.category;
         document.getElementById("style").value = data.style;
@@ -498,10 +491,8 @@ async function customRefineName() {
     const instructionsInput = document.getElementById('refinement-instructions');
     const nameToRefine = nameToRefineInput.value.trim();
     const instructions = instructionsInput.value.trim();
-    
     if (!nameToRefine) return showTemporaryPlaceholderError(nameToRefineInput, "Please enter a name to refine.");
     if (!instructions) return showTemporaryPlaceholderError(instructionsInput, "Please enter refinement instructions.");
-    
     document.getElementById("error").textContent = "";
     
     if(refinedOutputsCustom) {
@@ -531,7 +522,6 @@ async function customRefineName() {
         const data = await response.json();
         
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
-        
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 100);
         }
@@ -621,14 +611,12 @@ function renderHistory(history, renderToModal = false) {
     if (!targetDiv) return;
     targetDiv.innerHTML = "";
     if (!renderToModal) history = history.slice(0, 50);
-    
     if (history.length === 0) {
         targetDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
         return;
     }
 
     const createTooltip = (entry) => `Prompt: ${entry.prompt}\nCategory: ${entry.category}\nStyle: ${entry.style}`;
-    
     if (renderToModal) {
         const groupedHistory = history.reduce((acc, entry) => {
             const date = new Date(entry.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -644,7 +632,7 @@ function renderHistory(history, renderToModal = false) {
             dateHeading.textContent = date;
             dailyContainer.appendChild(dateHeading);
             groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
-                 const button = document.createElement('button');
+                const button = document.createElement('button');
                 button.className = 'history-item';
                 button.title = (entry.category.includes("Refined")) ? `Refine Instruction: ${entry.prompt}` : createTooltip(entry);
                 button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
@@ -705,7 +693,7 @@ function copyToClipboard(elementId) {
     navigator.clipboard.writeText(text).then(() => {
         const copyMessage = document.createElement('div');
         copyMessage.textContent = "Copied to clipboard!";
-        copyMessage.style.cssText = `position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--button-purple); color: white; padding: 10px 20px; border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-out;`;
+        copyMessage.style.cssText = `position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-accent-dark); color: white; padding: 10px 20px; border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-out;`;
         document.body.appendChild(copyMessage);
         setTimeout(() => { copyMessage.style.opacity = 1; }, 10);
         setTimeout(() => { copyMessage.style.opacity = 0; copyMessage.addEventListener('transitionend', () => copyMessage.remove()); }, 2000);
@@ -772,7 +760,6 @@ function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsMod
 
 function initializePlatformsDropdown() {
     if (!platformsDropdownList || !platformsDropdownBtn) return;
-
     Object.keys(CHECKABLE_OPTIONS).sort().forEach(name => {
         const option = CHECKABLE_OPTIONS[name];
         const label = document.createElement('label');
@@ -791,7 +778,6 @@ function initializePlatformsDropdown() {
         label.appendChild(document.createTextNode(` ${name}`));
         platformsDropdownList.appendChild(label);
     });
-    
     updatePlatformsButtonText();
 
     platformsDropdownBtn.addEventListener('click', (e) => {
@@ -799,12 +785,10 @@ function initializePlatformsDropdown() {
         platformsDropdownList.classList.toggle('hidden');
         platformsDropdownBtn.classList.toggle('open');
     });
-
     document.addEventListener('click', () => {
         platformsDropdownList.classList.add('hidden');
         platformsDropdownBtn.classList.remove('open');
     });
-
     platformsDropdownList.addEventListener('click', (e) => {
         e.stopPropagation();
     });
@@ -815,7 +799,6 @@ function initializePlatformsDropdown() {
 function updatePlatformsButtonText() {
     const selectedCount = platformsDropdownList.querySelectorAll('input[type="checkbox"]:checked').length;
     const buttonText = platformsDropdownBtn.querySelector('span:first-child');
-    
     if (selectedCount === Object.keys(CHECKABLE_OPTIONS).length) {
         buttonText.textContent = 'All Options';
     } else if (selectedCount === 0) {
@@ -828,7 +811,6 @@ function updatePlatformsButtonText() {
 async function checkAvailability() {
     const nameInput = document.getElementById('name-to-check');
     const nameToCheck = nameInput.value.trim();
-
     if (!nameToCheck) {
         showTemporaryPlaceholderError(nameInput, "Please enter a name to check.");
         return;
@@ -847,11 +829,9 @@ async function checkAvailability() {
             selectedTlds.push(...option.value);
         }
     });
-
     const resultsContainer = document.getElementById('availability-results-container');
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
     disableButtons();
-
     try {
         const token = await getUserToken();
         const response = await fetch(`${BACKEND_URL}/check-availability`, {
@@ -863,7 +843,6 @@ async function checkAvailability() {
                 tlds: selectedTlds
             })
         });
-
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "An error occurred.");
@@ -882,7 +861,6 @@ async function checkAvailability() {
 function renderAvailabilityResults(data) {
     const resultsContainer = document.getElementById('availability-results-container');
     let htmlContent = '';
-
     if (data.domains.length > 0) {
         const domainsKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].type === 'domain_group');
         const domainIcon = domainsKey ? CHECKABLE_OPTIONS[domainsKey].icon : 'fas fa-globe';
@@ -943,7 +921,6 @@ async function analyzeName() {
     const resultsContainer = document.getElementById('analyzer-results-container');
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
     disableButtons();
-
     try {
         const token = await getUserToken();
         const response = await fetch(`${BACKEND_URL}/analyze-name`, {
@@ -951,21 +928,18 @@ async function analyzeName() {
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ name: nameToAnalyze, context: context })
         });
-
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.detail || "An error occurred during analysis.");
         }
         
         const data = await response.json();
-        
         if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             const maxGenerations = window.auth.currentUser ? 100 : 10;
             window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
         }
         
         renderAnalysisResults(data.analysis);
-
     } catch (error) {
         resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
     } finally {
@@ -1078,7 +1052,6 @@ async function fetchHistoryForImport() {
                 historyImportList.appendChild(nameButton);
             });
         });
-
     } catch (error) {
         historyImportList.innerHTML = `<p>*${error.message}*</p>`;
     }
@@ -1089,34 +1062,32 @@ function initializeSettings() {
         theme: localStorage.getItem('nameit-theme') || 'system',
         font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
         fontSize: localStorage.getItem('nameit-fontSize') || '100',
+        outputFont: localStorage.getItem('nameit-output-font') || "'Roboto Mono', monospace",
+        outputFontSize: localStorage.getItem('nameit-output-fontSize') || '100',
         animations: localStorage.getItem('nameit-animations') !== 'false'
     };
-
     if (themeSelect) themeSelect.value = settings.theme;
     if (fontSelect) fontSelect.value = settings.font;
     if (fontSizeSlider) fontSizeSlider.value = settings.fontSize;
+    if (outputFontSelect) outputFontSelect.value = settings.outputFont;
+    if (outputFontSizeSlider) outputFontSizeSlider.value = settings.outputFontSize;
     if (animationsToggle) animationsToggle.checked = settings.animations;
-
+    
     applyTheme(settings.theme, false);
     applyFont(settings.font, false);
     applyFontSize(settings.fontSize, false);
+    applyOutputFont(settings.outputFont, false);
+    applyOutputFontSize(settings.outputFontSize, false);
     applyAnimationSetting(settings.animations, false);
 }
 
 function applyTheme(theme, save = true) {
     if (save) localStorage.setItem('nameit-theme', theme);
-    
-    if (theme === 'light') {
-        document.body.classList.add('light-theme');
-    } else if (theme === 'dark') {
-        document.body.classList.remove('light-theme');
-    } else {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-            document.body.classList.add('light-theme');
-        } else {
-            document.body.classList.remove('light-theme');
-        }
+    let effectiveTheme = theme;
+    if (theme === 'system') {
+        effectiveTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'synthwave';
     }
+    document.body.dataset.theme = effectiveTheme;
 }
 
 function applyFont(font, save = true) {
@@ -1129,15 +1100,22 @@ function applyFontSize(size, save = true) {
     document.documentElement.style.fontSize = `${size}%`;
 }
 
+function applyOutputFont(font, save = true) {
+    if (save) localStorage.setItem('nameit-output-font', font);
+    document.documentElement.style.setProperty('--output-font-family', font);
+}
+
+function applyOutputFontSize(size, save = true) {
+    if (save) localStorage.setItem('nameit-output-fontSize', size);
+    document.documentElement.style.setProperty('--output-font-size', `${size}%`);
+}
+
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
-    const showcaseContainer = document.querySelector('.showcase-container');
     if (enabled) {
         document.body.classList.remove('animations-disabled');
-        if (showcaseContainer) showcaseContainer.style.display = 'flex';
     } else {
         document.body.classList.add('animations-disabled');
-        if (showcaseContainer) showcaseContainer.style.display = 'none';
     }
 }
 
@@ -1148,7 +1126,6 @@ async function exportHistory() {
         return;
     }
     const historyData = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } }).then(res => res.json());
-    
     const blob = new Blob([JSON.stringify(historyData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
