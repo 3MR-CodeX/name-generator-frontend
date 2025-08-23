@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateFontDropdowns();
     
     setupEventListeners();
-    initializeSliders(); // This will now run the corrected function
+    // No longer need to call initializeSliders() as the design is handled by HTML/CSS now.
     initializePlatformsDropdown();
 });
 
@@ -179,26 +179,6 @@ function setupEventListeners() {
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
         if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
     }, 500);
-}
-
-// --- NEW AND CORRECTED SLIDER FUNCTION ---
-function initializeSliders() {
-    // This function now correctly targets the sliders and applies the visual fix.
-    const slidersToProcess = ['generator-relevancy', 'refiner-relevancy'];
-
-    slidersToProcess.forEach(sliderId => {
-        const sliderElement = document.getElementById(sliderId);
-        if (sliderElement) {
-            // Traverse up to the container, then find the ticks within it.
-            const container = sliderElement.closest('.relevancy-slider-container');
-            if (container) {
-                const ticks = container.querySelectorAll('.slider-ticks span');
-                ticks.forEach(tick => {
-                    tick.style.fontSize = '0'; // This hides the number text
-                });
-            }
-        }
-    });
 }
 
 function showView(viewName) {
