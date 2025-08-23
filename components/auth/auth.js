@@ -1,3 +1,4 @@
+// components/auth/auth.js
 function initializeAuth() {
     if (!window.env || !window.env.FIREBASE_CONFIG) {
         console.error("Firebase config not found.");
@@ -47,7 +48,7 @@ function initializeAuth() {
             generationCounter.textContent = `Unlimited Generations`;
             generationProgressBar.style.width = `100%`;
         } else {
-            generationCounter.textContent = `${count} / ${max} Generations Left`;
+            generationCounter.textContent = `${count} / ${max} Names Left`;
             const percentage = max > 0 ? (count / max) * 100 : 0;
             generationProgressBar.style.width = `${percentage}%`;
         }
@@ -101,7 +102,7 @@ function initializeAuth() {
                             updateSubscriptionDisplay({
                                 tier: status.tier,
                                 generationsLeft: status.generationsLeft,
-                                maxGenerations: 100
+                                maxGenerations: 500 // MODIFIED: New cap for logged in users
                             });
                         });
                     });
@@ -123,8 +124,8 @@ function initializeAuth() {
             userStatusContainer.classList.remove('hidden');
             updateSubscriptionDisplay({
                 tier: "Anonymous",
-                generationsLeft: Math.max(0, 10 - anonGenerations),
-                maxGenerations: 10
+                generationsLeft: Math.max(0, 25 - anonGenerations), // MODIFIED: New cap for guests
+                maxGenerations: 25 // MODIFIED: New cap for guests
             });
         }
     };
