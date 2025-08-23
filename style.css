@@ -1099,6 +1099,7 @@ pre {
 
 /* --- REWORKED SLIDER STYLES --- */
 /* --- REWORKED SLIDER STYLES --- */
+/* --- REWORKED SLIDER STYLES --- */
 .sliders-wrapper {
     display: flex;
     gap: 20px;
@@ -1219,18 +1220,21 @@ pre {
 .relevancy-display .slider-ticks span {
     color: transparent; /* Hide number text */
     font-size: 0;
+    top: 10px; /* Move charts down by 10px */
 }
 
-/* --- NEW SLIDER POSITION ADJUSTMENTS --- */
+/* --- SLIDER POSITION ADJUSTMENTS --- */
 #main-generator-view .relevancy-display {
     position: relative;
-    top: 10px;
+    top: 6px; /* Moved up 4px from its previous 10px position */
 }
 
 #custom-refiner-view .amount-display {
     position: relative;
     top: 10px;
 }
+/* --- END REWORKED SLIDER STYLES --- */
+
 /* --- END REWORKED SLIDER STYLES --- */
 
 /* --- END REWORKED SLIDER STYLES --- */
@@ -1597,4 +1601,5 @@ body.light-theme {
 .light-theme .modal-content {
     background-color: #f0f2f5;
 }
+
 
