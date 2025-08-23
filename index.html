@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NameIT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lato&family=Montserrat&family=Oswald&family=Raleway&family=Poppins&family=Nunito&family=Merriweather&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lato&family=Montserrat&family=Oswald&family=Raleway&family=Poppins&family=Nunito&family=Merriweather&family=Playfair+Display&family=Source+Code+Pro&family=Ubuntu&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.png">
     
     <link rel="stylesheet" href="style.css">
@@ -107,7 +107,8 @@
                         <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
                         <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
                         <div class="sliders-wrapper">
-                            <div class="relevancy-slider-container hide-slider-numbers">
+                            <!-- Relevancy Slider (Left - Charts Only) -->
+                            <div class="slider-container relevancy-display">
                                 <label>Keyword Relevancy</label>
                                 <div class="slider-ui-wrapper">
                                     <span class="slider-label-end">Strict</span>
@@ -120,13 +121,14 @@
                                     <span class="slider-label-end">Creative</span>
                                 </div>
                             </div>
-                            <div class="relevancy-slider-container">
+                            <!-- Amount Slider (Right - Numbers Only) -->
+                            <div class="slider-container amount-display">
                                 <label>Number of Names</label>
-                                <div class="slider-ui-wrapper amount-slider">
+                                <div class="slider-ui-wrapper">
                                     <div class="slider-track">
                                         <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="generator-amount">
                                         <div class="slider-ticks">
-                                            <span></span><span></span><span></span><span></span><span></span>
+                                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +160,8 @@
                 <div class="input-box">
                      <label for="name-to-refine">Name to be Refined</label>
                     <textarea id="name-to-refine" placeholder="Type your name here..." style="flex-grow: 1;"></textarea>
-                     <div class="relevancy-slider-container">
+                    <!-- Refiner Relevancy Slider (Left - Charts Only) -->
+                    <div class="slider-container relevancy-display">
                         <label>Creativity</label>
                         <div class="slider-ui-wrapper">
                             <span class="slider-label-end">Strict</span>
@@ -175,13 +178,14 @@
                 <div class="input-box">
                     <label for="refinement-instructions">Refinement Instructions</label>
                     <textarea id="refinement-instructions" placeholder="Type how you want to refine your name..."></textarea>
-                    <div class="relevancy-slider-container">
+                    <!-- Refiner Amount Slider (Right - Numbers Only) -->
+                     <div class="slider-container amount-display">
                         <label>Number of Names</label>
-                        <div class="slider-ui-wrapper amount-slider">
+                        <div class="slider-ui-wrapper">
                              <div class="slider-track">
                                 <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="refiner-amount">
                                 <div class="slider-ticks">
-                                    <span></span><span></span><span></span><span></span><span></span>
+                                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
                                 </div>
                             </div>
                         </div>
@@ -288,7 +292,7 @@
                     <div class="setting-row">
                         <label for="theme-select">Color Theme</label>
                         <select id="theme-select" class="settings-select">
-                           <option value="default">Default Purple</option>
+                            <option value="default">Default Purple</option>
                             <option value="sunset-blaze">Sunset Blaze</option>
                             <option value="oceanic-citrus">Oceanic Citrus</option>
                             <option value="classic-noir">Classic Noir</option>
@@ -422,4 +426,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
