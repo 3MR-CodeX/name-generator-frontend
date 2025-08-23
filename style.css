@@ -13,6 +13,7 @@
     --button-text-color: white;
     --animated-bar-color-1: rgba(255, 0, 255, 0.5);
     --animated-bar-color-2: rgba(165, 0, 255, 0.5);
+    --progress-bar-color: var(--line-accent-glow);
 
     /* Font variables for results */
     --results-font-family: 'Roboto', sans-serif;
@@ -30,6 +31,7 @@ body[data-theme="sunset-blaze"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(247, 127, 0, 0.5);
     --animated-bar-color-2: rgba(214, 40, 40, 0.5);
+    --progress-bar-color: var(--primary-accent);
 }
 
 /* Oceanic Citrus Theme */
@@ -43,6 +45,7 @@ body[data-theme="oceanic-citrus"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(255, 170, 0, 0.5);
     --animated-bar-color-2: rgba(0, 119, 182, 0.5);
+    --progress-bar-color: var(--primary-accent);
 }
 
 /* Classic Noir Theme */
@@ -56,6 +59,7 @@ body[data-theme="classic-noir"] {
     --button-text-color: black;
     --animated-bar-color-1: rgba(255, 255, 255, 0.2);
     --animated-bar-color-2: rgba(224, 224, 224, 0.2);
+    --progress-bar-color: #ffffff;
 }
 
 /* Synthwave Theme */
@@ -69,6 +73,7 @@ body[data-theme="synthwave"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(255, 0, 255, 0.5);
     --animated-bar-color-2: rgba(165, 0, 255, 0.5);
+    --progress-bar-color: var(--line-accent-glow);
 }
 
 /* Crimson Tide Theme */
@@ -82,6 +87,7 @@ body[data-theme="crimson-tide"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(255, 0, 144, 0.5);
     --animated-bar-color-2: rgba(0, 170, 255, 0.5);
+    --progress-bar-color: var(--line-accent-glow);
 }
 
 /* Azure Sky Theme */
@@ -95,6 +101,7 @@ body[data-theme="azure-sky"] {
     --button-text-color: black;
     --animated-bar-color-1: rgba(0, 95, 204, 0.5);
     --animated-bar-color-2: rgba(0, 170, 255, 0.5);
+    --progress-bar-color: var(--primary-accent);
 }
 
 /* Emerald Forest Theme */
@@ -108,6 +115,7 @@ body[data-theme="emerald-forest"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(50, 205, 50, 0.5);
     --animated-bar-color-2: rgba(0, 206, 209, 0.5);
+    --progress-bar-color: var(--line-accent-default);
 }
 
 /* Royal Gold Theme */
@@ -121,6 +129,7 @@ body[data-theme="royal-gold"] {
     --button-text-color: black;
     --animated-bar-color-1: rgba(255, 215, 0, 0.5);
     --animated-bar-color-2: rgba(255, 255, 255, 0.4);
+    --progress-bar-color: var(--primary-accent);
 }
 
 /* Sakura Dream Theme */
@@ -134,6 +143,7 @@ body[data-theme="sakura-dream"] {
     --button-text-color: black;
     --animated-bar-color-1: rgba(255, 105, 180, 0.5);
     --animated-bar-color-2: rgba(219, 112, 147, 0.5);
+    --progress-bar-color: var(--line-accent-default);
 }
 
 /* Cosmic Lilac Theme */
@@ -147,6 +157,7 @@ body[data-theme="cosmic-lilac"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(155, 89, 182, 0.5);
     --animated-bar-color-2: rgba(230, 126, 34, 0.5);
+    --progress-bar-color: var(--primary-accent);
 }
 
 /* Solar Flare Theme */
@@ -160,6 +171,7 @@ body[data-theme="solar-flare"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(243, 156, 18, 0.5);
     --animated-bar-color-2: rgba(231, 76, 60, 0.5);
+    --progress-bar-color: var(--primary-accent);
 }
 
 /* Arctic Night Theme */
@@ -173,6 +185,7 @@ body[data-theme="arctic-night"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(26, 188, 156, 0.5);
     --animated-bar-color-2: rgba(22, 160, 133, 0.5);
+    --progress-bar-color: var(--line-accent-default);
 }
 
 /* --- NEW THEMES --- */
@@ -187,6 +200,7 @@ body[data-theme="scarlet-ivory"] {
     --button-text-color: black;
     --animated-bar-color-1: rgba(255, 36, 0, 0.5);
     --animated-bar-color-2: rgba(245, 245, 220, 0.5);
+    --progress-bar-color: var(--primary-accent);
 }
 
 /* Cobalt & Ivory Theme */
@@ -200,6 +214,7 @@ body[data-theme="cobalt-ivory"] {
     --button-text-color: black;
     --animated-bar-color-1: rgba(0, 71, 171, 0.5);
     --animated-bar-color-2: rgba(245, 245, 220, 0.5);
+    --progress-bar-color: var(--primary-accent);
 }
 /* --- END NEW THEMES --- */
 
