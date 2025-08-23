@@ -529,9 +529,7 @@ pre#names {
     margin-top: 10px;
     margin-bottom: 10px;
     transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease, margin 0.4s ease;
-}
-
-#more-like-this-section:not(.visible) {
+    /* This is the bug fix: The section is hidden by default */
     opacity: 0;
     max-height: 0;
     transform: translateY(-10px);
@@ -544,6 +542,9 @@ pre#names {
     opacity: 1;
     max-height: 200px;
     transform: translateY(0);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    pointer-events: auto;
 }
 
 #more-like-this-container {
@@ -614,7 +615,7 @@ pre#names {
 }
 
 .hidden {
-    display: none;
+    display: none !important; /* Use important to ensure it overrides other styles */
 }
 
 .visible-section,
@@ -1098,8 +1099,6 @@ pre {
 }
 
 /* --- REWORKED SLIDER STYLES --- */
-/* --- REWORKED SLIDER STYLES --- */
-/* --- REWORKED SLIDER STYLES --- */
 .sliders-wrapper {
     display: flex;
     gap: 20px;
@@ -1220,23 +1219,19 @@ pre {
 .relevancy-display .slider-ticks span {
     color: transparent; /* Hide number text */
     font-size: 0;
-    top: 10px; /* Move charts down by 10px */
+    top: 13px; /* Move charts down by 13px */
 }
 
 /* --- SLIDER POSITION ADJUSTMENTS --- */
 #main-generator-view .relevancy-display {
     position: relative;
-    top: 6px; /* Moved up 4px from its previous 10px position */
+    top: 6px; 
 }
 
 #custom-refiner-view .amount-display {
     position: relative;
     top: 10px;
 }
-/* --- END REWORKED SLIDER STYLES --- */
-
-/* --- END REWORKED SLIDER STYLES --- */
-
 /* --- END REWORKED SLIDER STYLES --- */
 
 
@@ -1601,5 +1596,3 @@ body.light-theme {
 .light-theme .modal-content {
     background-color: #f0f2f5;
 }
-
-
