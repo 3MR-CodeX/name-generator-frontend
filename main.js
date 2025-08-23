@@ -111,6 +111,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     setupEventListeners();
     initializePlatformsDropdown();
+
+    // Hide loader after a delay
+    setTimeout(() => {
+        const loader = document.getElementById('loader-wrapper');
+        if (loader) {
+            loader.classList.add('fade-out');
+            loader.addEventListener('transitionend', () => loader.style.display = 'none');
+        }
+    }, 5000);
 });
 
 async function loadComponent(placeholderId, componentUrl) {
@@ -1151,15 +1160,21 @@ function applyResultsFontSize(size, save = true) {
     document.documentElement.style.setProperty('--results-font-size', `${size}%`);
 }
 
+// --- CORRECTED ANIMATION TOGGLE FUNCTION ---
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
+    
     const showcaseContainer = document.querySelector('.showcase-container');
+    const backgroundContainer = document.getElementById('background-container');
+
     if (enabled) {
         document.body.classList.remove('animations-disabled');
         if (showcaseContainer) showcaseContainer.style.display = 'flex';
+        if (backgroundContainer) backgroundContainer.style.display = 'block';
     } else {
         document.body.classList.add('animations-disabled');
         if (showcaseContainer) showcaseContainer.style.display = 'none';
+        if (backgroundContainer) backgroundContainer.style.display = 'none';
     }
 }
 
