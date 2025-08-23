@@ -213,7 +213,6 @@ function showView(viewName) {
             if (recentHistorySection) recentHistorySection.classList.remove('hidden');
             if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
                 if (refineSection) refineSection.classList.remove('hidden');
-                // MODIFIED: This is the bug fix. It now correctly shows the button section.
                 if (refineButtonSection) refineButtonSection.classList.remove('hidden');
             }
         }
@@ -425,6 +424,7 @@ async function generateName(force = false) {
         if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
             if(refineSection) refineSection.classList.remove("hidden");
             if(refineButtonSection) refineButtonSection.classList.remove("hidden");
+            if(refineBtn) refineBtn.classList.remove("hidden");
         }
         if(recentHistorySection) recentHistorySection.classList.remove("hidden");
         fetchHistory(false);
