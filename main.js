@@ -293,7 +293,6 @@ function renderClickableNames(namesArray, targetPre = namesPre) {
     });
 }
 
-// --- CORRECTED "MORE LIKE THIS" FUNCTION ---
 function addSeedName(name) {
     const moreLikeThisSection = document.getElementById("more-like-this-section");
     const container = document.getElementById("more-like-this-container");
@@ -309,7 +308,6 @@ function addSeedName(name) {
         return;
     }
     
-    // This is the corrected line:
     moreLikeThisSection.classList.add('visible');
     
     const tag = document.createElement('div');
@@ -323,7 +321,6 @@ function addSeedName(name) {
         tag.addEventListener('animationend', () => {
             tag.remove();
             if (container.children.length === 0) {
-                // And this line is also corrected:
                 moreLikeThisSection.classList.remove('visible');
             }
         });
