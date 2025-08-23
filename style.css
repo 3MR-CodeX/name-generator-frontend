@@ -530,22 +530,22 @@ pre#names {
     margin-top: 10px;
     margin-bottom: 10px;
     transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease, margin 0.4s ease;
-    /* Hide by default */
+    overflow: hidden;
+}
+
+#more-like-this-section:not(.visible) {
     opacity: 0;
     max-height: 0;
     transform: translateY(-10px);
     margin-top: 0;
     margin-bottom: 0;
     pointer-events: none;
-    overflow: hidden;
 }
 
 #more-like-this-section.visible {
     opacity: 1;
-    max-height: 200px; /* Or a suitable max height */
+    max-height: 200px;
     transform: translateY(0);
-    margin-top: 10px;
-    margin-bottom: 10px;
     pointer-events: auto;
 }
 /* --- END OF CORRECTION --- */
