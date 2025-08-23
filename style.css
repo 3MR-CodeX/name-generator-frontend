@@ -175,6 +175,34 @@ body[data-theme="arctic-night"] {
     --animated-bar-color-2: rgba(22, 160, 133, 0.5);
 }
 
+/* --- NEW THEMES --- */
+/* Scarlet & Ivory Theme */
+body[data-theme="scarlet-ivory"] {
+    --primary-accent: #FF2400; /* Scarlet */
+    --secondary-accent: #ff4d2e;
+    --line-accent-default: #F5F5DC; /* Beige/Ivory */
+    --line-accent-glow: #FFFFFF;   /* White */
+    --tag-background: #FF2400;
+    --disabled-accent: #b31a00;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(255, 36, 0, 0.5);
+    --animated-bar-color-2: rgba(245, 245, 220, 0.5);
+}
+
+/* Cobalt & Ivory Theme */
+body[data-theme="cobalt-ivory"] {
+    --primary-accent: #0047AB; /* Cobalt Blue */
+    --secondary-accent: #2a65c7;
+    --line-accent-default: #F5F5DC; /* Beige/Ivory */
+    --line-accent-glow: #FFFFFF;   /* White */
+    --tag-background: #0047AB;
+    --disabled-accent: #002e6e;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(0, 71, 171, 0.5);
+    --animated-bar-color-2: rgba(245, 245, 220, 0.5);
+}
+/* --- END NEW THEMES --- */
+
 * {
     margin: 0;
     padding: 0;
@@ -525,7 +553,6 @@ pre#names {
     box-shadow: 0 0 10px 2px var(--line-accent-default);
 }
 
-/* --- THIS IS THE CORRECTED CSS FOR "MORE LIKE THIS" --- */
 #more-like-this-section {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -548,8 +575,6 @@ pre#names {
     transform: translateY(0);
     pointer-events: auto;
 }
-/* --- END OF CORRECTION --- */
-
 
 #more-like-this-container {
     display: flex;
@@ -1599,4 +1624,10 @@ body.light-theme {
 }
 .light-theme .modal-content {
     background-color: #f0f2f5;
+}
+
+/* --- TOP BAR STYLES --- */
+/* This is a new rule to override the progress bar color */
+#generation-progress-bar {
+    background-color: #00FFFF !important; /* Bright Cyan */
 }
