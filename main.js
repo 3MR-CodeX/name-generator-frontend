@@ -1,7 +1,7 @@
 // main.js
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
-const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
+const CATEGORY_OPTIONS = ["Auto (AI Decides)", "Random", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
 
@@ -33,7 +33,6 @@ const CHECKABLE_OPTIONS = {
     "Roblox":       { type: "platform", value: "Roblox", icon: "fas fa-gamepad" },
     "Rumble":       { type: "platform", value: "Rumble", icon: "fas fa-video" },
     "SoundCloud":   { type: "platform", value: "SoundCloud", icon: "fab fa-soundcloud" },
-    "Steam":        { type: "platform", value: "Steam", icon: "fab fa-steam" },
     "TikTok":       { type: "platform", value: "TikTok", icon: "fab fa-tiktok" },
     "Twitch":       { type: "platform", value: "Twitch", icon: "fab fa-twitch" },
     "X":            { type: "platform", value: "X", icon: "fab fa-twitter" },
@@ -47,9 +46,10 @@ const customRefinerView = document.getElementById("custom-refiner-view");
 const availabilityCheckerView = document.getElementById("availability-checker-view");
 const nameAnalyzerView = document.getElementById("name-analyzer-view");
 const settingsView = document.getElementById("settings-view");
-const aboutView = document.getElementById("about-view"); // New
+const aboutView = document.getElementById("about-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
+const refineButtonSection = document.querySelector(".refine-button-section"); // Added for bug fix
 const refinedOutputs = document.getElementById("refined_outputs");
 const namesPre = document.getElementById("names");
 const reasonsPre = document.getElementById("reasons");
@@ -182,14 +182,14 @@ function setupEventListeners() {
         const availabilityCheckLink = document.getElementById('availability-check-link');
         const nameAnalyzerLink = document.getElementById('name-analyzer-link');
         const settingsLink = document.getElementById('settings-link');
-        const aboutLink = document.getElementById('about-link'); // New
+        const aboutLink = document.getElementById('about-link');
 
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
         if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); }); // New
+        if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); });
     }, 500);
 }
 
@@ -199,7 +199,7 @@ function showView(viewName) {
     if(availabilityCheckerView) availabilityCheckerView.classList.add('hidden');
     if(nameAnalyzerView) nameAnalyzerView.classList.add('hidden');
     if(settingsView) settingsView.classList.add('hidden');
-    if(aboutView) aboutView.classList.add('hidden'); // New
+    if(aboutView) aboutView.classList.add('hidden');
     
     resetDynamicSections(false);
     
@@ -213,7 +213,7 @@ function showView(viewName) {
         if(nameAnalyzerView) nameAnalyzerView.classList.remove('hidden');
     } else if (viewName === 'settings') {
         if(settingsView) settingsView.classList.remove('hidden');
-    } else if (viewName === 'about') { // New
+    } else if (viewName === 'about') {
         if(aboutView) aboutView.classList.remove('hidden');
     }
 }
@@ -349,7 +349,6 @@ async function generateName(force = false) {
     if (generateBtn.disabled && !force) return;
     const amountToGenerate = parseInt(document.getElementById("generator-amount").value);
 
-    // MODIFIED: Guest generation limit check
     if (!window.auth.currentUser && (parseInt(localStorage.getItem('anonGenerations') || '0') + amountToGenerate) > 25) {
         document.getElementById("error").textContent = `You have ${25 - parseInt(localStorage.getItem('anonGenerations') || '0')} names left. Please sign up to generate more.`;
         if (typeof openSignUpModal === 'function') openSignUpModal();
@@ -392,7 +391,6 @@ async function generateName(force = false) {
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
 
-        // MODIFIED: Guest generation counting
         if (!window.auth.currentUser) {
             let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0') + amountToGenerate;
             localStorage.setItem('anonGenerations', anonGenerations);
@@ -408,7 +406,7 @@ async function generateName(force = false) {
         
         if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
             if(refineSection) refineSection.classList.remove("hidden");
-            if(refineBtn) refineBtn.classList.remove("hidden");
+            if(refineButtonSection) refineButtonSection.classList.remove("hidden");
         }
         if(recentHistorySection) recentHistorySection.classList.remove("hidden");
         fetchHistory(false);
@@ -452,7 +450,6 @@ async function refineNames(action, names = null, extra_info = "") {
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during name refinement.");
         const data = await response.json();
         
-        // MODIFIED: Update UI with new cap
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 500);
         }
@@ -564,7 +561,6 @@ async function customRefineName() {
         
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
         
-        // MODIFIED: Update UI with new cap
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.generationsLeft, 500);
         }
@@ -723,7 +719,7 @@ async function restoreHistory(id) {
         if(reasonsPre) reasonsPre.textContent = entry.reasons.map(cleanNames).join("\n\n");
         if(outputContainer) outputContainer.classList.remove("hidden");
         if(refineSection) refineSection.classList.remove("hidden");
-        if(refineBtn) refineBtn.classList.remove("hidden");
+        if(refineButtonSection) refineButtonSection.classList.remove("hidden");
         if(recentHistorySection) recentHistorySection.classList.remove("hidden");
         if (window.isSidebarOpen) toggleSidebar();
     } else {
@@ -745,8 +741,9 @@ function copyToClipboard(elementId) {
     });
 }
 
+// MODIFIED: Bug fix for refine button
 function resetDynamicSections(clearInputs = true) {
-    const sections = [outputContainer, refineSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection];
+    const sections = [outputContainer, refineSection, refineButtonSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection];
     sections.forEach(el => {
         if (el) el.classList.add("hidden");
     });
@@ -992,7 +989,6 @@ async function analyzeName() {
         
         const data = await response.json();
         
-        // MODIFIED: Update UI with new caps
         if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
             const maxGenerations = window.auth.currentUser ? 500 : 25;
             window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
@@ -1119,8 +1115,9 @@ async function fetchHistoryForImport() {
 }
 
 function initializeSettings() {
+    // MODIFIED: Changed default theme
     const settings = {
-        theme: localStorage.getItem('nameit-theme') || 'default',
+        theme: localStorage.getItem('nameit-theme') || 'synthwave',
         font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
         fontSize: localStorage.getItem('nameit-fontSize') || '100',
         resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
@@ -1174,7 +1171,6 @@ function applyResultsFontSize(size, save = true) {
     document.documentElement.style.setProperty('--results-font-size', `${size}%`);
 }
 
-// --- CORRECTED ANIMATION TOGGLE FUNCTION ---
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
     
