@@ -525,27 +525,31 @@ pre#names {
     box-shadow: 0 0 10px 2px var(--line-accent-default);
 }
 
+/* --- THIS IS THE CORRECTED CSS FOR "MORE LIKE THIS" --- */
 #more-like-this-section {
     margin-top: 10px;
     margin-bottom: 10px;
     transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease, margin 0.4s ease;
-    /* This is the bug fix: The section is hidden by default */
+    /* Hide by default */
     opacity: 0;
     max-height: 0;
     transform: translateY(-10px);
     margin-top: 0;
     margin-bottom: 0;
     pointer-events: none;
+    overflow: hidden;
 }
 
 #more-like-this-section.visible {
     opacity: 1;
-    max-height: 200px;
+    max-height: 200px; /* Or a suitable max height */
     transform: translateY(0);
     margin-top: 10px;
     margin-bottom: 10px;
     pointer-events: auto;
 }
+/* --- END OF CORRECTION --- */
+
 
 #more-like-this-container {
     display: flex;
@@ -615,7 +619,7 @@ pre#names {
 }
 
 .hidden {
-    display: none !important; /* Use important to ensure it overrides other styles */
+    display: none !important;
 }
 
 .visible-section,
