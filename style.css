@@ -184,7 +184,7 @@ body[data-theme="scarlet-ivory"] {
     --line-accent-glow: #FFFFFF;   /* White */
     --tag-background: #FF2400;
     --disabled-accent: #b31a00;
-    --button-text-color: white;
+    --button-text-color: black;
     --animated-bar-color-1: rgba(255, 36, 0, 0.5);
     --animated-bar-color-2: rgba(245, 245, 220, 0.5);
 }
@@ -197,7 +197,7 @@ body[data-theme="cobalt-ivory"] {
     --line-accent-glow: #FFFFFF;   /* White */
     --tag-background: #0047AB;
     --disabled-accent: #002e6e;
-    --button-text-color: white;
+    --button-text-color: black;
     --animated-bar-color-1: rgba(0, 71, 171, 0.5);
     --animated-bar-color-2: rgba(245, 245, 220, 0.5);
 }
@@ -1624,10 +1624,4 @@ body.light-theme {
 }
 .light-theme .modal-content {
     background-color: #f0f2f5;
-}
-
-/* --- TOP BAR STYLES --- */
-/* This is a new rule to override the progress bar color */
-#generation-progress-bar {
-    background-color: #00FFFF !important; /* Bright Cyan */
 }
