@@ -391,14 +391,9 @@ h1 {
     flex-grow: 1;
 }
 
-.custom-refiner-inputs .relevancy-slider-container {
+.custom-refiner-inputs .slider-container {
     margin-top: auto;
     padding-top: 20px;
-}
-
-.custom-refiner-inputs .input-box:nth-child(2) .relevancy-slider-container {
-    position: relative;
-    top: 10px;
 }
 
 #custom-refiner-view .button-section {
@@ -1102,6 +1097,7 @@ pre {
     }
 }
 
+/* --- REWORKED SLIDER STYLES --- */
 .sliders-wrapper {
     display: flex;
     gap: 20px;
@@ -1110,17 +1106,12 @@ pre {
     align-items: flex-end;
 }
 
-.sliders-wrapper .relevancy-slider-container:first-child {
-    position: relative;
-    top: 5px;
-}
-
-.relevancy-slider-container {
+.slider-container {
     flex: 1;
     padding: 5px;
 }
 
-.relevancy-slider-container label {
+.slider-container label {
     font-size: 1em;
     font-weight: 500;
     margin-bottom: 8px;
@@ -1133,10 +1124,6 @@ pre {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.slider-ui-wrapper.amount-slider {
-    padding: 0 15px;
 }
 
 .slider-track {
@@ -1204,19 +1191,37 @@ pre {
     width: 2px;
     height: 10px;
     background-color: #555;
+    position: relative;
+}
+
+/* Style for sliders with numbers (right side) */
+.amount-display .slider-ticks span {
+    background-color: transparent; /* Hide the tick mark itself */
     color: #888;
     font-size: 0.8em;
-    position: relative;
-    top: 15px;
+    top: 15px; /* Position numbers below the track */
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.amount-slider .slider-ticks span {
-    background-color: transparent;
+/* Hide the end labels for the amount slider for a cleaner look */
+.amount-display .slider-label-end {
+    display: none;
 }
+.amount-display .slider-ui-wrapper {
+    padding: 0 15px;
+}
+
+/* Style for sliders with charts only (left side) */
+.relevancy-display .slider-ticks span {
+    color: transparent; /* Hide number text */
+    font-size: 0;
+}
+/* --- END REWORKED SLIDER STYLES --- */
+
+
 /* --- Availability Checker Results --- */
 .results-list { 
     padding: 10px; 
@@ -1576,4 +1581,5 @@ body.light-theme {
     border-right-color: #dddfe2;
 }
 .light-theme .modal-content {
-    background-color: #f0f2f5
+    background-color: #f0f2f5;
+}
