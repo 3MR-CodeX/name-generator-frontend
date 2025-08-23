@@ -1,7 +1,7 @@
 // main.js
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
-const CATEGORY_OPTIONS = ["Auto (AI Decides)", "Random", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
+const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
 const STYLE_OPTIONS = ["Auto (AI Decides)", "Random", "Professional", "Creative", "Modern", "Minimal", "Powerful", "Elegant", "Luxury", "Catchy", "Playful", "Bold", "Futuristic", "Mysterious", "Artistic", "Fantasy", "Mythical", "Retro", "Cute", "Funny", "Classy"];
 const PATTERN_OPTIONS = ["Auto (AI Decides)", "One Word", "Two Words", "Invented Word", "Real Word", "Short & Punchy", "Long & Evocative"];
 
@@ -33,6 +33,7 @@ const CHECKABLE_OPTIONS = {
     "Roblox":       { type: "platform", value: "Roblox", icon: "fas fa-gamepad" },
     "Rumble":       { type: "platform", value: "Rumble", icon: "fas fa-video" },
     "SoundCloud":   { type: "platform", value: "SoundCloud", icon: "fab fa-soundcloud" },
+    "Steam":        { type: "platform", value: "Steam", icon: "fab fa-steam" },
     "TikTok":       { type: "platform", value: "TikTok", icon: "fab fa-tiktok" },
     "Twitch":       { type: "platform", value: "Twitch", icon: "fab fa-twitch" },
     "X":            { type: "platform", value: "X", icon: "fab fa-twitter" },
@@ -49,7 +50,7 @@ const settingsView = document.getElementById("settings-view");
 const aboutView = document.getElementById("about-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
-const refineButtonSection = document.querySelector(".refine-button-section"); // Added for bug fix
+const refineButtonSection = document.querySelector(".refine-button-section");
 const refinedOutputs = document.getElementById("refined_outputs");
 const namesPre = document.getElementById("names");
 const reasonsPre = document.getElementById("reasons");
@@ -193,16 +194,38 @@ function setupEventListeners() {
     }, 500);
 }
 
+// MODIFIED: This function is the core of the bug fixes.
 function showView(viewName) {
-    if(mainGeneratorView) mainGeneratorView.classList.add('hidden');
-    if(customRefinerView) customRefinerView.classList.add('hidden');
-    if(availabilityCheckerView) availabilityCheckerView.classList.add('hidden');
-    if(nameAnalyzerView) nameAnalyzerView.classList.add('hidden');
-    if(settingsView) settingsView.classList.add('hidden');
-    if(aboutView) aboutView.classList.add('hidden');
-    
-    resetDynamicSections(false);
-    
+    // Hide all main view containers first
+    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView];
+    allViews.forEach(view => {
+        if (view) view.classList.add('hidden');
+    });
+
+    // If we are NOT switching to the generator view, hide its specific output sections.
+    // This prevents the refine button from appearing on other pages.
+    if (viewName !== 'generator') {
+        if (outputContainer) outputContainer.classList.add('hidden');
+        if (refineSection) refineSection.classList.add('hidden');
+        if (refineButtonSection) refineButtonSection.classList.add('hidden');
+        if (refinedOutputs) refinedOutputs.classList.add('hidden');
+        if (recentHistorySection) recentHistorySection.classList.add('hidden');
+    } 
+    // If we ARE switching to the generator view, restore the visibility of its sections
+    // if they have content. This preserves the state when navigating back.
+    else {
+        if (namesPre && namesPre.innerHTML.trim() !== "") {
+            if (outputContainer) outputContainer.classList.remove('hidden');
+            if (recentHistorySection) recentHistorySection.classList.remove('hidden');
+            if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
+                if (refineSection) refineSection.classList.remove('hidden');
+                if (refineButtonSection) refineButtonSection.classList.remove('hidden');
+            }
+        }
+    }
+
+
+    // Now, show the correct view container
     if (viewName === 'generator') {
         if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
     } else if (viewName === 'refiner') {
@@ -375,6 +398,9 @@ async function generateName(force = false) {
         relevancy: document.getElementById("generator-relevancy").value,
         amount: amountToGenerate
     };
+
+    // MODIFIED: Hide old refined results when starting a new generation
+    if(refinedOutputs) refinedOutputs.classList.add("hidden");
 
     if(outputContainer) outputContainer.classList.remove("hidden");
     showLoading(namesPre);
@@ -741,7 +767,6 @@ function copyToClipboard(elementId) {
     });
 }
 
-// MODIFIED: Bug fix for refine button
 function resetDynamicSections(clearInputs = true) {
     const sections = [outputContainer, refineSection, refineButtonSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection];
     sections.forEach(el => {
@@ -1115,7 +1140,6 @@ async function fetchHistoryForImport() {
 }
 
 function initializeSettings() {
-    // MODIFIED: Changed default theme
     const settings = {
         theme: localStorage.getItem('nameit-theme') || 'synthwave',
         font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
