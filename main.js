@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateFontDropdowns();
     
     setupEventListeners();
-    // No longer need to call initializeSliders() as the design is handled by HTML/CSS now.
     initializePlatformsDropdown();
 });
 
@@ -294,6 +293,7 @@ function renderClickableNames(namesArray, targetPre = namesPre) {
     });
 }
 
+// --- CORRECTED "MORE LIKE THIS" FUNCTION ---
 function addSeedName(name) {
     const moreLikeThisSection = document.getElementById("more-like-this-section");
     const container = document.getElementById("more-like-this-container");
@@ -308,7 +308,9 @@ function addSeedName(name) {
         }
         return;
     }
-    moreLikeThisSection.classList.remove('hidden');
+    
+    // This is the corrected line:
+    moreLikeThisSection.classList.add('visible');
     
     const tag = document.createElement('div');
     tag.className = 'seed-tag';
@@ -321,7 +323,8 @@ function addSeedName(name) {
         tag.addEventListener('animationend', () => {
             tag.remove();
             if (container.children.length === 0) {
-                moreLikeThisSection.classList.add('hidden');
+                // And this line is also corrected:
+                moreLikeThisSection.classList.remove('visible');
             }
         });
     };
@@ -472,7 +475,7 @@ async function surpriseMe() {
 
     if(keywordsInput) keywordsInput.value = '';
     if(moreLikeThisContainer) moreLikeThisContainer.innerHTML = '';
-    if(moreLikeThisSection) moreLikeThisSection.classList.add('hidden');
+    if(moreLikeThisSection) moreLikeThisSection.classList.remove('visible');
     
     disableButtons();
     if(promptInput) {
