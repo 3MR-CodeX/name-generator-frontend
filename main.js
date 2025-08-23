@@ -194,16 +194,12 @@ function setupEventListeners() {
     }, 500);
 }
 
-// MODIFIED: This function is the core of the bug fixes.
 function showView(viewName) {
-    // Hide all main view containers first
     const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView];
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
 
-    // If we are NOT switching to the generator view, hide its specific output sections.
-    // This prevents the refine button from appearing on other pages.
     if (viewName !== 'generator') {
         if (outputContainer) outputContainer.classList.add('hidden');
         if (refineSection) refineSection.classList.add('hidden');
@@ -211,8 +207,6 @@ function showView(viewName) {
         if (refinedOutputs) refinedOutputs.classList.add('hidden');
         if (recentHistorySection) recentHistorySection.classList.add('hidden');
     } 
-    // If we ARE switching to the generator view, restore the visibility of its sections
-    // if they have content. This preserves the state when navigating back.
     else {
         if (namesPre && namesPre.innerHTML.trim() !== "") {
             if (outputContainer) outputContainer.classList.remove('hidden');
@@ -224,8 +218,6 @@ function showView(viewName) {
         }
     }
 
-
-    // Now, show the correct view container
     if (viewName === 'generator') {
         if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
     } else if (viewName === 'refiner') {
@@ -399,7 +391,6 @@ async function generateName(force = false) {
         amount: amountToGenerate
     };
 
-    // MODIFIED: Hide old refined results when starting a new generation
     if(refinedOutputs) refinedOutputs.classList.add("hidden");
 
     if(outputContainer) outputContainer.classList.remove("hidden");
@@ -430,6 +421,7 @@ async function generateName(force = false) {
         if(namesPre) namesPre.classList.add("fade-in-content");
         if(reasonsPre) reasonsPre.classList.add("fade-in-content");
         
+        // MODIFIED: This is the fix for the refine button.
         if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
             if(refineSection) refineSection.classList.remove("hidden");
             if(refineButtonSection) refineButtonSection.classList.remove("hidden");
