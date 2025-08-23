@@ -1,3 +1,4 @@
+// main.js
 const BACKEND_URL = "https://nameit-backend-2.vercel.app";
 
 const CATEGORY_OPTIONS = ["Auto (AI Decides)", "App", "Book", "Brand", "Company", "Course", "Drawing", "Event", "Game", "New Word", "Object", "Pet", "Place", "Platform", "Podcast", "Product", "Random", "Service", "Song", "Startup", "Tool", "Trend", "Video", "Website"];
@@ -46,6 +47,7 @@ const customRefinerView = document.getElementById("custom-refiner-view");
 const availabilityCheckerView = document.getElementById("availability-checker-view");
 const nameAnalyzerView = document.getElementById("name-analyzer-view");
 const settingsView = document.getElementById("settings-view");
+const aboutView = document.getElementById("about-view"); // New
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refinedOutputs = document.getElementById("refined_outputs");
@@ -180,12 +182,14 @@ function setupEventListeners() {
         const availabilityCheckLink = document.getElementById('availability-check-link');
         const nameAnalyzerLink = document.getElementById('name-analyzer-link');
         const settingsLink = document.getElementById('settings-link');
+        const aboutLink = document.getElementById('about-link'); // New
 
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
         if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); }); // New
     }, 500);
 }
 
@@ -195,6 +199,7 @@ function showView(viewName) {
     if(availabilityCheckerView) availabilityCheckerView.classList.add('hidden');
     if(nameAnalyzerView) nameAnalyzerView.classList.add('hidden');
     if(settingsView) settingsView.classList.add('hidden');
+    if(aboutView) aboutView.classList.add('hidden'); // New
     
     resetDynamicSections(false);
     
@@ -208,6 +213,8 @@ function showView(viewName) {
         if(nameAnalyzerView) nameAnalyzerView.classList.remove('hidden');
     } else if (viewName === 'settings') {
         if(settingsView) settingsView.classList.remove('hidden');
+    } else if (viewName === 'about') { // New
+        if(aboutView) aboutView.classList.remove('hidden');
     }
 }
 
@@ -340,8 +347,11 @@ function addSeedName(name) {
 
 async function generateName(force = false) {
     if (generateBtn.disabled && !force) return;
-    if (!window.auth.currentUser && parseInt(localStorage.getItem('anonGenerations') || '0') >= 10) {
-        document.getElementById("error").textContent = "You have used all 10 free generations. Please sign up to continue.";
+    const amountToGenerate = parseInt(document.getElementById("generator-amount").value);
+
+    // MODIFIED: Guest generation limit check
+    if (!window.auth.currentUser && (parseInt(localStorage.getItem('anonGenerations') || '0') + amountToGenerate) > 25) {
+        document.getElementById("error").textContent = `You have ${25 - parseInt(localStorage.getItem('anonGenerations') || '0')} names left. Please sign up to generate more.`;
         if (typeof openSignUpModal === 'function') openSignUpModal();
         return;
     }
@@ -364,7 +374,7 @@ async function generateName(force = false) {
         pattern: document.getElementById("pattern").value, 
         seed_names,
         relevancy: document.getElementById("generator-relevancy").value,
-        amount: document.getElementById("generator-amount").value
+        amount: amountToGenerate
     };
 
     if(outputContainer) outputContainer.classList.remove("hidden");
@@ -382,12 +392,13 @@ async function generateName(force = false) {
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
 
+        // MODIFIED: Guest generation counting
         if (!window.auth.currentUser) {
-            let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0') + 1;
+            let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0') + amountToGenerate;
             localStorage.setItem('anonGenerations', anonGenerations);
-            if (window.updateGenerationCountUI) window.updateGenerationCountUI(Math.max(0, 10 - anonGenerations), 10);
+            if (window.updateGenerationCountUI) window.updateGenerationCountUI(Math.max(0, 25 - anonGenerations), 25);
         } else if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            window.updateGenerationCountUI(data.generationsLeft, 100);
+            window.updateGenerationCountUI(data.generationsLeft, 500);
         }
 
         renderClickableNames(data.names.map(cleanNames));
@@ -441,8 +452,9 @@ async function refineNames(action, names = null, extra_info = "") {
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during name refinement.");
         const data = await response.json();
         
+        // MODIFIED: Update UI with new cap
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            window.updateGenerationCountUI(data.generationsLeft, 100);
+            window.updateGenerationCountUI(data.generationsLeft, 500);
         }
         
         if(refinedNamesPre) refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
@@ -552,8 +564,9 @@ async function customRefineName() {
         
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
         
+        // MODIFIED: Update UI with new cap
         if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            window.updateGenerationCountUI(data.generationsLeft, 100);
+            window.updateGenerationCountUI(data.generationsLeft, 500);
         }
         
         renderClickableNames(data.names.map(cleanNames), refinedNamesCustomPre);
@@ -979,8 +992,9 @@ async function analyzeName() {
         
         const data = await response.json();
         
+        // MODIFIED: Update UI with new caps
         if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            const maxGenerations = window.auth.currentUser ? 100 : 10;
+            const maxGenerations = window.auth.currentUser ? 500 : 25;
             window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
         }
         
