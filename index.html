@@ -1,420 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NameIT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lato&family=Montserrat&family=Oswald&family=Raleway&family=Poppins&family=Nunito&family=Merriweather&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.png">
-    
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="components/topbar.css">
-    <link rel="stylesheet" href="components/sidebar.css">
-    <link rel="stylesheet" href="components/auth/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NameIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lato&family=Montserrat&family=Oswald&family=Raleway&family=Poppins&family=Nunito&family=Merriweather&family=Playfair+Display&family=Source+Code+Pro&family=Ubuntu&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="components/topbar.css">
+    <link rel="stylesheet" href="components/sidebar.css">
+    <link rel="stylesheet" href="components/auth/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-    <div id="background-container">
-        <div class="animated-bar left"></div>
-        <div class="animated-bar right"></div>
-        <div class="background-pattern"></div>
-    </div>
+    <div id="background-container">
+        <div class="animated-bar left"></div>
+        <div class="animated-bar right"></div>
+        <div class="background-pattern"></div>
+    </div>
 
-    <div id="top-bar-placeholder"></div>
-    <div id="sidebar-placeholder"></div>
-    <div id="overlay"></div>
+    <div id="top-bar-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+    <div id="overlay"></div>
 
-    <div id="history-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Full History</h2>
-            <div id="full-history-list" class="history-inner"></div>
-        </div>
-    </div>
-    <div id="history-details-modal" class="modal">
-        <div class="modal-content history-details-content">
-            <span class="close-button">&times;</span>
-            <h2>History Entry Details</h2>
-            <div id="details-content"></div>
-        </div>
-    </div>
-    <div id="history-import-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Import a Name from History</h2>
-            <div id="history-import-list" class="history-inner"></div>
-        </div>
-    </div>
-    <div id="sign-in-modal" class="modal auth-modal">
-        <div class="modal-content auth-modal-content">
-            <span class="close-button">&times;</span>
-            <h1>NameIT</h1>
-            <div class="input-group">
-                <input type="email" id="signin-email" placeholder="Email Address" required>
-            </div>
-            <div class="input-group">
-                <input type="password" id="signin-password" placeholder="Password" required>
-            </div>
-            <button id="signin-submit-btn" class="auth-button">Sign In</button>
-            <div id="auth-error-message-signin" class="error"></div>
-            <div class="auth-divider">or</div>
-            <button id="signin-google-btn" class="auth-button google-button">
-                <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> 
-                Sign In with Google
-            </button>
-        </div>
-    </div>
-    <div id="sign-up-modal" class="modal auth-modal">
-        <div class="modal-content auth-modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Create Your Account</h2>
-            <div class="input-group">
-                <input type="email" id="signup-email" placeholder="Email Address" required>
-            </div>
-            <div class="input-group">
-                <input type="password" id="signup-password" placeholder="Password (6+ characters)" required>
-            </div>
-            <div class="input-group">
-                <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
-            </div>
-            <button id="signup-submit-btn" class="auth-button">Create Account</button>
-            <div id="auth-error-message-signup" class="error"></div>
-            <div class="auth-divider">or</div>
-            <button id="signup-google-btn" class="auth-button google-button">
-                <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> 
-                Sign Up with Google
-            </button>
-        </div>
-    </div>
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Full History</h2>
+            <div id="full-history-list" class="history-inner"></div>
+        </div>
+    </div>
+    <div id="history-details-modal" class="modal">
+        <div class="modal-content history-details-content">
+            <span class="close-button">&times;</span>
+            <h2>History Entry Details</h2>
+            <div id="details-content"></div>
+        </div>
+    </div>
+    <div id="history-import-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Import a Name from History</h2>
+            <div id="history-import-list" class="history-inner"></div>
+        </div>
+    </div>
+    <div id="sign-in-modal" class="modal auth-modal">
+        <div class="modal-content auth-modal-content">
+            <span class="close-button">&times;</span>
+            <h1>NameIT</h1>
+            <div class="input-group">
+                <input type="email" id="signin-email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signin-password" placeholder="Password" required>
+            </div>
+            <button id="signin-submit-btn" class="auth-button">Sign In</button>
+            <div id="auth-error-message-signin" class="error"></div>
+            <div class="auth-divider">or</div>
+            <button id="signin-google-btn" class="auth-button google-button">
+                <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> 
+                Sign In with Google
+            </button>
+        </div>
+    </div>
+    <div id="sign-up-modal" class="modal auth-modal">
+        <div class="modal-content auth-modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Create Your Account</h2>
+            <div class="input-group">
+                <input type="email" id="signup-email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signup-password" placeholder="Password (6+ characters)" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
+            </div>
+            <button id="signup-submit-btn" class="auth-button">Create Account</button>
+            <div id="auth-error-message-signup" class="error"></div>
+            <div class="auth-divider">or</div>
+            <button id="signup-google-btn" class="auth-button google-button">
+                <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> 
+                Sign Up with Google
+            </button>
+        </div>
+    </div>
 
-    <div class="main-content-wrapper">
-        <div class="banner-col">
-            <div id="banner-container">
-                <!-- This is the new dynamic background that will be styled with CSS -->
-                <div id="banner-dynamic-background"></div>
-                <!-- This is the main, sharp logo on top -->
-                <img src="banner_solid.png" alt="Banner" id="banner-img">
-            </div>
-        </div>
-        
-        <div id="main-generator-view">
-            <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
-            <div id="verification-notice" class="hidden"></div>
-            
-            <div class="container">
-                <div class="input-section">
-                    <div class="input-box textbox-column">
-                        <label for="prompt">What do you want to name?</label>
-                        <textarea id="prompt" placeholder="Enter a description!"></textarea>
-                        <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
-                        <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
-                        <div class="sliders-wrapper">
-                            <div class="relevancy-slider-container">
-                                <label>Keyword Relevancy</label>
-                                <div class="slider-ui-wrapper">
-                                    <span class="slider-label-end">Strict</span>
-                                    <div class="slider-track">
-                                        <input type="range" min="1" max="5" value="3" class="relevancy-slider" id="generator-relevancy">
-                                        <div class="slider-ticks">
-                                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                                        </div>
-                                    </div>
-                                    <span class="slider-label-end">Creative</span>
-                                </div>
-                            </div>
-                            <div class="relevancy-slider-container">
-                                <label>Number of Names</label>
-                                <div class="slider-ui-wrapper amount-slider">
-                                    <div class="slider-track">
-                                        <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="generator-amount">
-                                        <div class="slider-ticks">
-                                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-box right-column">
-                        <label for="category">Category</label><select id="category"></select>
-                        <label for="style">Style</label><select id="style"></select>
-                        <label for="language">Language</label><select id="language"><option value="English">English</option><option value="Arabic">Arabic</option></select>
-                        <label for="pattern">Pattern</label><select id="pattern"></select>
-                    </div>
-                </div>
-                <div class="button-section">
-                    <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
-                    <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
-                </div>
-                <div id="more-like-this-section" class="hidden">
-                    <label>More Like This</label>
-                    <div id="more-like-this-container"></div>
-                </div>
-            </div>
-        </div>
+    <div class="main-content-wrapper">
+        <div class="banner-col">
+            <div id="banner-container">
+                <div id="banner-background-effect"></div>
+                <img src="banner_solid.png" alt="Banner" id="banner-img">
+            </div>
+        </div>
+        
+        <div id="main-generator-view">
+            <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
+            <div id="verification-notice" class="hidden"></div>
+            
+            <div class="container">
+                <div class="input-section">
+                    <div class="input-box textbox-column">
+                        <label for="prompt">What do you want to name?</label>
+                        <textarea id="prompt" placeholder="Enter a description!"></textarea>
+                        <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
+                        <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
+                        <div class="sliders-wrapper">
+                            <!-- Relevancy Slider (Left - Charts Only) -->
+                            <div class="slider-container relevancy-display">
+                                <label>Keyword Relevancy</label>
+                                <div class="slider-ui-wrapper">
+                                    <span class="slider-label-end">Strict</span>
+                                    <div class="slider-track">
+                                        <input type="range" min="1" max="5" value="3" class="relevancy-slider" id="generator-relevancy">
+                                        <div class="slider-ticks">
+                                            <span></span><span></span><span></span><span></span><span></span>
+                                        </div>
+                                    </div>
+                                    <span class="slider-label-end">Creative</span>
+                                </div>
+                            </div>
+                            <!-- Amount Slider (Right - Numbers Only) -->
+                            <div class="slider-container amount-display">
+                                <label>Number of Names</label>
+                                <div class="slider-ui-wrapper">
+                                    <div class="slider-track">
+                                        <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="generator-amount">
+                                        <div class="slider-ticks">
+                                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-box right-column">
+                        <label for="category">Category</label><select id="category"></select>
+                        <label for="style">Style</label><select id="style"></select>
+                        <label for="language">Language</label><select id="language"><option value="English">English</option><option value="Arabic">Arabic</option></select>
+                        <label for="pattern">Pattern</label><select id="pattern"></select>
+                    </div>
+                </div>
+                <div class="button-section">
+                    <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
+                    <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
+                </div>
+                <div id="more-like-this-section">
+                    <label>More Like This</label>
+                    <div id="more-like-this-container"></div>
+                </div>
+            </div>
+        </div>
 
-        <div id="custom-refiner-view" class="hidden">
-            <h1>Custom Name Refining</h1>
-            <p class="description">Provide a name and instructions to have the AI refine it for you.</p>
-            <div class="input-section custom-refiner-inputs">
-                <div class="input-box">
-                     <label for="name-to-refine">Name to be Refined</label>
-                    <textarea id="name-to-refine" placeholder="Type your name here..." style="flex-grow: 1;"></textarea>
-                     <div class="relevancy-slider-container">
-                        <label>Creativity</label>
-                        <div class="slider-ui-wrapper">
-                            <span class="slider-label-end">Strict</span>
-                            <div class="slider-track">
-                                <input type="range" min="1" max="5" value="3" class="relevancy-slider" id="refiner-relevancy">
-                                <div class="slider-ticks">
-                                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                                </div>
-                            </div>
-                            <span class="slider-label-end">Creative</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-box">
-                    <label for="refinement-instructions">Refinement Instructions</label>
-                    <textarea id="refinement-instructions" placeholder="Type how you want to refine your name..."></textarea>
-                    <div class="relevancy-slider-container">
-                        <label>Number of Names</label>
-                        <div class="slider-ui-wrapper amount-slider">
-                             <div class="slider-track">
-                                <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="refiner-amount">
-                                <div class="slider-ticks">
-                                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="button-section">
-                <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
-            </div>
-            <div class="container">
-                <div id="refiner-loading-placeholder" class="hidden"></div>
-                <div id="refined_outputs_custom" class="output-section hidden">
-                    <div class="output-box">
-                        <div class="output-header">
-                            <label>Refined Suggestions</label>
-                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names_custom')">📋</button>
-                        </div>
-                        <pre id="refined_names_custom"></pre>
-                    </div>
-                    <div class="output-box">
-                       <div class="output-header">
-                            <label>Refined Explanations</label>
-                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons_custom')">📋</button>
-                        </div>
-                        <pre id="refined_reasons_custom"></pre>
-                    </div>
-                </div>
-                <div id="custom-refine-history-section" class="history-section hidden">
-                    <h2>✨ Recent Refinements</h2>
-                    <div id="custom-refine-history" class="history-inner"></div>
-                </div>
-            </div>
-        </div>
+        <div id="custom-refiner-view" class="hidden">
+            <h1>Custom Name Refining</h1>
+            <p class="description">Provide a name and instructions to have the AI refine it for you.</p>
+            <div class="input-section custom-refiner-inputs">
+                <div class="input-box">
+                     <label for="name-to-refine">Name to be Refined</label>
+                    <textarea id="name-to-refine" placeholder="Type your name here..." style="flex-grow: 1;"></textarea>
+                    <!-- Refiner Relevancy Slider (Left - Charts Only) -->
+                    <div class="slider-container relevancy-display">
+                        <label>Creativity</label>
+                        <div class="slider-ui-wrapper">
+                            <span class="slider-label-end">Strict</span>
+                            <div class="slider-track">
+                                <input type="range" min="1" max="5" value="3" class="relevancy-slider" id="refiner-relevancy">
+                                <div class="slider-ticks">
+                                    <span></span><span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                            <span class="slider-label-end">Creative</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <label for="refinement-instructions">Refinement Instructions</label>
+                    <textarea id="refinement-instructions" placeholder="Type how you want to refine your name..."></textarea>
+                    <!-- Refiner Amount Slider (Right - Numbers Only) -->
+                     <div class="slider-container amount-display">
+                        <label>Number of Names</label>
+                        <div class="slider-ui-wrapper">
+                             <div class="slider-track">
+                                <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="refiner-amount">
+                                <div class="slider-ticks">
+                                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-section">
+                <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
+            </div>
+            <div class="container">
+                <div id="refiner-loading-placeholder" class="hidden"></div>
+                <div id="refined_outputs_custom" class="output-section hidden">
+                    <div class="output-box">
+                        <div class="output-header">
+                            <label>Refined Suggestions</label>
+                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names_custom')">📋</button>
+                        </div>
+                        <pre id="refined_names_custom"></pre>
+                    </div>
+                    <div class="output-box">
+                       <div class="output-header">
+                            <label>Refined Explanations</label>
+                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons_custom')">📋</button>
+                        </div>
+                        <pre id="refined_reasons_custom"></pre>
+                    </div>
+                </div>
+                <div id="custom-refine-history-section" class="history-section hidden">
+                    <h2>✨ Recent Refinements</h2>
+                    <div id="custom-refine-history" class="history-inner"></div>
+                </div>
+            </div>
+        </div>
 
-        <div id="availability-checker-view" class="hidden">
-            <h1>Name Availability Check</h1>
-            <p class="description">Check if your desired name is available as a domain and on social media.</p>
-        
-            <div class="outer-input-box">
-                <div class="availability-input-container">
-                    <div class="input-wrapper" style="flex: 2;">
-                        <div class="label-with-button">
-                            <label for="name-to-check">Name to Check</label>
-                            <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-check')">+</button>
-                        </div>
-                        <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
-                    </div>
-            
-                    <div class="input-wrapper" style="flex: 1;">
-                        <label>Platforms</label>
-                        <div class="dropdown-check-container">
-                            <button id="platforms-dropdown-btn" class="dropdown-btn">
-                                <span>Select Platforms</span>
-                                <span class="arrow"></span>
-                            </button>
-                            <div id="platforms-dropdown-list" class="dropdown-content hidden">
-                                <!-- Checkboxes will be generated by JavaScript -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="button-section" style="margin-top: 20px; margin-bottom: 0;">
-                    <button id="check-availability-btn" class="generate-btn">🔍 Check Availability</button>
-                </div>
-            </div>
-        
-            <div id="availability-results-container">
-                <!-- Results will be dynamically inserted here -->
-            </div>
-        </div>
+        <div id="availability-checker-view" class="hidden">
+            <h1>Name Availability Check</h1>
+            <p class="description">Check if your desired name is available as a domain and on social media.</p>
+        
+            <div class="outer-input-box">
+                <div class="availability-input-container">
+                    <div class="input-wrapper" style="flex: 2;">
+                        <div class="label-with-button">
+                            <label for="name-to-check">Name to Check</label>
+                            <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-check')">+</button>
+                        </div>
+                        <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
+                    </div>
+            
+                    <div class="input-wrapper" style="flex: 1;">
+                        <label>Platforms</label>
+                        <div class="dropdown-check-container">
+                            <button id="platforms-dropdown-btn" class="dropdown-btn">
+                                <span>Select Platforms</span>
+                                <span class="arrow"></span>
+                            </button>
+                            <div id="platforms-dropdown-list" class="dropdown-content hidden">
+                                <!-- Checkboxes will be generated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="button-section" style="margin-top: 20px; margin-bottom: 0;">
+                    <button id="check-availability-btn" class="generate-btn">🔍 Check Availability</button>
+                </div>
+            </div>
+        
+            <div id="availability-results-container">
+                <!-- Results will be dynamically inserted here -->
+            </div>
+        </div>
 
-        <div id="name-analyzer-view" class="hidden">
-            <h1>Name Analyzer</h1>
-            <p class="description">Get an AI-powered brandability check. See potential conflicts and get tips to improve your name.</p>
-            <div class="input-section">
-                <div class="input-box">
-                    <div class="label-with-button">
-                        <label for="name-to-analyze">Name to Analyze</label>
-                        <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-analyze')">+</button>
-                    </div>
-                    <input type="text" id="name-to-analyze" placeholder="e.g., AlphaTech">
-        
-                    <label for="analysis-context" style="margin-top: 15px;">Context</label>
-                    <textarea id="analysis-context" placeholder="What is this name for? e.g., A tech startup focused on AI"></textarea>
-                </div>
-            </div>
-            <div class="button-section" style="margin-top: 20px;">
-                <button id="analyze-name-btn" class="generate-btn">🔬 Analyze Name</button>
-            </div>
-            <div id="analyzer-results-container">
-                <!-- Analysis results will appear here -->
-            </div>
-        </div>
+        <div id="name-analyzer-view" class="hidden">
+            <h1>Name Analyzer</h1>
+            <p class="description">Get an AI-powered brandability check. See potential conflicts and get tips to improve your name.</p>
+            <div class="input-section">
+                <div class="input-box">
+                    <div class="label-with-button">
+                        <label for="name-to-analyze">Name to Analyze</label>
+                        <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-analyze')">+</button>
+                    </div>
+                    <input type="text" id="name-to-analyze" placeholder="e.g., AlphaTech">
+        
+                    <label for="analysis-context" style="margin-top: 15px;">Context</label>
+                    <textarea id="analysis-context" placeholder="What is this name for? e.g., A tech startup focused on AI"></textarea>
+                </div>
+            </div>
+            <div class="button-section" style="margin-top: 20px;">
+                <button id="analyze-name-btn" class="generate-btn">🔬 Analyze Name</button>
+            </div>
+            <div id="analyzer-results-container">
+                <!-- Analysis results will appear here -->
+            </div>
+        </div>
 
-        <div id="settings-view" class="hidden">
-            <h1>Settings</h1>
-            <p class="description">Customize your experience and manage your account.</p>
-        
-            <div class="settings-container">
-                <!-- Appearance Section -->
-                <div class="setting-section">
-                    <h2><i class="fas fa-paint-brush"></i> Appearance</h2>
-                    <div class="setting-row">
-                        <label for="theme-select">Color Theme</label>
-                        <select id="theme-select" class="settings-select">
-                            <option value="default">Default Purple</option>
-                            <option value="sunset-blaze">Sunset Blaze</option>
-                            <option value="oceanic-citrus">Oceanic Citrus</option>
-                            <option value="classic-noir">Classic Noir</option>
-                            <option value="synthwave">Synthwave</option>
-                            <option value="crimson-tide">Crimson Tide</option>
-                            <option value="azure-sky">Azure Sky</option>
-                        </select>
-                    </div>
-                    <div class="setting-row">
-                        <label for="font-select">UI Font Family</label>
-                        <select id="font-select" class="settings-select">
-                            <!-- Options will be populated by JS -->
-                        </select>
-                    </div>
-                     <div class="setting-row">
-                        <label for="font-size-slider">UI Font Size</label>
-                        <input type="range" id="font-size-slider" min="80" max="120" value="100" step="5">
-                    </div>
-                    <div class="setting-row">
-                        <label for="results-font-select">Results Font Family</label>
-                        <select id="results-font-select" class="settings-select">
-                            <!-- Options will be populated by JS -->
-                        </select>
-                    </div>
-                    <div class="setting-row">
-                        <label for="results-font-size-slider">Results Font Size</label>
-                        <input type="range" id="results-font-size-slider" min="80" max="140" value="100" step="5">
-                    </div>
-                </div>
-        
-                <!-- Account Section -->
-                <div class="setting-section">
-                    <h2><i class="fas fa-user-circle"></i> Account</h2>
-                    <div class="setting-row">
-                        <label>Change Password</label>
-                        <button id="change-password-btn" class="settings-btn">Send Reset Email</button>
-                    </div>
-                    <div class="setting-row">
-                        <label>Subscription</label>
-                        <button id="manage-subscription-btn" class="settings-btn premium-btn">Manage Subscription</button>
-                    </div>
-                </div>
-        
-                <!-- Data & Privacy Section -->
-                <div class="setting-section">
-                    <h2><i class="fas fa-database"></i> Data & Privacy</h2>
-                    <div class="setting-row">
-                        <label>Export History</label>
-                        <button id="export-history-btn" class="settings-btn">Export as JSON</button>
-                    </div>
-                    <div class="setting-row">
-                        <label>Clear History</label>
-                        <button id="clear-history-btn" class="settings-btn danger-btn">Clear All History</button>
-                    </div>
-                </div>
-        
-                <!-- Accessibility Section -->
-                <div class="setting-section">
-                    <h2><i class="fas fa-universal-access"></i> Accessibility</h2>
-                    <div class="setting-row">
-                        <label for="animations-toggle">Reduce Animations</label>
-                        <label class="switch">
-                            <input type="checkbox" id="animations-toggle">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="settings-view" class="hidden">
+            <h1>Settings</h1>
+            <p class="description">Customize your experience and manage your account.</p>
+        
+            <div class="settings-container">
+                <!-- Appearance Section -->
+                <div class="setting-section">
+                    <h2><i class="fas fa-paint-brush"></i> Appearance</h2>
+                    <div class="setting-row">
+                        <label for="theme-select">Color Theme</label>
+                        <select id="theme-select" class="settings-select">
+                            <option value="default">Default Purple</option>
+                            <option value="sunset-blaze">Sunset Blaze</option>
+                            <option value="oceanic-citrus">Oceanic Citrus</option>
+                            <option value="classic-noir">Classic Noir</option>
+                            <option value="synthwave">Synthwave</option>
+                            <option value="crimson-tide">Crimson Tide</option>
+                            <option value="azure-sky">Azure Sky</option>
+                            <option value="emerald-forest">Emerald Forest</option>
+                            <option value="royal-gold">Royal Gold</option>
+                            <option value="sakura-dream">Sakura Dream</option>
+                            <option value="cosmic-lilac">Cosmic Lilac</option>
+                            <option value="solar-flare">Solar Flare</option>
+                            <option value="arctic-night">Arctic Night</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <label for="font-select">UI Font Family</label>
+                        <select id="font-select" class="settings-select">
+                            <!-- Options will be populated by JS -->
+                        </select>
+                    </div>
+                     <div class="setting-row">
+                        <label for="font-size-slider">UI Font Size</label>
+                        <input type="range" id="font-size-slider" min="80" max="120" value="100" step="5">
+                    </div>
+                    <div class="setting-row">
+                        <label for="results-font-select">Results Font Family</label>
+                        <select id="results-font-select" class="settings-select">
+                            <!-- Options will be populated by JS -->
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <label for="results-font-size-slider">Results Font Size</label>
+                        <input type="range" id="results-font-size-slider" min="80" max="140" value="100" step="5">
+                    </div>
+                </div>
+        
+                <!-- Account Section -->
+                <div class="setting-section">
+                    <h2><i class="fas fa-user-circle"></i> Account</h2>
+                    <div class="setting-row">
+                        <label>Change Password</label>
+                        <button id="change-password-btn" class="settings-btn">Send Reset Email</button>
+                    </div>
+                    <div class="setting-row">
+                        <label>Subscription</label>
+                        <button id="manage-subscription-btn" class="settings-btn premium-btn">Manage Subscription</button>
+                    </div>
+                </div>
+        
+                <!-- Data & Privacy Section -->
+                <div class="setting-section">
+                    <h2><i class="fas fa-database"></i> Data & Privacy</h2>
+                    <div class="setting-row">
+                        <label>Export History</label>
+                        <button id="export-history-btn" class="settings-btn">Export as JSON</button>
+                    </div>
+                    <div class="setting-row">
+                        <label>Clear History</label>
+                        <button id="clear-history-btn" class="settings-btn danger-btn">Clear All History</button>
+                    </div>
+                </div>
+        
+                <!-- Accessibility Section -->
+                <div class="setting-section">
+                    <h2><i class="fas fa-universal-access"></i> Accessibility</h2>
+                    <div class="setting-row">
+                        <label for="animations-toggle">Reduce Animations</label>
+                        <label class="switch">
+                            <input type="checkbox" id="animations-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="container">
-            <div id="output_container" class="output-section hidden">
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Generated Names/Titles</label>
-                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('names')">📋</button>
-                    </div>
-                    <pre id="names"></pre>
-                </div>
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Explanations</label>
-                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('reasons')">📋</button>
-                    </div>
-                    <pre id="reasons"></pre>
-                </div>
-            </div>
-            <div id="refine_section" class="refine-section hidden">
-                <label for="edit_box">Refine the suggestions</label>
-                <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
-            </div>
-            <div class="refine-button-section">
-                <button class="refine-btn hidden">🛠️ Refine Suggestions</button>
-            </div>
-            <div id="refined_outputs" class="output-section hidden">
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Refined Suggestions</label>
-                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names')">📋</button>
-                    </div>
-                    <pre id="refined_names"></pre>
-                </div>
-                <div class="output-box">
-                   <div class="output-header">
-                        <label>Refined Explanations</label>
-                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons')">📋</button>
-                    </div>
-                    <pre id="refined_reasons"></pre>
-                </div>
-            </div>
-            <div id="history_section" class="history-section hidden">
-                <h2>🕘 Recent History</h2>
-                <div id="history" class="history-inner"></div>
-            </div>
-            <div id="error" class="error"></div>
-        </div>
-    </div>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="config.js"></script>
-    <script src="components/auth/auth.js"></script>
-    <script src="components/topbar.js"></script>
-    <script src="components/sidebar.js"></script>
-    <script src="main.js"></script>
+        <div class="container">
+            <div id="output_container" class="output-section hidden">
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Generated Names/Titles</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('names')">📋</button>
+                    </div>
+                    <pre id="names"></pre>
+                </div>
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Explanations</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('reasons')">📋</button>
+                    </div>
+                    <pre id="reasons"></pre>
+                </div>
+            </div>
+            <div id="refine_section" class="refine-section hidden">
+                <label for="edit_box">Refine the suggestions</label>
+                <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
+            </div>
+            <div class="refine-button-section">
+                <button class="refine-btn hidden">🛠️ Refine Suggestions</button>
+            </div>
+            <div id="refined_outputs" class="output-section hidden">
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Refined Suggestions</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names')">📋</button>
+                    </div>
+                    <pre id="refined_names"></pre>
+                </div>
+                <div class="output-box">
+                   <div class="output-header">
+                        <label>Refined Explanations</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons')">📋</button>
+                    </div>
+                    <pre id="refined_reasons"></pre>
+                </div>
+            </div>
+            <div id="history_section" class="history-section hidden">
+                <h2>🕘 Recent History</h2>
+                <div id="history" class="history-inner"></div>
+            </div>
+            <div id="error" class="error"></div>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="config.js"></script>
+    <script src="components/auth/auth.js"></script>
+    <script src="components/topbar.js"></script>
+    <script src="components/sidebar.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
