@@ -4,13 +4,13 @@
     --sidebar-width: 280px;
     --hexagon-button-size: 80px;
 
-    /* Default Theme: Purple */
-    --primary-accent: #800080;
-    --secondary-accent: #a020f0;
+    /* MODIFIED: Default Theme is now Synthwave */
+    --primary-accent: #a500ff;
+    --secondary-accent: #b733ff;
     --line-accent-default: #ff00ff;
     --line-accent-glow: #a500ff;
-    --tag-background: #7f00f7;
-    --disabled-accent: #4d004d;
+    --tag-background: #a500ff;
+    --disabled-accent: #620099;
     --button-text-color: white;
     --animated-bar-color-1: rgba(255, 0, 255, 0.5);
     --animated-bar-color-2: rgba(165, 0, 255, 0.5);
@@ -63,19 +63,7 @@ body[data-theme="classic-noir"] {
     --progress-bar-color: #ffffff;
 }
 
-/* Synthwave Theme */
-body[data-theme="synthwave"] {
-    --primary-accent: #a500ff;
-    --secondary-accent: #b733ff;
-    --line-accent-default: #ff00ff;
-    --line-accent-glow: #a500ff;
-    --tag-background: #a500ff;
-    --disabled-accent: #620099;
-    --button-text-color: white;
-    --animated-bar-color-1: rgba(255, 0, 255, 0.5);
-    --animated-bar-color-2: rgba(165, 0, 255, 0.5);
-    --progress-bar-color: var(--line-accent-glow);
-}
+/* MODIFIED: Removed Synthwave theme from here as it's now the default */
 
 /* Crimson Tide Theme */
 body[data-theme="crimson-tide"] {
