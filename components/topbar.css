@@ -232,7 +232,7 @@
 
 .progress-bar-inner {
     height: 100%;
-    background-color: var(--progress-bar-color); /* THIS IS THE CORRECTED LINE */
+    background-color: var(--progress-bar-color);
     border-radius: 4px;
     transition: width 0.5s ease-in-out;
 }
