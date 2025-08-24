@@ -1799,7 +1799,7 @@ body.light-theme {
 }
 
 .persona-summary-card {
-    grid-column: 1 / -1; /* Make summary span full width */
+    grid-column: 1 / -1;
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -1881,6 +1881,128 @@ body.light-theme {
 }
 .alternatives-reasons p:last-child {
     margin-bottom: 0;
+}
+
+/* --- Premium Page Styles --- */
+.premium-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.pricing-card {
+    background-color: rgba(42, 42, 42, 0.85);
+    border: 1px solid var(--primary-accent);
+    box-shadow: 0 0 25px rgba(165, 0, 255, 0.3);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.plan-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.plan-header h2 {
+    font-size: 2.5em;
+    color: #ffffff;
+}
+
+.most-popular-badge {
+    background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.plan-price {
+    font-size: 3.5em;
+    font-weight: 800;
+    color: var(--line-accent-default);
+    margin: 10px 0;
+}
+
+.price-period {
+    font-size: 0.4em;
+    font-weight: 400;
+    color: #cccccc;
+}
+
+.price-description {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+.cta-button {
+    width: 100%;
+    max-width: 400px;
+    padding: 18px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background: linear-gradient(45deg, var(--line-accent-default), var(--line-accent-glow));
+    border: none;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.cta-button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px var(--line-accent-glow);
+}
+
+.features-list {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    text-align: left;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05em;
+}
+
+.feature-item i {
+    color: var(--line-accent-default);
+}
+
+.faq-section {
+    text-align: center;
+}
+
+.faq-section h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.faq-item {
+    background-color: rgba(42, 42, 42, 0.75);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.faq-item h4 {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: #e0e0e0;
+}
+
+.faq-item p {
+    font-size: 0.95em;
+    color: #cccccc;
+    line-height: 1.6;
 }
 
 @media (max-width: 768px) {
