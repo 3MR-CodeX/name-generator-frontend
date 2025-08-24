@@ -1837,3 +1837,8 @@ body.light-theme {
         text-align: center;
     }
 }
+
+/* Add this rule to fix spacing in the Name Analyzer */
+#name-analyzer-view .input-box label {
+    margin-bottom: 5px;
+}
