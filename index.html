@@ -435,24 +435,62 @@
             </div>
         </div>
 
-        <!-- NEW: Reworked Premium Page View -->
         <div id="premium-view" class="hidden">
-            <h1><i class="fas fa-crown"></i> Go Premium</h1>
-            <p class="description">Unlock the full potential of NameIT and take your branding to the next level.</p>
+            <h1><i class="fas fa-crown"></i> Unlock Your Naming Superpowers</h1>
+            <p class="description">Go beyond basic generation. Purchase a one-time credit pack to unlock all premium features forever.</p>
             
             <div class="premium-container">
-                <div class="pricing-card">
-                    <div class="plan-header">
-                        <h2>NameIT Pro</h2>
-                        <div class="most-popular-badge">Most Popular</div>
+                <div class="pricing-grid">
+                    <!-- Pricing Card 1: Starter -->
+                    <div class="pricing-card">
+                        <div class="plan-header">
+                            <h2>Starter Pack</h2>
+                        </div>
+                        <div class="plan-price">
+                            $4.99 <span class="price-period">/ one-time</span>
+                        </div>
+                        <div class="credit-amount">
+                            <i class="fas fa-coins"></i> 1,000 Credits
+                        </div>
+                        <p class="price-description">Perfect for a single project or occasional use.</p>
+                        <button class="cta-button" onclick="purchaseCredits(1000)">Get Started</button>
                     </div>
-                    <div class="plan-price">
-                        $9.99 <span class="price-period">/ month</span>
+
+                    <!-- Pricing Card 2: Pro (Most Popular) -->
+                    <div class="pricing-card popular">
+                        <div class="plan-header">
+                            <h2>Pro Pack</h2>
+                            <div class="most-popular-badge">Most Popular</div>
+                        </div>
+                        <div class="plan-price">
+                            $9.99 <span class="price-period">/ one-time</span>
+                        </div>
+                        <div class="credit-amount">
+                            <i class="fas fa-coins"></i> 2,500 Credits
+                        </div>
+                        <p class="price-description">Best value for multiple projects and in-depth analysis.</p>
+                        <button class="cta-button" onclick="purchaseCredits(2500)">Unlock Pro</button>
                     </div>
-                    <p class="price-description">Billed monthly. Cancel anytime.</p>
-                    <button id="subscribe-btn" class="cta-button"><i class="fas fa-rocket"></i> Upgrade to Pro</button>
+
+                    <!-- Pricing Card 3: Business -->
+                    <div class="pricing-card">
+                        <div class="plan-header">
+                            <h2>Business Pack</h2>
+                        </div>
+                        <div class="plan-price">
+                            $19.99 <span class="price-period">/ one-time</span>
+                        </div>
+                        <div class="credit-amount">
+                            <i class="fas fa-coins"></i> 6,000 Credits
+                        </div>
+                        <p class="price-description">For agencies, serial entrepreneurs, and power users.</p>
+                        <button class="cta-button" onclick="purchaseCredits(6000)">Go Business</button>
+                    </div>
+                </div>
+
+                <div class="features-unlocked-section">
+                    <h3>All Credit Packs Unlock These Pro Features Forever:</h3>
                     <div class="features-list">
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Unlimited Generations</div>
                         <div class="feature-item"><i class="fas fa-check-circle"></i> Smarter AI Model</div>
                         <div class="feature-item"><i class="fas fa-check-circle"></i> Continuous Refining</div>
                         <div class="feature-item"><i class="fas fa-check-circle"></i> Availability Checker</div>
@@ -466,16 +504,16 @@
                 <div class="faq-section">
                     <h3>Frequently Asked Questions</h3>
                     <div class="faq-item">
-                        <h4>Can I cancel my subscription anytime?</h4>
-                        <p>Yes, you can cancel your subscription at any time from your account settings. You will retain access to premium features until the end of your current billing period.</p>
+                        <h4>Are these really one-time payments?</h4>
+                        <p>Yes. This is not a subscription. You buy a credit pack once and use the credits at your own pace. They never expire.</p>
                     </div>
                     <div class="faq-item">
-                        <h4>What payment methods do you accept?</h4>
-                        <p>We accept all major credit cards, including Visa, Mastercard, and American Express, processed securely through Stripe.</p>
+                        <h4>What can I use credits on?</h4>
+                        <p>Credits are used for all AI actions. A basic name generation costs 1 credit per name, while advanced tools like the Name Analyzer cost a few more. Your credit balance is always visible at the top of the page.</p>
                     </div>
                     <div class="faq-item">
-                        <h4>Is there a yearly plan?</h4>
-                        <p>We are planning to introduce a yearly plan with a discount in the near future. Stay tuned for updates!</p>
+                        <h4>What happens when I run out of credits?</h4>
+                        <p>You can simply purchase another pack of any size whenever you need to top up. All your unlocked Pro features will remain active.</p>
                     </div>
                 </div>
             </div>
