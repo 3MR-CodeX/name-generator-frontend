@@ -1895,6 +1895,7 @@ body.light-theme {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     margin-bottom: 40px;
+    align-items: stretch;
 }
 
 .pricing-card {
@@ -1904,6 +1905,8 @@ body.light-theme {
     padding: 30px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .pricing-card:hover {
@@ -1914,16 +1917,27 @@ body.light-theme {
 .pricing-card.popular {
     border-color: var(--primary-accent);
     box-shadow: 0 0 25px rgba(165, 0, 255, 0.3);
+    transform: scale(1.05);
+}
+.pricing-card.popular:hover {
+    transform: scale(1.07) translateY(-10px);
 }
 
 .plan-header {
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .plan-header h2 {
-    font-size: 2em;
+    font-size: 2.2em;
     color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.plan-subtitle {
+    font-size: 0.9em;
+    color: #aaa;
+    min-height: 2.2em;
 }
 
 .most-popular-badge {
@@ -1947,28 +1961,10 @@ body.light-theme {
     margin: 10px 0;
 }
 
-.price-period {
-    font-size: 0.4em;
-    font-weight: 400;
-    color: #cccccc;
-}
-
-.credit-amount {
-    font-size: 1.5em;
-    font-weight: 500;
-    margin-bottom: 10px;
-}
-
-.credit-amount i {
-    color: var(--line-accent-default);
-    margin-right: 8px;
-}
-
 .price-description {
     font-size: 0.9em;
     color: #aaa;
     margin-bottom: 25px;
-    min-height: 40px;
 }
 
 .cta-button {
@@ -1979,6 +1975,7 @@ body.light-theme {
     background-color: var(--primary-accent);
     border: none;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s;
+    margin-top: auto; /* Pushes button to the bottom */
 }
 .cta-button:hover {
     transform: scale(1.02);
@@ -1989,36 +1986,50 @@ body.light-theme {
     margin-right: 8px;
 }
 
-.features-unlocked-section {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.features-unlocked-section h3 {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-}
-
 .features-list {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
+    margin-top: 25px;
+    list-style: none;
+    padding: 0;
     text-align: left;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .feature-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.05em;
+    gap: 12px;
+    font-size: 1em;
+    margin-bottom: 12px;
 }
 
 .feature-item i {
-    color: var(--line-accent-default);
+    width: 20px;
+    text-align: center;
+}
+.feature-item.included i {
+    color: #50fa7b;
+}
+.feature-item.excluded {
+    color: #777;
+    text-decoration: line-through;
+}
+.feature-item.excluded i {
+    color: #555;
+}
+.feature-item.included i.fa-star {
+    color: #f1fa8c;
+}
+
+.features-unlocked-section {
+    text-align: center;
+    margin: 40px 0;
+    padding: 20px;
+    background-color: rgba(42, 42, 42, 0.75);
+    border-radius: 8px;
+}
+
+.features-unlocked-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
 }
 
 .faq-section {
@@ -2055,5 +2066,11 @@ body.light-theme {
     .meet-the-ai {
         flex-direction: column;
         text-align: center;
+    }
+    .pricing-card.popular {
+        transform: scale(1);
+    }
+    .pricing-card.popular:hover {
+        transform: scale(1.02) translateY(-10px);
     }
 }
