@@ -1823,7 +1823,6 @@ body.light-theme {
     color: #cccccc;
 }
 
-/* MODIFIED: New classes for reworked HTML structure */
 .persona-inputs-row {
     display: flex;
     gap: 20px;
@@ -1838,6 +1837,24 @@ body.light-theme {
 
 .persona-input-group label {
     margin-bottom: 5px;
+}
+
+/* --- NEW: Styles for Alternatives Section --- */
+#alternatives-generator-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(42, 42, 42, 0.75);
+    border: 1px solid var(--primary-accent);
+    border-radius: 8px;
+}
+
+#generate-alternatives-btn {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#alternatives-results-container .output-box {
+    flex: 1 1 100%; /* Make boxes full width on this view */
 }
 
 
