@@ -1451,11 +1451,6 @@ pre {
     min-height: 120px;
     resize: none;
 }
-/* Add this new rule to your style.css file */
-.persona-inputs-row label {
-    margin-bottom: 5px;
-}
-
 
 /* --- Styles for Outer Box and Import Button --- */
 .outer-input-box {
@@ -1750,7 +1745,7 @@ body.light-theme {
     animation: pulse-hexagon 3s infinite ease-in-out;
 }
 
-/* --- NEW: Persona Analyzer Styles --- */
+/* --- Persona Analyzer Styles --- */
 .persona-section {
     position: relative;
     border-color: var(--line-accent-glow) !important;
@@ -1832,12 +1827,13 @@ body.light-theme {
     color: #cccccc;
 }
 
+#name-analyzer-view .input-box label {
+    margin-bottom: 5px;
+}
+
 @media (max-width: 768px) {
     .meet-the-ai {
         flex-direction: column;
         text-align: center;
     }
 }
-
-
-
