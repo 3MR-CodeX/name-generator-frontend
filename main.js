@@ -83,6 +83,9 @@ const refinedReasonsCustomPre = document.getElementById("refined_reasons_custom"
 const refinerLoadingPlaceholder = document.getElementById("refiner-loading-placeholder");
 const platformsDropdownBtn = document.getElementById("platforms-dropdown-btn");
 const platformsDropdownList = document.getElementById("platforms-dropdown-list");
+const alternativesGeneratorSection = document.getElementById("alternatives-generator-section"); // NEW
+const generateAlternativesBtn = document.getElementById("generate-alternatives-btn"); // NEW
+const alternativesResultsContainer = document.getElementById("alternatives-results-container"); // NEW
 
 // --- Settings Page Selectors ---
 const themeSelect = document.getElementById('theme-select');
@@ -164,6 +167,7 @@ function setupEventListeners() {
     if (customRefineBtn) customRefineBtn.onclick = customRefineName;
     if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability;
     if (analyzeNameBtn) analyzeNameBtn.onclick = analyzeName;
+    if (generateAlternativesBtn) generateAlternativesBtn.onclick = generateAlternatives; // NEW
 
     // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
@@ -279,11 +283,11 @@ function hideLoading(targetElement) {
 }
 
 function disableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn].forEach(btn => { if(btn) btn.disabled = true; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn].forEach(btn => { if(btn) btn.disabled = true; });
 }
 
 function enableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn].forEach(btn => { if(btn) btn.disabled = false; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn].forEach(btn => { if(btn) btn.disabled = false; });
 }
 
 function showTemporaryPlaceholderError(element, message) {
@@ -978,7 +982,6 @@ async function analyzeName() {
     const nameToAnalyze = nameInput.value.trim();
     const context = contextInput.value.trim();
 
-    // NEW: Get persona inputs
     const audienceDesc = document.getElementById('audience-description').value.trim();
     const audienceLoc = document.getElementById('audience-location').value.trim();
     const audienceVals = document.getElementById('audience-values').value.trim();
@@ -994,6 +997,8 @@ async function analyzeName() {
 
     const resultsContainer = document.getElementById('analyzer-results-container');
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    alternativesGeneratorSection.classList.add('hidden');
+    alternativesResultsContainer.innerHTML = '';
     disableButtons();
 
     try {
@@ -1001,7 +1006,6 @@ async function analyzeName() {
         let endpoint = `${BACKEND_URL}/analyze-name`;
         let payload = { name: nameToAnalyze, context: context };
 
-        // If persona fields are filled, switch to the premium endpoint and add data
         if (audienceDesc && audienceLoc && audienceVals) {
             endpoint = `${BACKEND_URL}/analyze-persona`;
             payload = {
@@ -1031,12 +1035,13 @@ async function analyzeName() {
             window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
         }
         
-        // Render based on which endpoint was called
         if (endpoint.includes('persona')) {
             renderPersonaAnalysisResults(data.analysis);
         } else {
             renderAnalysisResults(data.analysis);
         }
+        
+        alternativesGeneratorSection.classList.remove('hidden');
 
     } catch (error) {
         resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
@@ -1044,6 +1049,68 @@ async function analyzeName() {
         enableButtons();
     }
 }
+
+// NEW: Function to handle generating better alternatives
+async function generateAlternatives() {
+    const nameInput = document.getElementById('name-to-analyze');
+    const contextInput = document.getElementById('analysis-context');
+    const nameToAnalyze = nameInput.value.trim();
+    const context = contextInput.value.trim();
+
+    const audienceDesc = document.getElementById('audience-description').value.trim();
+    const audienceLoc = document.getElementById('audience-location').value.trim();
+    const audienceVals = document.getElementById('audience-values').value.trim();
+
+    if (!nameToAnalyze || !context) {
+        alert("Please ensure the original name and context are filled out before generating alternatives.");
+        return;
+    }
+
+    showLoading(alternativesResultsContainer);
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const payload = {
+            name: nameToAnalyze,
+            context: context,
+            audience: audienceDesc,
+            location: audienceLoc,
+            values: audienceVals
+        };
+
+        const response = await fetch(`${BACKEND_URL}/generate-alternatives`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "An error occurred.");
+        }
+
+        const data = await response.json();
+        
+        if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
+            const maxGenerations = window.auth.currentUser ? 500 : 25;
+            window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
+        }
+
+        let resultsHtml = '<div class="output-section">';
+        resultsHtml += `<div class="output-box"><div class="output-header"><label>Better Alternatives</label></div><pre>${data.names.join("\n")}</pre></div>`;
+        resultsHtml += `<div class="output-box"><div class="output-header"><label>Explanations</label></div><pre>${data.reasons.join("\n\n")}</pre></div>`;
+        resultsHtml += '</div>';
+        
+        alternativesResultsContainer.innerHTML = resultsHtml;
+
+    } catch (error) {
+        alternativesResultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
+    } finally {
+        enableButtons();
+    }
+}
+
 
 function renderAnalysisResults(data) {
     const resultsContainer = document.getElementById('analyzer-results-container');
@@ -1102,7 +1169,6 @@ function renderAnalysisResults(data) {
     `;
 }
 
-// NEW: Function to render the detailed persona analysis
 function renderPersonaAnalysisResults(data) {
     const resultsContainer = document.getElementById('analyzer-results-container');
     
