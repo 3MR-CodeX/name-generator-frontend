@@ -1451,6 +1451,11 @@ pre {
     min-height: 120px;
     resize: none;
 }
+/* Add this new rule to your style.css file */
+.persona-inputs-row label {
+    margin-bottom: 5px;
+}
+
 
 /* --- Styles for Outer Box and Import Button --- */
 .outer-input-box {
@@ -1833,5 +1838,6 @@ body.light-theme {
         text-align: center;
     }
 }
+
 
 
