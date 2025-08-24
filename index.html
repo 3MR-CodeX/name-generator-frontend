@@ -283,7 +283,6 @@
                     <label for="audience-description">Target Audience</label>
                     <textarea id="audience-description" placeholder="e.g., University students, new parents, tech enthusiasts"></textarea>
                     
-                    <!-- MODIFIED: Reworked this section with new classes for reliable styling -->
                     <div class="persona-inputs-row">
                         <div class="persona-input-group">
                             <label for="audience-location">Location</label>
@@ -301,6 +300,13 @@
             </div>
             <div id="analyzer-results-container">
                 <!-- Analysis results will appear here -->
+            </div>
+            <!-- NEW: Section for better alternatives -->
+            <div id="alternatives-generator-section" class="hidden">
+                <button id="generate-alternatives-btn" class="generate-btn">🧠 Generate Better Alternatives</button>
+                <div id="alternatives-results-container">
+                    <!-- Better alternatives will be rendered here -->
+                </div>
             </div>
         </div>
 
