@@ -1802,7 +1802,9 @@ body.light-theme {
     grid-column: 1 / -1; /* Make summary span full width */
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid var(--line-accent-glow);
+    border-radius: 8px; /* MODIFIED: Added rounded corners */
     text-align: center;
+    padding: 20px;
 }
 
 .persona-summary-card h3 {
@@ -1839,24 +1841,36 @@ body.light-theme {
     margin-bottom: 5px;
 }
 
-/* --- NEW: Styles for Alternatives Section --- */
+/* --- Alternatives Section Styles --- */
 #alternatives-generator-section {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: rgba(42, 42, 42, 0.75);
-    border: 1px solid var(--primary-accent);
-    border-radius: 8px;
-}
-
-#generate-alternatives-btn {
-    width: 100%;
-    margin-bottom: 20px;
+    margin-top: -20px; /* Pulls it up to align with the other button */
 }
 
 #alternatives-results-container .output-box {
-    flex: 1 1 100%; /* Make boxes full width on this view */
+    flex: 1 1 100%; 
 }
 
+#alternatives-results-container .alternative-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 5px;
+    border-bottom: 1px solid #4a4a4a;
+}
+#alternatives-results-container .alternative-item:last-child {
+    border-bottom: none;
+}
+
+#alternatives-results-container .alternative-name {
+    font-weight: 500;
+}
+
+#alternatives-results-container .alternative-score {
+    font-weight: 500;
+    color: var(--line-accent-default);
+    flex-shrink: 0;
+    margin-left: 15px;
+}
 
 @media (max-width: 768px) {
     .meet-the-ai {
