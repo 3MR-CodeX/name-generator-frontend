@@ -1843,7 +1843,8 @@ body.light-theme {
 
 /* --- Alternatives Section Styles --- */
 #alternatives-generator-section {
-    margin-top: -20px; /* Pulls it up to align with the other button */
+    margin-top: 20px; /* MODIFIED: Changed from -20px to 20px for spacing */
+    margin-bottom: 0; /* Aligns with other button sections */
 }
 
 #alternatives-results-container .output-box {
@@ -1870,6 +1871,16 @@ body.light-theme {
     color: var(--line-accent-default);
     flex-shrink: 0;
     margin-left: 15px;
+}
+
+.alternatives-list, .alternatives-reasons {
+    padding: 10px;
+}
+.alternatives-reasons p {
+    margin-bottom: 10px;
+}
+.alternatives-reasons p:last-child {
+    margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
