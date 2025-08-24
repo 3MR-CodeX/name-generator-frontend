@@ -436,84 +436,69 @@
         </div>
 
         <div id="premium-view" class="hidden">
-            <h1><i class="fas fa-crown"></i> Unlock Your Naming Superpowers</h1>
-            <p class="description">Go beyond basic generation. Purchase a one-time credit pack to unlock all premium features forever.</p>
+            <h1><i class="fas fa-crown"></i> NameIT Premium Plans</h1>
+            <p class="description">Choose the right plan to unlock your full creative potential. One-time payments, lifetime access.</p>
             
             <div class="premium-container">
                 <div class="pricing-grid">
-                    <!-- Pricing Card 1: Starter -->
+                    <!-- Starter Plan -->
                     <div class="pricing-card">
                         <div class="plan-header">
-                            <h2>Starter Pack</h2>
+                            <h2>Starter</h2>
+                            <p class="plan-subtitle">For personal projects</p>
                         </div>
-                        <div class="plan-price">
-                            $4.99 <span class="price-period">/ one-time</span>
-                        </div>
-                        <div class="credit-amount">
-                            <i class="fas fa-coins"></i> 1,000 Credits
-                        </div>
-                        <p class="price-description">Perfect for a single project or occasional use.</p>
-                        <button class="cta-button" onclick="purchaseCredits(1000)">Get Started</button>
+                        <div class="plan-price">$4.99</div>
+                        <p class="price-description">One-Time Payment</p>
+                        <button class="cta-button" onclick="purchasePlan('starter')">Get Started</button>
+                        <ul class="features-list">
+                            <li class="feature-item included"><i class="fas fa-check"></i> 500 Credits</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Smarter AI Model</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> Availability Checker</li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> Name Analyzer</li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> Priority Support</li>
+                        </ul>
                     </div>
 
-                    <!-- Pricing Card 2: Pro (Most Popular) -->
+                    <!-- Pro Plan -->
                     <div class="pricing-card popular">
                         <div class="plan-header">
-                            <h2>Pro Pack</h2>
-                            <div class="most-popular-badge">Most Popular</div>
+                            <h2>Pro</h2>
+                            <p class="plan-subtitle">For professionals & startups</p>
+                            <div class="most-popular-badge">Best Value</div>
                         </div>
-                        <div class="plan-price">
-                            $9.99 <span class="price-period">/ one-time</span>
-                        </div>
-                        <div class="credit-amount">
-                            <i class="fas fa-coins"></i> 2,500 Credits
-                        </div>
-                        <p class="price-description">Best value for multiple projects and in-depth analysis.</p>
-                        <button class="cta-button" onclick="purchaseCredits(2500)">Unlock Pro</button>
+                        <div class="plan-price">$9.99</div>
+                        <p class="price-description">One-Time Payment</p>
+                        <button class="cta-button" onclick="purchasePlan('pro')">Go Pro</button>
+                        <ul class="features-list">
+                            <li class="feature-item included"><i class="fas fa-check"></i> 1,500 Credits</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Smarter AI Model</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Availability Checker</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Name Analyzer</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Priority Support</li>
+                        </ul>
                     </div>
 
-                    <!-- Pricing Card 3: Business -->
+                    <!-- Business Plan -->
                     <div class="pricing-card">
                         <div class="plan-header">
-                            <h2>Business Pack</h2>
+                            <h2>Business</h2>
+                            <p class="plan-subtitle">For agencies & power users</p>
                         </div>
-                        <div class="plan-price">
-                            $19.99 <span class="price-period">/ one-time</span>
-                        </div>
-                        <div class="credit-amount">
-                            <i class="fas fa-coins"></i> 6,000 Credits
-                        </div>
-                        <p class="price-description">For agencies, serial entrepreneurs, and power users.</p>
-                        <button class="cta-button" onclick="purchaseCredits(6000)">Go Business</button>
-                    </div>
-                </div>
-
-                <div class="features-unlocked-section">
-                    <h3>All Credit Packs Unlock These Pro Features Forever:</h3>
-                    <div class="features-list">
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Smarter AI Model</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Continuous Refining</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Availability Checker</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Audience Persona Analysis</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> More Styles & Options</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Logo Generator (Soon)</div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i> Priority Support</div>
-                    </div>
-                </div>
-
-                <div class="faq-section">
-                    <h3>Frequently Asked Questions</h3>
-                    <div class="faq-item">
-                        <h4>Are these really one-time payments?</h4>
-                        <p>Yes. This is not a subscription. You buy a credit pack once and use the credits at your own pace. They never expire.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>What can I use credits on?</h4>
-                        <p>Credits are used for all AI actions. A basic name generation costs 1 credit per name, while advanced tools like the Name Analyzer cost a few more. Your credit balance is always visible at the top of the page.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>What happens when I run out of credits?</h4>
-                        <p>You can simply purchase another pack of any size whenever you need to top up. All your unlocked Pro features will remain active.</p>
+                        <div class="plan-price">$19.99</div>
+                        <p class="price-description">One-Time Payment</p>
+                        <button class="cta-button" onclick="purchasePlan('business')">Go Business</button>
+                        <ul class="features-list">
+                            <li class="feature-item included"><i class="fas fa-check"></i> 5,000 Credits</li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong>Ultra Smart AI Model</strong></li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong>Exclusive Styles</strong></li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong>Audience Persona Analysis</strong></li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> Logo Generator (Soon)</li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong>Top Priority Support</strong></li>
+                        </ul>
                     </div>
                 </div>
             </div>
