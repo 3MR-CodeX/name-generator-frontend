@@ -977,6 +977,7 @@ function renderAvailabilityResults(data) {
 }
 
 async function analyzeName() {
+    if (analyzeNameBtn.disabled) return;
     const nameInput = document.getElementById('name-to-analyze');
     const contextInput = document.getElementById('analysis-context');
     const nameToAnalyze = nameInput.value.trim();
@@ -1046,11 +1047,24 @@ async function analyzeName() {
     } catch (error) {
         resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
     } finally {
-        enableButtons();
+        // MODIFIED: Added 5 second cooldown
+        let countdown = 5;
+        if(analyzeNameBtn) analyzeNameBtn.textContent = `Please wait ${countdown}s...`;
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                if(analyzeNameBtn) analyzeNameBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(analyzeNameBtn) analyzeNameBtn.textContent = '🔬 Analyze Name'; 
+                enableButtons(); 
+            }
+        }, 1000);
     }
 }
 
 async function generateAlternatives() {
+    if (generateAlternativesBtn.disabled) return;
     const nameInput = document.getElementById('name-to-analyze');
     const contextInput = document.getElementById('analysis-context');
     const nameToAnalyze = nameInput.value.trim();
@@ -1096,13 +1110,24 @@ async function generateAlternatives() {
             window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
         }
         
-        // NEW: Render scored alternatives
         renderScoredAlternatives(data.alternatives);
 
     } catch (error) {
         alternativesResultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
     } finally {
-        enableButtons();
+        // MODIFIED: Added 5 second cooldown
+        let countdown = 5;
+        if(generateAlternativesBtn) generateAlternativesBtn.textContent = `Please wait ${countdown}s...`;
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                if(generateAlternativesBtn) generateAlternativesBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(generateAlternativesBtn) generateAlternativesBtn.textContent = '🧠 Generate Better Alternatives'; 
+                enableButtons(); 
+            }
+        }, 1000);
     }
 }
 
@@ -1193,7 +1218,6 @@ function renderPersonaAnalysisResults(data) {
     `;
 }
 
-// NEW: Function to render the scored alternatives
 function renderScoredAlternatives(alternatives) {
     let namesHtml = '';
     let reasonsHtml = '';
