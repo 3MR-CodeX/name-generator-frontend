@@ -1896,6 +1896,7 @@ body.light-theme {
     gap: 30px;
     margin-bottom: 40px;
     align-items: stretch;
+    margin-top: 40px; /* MODIFIED: Added spacing */
 }
 
 .pricing-card {
@@ -1991,6 +1992,7 @@ body.light-theme {
     list-style: none;
     padding: 0;
     text-align: left;
+    flex-grow: 1; /* Ensures lists expand to fill space */
 }
 
 .feature-item {
