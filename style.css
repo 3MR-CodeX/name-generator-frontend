@@ -1308,10 +1308,6 @@ pre {
     flex-direction: column;
 }
 
-.input-wrapper label {
-    margin-bottom: 5px;
-}
-
 #name-to-check {
     height: 45px;
 }
@@ -1827,18 +1823,27 @@ body.light-theme {
     color: #cccccc;
 }
 
-#name-analyzer-view .input-box label {
+/* MODIFIED: New classes for reworked HTML structure */
+.persona-inputs-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.persona-input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.persona-input-group label {
     margin-bottom: 5px;
 }
+
 
 @media (max-width: 768px) {
     .meet-the-ai {
         flex-direction: column;
         text-align: center;
     }
-}
-
-/* Add this rule to fix spacing in the Name Analyzer */
-#name-analyzer-view .input-box label {
-    margin-bottom: 5px;
 }
