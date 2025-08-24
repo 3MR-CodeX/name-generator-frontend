@@ -1744,7 +1744,7 @@ body.light-theme {
 /* --- Persona Analyzer Styles --- */
 .persona-section {
     position: relative;
-    border-color: var(--line-accent-glow) !important;
+    border-color: #4a4a4a !important;
 }
 
 .premium-badge {
@@ -1801,8 +1801,8 @@ body.light-theme {
 .persona-summary-card {
     grid-column: 1 / -1; /* Make summary span full width */
     background-color: rgba(42, 42, 42, 0.75);
-    border: 1px solid var(--line-accent-glow);
-    border-radius: 8px; /* MODIFIED: Added rounded corners */
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
     text-align: center;
     padding: 20px;
 }
@@ -1843,8 +1843,8 @@ body.light-theme {
 
 /* --- Alternatives Section Styles --- */
 #alternatives-generator-section {
-    margin-top: 20px; /* MODIFIED: Changed from -20px to 20px for spacing */
-    margin-bottom: 0; /* Aligns with other button sections */
+    margin-top: 20px;
+    margin-bottom: 0;
 }
 
 #alternatives-results-container .output-box {
