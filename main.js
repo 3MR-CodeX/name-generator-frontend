@@ -978,6 +978,11 @@ async function analyzeName() {
     const nameToAnalyze = nameInput.value.trim();
     const context = contextInput.value.trim();
 
+    // NEW: Get persona inputs
+    const audienceDesc = document.getElementById('audience-description').value.trim();
+    const audienceLoc = document.getElementById('audience-location').value.trim();
+    const audienceVals = document.getElementById('audience-values').value.trim();
+
     if (!nameToAnalyze) {
         showTemporaryPlaceholderError(nameInput, "Please enter a name to analyze.");
         return;
@@ -993,10 +998,25 @@ async function analyzeName() {
 
     try {
         const token = await getUserToken();
-        const response = await fetch(`${BACKEND_URL}/analyze-name`, {
+        let endpoint = `${BACKEND_URL}/analyze-name`;
+        let payload = { name: nameToAnalyze, context: context };
+
+        // If persona fields are filled, switch to the premium endpoint and add data
+        if (audienceDesc && audienceLoc && audienceVals) {
+            endpoint = `${BACKEND_URL}/analyze-persona`;
+            payload = {
+                name: nameToAnalyze,
+                context: context,
+                audience: audienceDesc,
+                location: audienceLoc,
+                values: audienceVals
+            };
+        }
+
+        const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ name: nameToAnalyze, context: context })
+            body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
@@ -1011,7 +1031,12 @@ async function analyzeName() {
             window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
         }
         
-        renderAnalysisResults(data.analysis);
+        // Render based on which endpoint was called
+        if (endpoint.includes('persona')) {
+            renderPersonaAnalysisResults(data.analysis);
+        } else {
+            renderAnalysisResults(data.analysis);
+        }
 
     } catch (error) {
         resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
@@ -1076,6 +1101,37 @@ function renderAnalysisResults(data) {
         </div>
     `;
 }
+
+// NEW: Function to render the detailed persona analysis
+function renderPersonaAnalysisResults(data) {
+    const resultsContainer = document.getElementById('analyzer-results-container');
+    
+    const createMetricCard = (title, score, explanation) => `
+        <div class="persona-metric-card">
+            <div class="metric-header">
+                <h4>${title}</h4>
+                <span class="metric-score">${score}/10</span>
+            </div>
+            <p>${explanation}</p>
+        </div>
+    `;
+
+    resultsContainer.innerHTML = `
+        <div class="persona-analysis-report">
+            <div class="persona-summary-card">
+                <h3>Overall Persona Score</h3>
+                <div class="overall-score-display">${data.overall_score}<small>/10</small></div>
+                <p><strong>Final Recommendation:</strong> ${data.final_recommendation}</p>
+            </div>
+            ${createMetricCard('Linguistic & Phonetic Appeal', data.linguistic_appeal.score, data.linguistic_appeal.explanation)}
+            ${createMetricCard('Cultural Resonance', data.cultural_resonance.score, data.cultural_resonance.explanation)}
+            ${createMetricCard('Market Fitness', data.market_fitness.score, data.market_fitness.explanation)}
+            ${createMetricCard('Emotional Connection', data.emotional_connection.score, data.emotional_connection.explanation)}
+            ${createMetricCard('Brand Story Potential', data.brand_story_potential.score, data.brand_story_potential.explanation)}
+        </div>
+    `;
+}
+
 
 function openHistoryImportModal(targetInputId) {
     if (historyImportModal) {
