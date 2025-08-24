@@ -83,9 +83,9 @@ const refinedReasonsCustomPre = document.getElementById("refined_reasons_custom"
 const refinerLoadingPlaceholder = document.getElementById("refiner-loading-placeholder");
 const platformsDropdownBtn = document.getElementById("platforms-dropdown-btn");
 const platformsDropdownList = document.getElementById("platforms-dropdown-list");
-const alternativesGeneratorSection = document.getElementById("alternatives-generator-section"); // NEW
-const generateAlternativesBtn = document.getElementById("generate-alternatives-btn"); // NEW
-const alternativesResultsContainer = document.getElementById("alternatives-results-container"); // NEW
+const alternativesGeneratorSection = document.getElementById("alternatives-generator-section");
+const generateAlternativesBtn = document.getElementById("generate-alternatives-btn");
+const alternativesResultsContainer = document.getElementById("alternatives-results-container");
 
 // --- Settings Page Selectors ---
 const themeSelect = document.getElementById('theme-select');
@@ -167,7 +167,7 @@ function setupEventListeners() {
     if (customRefineBtn) customRefineBtn.onclick = customRefineName;
     if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability;
     if (analyzeNameBtn) analyzeNameBtn.onclick = analyzeName;
-    if (generateAlternativesBtn) generateAlternativesBtn.onclick = generateAlternatives; // NEW
+    if (generateAlternativesBtn) generateAlternativesBtn.onclick = generateAlternatives;
 
     // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
@@ -1050,7 +1050,6 @@ async function analyzeName() {
     }
 }
 
-// NEW: Function to handle generating better alternatives
 async function generateAlternatives() {
     const nameInput = document.getElementById('name-to-analyze');
     const contextInput = document.getElementById('analysis-context');
@@ -1096,13 +1095,9 @@ async function generateAlternatives() {
             const maxGenerations = window.auth.currentUser ? 500 : 25;
             window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
         }
-
-        let resultsHtml = '<div class="output-section">';
-        resultsHtml += `<div class="output-box"><div class="output-header"><label>Better Alternatives</label></div><pre>${data.names.join("\n")}</pre></div>`;
-        resultsHtml += `<div class="output-box"><div class="output-header"><label>Explanations</label></div><pre>${data.reasons.join("\n\n")}</pre></div>`;
-        resultsHtml += '</div>';
         
-        alternativesResultsContainer.innerHTML = resultsHtml;
+        // NEW: Render scored alternatives
+        renderScoredAlternatives(data.alternatives);
 
     } catch (error) {
         alternativesResultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
@@ -1194,6 +1189,35 @@ function renderPersonaAnalysisResults(data) {
             ${createMetricCard('Market Fitness', data.market_fitness.score, data.market_fitness.explanation)}
             ${createMetricCard('Emotional Connection', data.emotional_connection.score, data.emotional_connection.explanation)}
             ${createMetricCard('Brand Story Potential', data.brand_story_potential.score, data.brand_story_potential.explanation)}
+        </div>
+    `;
+}
+
+// NEW: Function to render the scored alternatives
+function renderScoredAlternatives(alternatives) {
+    let namesHtml = '';
+    let reasonsHtml = '';
+
+    alternatives.forEach(alt => {
+        namesHtml += `
+            <div class="alternative-item">
+                <span class="alternative-name">${alt.name}</span>
+                <span class="alternative-score">${alt.score}/10</span>
+            </div>
+        `;
+        reasonsHtml += `<p><strong>${alt.name}:</strong> ${alt.reason}</p>`;
+    });
+
+    alternativesResultsContainer.innerHTML = `
+        <div class="output-section" style="margin-top: 20px;">
+            <div class="output-box">
+                <div class="output-header"><label>Better Alternatives</label></div>
+                <div class="alternatives-list">${namesHtml}</div>
+            </div>
+            <div class="output-box">
+                <div class="output-header"><label>Justifications</label></div>
+                <div class="alternatives-reasons">${reasonsHtml}</div>
+            </div>
         </div>
     `;
 }
