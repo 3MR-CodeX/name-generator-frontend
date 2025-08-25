@@ -2115,12 +2115,6 @@ body.light-theme {
 }
 
 /* --- Available Alternatives Results --- */
-.alt-results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
 
 .alt-result-card {
     background-color: rgba(42, 42, 42, 0.75);
@@ -2172,4 +2166,59 @@ body.light-theme {
 .alt-detail-item span:last-child {
     margin-left: auto;
     font-weight: bold;
+}
+
+/* --- NEW STYLES for Available Alternatives --- */
+
+/* This creates the main grid container for the result cards. 
+   It automatically adjusts the number of columns based on the available width. */
+.alternatives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* This styles each individual result card within the grid. */
+.alternative-card {
+    display: flex;
+    flex-direction: column;
+}
+
+/* This ensures the list of availability checks fills the available space in the card. */
+.alternative-card .results-list {
+    flex-grow: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* Adds some padding to the header of each card. */
+.alternative-card .output-header {
+    padding: 5px 10px;
+}
+
+/* Reduces padding slightly for a more compact look inside the cards. */
+.alternative-card .result-item {
+    padding: 6px 5px;
+}
+
+
+/* --- General Purpose Additions --- */
+
+/* This is the shake animation used to alert the user to select platforms. */
+@keyframes shake-animation {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake-animation {
+    animation: shake-animation 0.5s ease-in-out;
+}
+
+/* This rule was added to give icons inside result items proper spacing. */
+.result-name i {
+    margin-right: 8px;
+    width: 1.1em;
+    text-align: center;
 }
