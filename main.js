@@ -48,7 +48,8 @@ const availabilityCheckerView = document.getElementById("availability-checker-vi
 const nameAnalyzerView = document.getElementById("name-analyzer-view");
 const settingsView = document.getElementById("settings-view");
 const aboutView = document.getElementById("about-view");
-const premiumView = document.getElementById("premium-view"); // NEW
+const premiumView = document.getElementById("premium-view");
+const creditsView = document.getElementById("credits-view"); // NEW
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refineButtonSection = document.querySelector(".refine-button-section");
@@ -189,7 +190,8 @@ function setupEventListeners() {
         const nameAnalyzerLink = document.getElementById('name-analyzer-link');
         const settingsLink = document.getElementById('settings-link');
         const aboutLink = document.getElementById('about-link');
-        const premiumLink = document.getElementById('go-premium-link'); // NEW
+        const premiumLink = document.getElementById('go-premium-link');
+        const buyCreditsLink = document.getElementById('buy-credits-link'); // NEW
 
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
@@ -197,12 +199,13 @@ function setupEventListeners() {
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
         if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
         if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); }); // NEW
+        if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (buyCreditsLink) buyCreditsLink.addEventListener('click', (e) => { e.preventDefault(); showView('credits'); if (window.isSidebarOpen) toggleSidebar(); }); // NEW
     }, 500);
 }
 
 function showView(viewName) {
-    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView]; // NEW: Added premiumView
+    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView]; // NEW: Added creditsView
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
@@ -237,8 +240,10 @@ function showView(viewName) {
         if(settingsView) settingsView.classList.remove('hidden');
     } else if (viewName === 'about') {
         if(aboutView) aboutView.classList.remove('hidden');
-    } else if (viewName === 'premium') { // NEW
+    } else if (viewName === 'premium') {
         if(premiumView) premiumView.classList.remove('hidden');
+    } else if (viewName === 'credits') { // NEW
+        if(creditsView) creditsView.classList.remove('hidden');
     }
 }
 
