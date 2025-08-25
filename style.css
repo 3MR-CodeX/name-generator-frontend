@@ -1903,8 +1903,10 @@ body.light-theme {
 }
 
 .pricing-card.popular {
-    border-color: var(--primary-accent);
-    box-shadow: 0 0 25px rgba(165, 0, 255, 0.3);
+    transform: scale(1.05);
+}
+.pricing-card.popular:hover {
+    transform: scale(1.07) translateY(-10px);
 }
 
 .plan-header {
@@ -1949,6 +1951,17 @@ body.light-theme {
     font-size: 0.9em;
     color: #aaa;
     margin-bottom: 25px;
+}
+
+.credit-amount {
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.credit-amount i {
+    color: var(--line-accent-default);
+    margin-right: 8px;
 }
 
 .cta-button {
