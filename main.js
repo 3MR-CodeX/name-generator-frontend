@@ -21,24 +21,24 @@ const FONT_OPTIONS = {
     "Verdana": "'Verdana', sans-serif"
 };
 
-// This block should be removed.
-
-const DOMAIN_OPTIONS = {
-    ".com": { type: "domain", value: "com" },
-    ".io": { type: "domain", value: "io" },
-    ".ai": { type: "domain", value: "ai" },
-    ".app": { type: "domain", value: "app" },
-    ".co": { type: "domain", value: "co" },
-    ".net": { type: "domain", value: "net" },
-    ".org": { type: "domain", value: "org" },
-    ".xyz": { type: "domain", value: "xyz" },
-    ".dev": { type: "domain", value: "dev" },
-    ".tech": { type: "domain", value: "tech" },
-    ".store": { type: "domain", value: "store" },
-    ".online": { type: "domain", value: "online" },
+const CHECKABLE_OPTIONS = {
+    "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
+    "Domains (.com, .io, .ai, .app)":  { type: "domain_group", value: ["com", "io", "ai", "app"], icon: "fas fa-globe" },
+    "Facebook":     { type: "platform", value: "Facebook", icon: "fab fa-facebook" },
+    "GitHub":       { type: "platform", value: "GitHub", icon: "fab fa-github" },
+    "Instagram":    { type: "platform", value: "Instagram", icon: "fab fa-instagram" },
+    "Medium":       { type: "platform", value: "Medium", icon: "fab fa-medium" },
+    "Pinterest":    { type: "platform", value: "Pinterest", icon: "fab fa-pinterest" },
+    "Reddit":       { type: "platform", value: "Reddit", icon: "fab fa-reddit-alien" },
+    "Roblox":       { type: "platform", value: "Roblox", icon: "fas fa-gamepad" },
+    "Rumble":       { type: "platform", value: "Rumble", icon: "fas fa-video" },
+    "SoundCloud":   { type: "platform", value: "SoundCloud", icon: "fab fa-soundcloud" },
+    "Steam":        { type: "platform", value: "Steam", icon: "fab fa-steam" },
+    "TikTok":       { type: "platform", value: "TikTok", icon: "fab fa-tiktok" },
+    "Twitch":       { type: "platform", value: "Twitch", icon: "fab fa-twitch" },
+    "X":            { type: "platform", value: "X", icon: "fab fa-twitter" },
+    "YouTube":      { type: "platform", value: "YouTube", icon: "fab fa-youtube" }
 };
-
-
 let customRefineHistoryLog = [];
 
 // --- DOM Element Selectors ---
@@ -85,8 +85,6 @@ const refinedReasonsCustomPre = document.getElementById("refined_reasons_custom"
 const refinerLoadingPlaceholder = document.getElementById("refiner-loading-placeholder");
 const platformsDropdownBtn = document.getElementById("platforms-dropdown-btn");
 const platformsDropdownList = document.getElementById("platforms-dropdown-list");
-const domainsDropdownBtn = document.getElementById("domains-dropdown-btn");
-const domainsDropdownList = document.getElementById("domains-dropdown-list");
 const alternativesGeneratorSection = document.getElementById("alternatives-generator-section");
 const generateAlternativesBtn = document.getElementById("generate-alternatives-btn");
 const alternativesResultsContainer = document.getElementById("alternatives-results-container");
@@ -125,7 +123,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     setupEventListeners();
     initializePlatformsDropdown();
-    initializeDomainsDropdown();
 
     setTimeout(() => {
         const loader = document.getElementById('loader-wrapper');
@@ -864,103 +861,56 @@ function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsMod
 
 function initializePlatformsDropdown() {
     if (!platformsDropdownList || !platformsDropdownBtn) return;
-    platformsDropdownList.innerHTML = ''; // Clear previous
-    Object.keys(PLATFORM_OPTIONS).sort().forEach(name => {
-        const option = PLATFORM_OPTIONS[name];
+
+    Object.keys(CHECKABLE_OPTIONS).sort().forEach(name => {
+        const option = CHECKABLE_OPTIONS[name];
         const label = document.createElement('label');
         label.className = 'platform-item';
+        
         const icon = document.createElement('i');
         icon.className = option.icon;
+
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = name;
         checkbox.checked = false;
+
         label.appendChild(icon);
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(` ${name}`));
         platformsDropdownList.appendChild(label);
     });
+    
     updatePlatformsButtonText();
+
     platformsDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         platformsDropdownList.classList.toggle('hidden');
         platformsDropdownBtn.classList.toggle('open');
     });
+
     document.addEventListener('click', () => {
         platformsDropdownList.classList.add('hidden');
         platformsDropdownBtn.classList.remove('open');
     });
-    platformsDropdownList.addEventListener('click', (e) => e.stopPropagation());
+
+    platformsDropdownList.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
     platformsDropdownList.addEventListener('change', updatePlatformsButtonText);
 }
 
 function updatePlatformsButtonText() {
     const selectedCount = platformsDropdownList.querySelectorAll('input[type="checkbox"]:checked').length;
     const buttonText = platformsDropdownBtn.querySelector('span:first-child');
-    if (selectedCount === Object.keys(PLATFORM_OPTIONS).length) {
-        buttonText.textContent = 'All Platforms';
-    } else if (selectedCount === 0) {
-        buttonText.textContent = 'Select Platforms';
-    } else {
-        buttonText.textContent = `${selectedCount} Platform(s) Selected`;
-    }
-}
-
-function initializeDomainsDropdown() {
-    if (!domainsDropdownList || !domainsDropdownBtn) return;
-    domainsDropdownList.innerHTML = ''; // Clear previous
     
-    // Add "Select All" option
-    const selectAllContainer = document.createElement('div');
-    selectAllContainer.className = 'select-all-container';
-    const selectAllLabel = document.createElement('label');
-    const selectAllCheckbox = document.createElement('input');
-    selectAllCheckbox.type = 'checkbox';
-    selectAllLabel.appendChild(selectAllCheckbox);
-    selectAllLabel.appendChild(document.createTextNode(' Select All'));
-    selectAllContainer.appendChild(selectAllLabel);
-    domainsDropdownList.appendChild(selectAllContainer);
-
-    selectAllCheckbox.addEventListener('change', (e) => {
-        const checkboxes = domainsDropdownList.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
-        updateDomainsButtonText();
-    });
-
-    Object.keys(DOMAIN_OPTIONS).forEach(name => {
-        const option = DOMAIN_OPTIONS[name];
-        const label = document.createElement('label');
-        label.className = 'platform-item';
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = name;
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(` ${name}`));
-        domainsDropdownList.appendChild(label);
-    });
-    updateDomainsButtonText();
-    domainsDropdownBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        domainsDropdownList.classList.toggle('hidden');
-        domainsDropdownBtn.classList.toggle('open');
-    });
-    document.addEventListener('click', () => {
-        domainsDropdownList.classList.add('hidden');
-        domainsDropdownBtn.classList.remove('open');
-    });
-    domainsDropdownList.addEventListener('click', (e) => e.stopPropagation());
-    domainsDropdownList.addEventListener('change', updateDomainsButtonText);
-}
-
-function updateDomainsButtonText() {
-    const selectedCount = domainsDropdownList.querySelectorAll('input[type="checkbox"]:not(:first-child):checked').length;
-    const buttonText = domainsDropdownBtn.querySelector('span:first-child');
-    if (selectedCount === Object.keys(DOMAIN_OPTIONS).length) {
-        buttonText.textContent = 'All Domains';
+    if (selectedCount === Object.keys(CHECKABLE_OPTIONS).length) {
+        buttonText.textContent = 'All Options';
     } else if (selectedCount === 0) {
-        buttonText.textContent = 'Select Domains';
+        buttonText.textContent = 'Select Options';
     } else {
-        buttonText.textContent = `${selectedCount} Domain(s) Selected`;
+        buttonText.textContent = `${selectedCount} Option(s) Selected`;
     }
 }
 
@@ -973,8 +923,19 @@ async function checkAvailability() {
         return;
     }
     
-    const selectedPlatforms = Array.from(platformsDropdownList.querySelectorAll('input:checked')).map(box => PLATFORM_OPTIONS[box.value].value);
-    const selectedTlds = Array.from(domainsDropdownList.querySelectorAll('input:checked:not(:first-child)')).map(box => DOMAIN_OPTIONS[box.value].value);
+    const selectedPlatforms = [];
+    const selectedTlds = [];
+
+    const checkedBoxes = platformsDropdownList.querySelectorAll('input:checked');
+    checkedBoxes.forEach(box => {
+        const optionKey = box.value;
+        const option = CHECKABLE_OPTIONS[optionKey];
+        if (option.type === 'platform') {
+            selectedPlatforms.push(option.value);
+        } else if (option.type === 'domain_group') {
+            selectedTlds.push(...option.value);
+        }
+    });
 
     const resultsContainer = document.getElementById('availability-results-container');
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
@@ -1003,7 +964,7 @@ async function checkAvailability() {
         if (data.credits !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.credits);
         }
-        renderAvailabilityResults(data);
+        renderAvailabilityTo(resultsContainer, data);
         availableAlternativesSection.classList.remove('hidden');
 
     } catch (error) {
@@ -1012,15 +973,18 @@ async function checkAvailability() {
         enableButtons();
     }
 }
-function renderAvailabilityResults(data) {
-    const resultsContainer = document.getElementById('availability-results-container');
+
+function renderAvailabilityTo(container, data) {
     let htmlContent = '';
 
-    if (data.domains && data.domains.length > 0) {
+    if (data.domains.length > 0) {
+        const domainsKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].type === 'domain_group');
+        const domainIcon = domainsKey ? CHECKABLE_OPTIONS[domainsKey].icon : 'fas fa-globe';
+
         let domainsHtml = data.domains.map(d => `
             <div class="result-item">
                 <span class="result-name">
-                    <i class="fas fa-globe"></i>
+                    <i class="${domainIcon}"></i>
                     ${d.domain}
                 </span>
                 ${d.available ? '<span class="status-available">✅ Available</span>' : '<span class="status-taken">❌ Taken</span>'}
@@ -1029,10 +993,13 @@ function renderAvailabilityResults(data) {
         htmlContent += `<div class="output-box"><div class="output-header"><label>Domain Availability</label></div><div class="results-list">${domainsHtml}</div></div>`;
     }
 
-    if (data.socials && data.socials.length > 0) {
+    if (data.socials.length > 0) {
         let socialsHtml = data.socials.map(s => {
-            const optionKey = Object.keys(PLATFORM_OPTIONS).find(key => PLATFORM_OPTIONS[key].value === s.platform);
-            const iconClass = optionKey ? PLATFORM_OPTIONS[optionKey].icon : 'fas fa-hashtag';
+            let iconClass = 'fas fa-hashtag';
+            const optionKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].value === s.platform);
+            if (optionKey) {
+                iconClass = CHECKABLE_OPTIONS[optionKey].icon;
+            }
             return `
                 <div class="result-item">
                     <span class="result-name">
@@ -1046,9 +1013,9 @@ function renderAvailabilityResults(data) {
     }
 
     if (htmlContent === '') {
-        resultsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">Please select at least one platform or domain to check.</p>';
+        container.innerHTML = '<p style="text-align: center; margin-top: 20px;">Please select at least one option from the dropdown to check.</p>';
     } else {
-        resultsContainer.innerHTML = `<div class="output-section" style="margin-top: 20px;">${htmlContent}</div>`;
+        container.innerHTML = `<div class="output-section" style="margin-top: 20px;">${htmlContent}</div>`;
     }
 }
 
@@ -1058,23 +1025,34 @@ async function generateAvailableAlternatives() {
     const nameInput = document.getElementById('name-to-check');
     const originalName = nameInput.value.trim();
     if (!originalName) {
-        showTemporaryPlaceholderError(nameInput, "Please enter a name first.");
+        alert("Original name is missing.");
         return;
     }
 
-    const selectedPlatforms = Array.from(platformsDropdownList.querySelectorAll('input:checked')).map(box => PLATFORM_OPTIONS[box.value].value);
-    const selectedTlds = Array.from(domainsDropdownList.querySelectorAll('input:checked:not(:first-child)')).map(box => DOMAIN_OPTIONS[box.value].value);
-    
-    if (selectedPlatforms.length > 0 && selectedTlds.length > 0) {
-        alert("For the best results, please generate alternatives for either platforms OR domains, not both at the same time.");
-        return;
-    }
-    if (selectedPlatforms.length === 0 && selectedTlds.length === 0) {
-        alert("Please select which platforms or domains you want to find an available name for.");
-        return;
-    }
+    const takenPlatforms = [];
+    const resultsContainer = document.getElementById('availability-results-container');
+    resultsContainer.querySelectorAll('.status-taken').forEach(el => {
+        const platformNameElement = el.previousElementSibling;
+        if (platformNameElement) {
+            const platformText = platformNameElement.textContent.trim();
+            takenPlatforms.push(platformText);
+        }
+    });
 
-    showLoading(availableAlternativesResults);
+    const selectedPlatforms = [];
+    const selectedTlds = [];
+    const checkedBoxes = platformsDropdownList.querySelectorAll('input:checked');
+    checkedBoxes.forEach(box => {
+        const optionKey = box.value;
+        const option = CHECKABLE_OPTIONS[optionKey];
+        if (option.type === 'platform') {
+            selectedPlatforms.push(option.value);
+        } else if (option.type === 'domain_group') {
+            selectedTlds.push(...option.value);
+        }
+    });
+
+    availableAlternativesResults.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
     disableButtons();
 
     try {
@@ -1082,8 +1060,9 @@ async function generateAvailableAlternatives() {
         const response = await fetch(`${BACKEND_URL}/generate-available-alternatives`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({
-                original_name: originalName,
+            body: JSON.stringify({ 
+                original_name: originalName, 
+                taken_platforms: takenPlatforms,
                 platforms: selectedPlatforms,
                 tlds: selectedTlds
             })
@@ -1091,219 +1070,135 @@ async function generateAvailableAlternatives() {
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.detail || "Failed to generate alternatives.");
+            throw new Error(errorData.detail || "An error occurred.");
         }
 
         const data = await response.json();
         if (data.credits !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.credits);
         }
-
-        renderAvailableAlternativesResults(data.results);
+        renderAvailableAlternatives(data.alternatives);
 
     } catch (error) {
         availableAlternativesResults.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
     } finally {
-        let countdown = 10;
-        generateAvailableAltBtn.textContent = `Please wait ${countdown}s...`;
-        generateAvailableAltBtn.disabled = true;
-        const interval = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                generateAvailableAltBtn.textContent = `Please wait ${countdown}s...`;
-            } else {
-                clearInterval(interval);
-                generateAvailableAltBtn.textContent = '💡 Generate Available Alternatives';
-                enableButtons();
-            }
-        }, 1000);
+        enableButtons();
     }
 }
 
-function renderAvailableAlternativesResults(results) {
-    const container = document.getElementById('available-alternatives-results');
-    if (!container) return;
-    
-    hideLoading(container);
-    container.innerHTML = '';
-
-    if (!results || results.length === 0) {
-        container.innerHTML = `<p style="text-align: center; margin-top: 20px;">Could not generate alternatives. Please try again.</p>`;
-        return;
-    }
-
-    const resultsGrid = document.createElement('div');
-    resultsGrid.className = 'alternatives-grid';
-
-    results.forEach(result => {
-        const card = document.createElement('div');
-        card.className = 'output-box alternative-card';
-
-        let cardHtml = `<div class="output-header"><label style="font-size: 1.2em;">${result.name}</label></div>`;
-        
-        const resultsList = document.createElement('div');
-        resultsList.className = 'results-list';
-
-        let combinedResults = [];
-        if (result.domains) combinedResults.push(...result.domains);
-        if (result.socials) combinedResults.push(...result.socials);
-        
-        if (combinedResults.length > 0) {
-             combinedResults.forEach(item => {
-                let iconClass = 'fas fa-hashtag';
-                let itemName = '';
-                let itemUrl = item.url || '#';
-
-                if (item.domain) { // It's a domain
-                    iconClass = 'fas fa-globe';
-                    itemName = item.domain;
-                } else { // It's a social platform
-                    const optionKey = Object.keys(PLATFORM_OPTIONS).find(key => PLATFORM_OPTIONS[key].value === item.platform);
-                    if (optionKey) iconClass = PLATFORM_OPTIONS[optionKey].icon;
-                    itemName = item.platform;
-                }
-
-                const statusHtml = item.available 
-                    ? `<span class="status-available">✅ Available</span>`
-                    : `<span class="status-taken">❌ Taken ${item.domain ? '' : `(<a href="${itemUrl}" target="_blank">View</a>)`}</span>`;
-
-                resultsList.innerHTML += `
-                    <div class="result-item">
-                        <span class="result-name">
-                            <i class="${iconClass}"></i>
-                            ${itemName}
-                        </span>
-                        ${statusHtml}
-                    </div>`;
-            });
-        } else {
-            resultsList.innerHTML = `<p style="padding: 10px; text-align: center; color: #aaa;">No platforms were checked for this name.</p>`;
-        }
-        
-        card.innerHTML = cardHtml;
-        card.appendChild(resultsList);
-        resultsGrid.appendChild(card);
+function renderAvailableAlternatives(altList) {
+    availableAlternativesResults.innerHTML = '';
+    altList.forEach(altData => {
+        const altDiv = document.createElement('div');
+        altDiv.className = 'alternative-item';
+        const nameHeader = document.createElement('h3');
+        nameHeader.textContent = altData.name;
+        altDiv.appendChild(nameHeader);
+        const miniContainer = document.createElement('div');
+        miniContainer.className = 'mini-availability-results';
+        renderAvailabilityTo(miniContainer, altData);
+        altDiv.appendChild(miniContainer);
+        availableAlternativesResults.appendChild(altDiv);
     });
-
-    container.appendChild(resultsGrid);
-}
-
-
-async function analyzeName() {
-    if (analyzeNameBtn.disabled) return;
-    const nameInput = document.getElementById('name-to-analyze');
-    const contextInput = document.getElementById('analysis-context');
-    const nameToAnalyze = nameInput.value.trim();
-    const context = contextInput.value.trim();
-
-    const audienceDesc = document.getElementById('audience-description').value.trim();
-    const audienceLoc = document.getElementById('audience-location').value.trim();
-    const audienceVals = document.getElementById('audience-values').value.trim();
-
-    if (!nameToAnalyze) {
-        showTemporaryPlaceholderError(nameInput, "Please enter a name to analyze.");
-        return;
-    }
-    if (!context) {
-        showTemporaryPlaceholderError(contextInput, "Please provide context for the name.");
-        return;
-    }
-
-    const resultsContainer = document.getElementById('analyzer-results-container');
-    resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
-    alternativesGeneratorSection.classList.add('hidden');
-    alternativesResultsContainer.innerHTML = '';
-    disableButtons();
-
-    try {
-        const token = await getUserToken();
-        let endpoint = `${BACKEND_URL}/analyze-name`;
-        let payload = { name: nameToAnalyze, context: context };
-
-        if (audienceDesc && audienceLoc && audienceVals) {
-            endpoint = `${BACKEND_URL}/analyze-persona`;
-            payload = {
-                name: nameToAnalyze,
-                context: context,
-                audience: audienceDesc,
-                location: audienceLoc,
-                values: audienceVals
-            };
-        }
-
-        const response = await fetch(endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || "An error occurred during analysis.");
-        }
-        
-        const data = await response.json();
-        
-        if (data.credits !== undefined && window.updateGenerationCountUI) {
-            window.updateGenerationCountUI(data.credits);
-        }
-        
-        if (endpoint.includes('persona')) {
-            renderPersonaAnalysisResults(data.analysis);
-        } else {
-            renderAnalysisResults(data.analysis);
-        }
-        
-        alternativesGeneratorSection.classList.remove('hidden');
-
-    } catch (error) {
-        resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
-    } finally {
-        let countdown = 5;
-        if(analyzeNameBtn) analyzeNameBtn.textContent = `Please wait ${countdown}s...`;
-        const interval = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                if(analyzeNameBtn) analyzeNameBtn.textContent = `Please wait ${countdown}s...`;
-            } else { 
-                clearInterval(interval); 
-                if(analyzeNameBtn) analyzeNameBtn.textContent = '🔬 Analyze Name'; 
-                enableButtons(); 
-            }
-        }, 1000);
-    }
 }
 
 async function generateAlternatives() {
     if (generateAlternativesBtn.disabled) return;
+
     const nameInput = document.getElementById('name-to-analyze');
     const contextInput = document.getElementById('analysis-context');
-    const nameToAnalyze = nameInput.value.trim();
+    const audienceInput = document.getElementById('audience-persona');
+    const locationInput = document.getElementById('audience-location');
+    const valuesInput = document.getElementById('audience-values');
+
+    const name = nameInput.value.trim();
     const context = contextInput.value.trim();
+    const audience = audienceInput.value.trim();
+    const location = locationInput.value.trim();
+    const values = valuesInput.value.trim();
 
-    const audienceDesc = document.getElementById('audience-description').value.trim();
-    const audienceLoc = document.getElementById('audience-location').value.trim();
-    const audienceVals = document.getElementById('audience-values').value.trim();
-
-    if (!nameToAnalyze || !context) {
-        alert("Please ensure the original name and context are filled out before generating alternatives.");
+    if (!name || !context) {
+        showTemporaryPlaceholderError(nameInput, "Please enter a name.");
+        showTemporaryPlaceholderError(contextInput, "Please enter a context.");
         return;
     }
 
-    showLoading(alternativesResultsContainer);
+    alternativesResultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
     disableButtons();
 
     try {
         const token = await getUserToken();
-        const payload = {
-            name: nameToAnalyze,
-            context: context,
-            audience: audienceDesc,
-            location: audienceLoc,
-            values: audienceVals
-        };
-
         const response = await fetch(`${BACKEND_URL}/generate-alternatives`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({ name, context, audience, location, values })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "An error occurred.");
+        }
+
+        const data = await response.json();
+        if (data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
+        }
+        renderAlternatives(data.alternatives);
+
+    } catch (error) {
+        alternativesResultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
+    } finally {
+        enableButtons();
+    }
+}
+
+function renderAlternatives(alternatives) {
+    alternativesResultsContainer.innerHTML = '';
+    alternatives.forEach(alt => {
+        const altDiv = document.createElement('div');
+        altDiv.className = 'alternative-item';
+        altDiv.innerHTML = `
+            <strong>${alt.name}</strong> (Score: ${alt.score}/10)
+            <p>${alt.reason}</p>
+        `;
+        alternativesResultsContainer.appendChild(altDiv);
+    });
+}
+
+async function analyzeName() {
+    if (analyzeNameBtn.disabled) return;
+
+    const nameInput = document.getElementById('name-to-analyze');
+    const contextInput = document.getElementById('analysis-context');
+    const audienceInput = document.getElementById('audience-persona');
+    const locationInput = document.getElementById('audience-location');
+    const valuesInput = document.getElementById('audience-values');
+
+    const name = nameInput.value.trim();
+    const context = contextInput.value.trim();
+    const audience = audienceInput.value.trim();
+    const location = locationInput.value.trim();
+    const values = valuesInput.value.trim();
+
+    if (!name || !context) {
+        showTemporaryPlaceholderError(nameInput, "Please enter a name.");
+        showTemporaryPlaceholderError(contextInput, "Please enter a context.");
+        return;
+    }
+
+    const resultsContainer = document.getElementById('analysis-results-container');
+    resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    alternativesGeneratorSection.classList.add('hidden');
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const endpoint = audience && location && values ? '/analyze-persona' : '/analyze-name';
+        const payload = audience && location && values 
+            ? { name, context, audience, location, values }
+            : { name, context };
+
+        const response = await fetch(`${BACKEND_URL}${endpoint}`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify(payload)
@@ -1315,329 +1210,87 @@ async function generateAlternatives() {
         }
 
         const data = await response.json();
-        
         if (data.credits !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.credits);
         }
-        
-        renderScoredAlternatives(data.alternatives);
+        renderAnalysisResults(data.analysis);
+        alternativesGeneratorSection.classList.remove('hidden');
 
     } catch (error) {
-        alternativesResultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
+        resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
     } finally {
-        let countdown = 5;
-        if(generateAlternativesBtn) generateAlternativesBtn.textContent = `Please wait ${countdown}s...`;
-        const interval = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                if(generateAlternativesBtn) generateAlternativesBtn.textContent = `Please wait ${countdown}s...`;
-            } else { 
-                clearInterval(interval); 
-                if(generateAlternativesBtn) generateAlternativesBtn.textContent = '🧠 Generate Better Alternatives'; 
-                enableButtons(); 
-            }
-        }, 1000);
+        enableButtons();
     }
 }
 
+function renderAnalysisResults(analysis) {
+    const resultsContainer = document.getElementById('analysis-results-container');
+    let htmlContent = '';
 
-function renderAnalysisResults(data) {
-    const resultsContainer = document.getElementById('analyzer-results-container');
-    let riskClass = '';
-    if (data.conflict_risk === 'Clear') riskClass = 'risk-clear';
-    if (data.conflict_risk === 'Medium Risk') riskClass = 'risk-medium';
-    if (data.conflict_risk === 'High Risk') riskClass = 'risk-high';
-
-    let alternativesHtml = '';
-    if (data.alternative_names) {
-        alternativesHtml = `
-            <div class="analysis-section">
-                <h4>Alternative Suggestions</h4>
-                <ul>
-                    ${data.alternative_names.map(item => `<li><strong>${item.name}:</strong> ${item.reason}</li>`).join('')}
-                </ul>
-            </div>
-        `;
-    }
-
-    let creativeAuditHtml = '';
-    if (data.creative_analysis) {
-        creativeAuditHtml = `
-            <div class="analysis-section">
-                <h4>Creative Audit</h4>
-                <ul>
-                    ${Object.keys(data.creative_analysis).map(key => `<li><strong>${key}:</strong> ${data.creative_analysis[key]}</li>`).join('')}
-                </ul>
-            </div>
-        `;
-    }
-
-    let tipsHtml = '';
-    if (data.improvement_tips) {
-        tipsHtml = `
-            <div class="analysis-section">
-                <h4>Improvement Tips</h4>
-                <ul>
-                    ${data.improvement_tips.map(tip => `<li>${tip}</li>`).join('')}
-                </ul>
-            </div>
-        `;
-    }
-
-    resultsContainer.innerHTML = `
-        <div class="analysis-report">
-            <h3>
-                Conflict Risk: 
-                <span class="risk-badge ${riskClass}">${data.conflict_risk}</span>
-            </h3>
-            <p>${data.conflict_explanation}</p>
-            ${alternativesHtml}
-            ${creativeAuditHtml}
-            ${tipsHtml}
-        </div>
-    `;
-}
-
-function renderPersonaAnalysisResults(data) {
-    const resultsContainer = document.getElementById('analyzer-results-container');
-    
-    const createMetricCard = (title, score, explanation) => `
-        <div class="persona-metric-card">
-            <div class="metric-header">
-                <h4>${title}</h4>
-                <span class="metric-score">${score}/10</span>
-            </div>
-            <p>${explanation}</p>
-        </div>
-    `;
-
-    resultsContainer.innerHTML = `
-        <div class="persona-analysis-report">
-            <div class="persona-summary-card">
-                <h3>Overall Persona Score</h3>
-                <div class="overall-score-display">${data.overall_score}<small>/10</small></div>
-                <p><strong>Final Recommendation:</strong> ${data.final_recommendation}</p>
-            </div>
-            ${createMetricCard('Linguistic & Phonetic Appeal', data.linguistic_appeal.score, data.linguistic_appeal.explanation)}
-            ${createMetricCard('Cultural Resonance', data.cultural_resonance.score, data.cultural_resonance.explanation)}
-            ${createMetricCard('Market Fitness', data.market_fitness.score, data.market_fitness.explanation)}
-            ${createMetricCard('Emotional Connection', data.emotional_connection.score, data.emotional_connection.explanation)}
-            ${createMetricCard('Brand Story Potential', data.brand_story_potential.score, data.brand_story_potential.explanation)}
-        </div>
-    `;
-}
-
-function renderScoredAlternatives(alternatives) {
-    let namesHtml = '';
-    let reasonsHtml = '';
-
-    alternatives.forEach(alt => {
-        namesHtml += `
-            <div class="alternative-item">
-                <span class="alternative-name">${alt.name}</span>
-                <span class="alternative-score">${alt.score}/10</span>
-            </div>
-        `;
-        reasonsHtml += `<p><strong>${alt.name}:</strong> ${alt.reason}</p>`;
-    });
-
-    alternativesResultsContainer.innerHTML = `
-        <div class="output-section" style="margin-top: 20px;">
+    if (analysis.conflict_risk) {
+        htmlContent += `
             <div class="output-box">
-                <div class="output-header"><label>Better Alternatives</label></div>
-                <div class="alternatives-list">${namesHtml}</div>
+                <div class="output-header"><label>Conflict Risk</label></div>
+                <div class="results-list">
+                    <div class="result-item">
+                        <span class="result-name">${analysis.conflict_risk}</span>
+                    </div>
+                    <p>${analysis.conflict_explanation}</p>
+                </div>
             </div>
-            <div class="output-box">
-                <div class="output-header"><label>Justifications</label></div>
-                <div class="alternatives-reasons">${reasonsHtml}</div>
-            </div>
-        </div>
-    `;
-}
+        `;
 
+        if (analysis.alternative_names) {
+            let altsHtml = analysis.alternative_names.map(alt => `
+                <div class="result-item">
+                    <strong>${alt.name}</strong>
+                    <p>${alt.reason}</p>
+                </div>
+            `).join('');
+            htmlContent += `
+                <div class="output-box">
+                    <div class="output-header"><label>Safer Alternatives</label></div>
+                    <div class="results-list">${altsHtml}</div>
+                </div>
+            `;
+        } else if (analysis.creative_analysis) {
+            let creativeHtml = `
+                <div class="result-item"><span>Memorability:</span> ${analysis.creative_analysis.Memorability}</div>
+                <div class="result-item"><span>Pronunciation:</span> ${analysis.creative_analysis.Pronunciation}</div>
+                <div class="result-item"><span>Uniqueness:</span> ${analysis.creative_analysis.Uniqueness}</div>
+            `;
+            htmlContent += `
+                <div class="output-box">
+                    <div class="output-header"><label>Creative Analysis</label></div>
+                    <div class="results-list">${creativeHtml}</div>
+                </div>
+            `;
 
-function openHistoryImportModal(targetInputId) {
-    if (historyImportModal) {
-        historyImportModal.dataset.targetInput = targetInputId;
-        historyImportModal.classList.add('active');
-        fetchHistoryForImport();
-    }
-}
-
-function closeHistoryImportModal() {
-    if (historyImportModal) historyImportModal.classList.remove('active');
-}
-
-async function fetchHistoryForImport() {
-    if (!historyImportList) return;
-    historyImportList.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
-    const token = await getUserToken();
-    if (!token) {
-        historyImportList.innerHTML = "<p>*Sign in to see your history.*</p>";
-        return;
-    }
-
-    try {
-        const response = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } });
-        if (!response.ok) throw new Error("Could not load history.");
-        const history = await response.json();
-
-        historyImportList.innerHTML = "";
-        if (history.length === 0) {
-            historyImportList.innerHTML = "<p>*No history yet. Generate some names!*</p>";
-            return;
+            let tipsHtml = analysis.improvement_tips.map(tip => `<li>${tip}</li>`).join('');
+            htmlContent += `
+                <div class="output-box">
+                    <div class="output-header"><label>Improvement Tips</label></div>
+                    <ul>${tipsHtml}</ul>
+                </div>
+            `;
         }
-
-        history.forEach(entry => {
-            entry.names.forEach(name => {
-                const nameButton = document.createElement('button');
-                nameButton.className = 'history-item';
-                nameButton.textContent = cleanNames(name);
-                nameButton.onclick = () => {
-                    const targetInputId = historyImportModal.dataset.targetInput;
-                    const targetInput = document.getElementById(targetInputId);
-                    if (targetInput) {
-                        targetInput.value = cleanNames(name);
-                    }
-                    closeHistoryImportModal();
-                };
-                historyImportList.appendChild(nameButton);
-            });
-        });
-
-    } catch (error) {
-        historyImportList.innerHTML = `<p>*${error.message}*</p>`;
-    }
-}
-
-function initializeSettings() {
-    const settings = {
-        theme: localStorage.getItem('nameit-theme') || 'synthwave',
-        font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
-        fontSize: localStorage.getItem('nameit-fontSize') || '100',
-        resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
-        resultsFontSize: localStorage.getItem('nameit-results-fontSize') || '100',
-        animations: localStorage.getItem('nameit-animations') !== 'false'
-    };
-
-    if (themeSelect) themeSelect.value = settings.theme;
-    if (fontSelect) fontSelect.value = settings.font;
-    if (fontSizeSlider) fontSizeSlider.value = settings.fontSize;
-    if (resultsFontSelect) resultsFontSelect.value = settings.resultsFont;
-    if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
-    if (animationsToggle) animationsToggle.checked = settings.animations;
-
-    applyTheme(settings.theme, false);
-    applyFont(settings.font, false);
-    applyFontSize(settings.fontSize, false);
-    applyResultsFont(settings.resultsFont, false);
-    applyResultsFontSize(settings.resultsFontSize, false);
-    applyAnimationSetting(settings.animations, false);
-}
-
-function applyTheme(theme, save = true) {
-    if (save) localStorage.setItem('nameit-theme', theme);
-    document.body.dataset.theme = theme;
-    
-    if (theme === 'light') {
-        document.body.classList.add('light-theme');
     } else {
-        document.body.classList.remove('light-theme');
+        // Premium persona analysis
+        htmlContent += `
+            <div class="output-box">
+                <div class="output-header"><label>Persona Analysis</label></div>
+                <div class="results-list">
+                    <div class="result-item"><span>Linguistic Appeal (Score: ${analysis.linguistic_appeal.score}):</span> ${analysis.linguistic_appeal.explanation}</div>
+                    <div class="result-item"><span>Cultural Resonance (Score: ${analysis.cultural_resonance.score}):</span> ${analysis.cultural_resonance.explanation}</div>
+                    <div class="result-item"><span>Market Fitness (Score: ${analysis.market_fitness.score}):</span> ${analysis.market_fitness.explanation}</div>
+                    <div class="result-item"><span>Emotional Connection (Score: ${analysis.emotional_connection.score}):</span> ${analysis.emotional_connection.explanation}</div>
+                    <div class="result-item"><span>Brand Story Potential (Score: ${analysis.brand_story_potential.score}):</span> ${analysis.brand_story_potential.explanation}</div>
+                    <div class="result-item"><strong>Overall Score:</strong> ${analysis.overall_score}</div>
+                    <p><strong>Final Recommendation:</strong> ${analysis.final_recommendation}</p>
+                </div>
+            </div>
+        `;
     }
+
+    resultsContainer.innerHTML = `<div class="output-section" style="margin-top: 20px;">${htmlContent}</div>`;
 }
-
-function applyFont(font, save = true) {
-    if (save) localStorage.setItem('nameit-font', font);
-    document.body.style.fontFamily = font;
-}
-
-function applyFontSize(size, save = true) {
-    if (save) localStorage.setItem('nameit-fontSize', size);
-    document.body.style.fontSize = `${size}%`;
-}
-
-function applyResultsFont(font, save = true) {
-    if (save) localStorage.setItem('nameit-results-font', font);
-    document.documentElement.style.setProperty('--results-font-family', font);
-}
-
-function applyResultsFontSize(size, save = true) {
-    if (save) localStorage.setItem('nameit-results-fontSize', size);
-    document.documentElement.style.setProperty('--results-font-size', `${size}%`);
-}
-
-function applyAnimationSetting(enabled, save = true) {
-    if (save) localStorage.setItem('nameit-animations', enabled);
-    
-    const showcaseContainer = document.querySelector('.showcase-container');
-    const backgroundContainer = document.getElementById('background-container');
-
-    if (enabled) {
-        document.body.classList.remove('animations-disabled');
-        if (showcaseContainer) showcaseContainer.style.display = 'flex';
-        if (backgroundContainer) backgroundContainer.style.display = 'block';
-    } else {
-        document.body.classList.add('animations-disabled');
-        if (showcaseContainer) showcaseContainer.style.display = 'none';
-        if (backgroundContainer) backgroundContainer.style.display = 'none';
-    }
-}
-
-async function exportHistory() {
-    const token = await getUserToken();
-    if (!token) {
-        alert("You must be signed in to export history.");
-        return;
-    }
-    const historyData = await fetch(`${BACKEND_URL}/history`, { headers: { "Authorization": `Bearer ${token}` } }).then(res => res.json());
-    
-    const blob = new Blob([JSON.stringify(historyData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'nameit_history.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-async function clearHistory() {
-    if (!confirm("Are you sure you want to permanently delete your entire history? This action cannot be undone.")) {
-        return;
-    }
-    const token = await getUserToken();
-    if (!token) {
-        alert("You must be signed in to clear history.");
-        return;
-    }
-    try {
-        const response = await fetch(`${BACKEND_URL}/clear-history`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!response.ok) throw new Error("Failed to clear history.");
-        
-        if(recentHistoryDiv) recentHistoryDiv.innerHTML = "<p>*No history yet. Generate some names!*</p>";
-        alert("Your history has been cleared.");
-
-    } catch (error) {
-        alert(`Error: ${error.message}`);
-    }
-}
-
-function sendPasswordReset() {
-    const user = window.auth.currentUser;
-    if (user && user.email) {
-        window.auth.sendPasswordResetEmail(user.email)
-            .then(() => {
-                alert(`A password reset link has been sent to ${user.email}.`);
-            })
-            .catch((error) => {
-                alert(`Error: ${error.message}`);
-            });
-    } else {
-        alert("You must be signed in with an email account to reset your password.");
-    }
-}
-
