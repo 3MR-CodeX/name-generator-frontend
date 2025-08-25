@@ -1020,35 +1020,44 @@ function renderAvailabilityResults(data) {
     }
 }
 
+// ==================================================================
+// === UPDATED FUNCTION: generateAvailableAlternatives ================
+// ==================================================================
 async function generateAvailableAlternatives() {
     if (generateAvailableAltBtn.disabled) return;
 
     const nameInput = document.getElementById('name-to-check');
     const originalName = nameInput.value.trim();
     if (!originalName) {
-        alert("Original name is missing.");
+        showTemporaryPlaceholderError(nameInput, "Please enter a name first.");
         return;
     }
 
-    const takenPlatforms = [];
-    const resultsContainer = document.getElementById('availability-results-container');
-    resultsContainer.querySelectorAll('.status-taken').forEach(el => {
-        const platformNameElement = el.previousElementSibling;
-        if (platformNameElement) {
-            // Clones the node to remove child elements like icons before getting text content
-            const clone = platformNameElement.cloneNode(true);
-            // Remove icon to get only the text
-            const icon = clone.querySelector('i');
-            if (icon) icon.remove();
-            takenPlatforms.push(clone.textContent.trim());
+    // Get selected platforms and TLDs, same as checkAvailability
+    const selectedPlatforms = [];
+    const selectedTlds = [];
+    const checkedBoxes = platformsDropdownList.querySelectorAll('input:checked');
+    
+    if (checkedBoxes.length === 0) {
+        // Shake the dropdown button to indicate an action is needed
+        if(platformsDropdownBtn) {
+            platformsDropdownBtn.classList.add('shake-animation');
+            setTimeout(() => platformsDropdownBtn.classList.remove('shake-animation'), 500);
+        }
+        showTemporaryPlaceholderError(nameInput, "Please select platforms to check against.");
+        return;
+    }
+
+    checkedBoxes.forEach(box => {
+        const optionKey = box.value;
+        const option = CHECKABLE_OPTIONS[optionKey];
+        if (option.type === 'platform') {
+            selectedPlatforms.push(option.value);
+        } else if (option.type === 'domain_group') {
+            selectedTlds.push(...option.value);
         }
     });
 
-    if (takenPlatforms.length === 0) {
-        availableAlternativesResults.innerHTML = `<p style="text-align: center; margin-top: 20px;">The original name seems to be available everywhere you checked! No need for alternatives.</p>`;
-        return;
-    }
-    
     showLoading(availableAlternativesResults);
     disableButtons();
 
@@ -1059,7 +1068,8 @@ async function generateAvailableAlternatives() {
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({
                 original_name: originalName,
-                taken_platforms: takenPlatforms
+                platforms: selectedPlatforms,
+                tlds: selectedTlds
             })
         });
 
@@ -1073,18 +1083,7 @@ async function generateAvailableAlternatives() {
             window.updateGenerationCountUI(data.credits);
         }
 
-        let resultsHtml = `
-            <div class="output-section">
-                <div class="output-box">
-                    <div class="output-header"><label>Available Alternatives</label></div>
-                    <pre>${data.alternatives.join("\n")}</pre>
-                </div>
-                <div class="output-box">
-                    <div class="output-header"><label>Explanations</label></div>
-                    <pre>${data.reasons.join("\n\n")}</pre>
-                </div>
-            </div>`;
-        availableAlternativesResults.innerHTML = resultsHtml;
+        renderAvailableAlternativesResults(data.results);
 
     } catch (error) {
         availableAlternativesResults.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
@@ -1104,6 +1103,79 @@ async function generateAvailableAlternatives() {
         }, 1000);
     }
 }
+
+// ==================================================================
+// === NEW FUNCTION: renderAvailableAlternativesResults =============
+// ==================================================================
+function renderAvailableAlternativesResults(results) {
+    const container = document.getElementById('available-alternatives-results');
+    if (!container) return;
+    
+    hideLoading(container);
+    container.innerHTML = '';
+
+    if (!results || results.length === 0) {
+        container.innerHTML = `<p style="text-align: center; margin-top: 20px;">Could not generate alternatives. Please try again.</p>`;
+        return;
+    }
+
+    const resultsGrid = document.createElement('div');
+    resultsGrid.className = 'alternatives-grid';
+
+    results.forEach(result => {
+        const card = document.createElement('div');
+        card.className = 'output-box alternative-card';
+
+        let cardHtml = `<div class="output-header"><label style="font-size: 1.2em;">${result.name}</label></div>`;
+        
+        const resultsList = document.createElement('div');
+        resultsList.className = 'results-list';
+
+        let combinedResults = [];
+        if (result.domains) combinedResults.push(...result.domains);
+        if (result.socials) combinedResults.push(...result.socials);
+        
+        if (combinedResults.length > 0) {
+             combinedResults.forEach(item => {
+                let iconClass = 'fas fa-hashtag';
+                let itemName = '';
+                let itemUrl = item.url || '#';
+
+                if (item.domain) { // It's a domain
+                    const domainsKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].type === 'domain_group');
+                    iconClass = domainsKey ? CHECKABLE_OPTIONS[domainsKey].icon : 'fas fa-globe';
+                    itemName = item.domain;
+                } else { // It's a social platform
+                    const optionKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].value === item.platform);
+                    if (optionKey) iconClass = CHECKABLE_OPTIONS[optionKey].icon;
+                    itemName = item.platform;
+                }
+
+                const statusHtml = item.available 
+                    ? `<span class="status-available">✅ Available</span>`
+                    : `<span class="status-taken">❌ Taken ${item.domain ? '' : `(<a href="${itemUrl}" target="_blank">View</a>)`}</span>`;
+
+                resultsList.innerHTML += `
+                    <div class="result-item">
+                        <span class="result-name">
+                            <i class="${iconClass}"></i>
+                            ${itemName}
+                        </span>
+                        ${statusHtml}
+                    </div>`;
+            });
+        } else {
+            resultsList.innerHTML = `<p style="padding: 10px; text-align: center; color: #aaa;">No platforms were checked for this name.</p>`;
+        }
+        
+        card.innerHTML = cardHtml;
+        card.appendChild(resultsList);
+        resultsGrid.appendChild(card);
+    });
+
+    container.appendChild(resultsGrid);
+}
+
 
 async function analyzeName() {
     if (analyzeNameBtn.disabled) return;
