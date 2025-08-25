@@ -21,9 +21,8 @@ const FONT_OPTIONS = {
     "Verdana": "'Verdana', sans-serif"
 };
 
-const CHECKABLE_OPTIONS = {
+const PLATFORM_OPTIONS = {
     "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
-    "Domains (.com, .io, .ai, .app)":  { type: "domain_group", value: ["com", "io", "ai", "app"], icon: "fas fa-globe" },
     "Facebook":     { type: "platform", value: "Facebook", icon: "fab fa-facebook" },
     "GitHub":       { type: "platform", value: "GitHub", icon: "fab fa-github" },
     "Instagram":    { type: "platform", value: "Instagram", icon: "fab fa-instagram" },
@@ -39,6 +38,23 @@ const CHECKABLE_OPTIONS = {
     "X":            { type: "platform", value: "X", icon: "fab fa-twitter" },
     "YouTube":      { type: "platform", value: "YouTube", icon: "fab fa-youtube" }
 };
+
+const DOMAIN_OPTIONS = {
+    ".com": { type: "domain", value: "com" },
+    ".io": { type: "domain", value: "io" },
+    ".ai": { type: "domain", value: "ai" },
+    ".app": { type: "domain", value: "app" },
+    ".co": { type: "domain", value: "co" },
+    ".net": { type: "domain", value: "net" },
+    ".org": { type: "domain", value: "org" },
+    ".xyz": { type: "domain", value: "xyz" },
+    ".dev": { type: "domain", value: "dev" },
+    ".tech": { type: "domain", value: "tech" },
+    ".store": { type: "domain", value: "store" },
+    ".online": { type: "domain", value: "online" },
+};
+
+
 let customRefineHistoryLog = [];
 
 // --- DOM Element Selectors ---
@@ -85,6 +101,8 @@ const refinedReasonsCustomPre = document.getElementById("refined_reasons_custom"
 const refinerLoadingPlaceholder = document.getElementById("refiner-loading-placeholder");
 const platformsDropdownBtn = document.getElementById("platforms-dropdown-btn");
 const platformsDropdownList = document.getElementById("platforms-dropdown-list");
+const domainsDropdownBtn = document.getElementById("domains-dropdown-btn");
+const domainsDropdownList = document.getElementById("domains-dropdown-list");
 const alternativesGeneratorSection = document.getElementById("alternatives-generator-section");
 const generateAlternativesBtn = document.getElementById("generate-alternatives-btn");
 const alternativesResultsContainer = document.getElementById("alternatives-results-container");
@@ -123,6 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     setupEventListeners();
     initializePlatformsDropdown();
+    initializeDomainsDropdown();
 
     setTimeout(() => {
         const loader = document.getElementById('loader-wrapper');
@@ -861,56 +880,103 @@ function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsMod
 
 function initializePlatformsDropdown() {
     if (!platformsDropdownList || !platformsDropdownBtn) return;
-
-    Object.keys(CHECKABLE_OPTIONS).sort().forEach(name => {
-        const option = CHECKABLE_OPTIONS[name];
+    platformsDropdownList.innerHTML = ''; // Clear previous
+    Object.keys(PLATFORM_OPTIONS).sort().forEach(name => {
+        const option = PLATFORM_OPTIONS[name];
         const label = document.createElement('label');
         label.className = 'platform-item';
-        
         const icon = document.createElement('i');
         icon.className = option.icon;
-
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = name;
         checkbox.checked = false;
-
         label.appendChild(icon);
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(` ${name}`));
         platformsDropdownList.appendChild(label);
     });
-    
     updatePlatformsButtonText();
-
     platformsDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         platformsDropdownList.classList.toggle('hidden');
         platformsDropdownBtn.classList.toggle('open');
     });
-
     document.addEventListener('click', () => {
         platformsDropdownList.classList.add('hidden');
         platformsDropdownBtn.classList.remove('open');
     });
-
-    platformsDropdownList.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-
+    platformsDropdownList.addEventListener('click', (e) => e.stopPropagation());
     platformsDropdownList.addEventListener('change', updatePlatformsButtonText);
 }
 
 function updatePlatformsButtonText() {
     const selectedCount = platformsDropdownList.querySelectorAll('input[type="checkbox"]:checked').length;
     const buttonText = platformsDropdownBtn.querySelector('span:first-child');
-    
-    if (selectedCount === Object.keys(CHECKABLE_OPTIONS).length) {
-        buttonText.textContent = 'All Options';
+    if (selectedCount === Object.keys(PLATFORM_OPTIONS).length) {
+        buttonText.textContent = 'All Platforms';
     } else if (selectedCount === 0) {
-        buttonText.textContent = 'Select Options';
+        buttonText.textContent = 'Select Platforms';
     } else {
-        buttonText.textContent = `${selectedCount} Option(s) Selected`;
+        buttonText.textContent = `${selectedCount} Platform(s) Selected`;
+    }
+}
+
+function initializeDomainsDropdown() {
+    if (!domainsDropdownList || !domainsDropdownBtn) return;
+    domainsDropdownList.innerHTML = ''; // Clear previous
+    
+    // Add "Select All" option
+    const selectAllContainer = document.createElement('div');
+    selectAllContainer.className = 'select-all-container';
+    const selectAllLabel = document.createElement('label');
+    const selectAllCheckbox = document.createElement('input');
+    selectAllCheckbox.type = 'checkbox';
+    selectAllLabel.appendChild(selectAllCheckbox);
+    selectAllLabel.appendChild(document.createTextNode(' Select All'));
+    selectAllContainer.appendChild(selectAllLabel);
+    domainsDropdownList.appendChild(selectAllContainer);
+
+    selectAllCheckbox.addEventListener('change', (e) => {
+        const checkboxes = domainsDropdownList.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
+        updateDomainsButtonText();
+    });
+
+    Object.keys(DOMAIN_OPTIONS).forEach(name => {
+        const option = DOMAIN_OPTIONS[name];
+        const label = document.createElement('label');
+        label.className = 'platform-item';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = name;
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(` ${name}`));
+        domainsDropdownList.appendChild(label);
+    });
+    updateDomainsButtonText();
+    domainsDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        domainsDropdownList.classList.toggle('hidden');
+        domainsDropdownBtn.classList.toggle('open');
+    });
+    document.addEventListener('click', () => {
+        domainsDropdownList.classList.add('hidden');
+        domainsDropdownBtn.classList.remove('open');
+    });
+    domainsDropdownList.addEventListener('click', (e) => e.stopPropagation());
+    domainsDropdownList.addEventListener('change', updateDomainsButtonText);
+}
+
+function updateDomainsButtonText() {
+    const selectedCount = domainsDropdownList.querySelectorAll('input[type="checkbox"]:not(:first-child):checked').length;
+    const buttonText = domainsDropdownBtn.querySelector('span:first-child');
+    if (selectedCount === Object.keys(DOMAIN_OPTIONS).length) {
+        buttonText.textContent = 'All Domains';
+    } else if (selectedCount === 0) {
+        buttonText.textContent = 'Select Domains';
+    } else {
+        buttonText.textContent = `${selectedCount} Domain(s) Selected`;
     }
 }
 
@@ -923,19 +989,8 @@ async function checkAvailability() {
         return;
     }
     
-    const selectedPlatforms = [];
-    const selectedTlds = [];
-
-    const checkedBoxes = platformsDropdownList.querySelectorAll('input:checked');
-    checkedBoxes.forEach(box => {
-        const optionKey = box.value;
-        const option = CHECKABLE_OPTIONS[optionKey];
-        if (option.type === 'platform') {
-            selectedPlatforms.push(option.value);
-        } else if (option.type === 'domain_group') {
-            selectedTlds.push(...option.value);
-        }
-    });
+    const selectedPlatforms = Array.from(platformsDropdownList.querySelectorAll('input:checked')).map(box => PLATFORM_OPTIONS[box.value].value);
+    const selectedTlds = Array.from(domainsDropdownList.querySelectorAll('input:checked:not(:first-child)')).map(box => DOMAIN_OPTIONS[box.value].value);
 
     const resultsContainer = document.getElementById('availability-results-container');
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
@@ -978,14 +1033,11 @@ function renderAvailabilityResults(data) {
     const resultsContainer = document.getElementById('availability-results-container');
     let htmlContent = '';
 
-    if (data.domains.length > 0) {
-        const domainsKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].type === 'domain_group');
-        const domainIcon = domainsKey ? CHECKABLE_OPTIONS[domainsKey].icon : 'fas fa-globe';
-
+    if (data.domains && data.domains.length > 0) {
         let domainsHtml = data.domains.map(d => `
             <div class="result-item">
                 <span class="result-name">
-                    <i class="${domainIcon}"></i>
+                    <i class="fas fa-globe"></i>
                     ${d.domain}
                 </span>
                 ${d.available ? '<span class="status-available">✅ Available</span>' : '<span class="status-taken">❌ Taken</span>'}
@@ -994,13 +1046,10 @@ function renderAvailabilityResults(data) {
         htmlContent += `<div class="output-box"><div class="output-header"><label>Domain Availability</label></div><div class="results-list">${domainsHtml}</div></div>`;
     }
 
-    if (data.socials.length > 0) {
+    if (data.socials && data.socials.length > 0) {
         let socialsHtml = data.socials.map(s => {
-            let iconClass = 'fas fa-hashtag';
-            const optionKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].value === s.platform);
-            if (optionKey) {
-                iconClass = CHECKABLE_OPTIONS[optionKey].icon;
-            }
+            const optionKey = Object.keys(PLATFORM_OPTIONS).find(key => PLATFORM_OPTIONS[key].value === s.platform);
+            const iconClass = optionKey ? PLATFORM_OPTIONS[optionKey].icon : 'fas fa-hashtag';
             return `
                 <div class="result-item">
                     <span class="result-name">
@@ -1014,15 +1063,12 @@ function renderAvailabilityResults(data) {
     }
 
     if (htmlContent === '') {
-        resultsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">Please select at least one option from the dropdown to check.</p>';
+        resultsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">Please select at least one platform or domain to check.</p>';
     } else {
         resultsContainer.innerHTML = `<div class="output-section" style="margin-top: 20px;">${htmlContent}</div>`;
     }
 }
 
-// ==================================================================
-// === UPDATED FUNCTION: generateAvailableAlternatives ================
-// ==================================================================
 async function generateAvailableAlternatives() {
     if (generateAvailableAltBtn.disabled) return;
 
@@ -1033,30 +1079,17 @@ async function generateAvailableAlternatives() {
         return;
     }
 
-    // Get selected platforms and TLDs, same as checkAvailability
-    const selectedPlatforms = [];
-    const selectedTlds = [];
-    const checkedBoxes = platformsDropdownList.querySelectorAll('input:checked');
+    const selectedPlatforms = Array.from(platformsDropdownList.querySelectorAll('input:checked')).map(box => PLATFORM_OPTIONS[box.value].value);
+    const selectedTlds = Array.from(domainsDropdownList.querySelectorAll('input:checked:not(:first-child)')).map(box => DOMAIN_OPTIONS[box.value].value);
     
-    if (checkedBoxes.length === 0) {
-        // Shake the dropdown button to indicate an action is needed
-        if(platformsDropdownBtn) {
-            platformsDropdownBtn.classList.add('shake-animation');
-            setTimeout(() => platformsDropdownBtn.classList.remove('shake-animation'), 500);
-        }
-        showTemporaryPlaceholderError(nameInput, "Please select platforms to check against.");
+    if (selectedPlatforms.length > 0 && selectedTlds.length > 0) {
+        alert("For the best results, please generate alternatives for either platforms OR domains, not both at the same time.");
         return;
     }
-
-    checkedBoxes.forEach(box => {
-        const optionKey = box.value;
-        const option = CHECKABLE_OPTIONS[optionKey];
-        if (option.type === 'platform') {
-            selectedPlatforms.push(option.value);
-        } else if (option.type === 'domain_group') {
-            selectedTlds.push(...option.value);
-        }
-    });
+    if (selectedPlatforms.length === 0 && selectedTlds.length === 0) {
+        alert("Please select which platforms or domains you want to find an available name for.");
+        return;
+    }
 
     showLoading(availableAlternativesResults);
     disableButtons();
@@ -1104,9 +1137,6 @@ async function generateAvailableAlternatives() {
     }
 }
 
-// ==================================================================
-// === NEW FUNCTION: renderAvailableAlternativesResults =============
-// ==================================================================
 function renderAvailableAlternativesResults(results) {
     const container = document.getElementById('available-alternatives-results');
     if (!container) return;
@@ -1142,12 +1172,11 @@ function renderAvailableAlternativesResults(results) {
                 let itemUrl = item.url || '#';
 
                 if (item.domain) { // It's a domain
-                    const domainsKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].type === 'domain_group');
-                    iconClass = domainsKey ? CHECKABLE_OPTIONS[domainsKey].icon : 'fas fa-globe';
+                    iconClass = 'fas fa-globe';
                     itemName = item.domain;
                 } else { // It's a social platform
-                    const optionKey = Object.keys(CHECKABLE_OPTIONS).find(key => CHECKABLE_OPTIONS[key].value === item.platform);
-                    if (optionKey) iconClass = CHECKABLE_OPTIONS[optionKey].icon;
+                    const optionKey = Object.keys(PLATFORM_OPTIONS).find(key => PLATFORM_OPTIONS[key].value === item.platform);
+                    if (optionKey) iconClass = PLATFORM_OPTIONS[optionKey].icon;
                     itemName = item.platform;
                 }
 
