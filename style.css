@@ -67,8 +67,8 @@ body[data-theme="classic-noir"] {
 body[data-theme="crimson-tide"] {
     --primary-accent: #FF0090;
     --secondary-accent: #ff33a6;
-    --line-accent-default: #FF0090; /* Crimson */
-    --line-accent-glow: #00aaff;   /* Cyan */
+    --line-accent-default: #00aaff;   /* Cyan */
+    --line-accent-glow: #FF0090; /* Crimson */
     --tag-background: #FF0090;
     --disabled-accent: #b30065;
     --button-text-color: white;
@@ -109,8 +109,8 @@ body[data-theme="emerald-forest"] {
 body[data-theme="royal-gold"] {
     --primary-accent: #D4AF37;
     --secondary-accent: #FFD700;
-    --line-accent-default: #FFD700; /* Gold */
-    --line-accent-glow: #FFFFFF;   /* White */
+    --line-accent-default: #FFFFFF;   /* White */
+    --line-accent-glow: #FFD700; /* Gold */
     --tag-background: #D4AF37;
     --disabled-accent: #8b7500;
     --button-text-color: black;
@@ -1901,10 +1901,30 @@ body.light-theme {
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.pricing-card.popular {
+/* --- MODIFIED & NEW STYLES --- */
+#premium-view .pricing-card.popular {
     border-color: var(--primary-accent);
     box-shadow: 0 0 25px rgba(165, 0, 255, 0.3);
 }
+
+#premium-view .pricing-card.business-highlight {
+    border-color: var(--line-accent-default);
+    box-shadow: 0 0 25px var(--line-accent-default);
+}
+
+#credits-view .pricing-card {
+    border: 1px solid #5a5a5a;
+}
+
+#credits-view .pricing-card.popular {
+    border-color: var(--primary-accent);
+}
+
+#credits-view .pricing-card.best-value {
+    border-color: var(--line-accent-default);
+}
+/* --- END MODIFIED & NEW STYLES --- */
+
 
 .plan-header {
     position: relative;
