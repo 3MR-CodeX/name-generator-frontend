@@ -242,28 +242,43 @@
             </div>
         </div>
 
+        <!-- ================================================================== -->
+        <!-- ============ UPDATED AVAILABILITY CHECKER VIEW =================== -->
+        <!-- ================================================================== -->
         <div id="availability-checker-view" class="hidden">
             <h1>Name Availability Check</h1>
             <p class="description">Check if your desired name is available as a domain and on social media.</p>
         
             <div class="outer-input-box">
-                <div class="availability-input-container">
-                    <div class="input-wrapper" style="flex: 2;">
-                        <div class="label-with-button">
-                            <label for="name-to-check">Name to Check</label>
-                            <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-check')">+</button>
-                        </div>
-                        <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
+                <!-- Name Input on Top -->
+                <div class="input-wrapper" style="margin-bottom: 20px;">
+                    <div class="label-with-button">
+                        <label for="name-to-check">Name to Check</label>
+                        <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-check')">+</button>
                     </div>
-            
-                    <div class="input-wrapper" style="flex: 1;">
-                        <label>Platforms</label>
+                    <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
+                </div>
+
+                <!-- Two-Column Layout for Dropdowns -->
+                <div class="availability-columns">
+                    <div class="input-box">
+                        <label>Check Platforms</label>
                         <div class="dropdown-check-container">
                             <button id="platforms-dropdown-btn" class="dropdown-btn">
                                 <span>Select Platforms</span>
                                 <span class="arrow"></span>
                             </button>
                             <div id="platforms-dropdown-list" class="dropdown-content hidden"></div>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <label>Check Domains</label>
+                        <div class="dropdown-check-container">
+                            <button id="domains-dropdown-btn" class="dropdown-btn">
+                                <span>Select Domains</span>
+                                <span class="arrow"></span>
+                            </button>
+                            <div id="domains-dropdown-list" class="dropdown-content hidden"></div>
                         </div>
                     </div>
                 </div>
@@ -275,15 +290,14 @@
         
             <div id="availability-results-container"></div>
             
-            <!-- NEW: Generate Available Alternatives Section -->
             <div id="available-alternatives-section" class="hidden" style="margin-top: 20px;">
                 <div class="button-section" style="margin-bottom: 20px;">
                     <button id="generate-available-alt-btn" class="generate-btn">💡 Generate Available Alternatives</button>
                 </div>
                 <div id="available-alternatives-results"></div>
             </div>
-
         </div>
+
 
         <div id="name-analyzer-view" class="hidden">
             <h1>Name Analyzer</h1>
