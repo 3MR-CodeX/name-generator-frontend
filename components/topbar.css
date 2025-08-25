@@ -112,7 +112,7 @@
     right: 20px;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 25px; /* INCREASED for more space */
 }
 
 .auth-buttons-container button {
@@ -381,4 +381,35 @@
 @keyframes blink-caret {
     from, to { background-color: transparent }
     50% { background-color: rgba(255, 255, 255, 0.75); }
+}
+
+/* --- ADD THESE STYLES for the new button --- */
+.buy-credits-shortcut {
+    background-color: var(--primary-accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 22px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    flex-shrink: 0;
+}
+
+.buy-credits-shortcut:hover {
+    background-color: var(--secondary-accent);
+    transform: scale(1.1);
+}
+
+/* --- ADD THIS STYLE for the new button in the dropdown --- */
+#tier-dropdown .tier-item button.tier-badge {
+    width: 100%;
+    margin-bottom: 5px;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.95em;
 }
