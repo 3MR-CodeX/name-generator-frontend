@@ -1,3 +1,4 @@
+
 /* style.css */
 :root {
     --top-bar-height: 60px;
@@ -639,10 +640,6 @@ pre#names {
     20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
-.shake-animation {
-    animation: shake-animation 0.5s ease-in-out;
-}
-
 #more-like-this-section.shake {
     animation: shake-animation 0.5s ease-in-out;
 }
@@ -1262,34 +1259,7 @@ pre {
     top: 10px;
 }
 
-/* --- UPDATED Availability Checker & Alternatives --- */
-.availability-columns {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-.availability-columns .input-box {
-    min-height: auto;
-    padding-bottom: 15px;
-}
-.availability-columns .dropdown-check-container {
-    width: 100%;
-}
-.select-all-container {
-    padding: 8px 12px;
-    border-bottom: 1px solid #4a4a4a;
-    margin-bottom: 5px;
-}
-.select-all-container label {
-    font-size: 1em;
-    font-weight: 500;
-    cursor: pointer;
-}
-.select-all-container input {
-    margin-right: 8px;
-}
-
-
+/* --- Availability Checker & Alternatives --- */
 .results-list { 
     padding: 10px; 
 }
@@ -1306,11 +1276,6 @@ pre {
 .result-name { 
     font-weight: 500; 
 }
-.result-name i {
-    margin-right: 8px;
-    width: 1.1em;
-    text-align: center;
-}
 .status-available { 
     color: #50fa7b; 
     font-weight: 500;
@@ -1324,6 +1289,12 @@ pre {
 }
 .status-taken a:hover { 
     text-decoration: underline; 
+}
+
+.availability-input-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
 }
 
 .input-wrapper {
@@ -1418,30 +1389,13 @@ pre {
     padding: 40px 0;
 }
 
-.alternatives-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+#available-alternatives-results .output-box {
+    flex: 1 1 100%;
 }
 
-.alternative-card {
-    display: flex;
-    flex-direction: column;
-}
-
-.alternative-card .results-list {
-    flex-grow: 1;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.alternative-card .output-header {
-    padding: 5px 10px;
-}
-
-.alternative-card .result-item {
-    padding: 6px 5px;
+#available-alternatives-results .output-box pre {
+    height: auto;
+    min-height: 120px;
 }
 
 /* --- Name Analyzer Results --- */
