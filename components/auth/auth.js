@@ -41,25 +41,27 @@ function initializeAuth() {
     const signUpGoogle = document.getElementById("signup-google-btn");
     const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
 
-    // --- UI Update Functions (Defined before they are called) ---
-
-    window.updateGenerationCountUI = (count, max) => {
-        if (max === Infinity) {
-            generationCounter.textContent = `Unlimited Generations`;
+    // --- UI Update Functions ---
+    window.updateGenerationCountUI = (count) => {
+        if (generationCounter) {
+            generationCounter.textContent = `${count.toLocaleString()} Credits`;
+        }
+        // Progress bar can be set to 100% or a dynamic value if there's a cap
+        if (generationProgressBar) {
             generationProgressBar.style.width = `100%`;
-        } else {
-            generationCounter.textContent = `${count} / ${max} Names Left`;
-            const percentage = max > 0 ? (count / max) * 100 : 0;
-            generationProgressBar.style.width = `${percentage}%`;
         }
     };
     
     function updateSubscriptionDisplay(data) {
-        tierBadge.textContent = data.tier;
-        tierBadge.className = 'tier-badge';
-        const tiers = { "Anonymous": { className: 'free-tier' }, "Free Tier": { className: 'free-tier' }, "Premium Tier": { className: 'premium-tier' }, "Business Tier": { className: 'business-tier' } };
-        if(tiers[data.tier]) tierBadge.classList.add(tiers[data.tier].className);
-        window.updateGenerationCountUI(data.generationsLeft, data.maxGenerations);
+        if (tierBadge) {
+            tierBadge.textContent = data.tier;
+            tierBadge.className = 'tier-badge';
+            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Premium Tier": 'premium-tier', "Business Tier": 'business-tier' };
+            if (tiers[data.tier]) {
+                tierBadge.classList.add(tiers[data.tier]);
+            }
+        }
+        window.updateGenerationCountUI(data.credits);
     }
     
     window.updateUserStatusUI = (user) => {
@@ -101,8 +103,7 @@ function initializeAuth() {
                         .then(status => {
                             updateSubscriptionDisplay({
                                 tier: status.tier,
-                                generationsLeft: status.generationsLeft,
-                                maxGenerations: 500 // MODIFIED: New cap for logged in users
+                                credits: status.credits
                             });
                         });
                     });
@@ -124,8 +125,7 @@ function initializeAuth() {
             userStatusContainer.classList.remove('hidden');
             updateSubscriptionDisplay({
                 tier: "Anonymous",
-                generationsLeft: Math.max(0, 25 - anonGenerations), // MODIFIED: New cap for guests
-                maxGenerations: 25 // MODIFIED: New cap for guests
+                credits: Math.max(0, 25 - anonGenerations)
             });
         }
     };
@@ -226,12 +226,12 @@ function initializeAuth() {
         }
     }
 
-    function openSignInModal() {
+    window.openSignInModal = function() {
         closeAllAuthModals();
         signInModal.classList.add('active');
     }
 
-    function openSignUpModal() {
+    window.openSignUpModal = function() {
         closeAllAuthModals();
         signUpModal.classList.add('active');
     }
