@@ -436,7 +436,7 @@
         </div>
 
         <div id="premium-view" class="hidden">
-            <h1><i class="fas fa-crown"></i> NameIT Credit Packs</h1>
+            <h1><i class="fas fa-crown"></i> NameIT Premium Packs</h1>
             <p class="description">Choose the right pack to unlock your full creative potential. One-time payments, lifetime access.</p>
             
             <div class="premium-container">
@@ -457,14 +457,14 @@
                             <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
                             <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
                             <li class="feature-item excluded"><i class="fas fa-times"></i> Availability Checker</li>
-                            <li class="feature-item excluded"><i class="fas fa-times"></i> Name Analyzer</li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> Basic Name Analyzer</li>
                             <li class="feature-item excluded"><i class="fas fa-times"></i> Priority Support</li>
                         </ul>
                         <button class="cta-button" onclick="purchasePlan('starter')">Get Started</button>
                     </div>
 
                     <!-- Pro Plan -->
-                    <div class="pricing-card">
+                    <div class="pricing-card popular">
                         <div class="plan-header">
                             <h2>Pro</h2>
                             <p class="plan-subtitle">For professionals & startups</p>
@@ -480,7 +480,7 @@
                             <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
                             <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
                             <li class="feature-item included"><i class="fas fa-check"></i> Availability Checker</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Name Analyzer</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Basic Name Analyzer</li>
                             <li class="feature-item included"><i class="fas fa-check"></i> Priority Support</li>
                         </ul>
                         <button class="cta-button" onclick="purchasePlan('pro')">Go Pro</button>
@@ -522,7 +522,57 @@
                     </div>
                     <div class="faq-item">
                         <h4>What happens when I run out of credits?</h4>
-                        <p>You can simply purchase another pack of any size whenever you need to top up. All your unlocked Pro features will remain active.</p>
+                        <p>You can purchase another top-up pack from the "Buy Credits" page at any time. All your unlocked Pro features will remain active, and you'll also receive 250 free credits every month.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Buy Credits Page View -->
+        <div id="credits-view" class="hidden">
+            <h1><i class="fas fa-coins"></i> Buy More Credits</h1>
+            <p class="description">Ran out of credits? Top up your balance with a one-time purchase. Your features remain unlocked.</p>
+            
+            <div class="premium-container">
+                <div class="pricing-grid">
+                    <!-- Credit Pack 1 -->
+                    <div class="pricing-card">
+                        <div class="plan-header">
+                            <h2>Refill</h2>
+                        </div>
+                        <div class="plan-price">$2.99</div>
+                        <p class="price-description">One-Time Payment</p>
+                        <div class="credit-amount">
+                            <i class="fas fa-coins"></i> 500 Credits
+                        </div>
+                        <button class="cta-button" onclick="purchaseCredits(500)">Buy Now</button>
+                    </div>
+
+                    <!-- Credit Pack 2 -->
+                    <div class="pricing-card popular">
+                         <div class="plan-header">
+                            <h2>Boost</h2>
+                            <div class="most-popular-badge">Most Popular</div>
+                        </div>
+                        <div class="plan-price">$4.99</div>
+                        <p class="price-description">One-Time Payment</p>
+                        <div class="credit-amount">
+                            <i class="fas fa-coins"></i> 1,200 Credits
+                        </div>
+                        <button class="cta-button" onclick="purchaseCredits(1200)">Buy Now</button>
+                    </div>
+
+                    <!-- Credit Pack 3 -->
+                    <div class="pricing-card">
+                        <div class="plan-header">
+                            <h2>Mega Pack</h2>
+                        </div>
+                        <div class="plan-price">$9.99</div>
+                        <p class="price-description">One-Time Payment</p>
+                        <div class="credit-amount">
+                            <i class="fas fa-coins"></i> 3,000 Credits
+                        </div>
+                        <button class="cta-button" onclick="purchaseCredits(3000)">Buy Now</button>
                     </div>
                 </div>
             </div>
