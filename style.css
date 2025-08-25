@@ -1224,19 +1224,17 @@ pre {
     position: relative;
 }
 
-/* Style for sliders with numbers (right side) */
 .amount-display .slider-ticks span {
-    background-color: transparent; /* Hide the tick mark itself */
+    background-color: transparent;
     color: #888;
     font-size: 0.8em;
-    top: 15px; /* Position numbers below the track */
+    top: 15px;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Hide the end labels for the amount slider for a cleaner look */
 .amount-display .slider-label-end {
     display: none;
 }
@@ -1244,14 +1242,12 @@ pre {
     padding: 0 15px;
 }
 
-/* Style for sliders with charts only (left side) */
 .relevancy-display .slider-ticks span {
-    color: transparent; /* Hide number text */
+    color: transparent;
     font-size: 0;
-    top: 13px; /* Move charts down by 13px */
+    top: 13px;
 }
 
-/* --- SLIDER POSITION ADJUSTMENTS --- */
 #main-generator-view .relevancy-display {
     position: relative;
     top: 6px; 
@@ -1261,10 +1257,8 @@ pre {
     position: relative;
     top: 10px;
 }
-/* --- END REWORKED SLIDER STYLES --- */
 
-
-/* --- Availability Checker Results --- */
+/* --- Availability Checker & Alternatives --- */
 .results-list { 
     padding: 10px; 
 }
@@ -1296,7 +1290,6 @@ pre {
     text-decoration: underline; 
 }
 
-/* --- New Styles for Availability Checker --- */
 .availability-input-container {
     display: flex;
     gap: 20px;
@@ -1312,7 +1305,6 @@ pre {
     height: 45px;
 }
 
-/* Custom Checkable Dropdown */
 .dropdown-check-container {
     position: relative;
 }
@@ -1381,7 +1373,6 @@ pre {
     cursor: pointer;
 }
 
-/* --- Icon styling for platform dropdown --- */
 .platform-item i {
     margin-right: 10px;
     width: 1.2em;
@@ -1395,6 +1386,15 @@ pre {
     justify-content: center;
     align-items: center;
     padding: 40px 0;
+}
+
+#available-alternatives-results .output-box {
+    flex: 1 1 100%;
+}
+
+#available-alternatives-results .output-box pre {
+    height: auto;
+    min-height: 120px;
 }
 
 /* --- Name Analyzer Results --- */
@@ -1448,7 +1448,6 @@ pre {
     resize: none;
 }
 
-/* --- Styles for Outer Box and Import Button --- */
 .outer-input-box {
     background-color: #2a2a2a;
     padding: 20px;
@@ -1556,7 +1555,6 @@ pre {
     background-color: #d90000;
 }
 
-/* Toggle Switch for Animations */
 .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; transition: .4s; }
@@ -1894,40 +1892,36 @@ body.light-theme {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .pricing-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* --- MODIFIED & NEW STYLES --- */
+#premium-view .pricing-card.popular:hover {
+    box-shadow: 0 10px 30px var(--primary-accent);
+}
+#premium-view .pricing-card.business-highlight:hover {
+    box-shadow: 0 10px 30px var(--line-accent-default);
+}
+#credits-view .pricing-card:hover {
+    box-shadow: 0 10px 30px var(--primary-accent);
+}
+
 #premium-view .pricing-card.popular {
     border-color: var(--primary-accent);
-    box-shadow: 0 0 25px rgba(165, 0, 255, 0.3);
 }
 
 #premium-view .pricing-card.business-highlight {
     border-color: var(--line-accent-default);
-    box-shadow: 0 0 25px var(--line-accent-default);
 }
 
 #credits-view .pricing-card {
-    border: 1px solid #5a5a5a;
+    border: 1px solid var(--primary-accent);
 }
-
-#credits-view .pricing-card.popular {
-    border-color: var(--primary-accent);
-}
-
-#credits-view .pricing-card.best-value {
-    border-color: var(--line-accent-default);
-}
-/* --- END MODIFIED & NEW STYLES --- */
-
 
 .plan-header {
-    position: relative;
     margin-bottom: 10px;
 }
 
@@ -1945,7 +1939,7 @@ body.light-theme {
 
 .most-popular-badge, .best-value-badge {
     position: absolute;
-    top: -40px;
+    top: -15px;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
@@ -1989,7 +1983,7 @@ body.light-theme {
     background-color: var(--primary-accent);
     border: none;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s;
-    margin-top: auto; /* Pushes button to the bottom */
+    margin-top: auto;
 }
 .cta-button:hover {
     transform: scale(1.02);
@@ -2012,7 +2006,7 @@ body.light-theme {
     list-style: none;
     padding: 0;
     text-align: left;
-    flex-grow: 1; /* Ensures lists expand to fill space */
+    flex-grow: 1;
 }
 
 .feature-item {
@@ -2087,4 +2081,35 @@ body.light-theme {
     .pricing-card.popular:hover {
         transform: scale(1.02) translateY(-10px);
     }
+}
+
+/* --- Payment Modal --- */
+.payment-details {
+    background-color: rgba(58, 58, 58, 0.75);
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.payment-details p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+.payment-details p:last-child {
+    margin-bottom: 0;
+}
+.payment-details strong {
+    color: #cccccc;
+}
+.payment-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.payment-note {
+    margin-top: 20px;
+    font-size: 0.8em;
+    color: #aaa;
 }
