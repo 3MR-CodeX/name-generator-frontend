@@ -49,7 +49,7 @@ const nameAnalyzerView = document.getElementById("name-analyzer-view");
 const settingsView = document.getElementById("settings-view");
 const aboutView = document.getElementById("about-view");
 const premiumView = document.getElementById("premium-view");
-const creditsView = document.getElementById("credits-view"); // NEW
+const creditsView = document.getElementById("credits-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refineButtonSection = document.querySelector(".refine-button-section");
@@ -88,6 +88,9 @@ const platformsDropdownList = document.getElementById("platforms-dropdown-list")
 const alternativesGeneratorSection = document.getElementById("alternatives-generator-section");
 const generateAlternativesBtn = document.getElementById("generate-alternatives-btn");
 const alternativesResultsContainer = document.getElementById("alternatives-results-container");
+const availableAlternativesSection = document.getElementById("available-alternatives-section");
+const generateAvailableAltBtn = document.getElementById("generate-available-alt-btn");
+const availableAlternativesResults = document.getElementById("available-alternatives-results");
 
 // --- Settings Page Selectors ---
 const themeSelect = document.getElementById('theme-select');
@@ -109,6 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof initializeTopbar === 'function') initializeTopbar();
     if (typeof initializeSidebar === 'function') initializeSidebar();
     if (typeof initializeAuth === 'function') initializeAuth();
+    if (typeof initializePaymentSystem === 'function') initializePaymentSystem();
     
     initializeUI();
     initializeSettings();
@@ -120,7 +124,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     setupEventListeners();
     initializePlatformsDropdown();
 
-    // Hide loader after a delay
     setTimeout(() => {
         const loader = document.getElementById('loader-wrapper');
         if (loader) {
@@ -170,6 +173,7 @@ function setupEventListeners() {
     if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability;
     if (analyzeNameBtn) analyzeNameBtn.onclick = analyzeName;
     if (generateAlternativesBtn) generateAlternativesBtn.onclick = generateAlternatives;
+    if (generateAvailableAltBtn) generateAvailableAltBtn.onclick = generateAvailableAlternatives;
 
     // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
@@ -182,7 +186,6 @@ function setupEventListeners() {
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
 
-    // Event listeners for new buttons
     const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
     const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
     const tierDropdown = document.getElementById("tier-dropdown");
@@ -209,7 +212,7 @@ function setupEventListeners() {
         const settingsLink = document.getElementById('settings-link');
         const aboutLink = document.getElementById('about-link');
         const premiumLink = document.getElementById('go-premium-link');
-        const buyCreditsLink = document.getElementById('buy-credits-link'); // NEW
+        const buyCreditsLink = document.getElementById('buy-credits-link');
 
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
@@ -218,12 +221,12 @@ function setupEventListeners() {
         if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
         if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); });
         if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (buyCreditsLink) buyCreditsLink.addEventListener('click', (e) => { e.preventDefault(); showView('credits'); if (window.isSidebarOpen) toggleSidebar(); }); // NEW
+        if (buyCreditsLink) buyCreditsLink.addEventListener('click', (e) => { e.preventDefault(); showView('credits'); if (window.isSidebarOpen) toggleSidebar(); });
     }, 500);
 }
 
 function showView(viewName) {
-    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView]; // NEW: Added creditsView
+    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView];
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
@@ -260,7 +263,7 @@ function showView(viewName) {
         if(aboutView) aboutView.classList.remove('hidden');
     } else if (viewName === 'premium') {
         if(premiumView) premiumView.classList.remove('hidden');
-    } else if (viewName === 'credits') { // NEW
+    } else if (viewName === 'credits') {
         if(creditsView) creditsView.classList.remove('hidden');
     }
 }
@@ -311,11 +314,11 @@ function hideLoading(targetElement) {
 }
 
 function disableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn].forEach(btn => { if(btn) btn.disabled = true; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn, generateAvailableAltBtn].forEach(btn => { if(btn) btn.disabled = true; });
 }
 
 function enableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn].forEach(btn => { if(btn) btn.disabled = false; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn, generateAvailableAltBtn].forEach(btn => { if(btn) btn.disabled = false; });
 }
 
 function showTemporaryPlaceholderError(element, message) {
@@ -333,8 +336,12 @@ function showTemporaryPlaceholderError(element, message) {
 
 async function getUserToken() {
     if (window.auth && window.auth.currentUser) {
-        await window.auth.currentUser.reload();
-        return await window.auth.currentUser.getIdToken(true);
+        try {
+            return await window.auth.currentUser.getIdToken(true);
+        } catch (error) {
+            console.error("Error refreshing token:", error);
+            return null;
+        }
     }
     return null;
 }
@@ -396,10 +403,13 @@ async function generateName(force = false) {
     if (generateBtn.disabled && !force) return;
     const amountToGenerate = parseInt(document.getElementById("generator-amount").value);
 
-    if (!window.auth.currentUser && (parseInt(localStorage.getItem('anonGenerations') || '0') + amountToGenerate) > 25) {
-        document.getElementById("error").textContent = `You have ${25 - parseInt(localStorage.getItem('anonGenerations') || '0')} names left. Please sign up to generate more.`;
-        if (typeof openSignUpModal === 'function') openSignUpModal();
-        return;
+    if (!window.auth.currentUser) {
+        let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
+        if ((anonGenerations + amountToGenerate) > 25) {
+            document.getElementById("error").textContent = `You have ${25 - anonGenerations} credits left. Please sign up to generate more.`;
+            if (typeof openSignUpModal === 'function') openSignUpModal();
+            return;
+        }
     }
 
     const prompt = promptInput.value.trim();
@@ -443,9 +453,9 @@ async function generateName(force = false) {
         if (!window.auth.currentUser) {
             let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0') + amountToGenerate;
             localStorage.setItem('anonGenerations', anonGenerations);
-            if (window.updateGenerationCountUI) window.updateGenerationCountUI(Math.max(0, 25 - anonGenerations), 25);
-        } else if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            window.updateGenerationCountUI(data.generationsLeft, 500);
+            if (window.updateGenerationCountUI) window.updateGenerationCountUI(Math.max(0, 25 - anonGenerations));
+        } else if (data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
         }
 
         renderClickableNames(data.names.map(cleanNames));
@@ -500,8 +510,8 @@ async function refineNames(action, names = null, extra_info = "") {
         if (!response.ok) throw new Error((await response.json()).detail || "Unknown error during name refinement.");
         const data = await response.json();
         
-        if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            window.updateGenerationCountUI(data.generationsLeft, 500);
+        if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
         }
         
         if(refinedNamesPre) refinedNamesPre.textContent = data.names.map(cleanNames).join("\n\n");
@@ -611,8 +621,8 @@ async function customRefineName() {
         
         if(refinerLoadingPlaceholder) refinerLoadingPlaceholder.classList.add("hidden");
         
-        if (window.auth.currentUser && data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            window.updateGenerationCountUI(data.generationsLeft, 500);
+        if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
         }
         
         renderClickableNames(data.names.map(cleanNames), refinedNamesCustomPre);
@@ -929,6 +939,8 @@ async function checkAvailability() {
 
     const resultsContainer = document.getElementById('availability-results-container');
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    availableAlternativesSection.classList.add('hidden');
+    availableAlternativesResults.innerHTML = '';
     disableButtons();
 
     try {
@@ -949,7 +961,11 @@ async function checkAvailability() {
         }
 
         const data = await response.json();
+        if (data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
+        }
         renderAvailabilityResults(data);
+        availableAlternativesSection.classList.remove('hidden');
 
     } catch (error) {
         resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
@@ -1001,6 +1017,91 @@ function renderAvailabilityResults(data) {
         resultsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">Please select at least one option from the dropdown to check.</p>';
     } else {
         resultsContainer.innerHTML = `<div class="output-section" style="margin-top: 20px;">${htmlContent}</div>`;
+    }
+}
+
+async function generateAvailableAlternatives() {
+    if (generateAvailableAltBtn.disabled) return;
+
+    const nameInput = document.getElementById('name-to-check');
+    const originalName = nameInput.value.trim();
+    if (!originalName) {
+        alert("Original name is missing.");
+        return;
+    }
+
+    const takenPlatforms = [];
+    const resultsContainer = document.getElementById('availability-results-container');
+    resultsContainer.querySelectorAll('.status-taken').forEach(el => {
+        const platformNameElement = el.previousElementSibling;
+        if (platformNameElement) {
+            // Clones the node to remove child elements like icons before getting text content
+            const clone = platformNameElement.cloneNode(true);
+            // Remove icon to get only the text
+            const icon = clone.querySelector('i');
+            if (icon) icon.remove();
+            takenPlatforms.push(clone.textContent.trim());
+        }
+    });
+
+    if (takenPlatforms.length === 0) {
+        availableAlternativesResults.innerHTML = `<p style="text-align: center; margin-top: 20px;">The original name seems to be available everywhere you checked! No need for alternatives.</p>`;
+        return;
+    }
+    
+    showLoading(availableAlternativesResults);
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const response = await fetch(`${BACKEND_URL}/generate-available-alternatives`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({
+                original_name: originalName,
+                taken_platforms: takenPlatforms
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "Failed to generate alternatives.");
+        }
+
+        const data = await response.json();
+        if (data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
+        }
+
+        let resultsHtml = `
+            <div class="output-section">
+                <div class="output-box">
+                    <div class="output-header"><label>Available Alternatives</label></div>
+                    <pre>${data.alternatives.join("\n")}</pre>
+                </div>
+                <div class="output-box">
+                    <div class="output-header"><label>Explanations</label></div>
+                    <pre>${data.reasons.join("\n\n")}</pre>
+                </div>
+            </div>`;
+        availableAlternativesResults.innerHTML = resultsHtml;
+
+    } catch (error) {
+        availableAlternativesResults.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
+    } finally {
+        let countdown = 10;
+        generateAvailableAltBtn.textContent = `Please wait ${countdown}s...`;
+        generateAvailableAltBtn.disabled = true;
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                generateAvailableAltBtn.textContent = `Please wait ${countdown}s...`;
+            } else {
+                clearInterval(interval);
+                generateAvailableAltBtn.textContent = '💡 Generate Available Alternatives';
+                enableButtons();
+            }
+        }, 1000);
     }
 }
 
@@ -1059,9 +1160,8 @@ async function analyzeName() {
         
         const data = await response.json();
         
-        if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            const maxGenerations = window.auth.currentUser ? 500 : 25;
-            window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
+        if (data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
         }
         
         if (endpoint.includes('persona')) {
@@ -1132,9 +1232,8 @@ async function generateAlternatives() {
 
         const data = await response.json();
         
-        if (data.generationsLeft !== undefined && window.updateGenerationCountUI) {
-            const maxGenerations = window.auth.currentUser ? 500 : 25;
-            window.updateGenerationCountUI(data.generationsLeft, maxGenerations);
+        if (data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
         }
         
         renderScoredAlternatives(data.alternatives);
