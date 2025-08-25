@@ -182,6 +182,24 @@ function setupEventListeners() {
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
 
+    // Event listeners for new buttons
+    const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
+    const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
+    const tierDropdown = document.getElementById("tier-dropdown");
+
+    if (buyCreditsShortcutBtn) {
+        buyCreditsShortcutBtn.addEventListener('click', () => { 
+            showView('credits'); 
+            if(tierDropdown) tierDropdown.classList.remove('visible');
+        });
+    }
+
+    if (goPremiumFromDropdownBtn) {
+        goPremiumFromDropdownBtn.addEventListener('click', () => { 
+            showView('premium'); 
+            if(tierDropdown) tierDropdown.classList.remove('visible');
+        });
+    }
 
     setTimeout(() => {
         const homeLink = document.getElementById('home-link');
