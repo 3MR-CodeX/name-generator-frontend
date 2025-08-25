@@ -21,23 +21,7 @@ const FONT_OPTIONS = {
     "Verdana": "'Verdana', sans-serif"
 };
 
-const PLATFORM_OPTIONS = {
-    "Behance":      { type: "platform", value: "Behance", icon: "fab fa-behance" },
-    "Facebook":     { type: "platform", value: "Facebook", icon: "fab fa-facebook" },
-    "GitHub":       { type: "platform", value: "GitHub", icon: "fab fa-github" },
-    "Instagram":    { type: "platform", value: "Instagram", icon: "fab fa-instagram" },
-    "Medium":       { type: "platform", value: "Medium", icon: "fab fa-medium" },
-    "Pinterest":    { type: "platform", value: "Pinterest", icon: "fab fa-pinterest" },
-    "Reddit":       { type: "platform", value: "Reddit", icon: "fab fa-reddit-alien" },
-    "Roblox":       { type: "platform", value: "Roblox", icon: "fas fa-gamepad" },
-    "Rumble":       { type: "platform", value: "Rumble", icon: "fas fa-video" },
-    "SoundCloud":   { type: "platform", value: "SoundCloud", icon: "fab fa-soundcloud" },
-    "Steam":        { type: "platform", value: "Steam", icon: "fab fa-steam" },
-    "TikTok":       { type: "platform", value: "TikTok", icon: "fab fa-tiktok" },
-    "Twitch":       { type: "platform", value: "Twitch", icon: "fab fa-twitch" },
-    "X":            { type: "platform", value: "X", icon: "fab fa-twitter" },
-    "YouTube":      { type: "platform", value: "YouTube", icon: "fab fa-youtube" }
-};
+// This block should be removed.
 
 const DOMAIN_OPTIONS = {
     ".com": { type: "domain", value: "com" },
@@ -1028,7 +1012,6 @@ async function checkAvailability() {
         enableButtons();
     }
 }
-
 function renderAvailabilityResults(data) {
     const resultsContainer = document.getElementById('availability-results-container');
     let htmlContent = '';
@@ -1657,3 +1640,4 @@ function sendPasswordReset() {
         alert("You must be signed in with an email account to reset your password.");
     }
 }
+
