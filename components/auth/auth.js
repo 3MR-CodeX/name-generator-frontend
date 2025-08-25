@@ -1,4 +1,31 @@
 // components/auth/auth.js
+
+// These functions are now globally accessible
+function openSignInModal() {
+    const signInModal = document.getElementById("sign-in-modal");
+    closeAllAuthModals();
+    if (signInModal) signInModal.classList.add('active');
+}
+
+function openSignUpModal() {
+    const signUpModal = document.getElementById("sign-up-modal");
+    closeAllAuthModals();
+    if (signUpModal) signUpModal.classList.add('active');
+}
+
+function closeAllAuthModals() {
+    const signInModal = document.getElementById("sign-in-modal");
+    const signUpModal = document.getElementById("sign-up-modal");
+    const authErrorMessageSignIn = document.getElementById("auth-error-message-signin");
+    const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
+
+    if(signInModal) signInModal.classList.remove('active');
+    if(signUpModal) signUpModal.classList.remove('active');
+    if(authErrorMessageSignIn) authErrorMessageSignIn.textContent = '';
+    if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = '';
+}
+
+
 function initializeAuth() {
     if (!window.env || !window.env.FIREBASE_CONFIG) {
         console.error("Firebase config not found.");
@@ -46,7 +73,6 @@ function initializeAuth() {
         if (generationCounter) {
             generationCounter.textContent = `${count.toLocaleString()} Credits`;
         }
-        // Progress bar can be set to 100% or a dynamic value if there's a cap
         if (generationProgressBar) {
             generationProgressBar.style.width = `100%`;
         }
@@ -69,7 +95,6 @@ function initializeAuth() {
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
 
-        // Hide all conditional UI elements by default
         userStatusContainer.classList.add('hidden');
         verificationNotice.classList.add('hidden');
         authButtonsContainer.classList.add('hidden');
@@ -93,8 +118,8 @@ function initializeAuth() {
             
             user.reload().then(() => {
                 if (user.emailVerified) {
-                    generateBtn.disabled = false;
-                    surpriseBtn.disabled = false;
+                    if(generateBtn) generateBtn.disabled = false;
+                    if(surpriseBtn) surpriseBtn.disabled = false;
                     userStatusContainer.classList.remove('hidden');
                     
                     user.getIdToken().then(token => {
@@ -108,17 +133,17 @@ function initializeAuth() {
                         });
                     });
                 } else {
-                    generateBtn.disabled = true;
-                    surpriseBtn.disabled = true;
-                    errorDiv.textContent = "";
+                    if(generateBtn) generateBtn.disabled = true;
+                    if(surpriseBtn) surpriseBtn.disabled = true;
+                    if(errorDiv) errorDiv.textContent = "";
                     verificationNotice.classList.remove('hidden');
                     verificationNotice.innerHTML = `Please check your inbox to verify your email address. <a id="resend-verification">Resend verification email.</a>`;
                     document.getElementById('resend-verification').addEventListener('click', resendVerificationEmail);
                 }
             });
         } else { // --- USER IS NOT LOGGED IN (ANONYMOUS) ---
-            generateBtn.disabled = false;
-            surpriseBtn.disabled = false;
+            if(generateBtn) generateBtn.disabled = false;
+            if(surpriseBtn) surpriseBtn.disabled = false;
             authButtonsContainer.classList.remove('hidden');
             
             const anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
@@ -137,23 +162,23 @@ function initializeAuth() {
     });
 
     // --- Event Listeners and other functions ---
-    signInBtn.addEventListener('click', openSignInModal);
-    signUpBtn.addEventListener('click', openSignUpModal);
-    signOutLink.addEventListener('click', signOut);
-    signInSubmit.addEventListener('click', signInWithEmail);
-    signUpSubmit.addEventListener('click', signUpWithEmail);
-    signInGoogle.addEventListener('click', signInWithGoogle);
-    signUpGoogle.addEventListener('click', signInWithGoogle);
-    userProfileContainer.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(accountDropdown); });
-    tierBadge.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(tierDropdown); });
-    dropdownSignOutBtn.addEventListener('click', signOut);
+    if (signInBtn) signInBtn.addEventListener('click', openSignInModal);
+    if (signUpBtn) signUpBtn.addEventListener('click', openSignUpModal);
+    if (signOutLink) signOutLink.addEventListener('click', signOut);
+    if (signInSubmit) signInSubmit.addEventListener('click', signInWithEmail);
+    if (signUpSubmit) signUpSubmit.addEventListener('click', signUpWithEmail);
+    if (signInGoogle) signInGoogle.addEventListener('click', signInWithGoogle);
+    if (signUpGoogle) signUpGoogle.addEventListener('click', signInWithGoogle);
+    if (userProfileContainer) userProfileContainer.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(accountDropdown); });
+    if (tierBadge) tierBadge.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(tierDropdown); });
+    if (dropdownSignOutBtn) dropdownSignOutBtn.addEventListener('click', signOut);
     document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
     
     document.addEventListener('click', (event) => {
-        if (accountDropdown && !userProfileContainer.contains(event.target)) {
+        if (accountDropdown && userProfileContainer && !userProfileContainer.contains(event.target)) {
             accountDropdown.classList.remove('visible');
         }
-        if (tierDropdown && !userStatusContainer.contains(event.target)) {
+        if (tierDropdown && userStatusContainer && !userStatusContainer.contains(event.target)) {
             tierDropdown.classList.remove('visible');
         }
         if (event.target === signInModal || event.target === signUpModal) {
@@ -166,10 +191,10 @@ function initializeAuth() {
         if (user) {
             user.sendEmailVerification()
                 .then(() => {
-                    verificationNotice.innerHTML = `Verification email sent! Please check your inbox (and spam folder).`;
+                    if(verificationNotice) verificationNotice.innerHTML = `Verification email sent! Please check your inbox (and spam folder).`;
                 })
                 .catch(error => {
-                    verificationNotice.innerHTML = `Error: ${error.message}`;
+                    if(verificationNotice) verificationNotice.innerHTML = `Error: ${error.message}`;
                 });
         }
     }
@@ -214,8 +239,8 @@ function initializeAuth() {
         auth.signInWithPopup(window.googleProvider)
             .then(() => closeAllAuthModals())
             .catch(error => {
-                authErrorMessageSignIn.textContent = error.message;
-                authErrorMessageSignUp.textContent = error.message;
+                if(authErrorMessageSignIn) authErrorMessageSignIn.textContent = error.message;
+                if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = error.message;
             });
     }
 
@@ -224,23 +249,6 @@ function initializeAuth() {
         if (window.confirm("Are you sure you want to sign out?")) {
             auth.signOut().catch(error => console.error("Sign out error:", error));
         }
-    }
-
-    window.openSignInModal = function() {
-        closeAllAuthModals();
-        signInModal.classList.add('active');
-    }
-
-    window.openSignUpModal = function() {
-        closeAllAuthModals();
-        signUpModal.classList.add('active');
-    }
-
-    function closeAllAuthModals() {
-        if(signInModal) signInModal.classList.remove('active');
-        if(signUpModal) signUpModal.classList.remove('active');
-        if(authErrorMessageSignIn) authErrorMessageSignIn.textContent = '';
-        if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = '';
     }
 
     function toggleDropdown(dropdown) {
