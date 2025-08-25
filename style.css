@@ -1747,19 +1747,6 @@ body.light-theme {
     border-color: #4a4a4a !important;
 }
 
-.premium-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: linear-gradient(45deg, var(--line-accent-glow), var(--primary-accent));
-    color: white;
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 0.8em;
-    font-weight: 500;
-    box-shadow: 0 0 10px var(--line-accent-glow);
-}
-
 .persona-analysis-report {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1896,12 +1883,12 @@ body.light-theme {
     gap: 30px;
     margin-bottom: 40px;
     align-items: stretch;
-    margin-top: 40px; /* MODIFIED: Added spacing */
+    margin-top: 40px;
 }
 
 .pricing-card {
     background-color: rgba(42, 42, 42, 0.85);
-    border: 1px solid #4a4a4a;
+    border: 1px solid var(--primary-accent);
     border-radius: 12px;
     padding: 30px;
     text-align: center;
@@ -1918,10 +1905,6 @@ body.light-theme {
 .pricing-card.popular {
     border-color: var(--primary-accent);
     box-shadow: 0 0 25px rgba(165, 0, 255, 0.3);
-    transform: scale(1.05);
-}
-.pricing-card.popular:hover {
-    transform: scale(1.07) translateY(-10px);
 }
 
 .plan-header {
@@ -1941,7 +1924,7 @@ body.light-theme {
     min-height: 2.2em;
 }
 
-.most-popular-badge {
+.most-popular-badge, .best-value-badge {
     position: absolute;
     top: -45px;
     left: 50%;
@@ -2021,21 +2004,9 @@ body.light-theme {
     color: #f1fa8c;
 }
 
-.features-unlocked-section {
-    text-align: center;
-    margin: 40px 0;
-    padding: 20px;
-    background-color: rgba(42, 42, 42, 0.75);
-    border-radius: 8px;
-}
-
-.features-unlocked-section h3 {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-}
-
 .faq-section {
     text-align: center;
+    margin-top: 40px;
 }
 
 .faq-section h3 {
