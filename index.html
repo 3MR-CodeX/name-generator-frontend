@@ -1,4 +1,3 @@
-
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -243,6 +242,7 @@
             </div>
         </div>
 
+        <!-- UPDATED AVAILABILITY CHECKER VIEW -->
         <div id="availability-checker-view" class="hidden">
             <h1>Name Availability Check</h1>
             <p class="description">Check if your desired name is available as a domain and on social media.</p>
@@ -256,15 +256,26 @@
                         </div>
                         <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
                     </div>
-            
-                    <div class="input-wrapper" style="flex: 1;">
-                        <label>Platforms</label>
-                        <div class="dropdown-check-container">
-                            <button id="platforms-dropdown-btn" class="dropdown-btn">
-                                <span>Select Platforms</span>
-                                <span class="arrow"></span>
-                            </button>
-                            <div id="platforms-dropdown-list" class="dropdown-content hidden"></div>
+                    <div class="availability-dropdowns-grid">
+                        <div class="input-wrapper">
+                            <label>Platforms</label>
+                            <div class="dropdown-check-container">
+                                <button id="platforms-dropdown-btn" class="dropdown-btn">
+                                    <span>Select Platforms</span>
+                                    <span class="arrow"></span>
+                                </button>
+                                <div id="platforms-dropdown-list" class="dropdown-content hidden"></div>
+                            </div>
+                        </div>
+                        <div class="input-wrapper">
+                            <label>Domains</label>
+                            <div class="dropdown-check-container">
+                                <button id="domains-dropdown-btn" class="dropdown-btn">
+                                    <span>Select Domains</span>
+                                    <span class="arrow"></span>
+                                </button>
+                                <div id="domains-dropdown-list" class="dropdown-content hidden"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -276,14 +287,12 @@
         
             <div id="availability-results-container"></div>
             
-            <!-- NEW: Generate Available Alternatives Section -->
             <div id="available-alternatives-section" class="hidden" style="margin-top: 20px;">
                 <div class="button-section" style="margin-bottom: 20px;">
                     <button id="generate-available-alt-btn" class="generate-btn">💡 Generate Available Alternatives</button>
                 </div>
                 <div id="available-alternatives-results"></div>
             </div>
-
         </div>
 
         <div id="name-analyzer-view" class="hidden">
