@@ -872,6 +872,7 @@ function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsMod
 }
 
 // --- UPDATED: Function to initialize both new dropdowns ---
+// --- UPDATED: Function to initialize both new dropdowns ---
 function initializeAvailabilityDropdowns() {
     const platformsBtn = document.getElementById("platforms-dropdown-btn");
     const platformsList = document.getElementById("platforms-dropdown-list");
@@ -922,7 +923,8 @@ function initializeAvailabilityDropdowns() {
         domainsList.querySelectorAll('input[type="checkbox"][data-tld="true"]').forEach(box => {
             box.checked = e.target.checked;
         });
-        updateDropdownButtonText(domainsBtn, domainsList, 'Domains');
+        // Manually trigger the change event to update text and exclusivity
+        domainsList.dispatchEvent(new Event('change'));
     });
     
     // Setup generic dropdown functionality
@@ -930,6 +932,8 @@ function initializeAvailabilityDropdowns() {
         const list = btn.nextElementSibling;
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
+            // Do not open if disabled
+            if (btn.disabled) return;
             list.classList.toggle('hidden');
             btn.classList.toggle('open');
         });
@@ -943,8 +947,16 @@ function initializeAvailabilityDropdowns() {
         domainsBtn.classList.remove('open');
     });
 
-    platformsList.addEventListener('change', () => updateDropdownButtonText(platformsBtn, platformsList, 'Platforms'));
-    domainsList.addEventListener('change', () => updateDropdownButtonText(domainsBtn, domainsList, 'Domains'));
+    // NEW: Updated event listeners with exclusivity logic
+    platformsList.addEventListener('change', () => {
+        updateDropdownButtonText(platformsBtn, platformsList, 'Platforms');
+        handleDropdownExclusivity(platformsList, domainsList, domainsBtn);
+    });
+
+    domainsList.addEventListener('change', () => {
+        updateDropdownButtonText(domainsBtn, domainsList, 'Domains');
+        handleDropdownExclusivity(domainsList, platformsList, platformsBtn);
+    });
 
     updateDropdownButtonText(platformsBtn, platformsList, 'Platforms');
     updateDropdownButtonText(domainsBtn, domainsList, 'Domains');
@@ -1624,5 +1636,28 @@ function sendPasswordReset() {
              });
     } else {
         alert("You must be signed in with an email account to reset your password.");
+    }
+}
+
+function handleDropdownExclusivity(changedList, otherList, otherBtn) {
+    const isAnyChecked = changedList.querySelector('input[type="checkbox"]:checked');
+    const otherCheckboxes = otherList.querySelectorAll('input[type="checkbox"]');
+    const otherListContent = otherBtn.nextElementSibling;
+
+    if (isAnyChecked) {
+        // Disable the other list
+        otherBtn.disabled = true;
+        otherListContent.classList.add('disabled');
+        otherCheckboxes.forEach(box => {
+            box.disabled = true;
+            box.checked = false; // Uncheck all in the other list
+        });
+        // Update the button text for the now-disabled dropdown
+        updateDropdownButtonText(otherBtn, otherList, otherBtn.id.includes('domain') ? 'Domains' : 'Platforms');
+    } else {
+        // Enable the other list
+        otherBtn.disabled = false;
+        otherListContent.classList.remove('disabled');
+        otherCheckboxes.forEach(box => box.disabled = false);
     }
 }
