@@ -2171,3 +2171,21 @@ body.light-theme {
     font-size: 0.8em;
     color: #aaa;
 }
+
+/* --- NEW: Styles for Disabled Dropdowns --- */
+.dropdown-content.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    background-color: #2a2a2a;
+}
+
+.dropdown-btn:disabled {
+    background-color: #2a2a2a;
+    color: #777;
+    cursor: not-allowed;
+    border-color: #4a4a4a;
+}
+
+.dropdown-btn:disabled .arrow {
+    border-top-color: #777;
+}
