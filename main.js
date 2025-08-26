@@ -1144,9 +1144,10 @@ async function generateAvailableAlternatives() {
 }
 
 // --- NEW: Function to render the detailed alternative results ---
+// Replace the existing renderAvailableAlternatives function
 function renderAvailableAlternatives(alternatives) {
     if (!alternatives || alternatives.length === 0) {
-        availableAlternativesResults.innerHTML = `<p style="text-align: center;">Could not generate alternatives. Try a different name.</p>`;
+        availableAlternativesResults.innerHTML = `<p style="text-align: center;">Could not find any available domain alternatives with the current selections. Try a different name or TLDs.</p>`;
         return;
     }
     
@@ -1159,9 +1160,10 @@ function renderAvailableAlternatives(alternatives) {
         if (alt.availability.domains && alt.availability.domains.length > 0) {
             html += `<div class="availability-sub-section"><h4>Domains</h4><div class="results-list">`;
             alt.availability.domains.forEach(d => {
+                const viewButton = `<a href="https://www.godaddy.com/domainsearch/find?checkAvail=1&domainToCheck=${d.domain}" target="_blank" class="view-link">(View)</a>`;
                 html += `<div class="result-item">
                     <span class="result-name"><i class="fas fa-globe"></i> ${d.domain}</span>
-                    ${d.available ? '<span class="status-available">✅</span>' : '<span class="status-taken">❌</span>'}
+                    ${d.available ? '<span class="status-available">✅</span>' : `<span class="status-taken">❌ ${viewButton}</span>`}
                 </div>`;
             });
             html += `</div></div>`;
@@ -1175,7 +1177,7 @@ function renderAvailableAlternatives(alternatives) {
                 const iconClass = optionKey ? PLATFORM_OPTIONS[optionKey].icon : 'fas fa-hashtag';
                 html += `<div class="result-item">
                     <span class="result-name"><i class="${iconClass}"></i> ${s.platform}</span>
-                    ${s.available ? '<span class="status-available">✅</span>' : `<span class="status-taken"><a href="${s.url}" target="_blank">❌</a></span>`}
+                    ${s.available ? '<span class="status-available">✅</span>' : `<span class="status-taken"><a href="${s.url}" target="_blank" class="view-link">❌</a></span>`}
                 </div>`;
             });
             html += `</div></div>`;
@@ -1187,7 +1189,6 @@ function renderAvailableAlternatives(alternatives) {
     
     availableAlternativesResults.innerHTML = html;
 }
-
 
 async function analyzeName() {
     if (analyzeNameBtn.disabled) return;
@@ -1661,3 +1662,4 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         otherCheckboxes.forEach(box => box.disabled = false);
     }
 }
+
