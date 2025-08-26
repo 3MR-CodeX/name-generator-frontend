@@ -1,4 +1,3 @@
-
 /* style.css */
 :root {
     --top-bar-height: 60px;
@@ -1295,11 +1294,20 @@ pre {
     display: flex;
     gap: 20px;
     align-items: flex-end;
+    flex-wrap: wrap;
 }
 
 .input-wrapper {
     display: flex;
     flex-direction: column;
+}
+
+/* NEW: Grid for dropdowns */
+.availability-dropdowns-grid {
+    flex: 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
 #name-to-check {
@@ -1381,6 +1389,11 @@ pre {
     color: #cccccc;
 }
 
+.platform-item.select-all {
+    border-bottom: 1px solid #5a5a5a;
+    margin-bottom: 5px;
+}
+
 .loader-container {
     width: 100%;
     display: flex;
@@ -1389,13 +1402,50 @@ pre {
     padding: 40px 0;
 }
 
-#available-alternatives-results .output-box {
-    flex: 1 1 100%;
+/* NEW: Styles for generated available alternatives report */
+.alternatives-report {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
 }
 
-#available-alternatives-results .output-box pre {
-    height: auto;
-    min-height: 120px;
+.alternative-result-card {
+    padding: 15px;
+}
+
+.alternative-name-header {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 500;
+    color: var(--line-accent-default);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #4a4a4a;
+}
+
+.availability-sub-section {
+    margin-bottom: 10px;
+}
+
+.availability-sub-section h4 {
+    font-size: 1.1em;
+    color: #cccccc;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.availability-sub-section .results-list {
+    padding: 0;
+}
+
+.availability-sub-section .result-item {
+    padding: 6px 5px;
+    font-size: 0.95em;
+}
+
+.availability-sub-section .status-available,
+.availability-sub-section .status-taken {
+    font-size: 1.2em;
 }
 
 /* --- Name Analyzer Results --- */
@@ -2081,6 +2131,13 @@ body.light-theme {
     }
     .pricing-card.popular:hover {
         transform: scale(1.02) translateY(-10px);
+    }
+    .availability-input-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .availability-dropdowns-grid {
+        grid-template-columns: 1fr;
     }
 }
 
