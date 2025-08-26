@@ -873,6 +873,7 @@ function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsMod
 
 // --- UPDATED: Function to initialize both new dropdowns ---
 // --- UPDATED: Function to initialize both new dropdowns ---
+// --- UPDATED: Function to initialize both new dropdowns ---
 function initializeAvailabilityDropdowns() {
     const platformsBtn = document.getElementById("platforms-dropdown-btn");
     const platformsList = document.getElementById("platforms-dropdown-list");
@@ -891,7 +892,7 @@ function initializeAvailabilityDropdowns() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = option.value;
-        checkbox.checked = false;
+        checkbox.checked = false; // Unchecked by default
         label.appendChild(icon);
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(` ${name}`));
@@ -912,7 +913,7 @@ function initializeAvailabilityDropdowns() {
         checkbox.type = 'checkbox';
         checkbox.value = option.value;
         checkbox.dataset.tld = 'true';
-        checkbox.checked = !!option.popular; // Check popular ones by default
+        checkbox.checked = false; // Unchecked by default
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(` ${name}`));
         domainsList.appendChild(label);
@@ -947,7 +948,7 @@ function initializeAvailabilityDropdowns() {
         domainsBtn.classList.remove('open');
     });
 
-    // NEW: Updated event listeners with exclusivity logic
+    // Updated event listeners with exclusivity logic
     platformsList.addEventListener('change', () => {
         updateDropdownButtonText(platformsBtn, platformsList, 'Platforms');
         handleDropdownExclusivity(platformsList, domainsList, domainsBtn);
@@ -961,7 +962,6 @@ function initializeAvailabilityDropdowns() {
     updateDropdownButtonText(platformsBtn, platformsList, 'Platforms');
     updateDropdownButtonText(domainsBtn, domainsList, 'Domains');
 }
-
 // --- UPDATED: Generic function to update dropdown button text ---
 function updateDropdownButtonText(button, list, type) {
     const selectedCount = list.querySelectorAll('input[type="checkbox"]:checked:not(#select-all-domains)').length;
@@ -1662,4 +1662,5 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         otherCheckboxes.forEach(box => box.disabled = false);
     }
 }
+
 
