@@ -1643,11 +1643,12 @@ function sendPasswordReset() {
 }
 
 // Replace the existing handleDropdownExclusivity function
+// Replace the existing handleDropdownExclusivity function
 function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     const isAnyChecked = changedList.querySelector('input[type="checkbox"]:checked');
     const otherCheckboxes = otherList.querySelectorAll('input[type="checkbox"]');
     const otherListContent = otherBtn.nextElementSibling;
-    const generateBtn = document.getElementById('generate-available-alt-btn');
+    const availableAlternativesSection = document.getElementById('available-alternatives-section');
 
     if (isAnyChecked) {
         // Disable the other list
@@ -1659,13 +1660,11 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         });
         updateDropdownButtonText(otherBtn, otherList, otherBtn.id.includes('domain') ? 'Domains' : 'Platforms');
 
-        // **NEW LOGIC**: Enable/disable the generate button based on which list is active
+        // **NEW LOGIC**: Hide or show the entire alternatives section
         if (changedList.id === 'platforms-dropdown-list') {
-            generateBtn.disabled = false;
-            generateBtn.textContent = '💡 Generate Available Alternatives';
+            availableAlternativesSection.classList.remove('hidden');
         } else {
-            generateBtn.disabled = true;
-            generateBtn.textContent = 'Unavailable for Domain Search';
+            availableAlternativesSection.classList.add('hidden');
         }
 
     } else {
@@ -1673,8 +1672,7 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         otherBtn.disabled = false;
         otherListContent.classList.remove('disabled');
         otherCheckboxes.forEach(box => box.disabled = false);
-        // Disable the generate button since nothing is selected
-        generateBtn.disabled = true;
-        generateBtn.textContent = '💡 Generate Available Alternatives';
+        // Hide the alternatives section since nothing is selected
+        availableAlternativesSection.classList.add('hidden');
     }
 }
