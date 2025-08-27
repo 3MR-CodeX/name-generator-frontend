@@ -872,8 +872,6 @@ function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsMod
 }
 
 // --- UPDATED: Function to initialize both new dropdowns ---
-// --- UPDATED: Function to initialize both new dropdowns ---
-// --- UPDATED: Function to initialize both new dropdowns ---
 function initializeAvailabilityDropdowns() {
     const platformsBtn = document.getElementById("platforms-dropdown-btn");
     const platformsList = document.getElementById("platforms-dropdown-list");
@@ -927,7 +925,7 @@ function initializeAvailabilityDropdowns() {
         // Manually trigger the change event to update text and exclusivity
         domainsList.dispatchEvent(new Event('change'));
     });
-    
+
     // Setup generic dropdown functionality
     [platformsBtn, domainsBtn].forEach(btn => {
         const list = btn.nextElementSibling;
@@ -961,6 +959,9 @@ function initializeAvailabilityDropdowns() {
 
     updateDropdownButtonText(platformsBtn, platformsList, 'Platforms');
     updateDropdownButtonText(domainsBtn, domainsList, 'Domains');
+
+    // Hide the "Generate Alternative Names" section by default
+    if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
 }
 // --- UPDATED: Generic function to update dropdown button text ---
 function updateDropdownButtonText(button, list, type) {
@@ -1004,7 +1005,7 @@ async function checkAvailability() {
             body: JSON.stringify({ 
                 name: nameToCheck,
                 platforms: selectedPlatforms,
-                 tlds: selectedTlds
+                tlds: selectedTlds
             })
         });
         if (!response.ok) {
@@ -1017,7 +1018,9 @@ async function checkAvailability() {
             window.updateGenerationCountUI(data.credits);
         }
         renderAvailabilityResults(data);
-        availableAlternativesSection.classList.remove('hidden');
+        if (selectedPlatforms.length > 0) {
+            availableAlternativesSection.classList.remove('hidden');
+        }
     } catch (error) {
         resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
     } finally {
@@ -1676,3 +1679,4 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         availableAlternativesSection.classList.add('hidden');
     }
 }
+
