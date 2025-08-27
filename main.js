@@ -979,6 +979,7 @@ function updateDropdownButtonText(button, list, type) {
     }
 }
 
+// Replace the existing checkAvailability function
 async function checkAvailability() {
     const nameInput = document.getElementById('name-to-check');
     const nameToCheck = nameInput.value.trim();
@@ -995,6 +996,8 @@ async function checkAvailability() {
 
     const resultsContainer = document.getElementById('availability-results-container');
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    
+    // Always hide the alternatives section initially on a new check
     availableAlternativesSection.classList.add('hidden');
     availableAlternativesResults.innerHTML = '';
     disableButtons();
@@ -1006,7 +1009,7 @@ async function checkAvailability() {
             body: JSON.stringify({ 
                 name: nameToCheck,
                 platforms: selectedPlatforms,
-                tlds: selectedTlds
+                 tlds: selectedTlds
             })
         });
         if (!response.ok) {
@@ -1019,15 +1022,20 @@ async function checkAvailability() {
             window.updateGenerationCountUI(data.credits);
         }
         renderAvailabilityResults(data);
+        
+        // **NEW LOGIC**: Only show the alternatives button if a platform check was run
         if (selectedPlatforms.length > 0) {
             availableAlternativesSection.classList.remove('hidden');
         }
+
     } catch (error) {
         resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
     } finally {
         enableButtons();
     }
 }
+
+
 function renderAvailabilityResults(data) {
     const resultsContainer = document.getElementById('availability-results-container');
     let htmlContent = '';
@@ -1663,22 +1671,13 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         });
         updateDropdownButtonText(otherBtn, otherList, otherBtn.id.includes('domain') ? 'Domains' : 'Platforms');
 
-        // Hide or show the entire alternatives section
-        if (changedList.id === 'platforms-dropdown-list') {
-            availableAlternativesSection.classList.remove('hidden');
-        } else {
-            availableAlternativesSection.classList.add('hidden');
-        }
-
     } else {
         // Enable the other list
         otherBtn.disabled = false;
         otherListContent.classList.remove('disabled');
         otherCheckboxes.forEach(box => box.disabled = false);
-        // Hide the alternatives section since nothing is selected
-        availableAlternativesSection.classList.add('hidden');
     }
+    
+    // Always hide the alternatives section when the selection changes
+    availableAlternativesSection.classList.add('hidden');
 }
-
-
-
