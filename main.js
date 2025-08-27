@@ -1031,15 +1031,17 @@ function renderAvailabilityResults(data) {
     
     let domainsHtml = '';
     if (data.domains && data.domains.length > 0) {
-        domainsHtml = data.domains.map(d => `
+        domainsHtml = data.domains.map(d => {
+            const viewButton = `<a href="https://www.godaddy.com/domainsearch/find?checkAvail=1&domainToCheck=${d.domain}" target="_blank" class="view-link">(View)</a>`;
+            return `
             <div class="result-item">
                 <span class="result-name">
                     <i class="fas fa-globe"></i>
                     ${d.domain}
                 </span>
-                ${d.available ? '<span class="status-available">✅ Available</span>' : '<span class="status-taken">❌ Taken</span>'}
+                ${d.available ? '<span class="status-available">✅ Available</span>' : `<span class="status-taken">❌ Taken ${viewButton}</span>`}
             </div>
-        `).join('');
+        `}).join('');
     }
     
     let socialsHtml = '';
@@ -1056,7 +1058,7 @@ function renderAvailabilityResults(data) {
                         <i class="${iconClass}"></i>
                          ${s.platform}
                     </span>
-                    ${s.available ? `<span class="status-available">✅ Available</span>` : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank">View</a>)</span>`}
+                    ${s.available ? `<span class="status-available">✅ Available</span>` : `<span class="status-taken">❌ Taken (<a href="${s.url}" target="_blank" class="view-link">View</a>)</span>`}
                 </div>`;
         }).join('');
     }
@@ -1644,6 +1646,7 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     const isAnyChecked = changedList.querySelector('input[type="checkbox"]:checked');
     const otherCheckboxes = otherList.querySelectorAll('input[type="checkbox"]');
     const otherListContent = otherBtn.nextElementSibling;
+    const generateBtn = document.getElementById('generate-available-alt-btn');
 
     if (isAnyChecked) {
         // Disable the other list
@@ -1655,12 +1658,23 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         });
         // Update the button text for the now-disabled dropdown
         updateDropdownButtonText(otherBtn, otherList, otherBtn.id.includes('domain') ? 'Domains' : 'Platforms');
+
+        // Enable/disable the generate button based on which list is active
+        if (changedList.id === 'platforms-dropdown-list') {
+            generateBtn.disabled = false;
+        } else {
+            generateBtn.disabled = true;
+        }
+
     } else {
         // Enable the other list
         otherBtn.disabled = false;
         otherListContent.classList.remove('disabled');
         otherCheckboxes.forEach(box => box.disabled = false);
+        // Disable the generate button since nothing is selected
+        generateBtn.disabled = true;
     }
 }
+
 
 
