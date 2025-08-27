@@ -963,6 +963,7 @@ function initializeAvailabilityDropdowns() {
     // Hide the "Generate Alternative Names" section by default
     if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
 }
+
 // --- UPDATED: Generic function to update dropdown button text ---
 function updateDropdownButtonText(button, list, type) {
     const selectedCount = list.querySelectorAll('input[type="checkbox"]:checked:not(#select-all-domains)').length;
@@ -1027,7 +1028,6 @@ async function checkAvailability() {
         enableButtons();
     }
 }
-
 function renderAvailabilityResults(data) {
     const resultsContainer = document.getElementById('availability-results-container');
     let htmlContent = '';
@@ -1679,5 +1679,6 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         availableAlternativesSection.classList.add('hidden');
     }
 }
+
 
 
