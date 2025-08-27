@@ -1660,7 +1660,7 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         });
         updateDropdownButtonText(otherBtn, otherList, otherBtn.id.includes('domain') ? 'Domains' : 'Platforms');
 
-        // **NEW LOGIC**: Hide or show the entire alternatives section
+        // Hide or show the entire alternatives section
         if (changedList.id === 'platforms-dropdown-list') {
             availableAlternativesSection.classList.remove('hidden');
         } else {
