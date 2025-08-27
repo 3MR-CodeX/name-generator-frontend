@@ -2189,3 +2189,22 @@ body.light-theme {
 .dropdown-btn:disabled .arrow {
     border-top-color: #777;
 }
+
+/* --- NEW: Styles for View Link and Disabled Generate Button --- */
+.view-link {
+    color: #8be9fd;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.view-link:hover {
+    text-decoration: underline;
+}
+
+#generate-available-alt-btn:disabled {
+    background-color: #2a2a2a;
+    border-color: #4a4a4a;
+    color: #777;
+    cursor: not-allowed;
+}
