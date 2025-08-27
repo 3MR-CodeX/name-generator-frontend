@@ -1642,6 +1642,7 @@ function sendPasswordReset() {
     }
 }
 
+// Replace the existing handleDropdownExclusivity function
 function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     const isAnyChecked = changedList.querySelector('input[type="checkbox"]:checked');
     const otherCheckboxes = otherList.querySelectorAll('input[type="checkbox"]');
@@ -1656,14 +1657,15 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
             box.disabled = true;
             box.checked = false; // Uncheck all in the other list
         });
-        // Update the button text for the now-disabled dropdown
         updateDropdownButtonText(otherBtn, otherList, otherBtn.id.includes('domain') ? 'Domains' : 'Platforms');
 
-        // Enable/disable the generate button based on which list is active
+        // **NEW LOGIC**: Enable/disable the generate button based on which list is active
         if (changedList.id === 'platforms-dropdown-list') {
             generateBtn.disabled = false;
+            generateBtn.textContent = '💡 Generate Available Alternatives';
         } else {
             generateBtn.disabled = true;
+            generateBtn.textContent = 'Unavailable for Domain Search';
         }
 
     } else {
@@ -1673,8 +1675,6 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         otherCheckboxes.forEach(box => box.disabled = false);
         // Disable the generate button since nothing is selected
         generateBtn.disabled = true;
+        generateBtn.textContent = '💡 Generate Available Alternatives';
     }
 }
-
-
-
