@@ -93,7 +93,6 @@
             </button>
         </div>
     </div>
-    <!-- NEW PAYMENT MODAL -->
     <div id="payment-modal" class="modal">
         <div class="modal-content" style="max-width: 500px; text-align: center;">
             <span class="close-button">&times;</span>
@@ -242,7 +241,6 @@
             </div>
         </div>
 
-        <!-- UPDATED AVAILABILITY CHECKER VIEW -->
         <div id="availability-checker-view" class="hidden">
             <h1>Name Availability Check</h1>
             <p class="description">Check if your desired name is available as a domain and on social media.</p>
@@ -595,17 +593,19 @@
         <div id="summarizer-view" class="hidden">
             <h1>Text Summarizer</h1>
             <p class="description">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
-            <div class="input-section">
-                <div class="input-box" style="min-height: 300px; flex: 2;">
+            <div class="input-section" style="flex-direction: column;">
+                <div class="input-box" style="min-height: 300px; width: 100%;">
                     <label for="text-to-summarize">Text to Summarize</label>
                     <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1;"></textarea>
                 </div>
-                 <div class="input-box" style="flex: 1;">
+                 <div class="input-box" style="width: 100%;">
                     <label for="summary-length">Summary Length</label>
                     <select id="summary-length">
-                        <option value="Short">Short (1 Sentence)</option>
-                        <option value="Medium" selected>Medium (2-3 Sentences)</option>
-                        <option value="Detailed">Detailed (Paragraph)</option>
+                        <option value="1 word">1 Word</option>
+                        <option value="2 words">2 Words</option>
+                        <option value="short sentence" selected>Short Sentence</option>
+                        <option value="long sentence">Long Sentence</option>
+                        <option value="small paragraph">Small Paragraph</option>
                     </select>
                 </div>
             </div>
@@ -631,17 +631,20 @@
         <div id="word-combiner-view" class="hidden">
             <h1>Word Combiner</h1>
             <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
-            <div class="input-section">
-                <div class="input-box" style="min-height: 150px; flex: 2;">
-                    <label for="words-to-combine">Words to Combine</label>
+            <div class="input-section" style="flex-direction: column;">
+                <div class="input-box" style="min-height: auto; width: 100%;">
+                    <label for="words-to-combine">
+                        Words to Combine
+                        <span class="input-note">(3 words minimum)</span>
+                    </label>
                     <input type="text" id="words-to-combine" placeholder="e.g., galaxy, quest, digital">
                 </div>
-                <div class="input-box" style="flex: 1;">
+                <div class="input-box" style="width: 100%;">
                     <label for="combiner-length">Combined Word Length</label>
                     <select id="combiner-length">
-                        <option value="Short">Short (4-6 Letters)</option>
-                        <option value="Medium" selected>Medium (7-10 Letters)</option>
-                        <option value="Long">Long (11+ Letters)</option>
+                        <option value="Short">Short</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="Long">Long</option>
                     </select>
                 </div>
             </div>
