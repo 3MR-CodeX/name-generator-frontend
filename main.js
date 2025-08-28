@@ -1107,7 +1107,8 @@ async function generateAvailableAlternatives() {
         return;
     }
 
-    showLoading(availableAlternativesResults);
+    const boxes = availableAlternativesResults.querySelectorAll('.output-box');
+    boxes.forEach(box => showLoading(box));
     disableButtons();
     
     try {
@@ -1674,4 +1675,5 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     // Hide alternatives section when selections change
     if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
 }
+
 
