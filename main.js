@@ -1163,10 +1163,9 @@ function renderAvailableAlternatives(alternatives) {
     
     let html = '<div class="output-section alternatives-report">';
     alternatives.forEach(alt => {
-        html += `<div class="output-box alternative-result-card">';
+        html += `<div class="output-box alternative-result-card">`; // Fixed typo
         html += `<h3 class="alternative-name-header">${alt.name}</h3>`;
 
-        // Render Platforms
         if (alt.availability.platforms && alt.availability.platforms.length > 0) {
             html += `<div class="availability-sub-section"><h4>Platforms</h4><div class="results-list">`;
             alt.availability.platforms.forEach(s => {
@@ -1180,7 +1179,6 @@ function renderAvailableAlternatives(alternatives) {
             html += `</div></div>`;
         }
 
-        // Render Domains (if any)
         if (alt.availability.domains && alt.availability.domains.length > 0) {
             html += `<div class="availability-sub-section"><h4>Domains</h4><div class="results-list">`;
             alt.availability.domains.forEach(d => {
@@ -1193,9 +1191,9 @@ function renderAvailableAlternatives(alternatives) {
             html += `</div></div>`;
         }
         
-        html += `</div>`; // end card
+        html += `</div>`; // Close card
     });
-    html += `</div>`; // end report
+    html += `</div>`; // Close report
     
     availableAlternativesResults.innerHTML = html;
 }
@@ -1676,3 +1674,4 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     // Hide alternatives section when selections change
     if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
 }
+
