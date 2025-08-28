@@ -1107,7 +1107,7 @@ async function generateAvailableAlternatives() {
         return;
     }
 
-    showLoading(availableAlternativesResults);
+    showAlternativesLoadingPlaceholder(availableAlternativesResults);
     disableButtons();
     
     try {
@@ -1673,4 +1673,23 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     
     // Hide alternatives section when selections change
     if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
+}
+
+// Add this new function anywhere in main.js
+function showAlternativesLoadingPlaceholder(targetElement) {
+    if (!targetElement) return;
+    let loadingHtml = `
+        <div class="output-section alternatives-report">
+            <div class="output-box alternative-result-card loading-placeholder">
+                <div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+            </div>
+            <div class="output-box alternative-result-card loading-placeholder">
+                <div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+            </div>
+            <div class="output-box alternative-result-card loading-placeholder">
+                <div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+            </div>
+        </div>
+    `;
+    targetElement.innerHTML = loadingHtml;
 }
