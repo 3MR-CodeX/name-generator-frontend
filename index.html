@@ -591,6 +591,50 @@
                 </div>
             </div>
         </div>
+        
+        <!-- NEW SUMMARIZER VIEW -->
+        <div id="summarizer-view" class="hidden">
+            <h1>Text Summarizer</h1>
+            <p class="description">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
+            <div class="input-box" style="min-height: 300px; margin-bottom: 20px;">
+                <label for="text-to-summarize">Text to Summarize</label>
+                <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1;"></textarea>
+            </div>
+            <div class="button-section">
+                <button id="summarize-btn" class="generate-btn">📝 Summarize Text</button>
+            </div>
+            <div id="summary-results-container" class="hidden">
+                <div class="output-box" style="width: 100%;">
+                    <div class="output-header">
+                        <label>AI Summary</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('summary-output')">📋</button>
+                    </div>
+                    <pre id="summary-output" style="min-height: 100px;"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW WORD COMBINER VIEW -->
+        <div id="word-combiner-view" class="hidden">
+            <h1>Word Combiner</h1>
+            <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
+            <div class="input-box" style="min-height: 150px; margin-bottom: 20px;">
+                <label for="words-to-combine">Words to Combine</label>
+                <input type="text" id="words-to-combine" placeholder="e.g., galaxy, quest, digital">
+            </div>
+            <div class="button-section">
+                <button id="combine-words-btn" class="generate-btn">✨ Combine Words</button>
+            </div>
+            <div id="combiner-results-container" class="hidden">
+                 <div class="output-box" style="width: 100%;">
+                    <div class="output-header">
+                        <label>Combined Word</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-output')">📋</button>
+                    </div>
+                    <pre id="combiner-output" style="min-height: 50px; text-align: center; font-size: 1.5em; font-weight: bold;"></pre>
+                </div>
+            </div>
+        </div>
 
 
         <div class="container">
