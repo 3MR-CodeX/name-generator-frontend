@@ -2220,3 +2220,12 @@ body.light-theme {
 .loading-placeholder .loader-container {
     padding: 0; /* Override default padding for a cleaner look */
 }
+
+/* Add this new class at the end of your style.css file */
+
+.input-note {
+    font-weight: 300; /* Thin font */
+    font-size: 0.85em;
+    color: #aaa;
+    margin-left: 10px;
+}
