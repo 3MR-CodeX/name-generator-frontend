@@ -2208,3 +2208,15 @@ body.light-theme {
     color: #777;
     cursor: not-allowed;
 }
+
+/* --- NEW: Styles for Alternative Name Loading Placeholder --- */
+.alternative-result-card.loading-placeholder {
+    min-height: 220px; /* Adjust height to match your final cards */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-placeholder .loader-container {
+    padding: 0; /* Override default padding for a cleaner look */
+}
