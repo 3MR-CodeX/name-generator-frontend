@@ -591,19 +591,29 @@
                 </div>
             </div>
         </div>
-        
-        <!-- NEW SUMMARIZER VIEW -->
+
         <div id="summarizer-view" class="hidden">
             <h1>Text Summarizer</h1>
             <p class="description">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
-            <div class="input-box" style="min-height: 300px; margin-bottom: 20px;">
-                <label for="text-to-summarize">Text to Summarize</label>
-                <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1;"></textarea>
+            <div class="input-section">
+                <div class="input-box" style="min-height: 300px; flex: 2;">
+                    <label for="text-to-summarize">Text to Summarize</label>
+                    <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1;"></textarea>
+                </div>
+                 <div class="input-box" style="flex: 1;">
+                    <label for="summary-length">Summary Length</label>
+                    <select id="summary-length">
+                        <option value="Short">Short (1 Sentence)</option>
+                        <option value="Medium" selected>Medium (2-3 Sentences)</option>
+                        <option value="Detailed">Detailed (Paragraph)</option>
+                    </select>
+                </div>
             </div>
             <div class="button-section">
                 <button id="summarize-btn" class="generate-btn">📝 Summarize Text</button>
             </div>
-            <div id="summary-results-container" class="hidden">
+            <div id="summarizer-loading-placeholder" class="hidden"></div>
+            <div id="summary-results-container" class="output-section hidden">
                 <div class="output-box" style="width: 100%;">
                     <div class="output-header">
                         <label>AI Summary</label>
@@ -612,20 +622,33 @@
                     <pre id="summary-output" style="min-height: 100px;"></pre>
                 </div>
             </div>
+            <div id="summary-history-section" class="history-section hidden">
+                <h2>📝 Recent Summaries</h2>
+                <div id="summary-history" class="history-inner"></div>
+            </div>
         </div>
 
-        <!-- NEW WORD COMBINER VIEW -->
         <div id="word-combiner-view" class="hidden">
             <h1>Word Combiner</h1>
             <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
-            <div class="input-box" style="min-height: 150px; margin-bottom: 20px;">
-                <label for="words-to-combine">Words to Combine</label>
-                <input type="text" id="words-to-combine" placeholder="e.g., galaxy, quest, digital">
+            <div class="input-section">
+                <div class="input-box" style="min-height: 150px; flex: 2;">
+                    <label for="words-to-combine">Words to Combine</label>
+                    <input type="text" id="words-to-combine" placeholder="e.g., galaxy, quest, digital">
+                </div>
+                <div class="input-box" style="flex: 1;">
+                    <label for="combiner-length">Combined Word Length</label>
+                    <select id="combiner-length">
+                        <option value="Short">Short (4-6 Letters)</option>
+                        <option value="Medium" selected>Medium (7-10 Letters)</option>
+                        <option value="Long">Long (11+ Letters)</option>
+                    </select>
+                </div>
             </div>
             <div class="button-section">
                 <button id="combine-words-btn" class="generate-btn">✨ Combine Words</button>
             </div>
-            <div id="combiner-results-container" class="hidden">
+            <div id="combiner-results-container" class="output-section hidden">
                  <div class="output-box" style="width: 100%;">
                     <div class="output-header">
                         <label>Combined Word</label>
@@ -633,6 +656,10 @@
                     </div>
                     <pre id="combiner-output" style="min-height: 50px; text-align: center; font-size: 1.5em; font-weight: bold;"></pre>
                 </div>
+            </div>
+            <div id="combiner-history-section" class="history-section hidden">
+                <h2>✨ Recent Combinations</h2>
+                <div id="combiner-history" class="history-inner"></div>
             </div>
         </div>
 
