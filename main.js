@@ -66,6 +66,8 @@ const settingsView = document.getElementById("settings-view");
 const aboutView = document.getElementById("about-view");
 const premiumView = document.getElementById("premium-view");
 const creditsView = document.getElementById("credits-view");
+const summarizerView = document.getElementById("summarizer-view");
+const wordCombinerView = document.getElementById("word-combiner-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refineButtonSection = document.querySelector(".refine-button-section");
@@ -82,6 +84,12 @@ const refineBtn = document.querySelector(".refine-btn");
 const customRefineBtn = document.getElementById("custom-refine-btn");
 const checkAvailabilityBtn = document.getElementById("check-availability-btn");
 const analyzeNameBtn = document.getElementById("analyze-name-btn");
+const summarizeBtn = document.getElementById("summarize-btn");
+const combineWordsBtn = document.getElementById("combine-words-btn");
+const summaryResultsContainer = document.getElementById("summary-results-container");
+const combinerResultsContainer = document.getElementById("combiner-results-container");
+const summaryOutput = document.getElementById("summary-output");
+const combinerOutput = document.getElementById("combiner-output");
 const historyModal = document.getElementById("history-modal");
 const closeButtonHistoryModal = document.querySelector("#history-modal .close-button");
 const fullHistoryList = document.getElementById("full-history-list");
@@ -187,6 +195,8 @@ function setupEventListeners() {
     if (analyzeNameBtn) analyzeNameBtn.onclick = analyzeName;
     if (generateAlternativesBtn) generateAlternativesBtn.onclick = generateAlternatives;
     if (generateAvailableAltBtn) generateAvailableAltBtn.onclick = generateAvailableAlternatives;
+    if (summarizeBtn) summarizeBtn.onclick = summarizeText;
+    if (combineWordsBtn) combineWordsBtn.onclick = combineWords;
     // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
     if (fontSelect) fontSelect.addEventListener('change', (e) => applyFont(e.target.value));
@@ -219,6 +229,8 @@ function setupEventListeners() {
         const customRefineLink = document.getElementById('custom-refine-link');
         const availabilityCheckLink = document.getElementById('availability-check-link');
         const nameAnalyzerLink = document.getElementById('name-analyzer-link');
+        const summarizerLink = document.getElementById('summarizer-link');
+        const wordCombinerLink = document.getElementById('word-combiner-link');
         const settingsLink = document.getElementById('settings-link');
         const aboutLink = document.getElementById('about-link');
         const premiumLink = document.getElementById('go-premium-link');
@@ -230,6 +242,8 @@ function setupEventListeners() {
         if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault();
         showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (summarizerLink) summarizerLink.addEventListener('click', (e) => { e.preventDefault(); showView('summarizer'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (wordCombinerLink) wordCombinerLink.addEventListener('click', (e) => { e.preventDefault(); showView('word-combiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
         if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); });
         if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); });
@@ -238,7 +252,7 @@ function setupEventListeners() {
 }
 
 function showView(viewName) {
-    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView];
+    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView];
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
@@ -276,6 +290,10 @@ function showView(viewName) {
         if(premiumView) premiumView.classList.remove('hidden');
     } else if (viewName === 'credits') {
         if(creditsView) creditsView.classList.remove('hidden');
+    } else if (viewName === 'summarizer') {
+        if(summarizerView) summarizerView.classList.remove('hidden');
+    } else if (viewName === 'word-combiner') {
+        if(wordCombinerView) wordCombinerView.classList.remove('hidden');
     }
 }
 
@@ -326,11 +344,11 @@ function hideLoading(targetElement) {
 }
 
 function disableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn, generateAvailableAltBtn].forEach(btn => { if(btn) btn.disabled = true; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn, generateAvailableAltBtn, summarizeBtn, combineWordsBtn].forEach(btn => { if(btn) btn.disabled = true; });
 }
 
 function enableButtons() {
-    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn, generateAvailableAltBtn].forEach(btn => { if(btn) btn.disabled = false; });
+    [generateBtn, surpriseBtn, refineBtn, customRefineBtn, checkAvailabilityBtn, analyzeNameBtn, generateAlternativesBtn, generateAvailableAltBtn, summarizeBtn, combineWordsBtn].forEach(btn => { if(btn) btn.disabled = false; });
 }
 
 function showTemporaryPlaceholderError(element, message) {
@@ -1511,6 +1529,116 @@ async function fetchHistoryForImport() {
         });
     } catch (error) {
         historyImportList.innerHTML = `<p>*${error.message}*</p>`;
+    }
+}
+
+async function summarizeText() {
+    if (summarizeBtn.disabled) return;
+    const textInput = document.getElementById('text-to-summarize');
+    const text = textInput.value.trim();
+
+    if (!text) {
+        showTemporaryPlaceholderError(textInput, "Please enter some text to summarize.");
+        return;
+    }
+
+    document.getElementById("error").textContent = "";
+    if(summaryResultsContainer) summaryResultsContainer.classList.remove("hidden");
+    showLoading(summaryOutput);
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const response = await fetch(`${BACKEND_URL}/summarize`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({ text: text })
+        });
+
+        if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
+        const data = await response.json();
+
+        if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
+        }
+
+        if(summaryOutput) {
+            summaryOutput.textContent = data.summary;
+            summaryOutput.classList.add("fade-in-content");
+        }
+
+    } catch (error) {
+        document.getElementById("error").textContent = "Error: " + error.message;
+        if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
+    } finally {
+        hideLoading(summaryOutput);
+        let countdown = 5;
+        if(summarizeBtn) summarizeBtn.textContent = `Please wait ${countdown}s...`;
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                if(summarizeBtn) summarizeBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(summarizeBtn) summarizeBtn.textContent = '📝 Summarize Text'; 
+                enableButtons(); 
+            }
+        }, 1000);
+    }
+}
+
+async function combineWords() {
+    if (combineWordsBtn.disabled) return;
+    const wordsInput = document.getElementById('words-to-combine');
+    const words = wordsInput.value.trim();
+
+    if (!words) {
+        showTemporaryPlaceholderError(wordsInput, "Please enter words to combine.");
+        return;
+    }
+
+    document.getElementById("error").textContent = "";
+    if(combinerResultsContainer) combinerResultsContainer.classList.remove("hidden");
+    showLoading(combinerOutput);
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const response = await fetch(`${BACKEND_URL}/combine-words`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({ words: words })
+        });
+
+        if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
+        const data = await response.json();
+
+        if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
+        }
+
+        if(combinerOutput) {
+            combinerOutput.textContent = data.combined_word;
+            combinerOutput.classList.add("fade-in-content");
+        }
+
+    } catch (error) {
+        document.getElementById("error").textContent = "Error: " + error.message;
+        if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
+    } finally {
+        hideLoading(combinerOutput);
+        let countdown = 5;
+        if(combineWordsBtn) combineWordsBtn.textContent = `Please wait ${countdown}s...`;
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                if(combineWordsBtn) combineWordsBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(combineWordsBtn) combineWordsBtn.textContent = '✨ Combine Words'; 
+                enableButtons(); 
+            }
+        }, 1000);
     }
 }
 
