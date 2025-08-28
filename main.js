@@ -1108,8 +1108,17 @@ async function generateAvailableAlternatives() {
     }
 
     const boxes = availableAlternativesResults.querySelectorAll('.output-box');
-    boxes.forEach(box => showLoading(box));
-    disableButtons();
+    boxes.forEach(box => {
+    const overlay = document.createElement("div");
+    overlay.className = "loading-overlay";
+    overlay.style.position = "absolute";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = box.clientHeight + "px";
+    overlay.innerHTML = '<div class="spinner-overlay show"><div class="spinner"></div></div>';
+    box.appendChild(overlay);
+});
     
     try {
         const token = await getUserToken();
@@ -1675,5 +1684,6 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     // Hide alternatives section when selections change
     if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
 }
+
 
 
