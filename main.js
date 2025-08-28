@@ -20,7 +20,6 @@ const FONT_OPTIONS = {
     "Verdana": "'Verdana', sans-serif"
 };
 
-// --- NEW: Separated Platform and Domain Options ---
 const PLATFORM_OPTIONS = {
     "Behance":      { value: "Behance", icon: "fab fa-behance" },
     "Facebook":     { value: "Facebook", icon: "fab fa-facebook" },
@@ -56,6 +55,8 @@ const DOMAIN_OPTIONS = {
 
 
 let customRefineHistoryLog = [];
+let summaryHistoryLog = [];
+let combinerHistoryLog = [];
 
 // --- DOM Element Selectors ---
 const mainGeneratorView = document.getElementById("main-generator-view");
@@ -90,6 +91,11 @@ const summaryResultsContainer = document.getElementById("summary-results-contain
 const combinerResultsContainer = document.getElementById("combiner-results-container");
 const summaryOutput = document.getElementById("summary-output");
 const combinerOutput = document.getElementById("combiner-output");
+const summarizerLoadingPlaceholder = document.getElementById("summarizer-loading-placeholder");
+const summaryHistorySection = document.getElementById("summary-history-section");
+const summaryHistoryDiv = document.getElementById("summary-history");
+const combinerHistorySection = document.getElementById("combiner-history-section");
+const combinerHistoryDiv = document.getElementById("combiner-history");
 const historyModal = document.getElementById("history-modal");
 const closeButtonHistoryModal = document.querySelector("#history-modal .close-button");
 const fullHistoryList = document.getElementById("full-history-list");
@@ -143,7 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateFontDropdowns();
     
     setupEventListeners();
-    initializeAvailabilityDropdowns(); // <-- UPDATED function call
+    initializeAvailabilityDropdowns();
 
     setTimeout(() => {
         const loader = document.getElementById('loader-wrapper');
@@ -831,12 +837,12 @@ function copyToClipboard(elementId) {
 }
 
 function resetDynamicSections(clearInputs = true) {
-    const sections = [outputContainer, refineSection, refineButtonSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection];
+    const sections = [outputContainer, refineSection, refineButtonSection, refinedOutputs, refinedOutputsCustom, recentHistorySection, customRefineHistorySection, summaryHistorySection, combinerHistorySection];
     sections.forEach(el => {
         if (el) el.classList.add("hidden");
     });
     if (clearInputs) {
-        const textPres = [namesPre, reasonsPre, refinedNamesPre, refinedReasonsPre, refinedNamesCustomPre, refinedReasonsCustomPre];
+        const textPres = [namesPre, reasonsPre, refinedNamesPre, refinedReasonsPre, refinedNamesCustomPre, refinedReasonsCustomPre, summaryOutput, combinerOutput];
         textPres.forEach(el => {
             if (el) el.textContent = "";
         });
@@ -889,7 +895,6 @@ function closeHistoryModal() { if (historyModal) historyModal.classList.remove('
 function closeHistoryDetailsModal() { if (historyDetailsModal) historyDetailsModal.classList.remove('active');
 }
 
-// --- UPDATED: Function to initialize both new dropdowns ---
 function initializeAvailabilityDropdowns() {
     const platformsBtn = document.getElementById("platforms-dropdown-btn");
     const platformsList = document.getElementById("platforms-dropdown-list");
@@ -898,7 +903,6 @@ function initializeAvailabilityDropdowns() {
 
     if (!platformsBtn || !platformsList || !domainsBtn || !domainsList) return;
 
-    // Populate Platforms Dropdown
     Object.keys(PLATFORM_OPTIONS).sort().forEach(name => {
         const option = PLATFORM_OPTIONS[name];
         const label = document.createElement('label');
@@ -908,14 +912,13 @@ function initializeAvailabilityDropdowns() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = option.value;
-        checkbox.checked = false; // Unchecked by default
+        checkbox.checked = false;
         label.appendChild(icon);
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(` ${name}`));
         platformsList.appendChild(label);
     });
 
-    // Populate Domains Dropdown
     const selectAllLabel = document.createElement('label');
     selectAllLabel.className = 'platform-item select-all';
     selectAllLabel.innerHTML = `<input type="checkbox" id="select-all-domains"> <strong>Select All</strong>`;
@@ -929,27 +932,23 @@ function initializeAvailabilityDropdowns() {
         checkbox.type = 'checkbox';
         checkbox.value = option.value;
         checkbox.dataset.tld = 'true';
-        checkbox.checked = false; // Unchecked by default
+        checkbox.checked = false;
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(` ${name}`));
         domainsList.appendChild(label);
     });
 
-    // Event listener for "Select All"
     document.getElementById('select-all-domains').addEventListener('change', (e) => {
         domainsList.querySelectorAll('input[type="checkbox"][data-tld="true"]').forEach(box => {
             box.checked = e.target.checked;
         });
-        // Manually trigger the change event to update text and exclusivity
         domainsList.dispatchEvent(new Event('change'));
     });
 
-    // Setup generic dropdown functionality
     [platformsBtn, domainsBtn].forEach(btn => {
         const list = btn.nextElementSibling;
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            // Do not open if disabled
             if (btn.disabled) return;
             list.classList.toggle('hidden');
             btn.classList.toggle('open');
@@ -964,7 +963,6 @@ function initializeAvailabilityDropdowns() {
         domainsBtn.classList.remove('open');
     });
 
-    // Updated event listeners with exclusivity logic
     platformsList.addEventListener('change', () => {
         updateDropdownButtonText(platformsBtn, platformsList, 'Platforms');
         handleDropdownExclusivity(platformsList, domainsList, domainsBtn);
@@ -978,11 +976,9 @@ function initializeAvailabilityDropdowns() {
     updateDropdownButtonText(platformsBtn, platformsList, 'Platforms');
     updateDropdownButtonText(domainsBtn, domainsList, 'Domains');
 
-    // Hide the "Generate Alternative Names" section by default
     if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
 }
 
-// --- UPDATED: Generic function to update dropdown button text ---
 function updateDropdownButtonText(button, list, type) {
     const selectedCount = list.querySelectorAll('input[type="checkbox"]:checked:not(#select-all-domains)').length;
     const totalCount = list.querySelectorAll('input[type="checkbox"]:not(#select-all-domains)').length;
@@ -997,7 +993,6 @@ function updateDropdownButtonText(button, list, type) {
     }
 }
 
-// Replace the existing checkAvailability function
 async function checkAvailability() {
     const nameInput = document.getElementById('name-to-check');
     const nameToCheck = nameInput.value.trim();
@@ -1039,7 +1034,6 @@ async function checkAvailability() {
         }
         renderAvailabilityResults(data);
         
-        // Only show alternatives section if platforms are checked
         if (selectedPlatforms.length > 0) {
             availableAlternativesSection.classList.remove('hidden');
         }
@@ -1103,7 +1097,6 @@ function renderAvailabilityResults(data) {
     }
 }
 
-// --- REWRITTEN: Function to generate available alternatives ---
 async function generateAvailableAlternatives() {
     if (generateAvailableAltBtn.disabled) return;
 
@@ -1171,8 +1164,6 @@ async function generateAvailableAlternatives() {
     }
 }
 
-// --- NEW: Function to render the detailed alternative results ---
-// Replace the existing renderAvailableAlternatives function
 function renderAvailableAlternatives(alternatives) {
     if (!alternatives || alternatives.length === 0) {
         availableAlternativesResults.innerHTML = `<p style="text-align: center;">Could not find any available alternatives with the current selections. Try a different name or selections.</p>`;
@@ -1181,7 +1172,7 @@ function renderAvailableAlternatives(alternatives) {
     
     let html = '<div class="output-section alternatives-report">';
     alternatives.forEach(alt => {
-        html += `<div class="output-box alternative-result-card">`; // Fixed typo
+        html += `<div class="output-box alternative-result-card">`;
         html += `<h3 class="alternative-name-header">${alt.name}</h3>`;
 
         if (alt.availability.platforms && alt.availability.platforms.length > 0) {
@@ -1209,9 +1200,9 @@ function renderAvailableAlternatives(alternatives) {
             html += `</div></div>`;
         }
         
-        html += `</div>`; // Close card
+        html += `</div>`;
     });
-    html += `</div>`; // Close report
+    html += `</div>`;
     
     availableAlternativesResults.innerHTML = html;
 }
@@ -1535,6 +1526,7 @@ async function fetchHistoryForImport() {
 async function summarizeText() {
     if (summarizeBtn.disabled) return;
     const textInput = document.getElementById('text-to-summarize');
+    const lengthSelect = document.getElementById('summary-length');
     const text = textInput.value.trim();
 
     if (!text) {
@@ -1543,8 +1535,11 @@ async function summarizeText() {
     }
 
     document.getElementById("error").textContent = "";
-    if(summaryResultsContainer) summaryResultsContainer.classList.remove("hidden");
-    showLoading(summaryOutput);
+    if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
+    if(summarizerLoadingPlaceholder) {
+        showAlternativesLoadingPlaceholder(summarizerLoadingPlaceholder); // Use professional loader
+        summarizerLoadingPlaceholder.classList.remove("hidden");
+    }
     disableButtons();
 
     try {
@@ -1552,7 +1547,7 @@ async function summarizeText() {
         const response = await fetch(`${BACKEND_URL}/summarize`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ text: text })
+            body: JSON.stringify({ text: text, length: lengthSelect.value })
         });
 
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
@@ -1563,15 +1558,22 @@ async function summarizeText() {
         }
 
         if(summaryOutput) {
+            summaryResultsContainer.classList.remove("hidden");
             summaryOutput.textContent = data.summary;
             summaryOutput.classList.add("fade-in-content");
         }
+        
+        // Add to history and render
+        summaryHistoryLog.unshift({ text: text, summary: data.summary });
+        summaryHistoryLog = summaryHistoryLog.slice(0, 50); // Keep last 50
+        renderSummaryHistory();
+        if(summaryHistorySection) summaryHistorySection.classList.remove("hidden");
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
         if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
     } finally {
-        hideLoading(summaryOutput);
+        if(summarizerLoadingPlaceholder) summarizerLoadingPlaceholder.classList.add("hidden");
         let countdown = 5;
         if(summarizeBtn) summarizeBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
@@ -1590,6 +1592,7 @@ async function summarizeText() {
 async function combineWords() {
     if (combineWordsBtn.disabled) return;
     const wordsInput = document.getElementById('words-to-combine');
+    const lengthSelect = document.getElementById('combiner-length');
     const words = wordsInput.value.trim();
 
     if (!words) {
@@ -1599,7 +1602,7 @@ async function combineWords() {
 
     document.getElementById("error").textContent = "";
     if(combinerResultsContainer) combinerResultsContainer.classList.remove("hidden");
-    showLoading(combinerOutput);
+    showLoading(combinerOutput); // Simple loader is fine here as it's quick
     disableButtons();
 
     try {
@@ -1607,7 +1610,7 @@ async function combineWords() {
         const response = await fetch(`${BACKEND_URL}/combine-words`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ words: words })
+            body: JSON.stringify({ words: words, length: lengthSelect.value })
         });
 
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
@@ -1618,9 +1621,16 @@ async function combineWords() {
         }
 
         if(combinerOutput) {
+            combinerResultsContainer.classList.remove("hidden");
             combinerOutput.textContent = data.combined_word;
             combinerOutput.classList.add("fade-in-content");
         }
+
+        // Add to history and render
+        combinerHistoryLog.unshift({ words: words, result: data.combined_word });
+        combinerHistoryLog = combinerHistoryLog.slice(0, 50);
+        renderCombinerHistory();
+        if(combinerHistorySection) combinerHistorySection.classList.remove("hidden");
 
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
@@ -1640,6 +1650,49 @@ async function combineWords() {
             }
         }, 1000);
     }
+}
+
+function renderSummaryHistory() {
+    if (!summaryHistoryDiv) return;
+    summaryHistoryDiv.innerHTML = "";
+    if (summaryHistoryLog.length === 0) {
+        summaryHistoryDiv.innerHTML = "<p>*No summaries yet.*</p>";
+        return;
+    }
+
+    summaryHistoryLog.forEach(entry => {
+        const button = document.createElement('button');
+        button.className = 'history-item';
+        button.title = `Original Text: ${entry.text.substring(0, 100)}...`;
+        button.innerHTML = `<strong>${entry.summary}</strong>`;
+        button.onclick = () => {
+            const textInput = document.getElementById('text-to-summarize');
+            if(textInput) textInput.value = entry.text;
+        };
+        summaryHistoryDiv.appendChild(button);
+    });
+}
+
+function renderCombinerHistory() {
+    if (!combinerHistoryDiv) return;
+    combinerHistoryDiv.innerHTML = "";
+    if (combinerHistoryLog.length === 0) {
+        combinerHistoryDiv.innerHTML = "<p>*No combinations yet.*</p>";
+        return;
+    }
+
+    combinerHistoryLog.forEach(entry => {
+        const button = document.createElement('button');
+        button.className = 'history-item';
+        button.title = `Original Words: ${entry.words}`;
+        const fromHTML = `<small class="pre-refined-history">from: ${entry.words}</small>`;
+        button.innerHTML = `<strong>${entry.result}</strong>${fromHTML}`;
+        button.onclick = () => {
+            const wordsInput = document.getElementById('words-to-combine');
+            if(wordsInput) wordsInput.value = entry.words;
+        };
+        combinerHistoryDiv.appendChild(button);
+    });
 }
 
 function initializeSettings() {
@@ -1776,7 +1829,6 @@ function sendPasswordReset() {
     }
 }
 
-// Replace the existing handleDropdownExclusivity function
 function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     const isAnyChecked = changedList.querySelector('input[type="checkbox"]:checked');
     const otherCheckboxes = otherList.querySelectorAll('input[type="checkbox"]');
@@ -1784,26 +1836,22 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     const availableAlternativesSection = document.getElementById('available-alternatives-section');
 
     if (isAnyChecked) {
-        // Disable the other list
         otherBtn.disabled = true;
         otherListContent.classList.add('disabled');
         otherCheckboxes.forEach(box => {
             box.disabled = true;
-            box.checked = false; // Uncheck all in the other list
+            box.checked = false;
         });
         updateDropdownButtonText(otherBtn, otherList, otherBtn.id.includes('domain') ? 'Domains' : 'Platforms');
     } else {
-        // Enable the other list
         otherBtn.disabled = false;
         otherListContent.classList.remove('disabled');
         otherCheckboxes.forEach(box => box.disabled = false);
     }
     
-    // Hide alternatives section when selections change
     if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
 }
 
-// Add this new function anywhere in main.js
 function showAlternativesLoadingPlaceholder(targetElement) {
     if (!targetElement) return;
     let loadingHtml = `
