@@ -593,13 +593,11 @@
         <div id="summarizer-view" class="hidden">
             <h1>Text Summarizer</h1>
             <p class="description">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
-            <div class="input-section" style="flex-direction: column;">
-                <div class="input-box" style="min-height: 300px; width: 100%;">
+            <div class="input-section">
+                <div class="input-box" style="width: 100%;">
                     <label for="text-to-summarize">Text to Summarize</label>
-                    <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1;"></textarea>
-                </div>
-                 <div class="input-box" style="width: 100%;">
-                    <label for="summary-length">Summary Length</label>
+                    <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1; min-height: 250px;"></textarea>
+                    <label for="summary-length" style="margin-top: 20px;">Summary Length</label>
                     <select id="summary-length">
                         <option value="1 word">1 Word</option>
                         <option value="2 words">2 Words</option>
@@ -631,16 +629,14 @@
         <div id="word-combiner-view" class="hidden">
             <h1>Word Combiner</h1>
             <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
-            <div class="input-section" style="flex-direction: column;">
-                <div class="input-box" style="min-height: auto; width: 100%;">
+            <div class="input-section">
+                <div class="input-box" style="width: 100%;">
                     <label for="words-to-combine">
                         Words to Combine
                         <span class="input-note">(3 words minimum)</span>
                     </label>
                     <input type="text" id="words-to-combine" placeholder="e.g., galaxy, quest, digital">
-                </div>
-                <div class="input-box" style="width: 100%;">
-                    <label for="combiner-length">Combined Word Length</label>
+                    <label for="combiner-length" style="margin-top: 20px;">Combined Word Length</label>
                     <select id="combiner-length">
                         <option value="Short">Short</option>
                         <option value="Medium" selected>Medium</option>
