@@ -996,8 +996,6 @@ async function checkAvailability() {
 
     const resultsContainer = document.getElementById('availability-results-container');
     resultsContainer.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
-    
-    // Always hide the alternatives section initially on a new check
     availableAlternativesSection.classList.add('hidden');
     availableAlternativesResults.innerHTML = '';
     disableButtons();
@@ -1009,7 +1007,7 @@ async function checkAvailability() {
             body: JSON.stringify({ 
                 name: nameToCheck,
                 platforms: selectedPlatforms,
-                 tlds: selectedTlds
+                tlds: selectedTlds
             })
         });
         if (!response.ok) {
@@ -1023,11 +1021,10 @@ async function checkAvailability() {
         }
         renderAvailabilityResults(data);
         
-        // **NEW LOGIC**: Only show the alternatives button if a platform check was run
+        // Only show alternatives section if platforms are checked
         if (selectedPlatforms.length > 0) {
             availableAlternativesSection.classList.remove('hidden');
         }
-
     } catch (error) {
         resultsContainer.innerHTML = `<div class="error" style="text-align: center;">Error: ${error.message}</div>`;
     } finally {
@@ -1160,27 +1157,14 @@ async function generateAvailableAlternatives() {
 // Replace the existing renderAvailableAlternatives function
 function renderAvailableAlternatives(alternatives) {
     if (!alternatives || alternatives.length === 0) {
-        availableAlternativesResults.innerHTML = `<p style="text-align: center;">Could not find any available domain alternatives with the current selections. Try a different name or TLDs.</p>`;
+        availableAlternativesResults.innerHTML = `<p style="text-align: center;">Could not find any available alternatives with the current selections. Try a different name or selections.</p>`;
         return;
     }
     
     let html = '<div class="output-section alternatives-report">';
     alternatives.forEach(alt => {
-        html += `<div class="output-box alternative-result-card">`;
+        html += `<div class="output-box alternative-result-card">';
         html += `<h3 class="alternative-name-header">${alt.name}</h3>`;
-
-        // Render Domains
-        if (alt.availability.domains && alt.availability.domains.length > 0) {
-            html += `<div class="availability-sub-section"><h4>Domains</h4><div class="results-list">`;
-            alt.availability.domains.forEach(d => {
-                const viewButton = `<a href="https://www.godaddy.com/domainsearch/find?checkAvail=1&domainToCheck=${d.domain}" target="_blank" class="view-link">(View)</a>`;
-                html += `<div class="result-item">
-                    <span class="result-name"><i class="fas fa-globe"></i> ${d.domain}</span>
-                    ${d.available ? '<span class="status-available">✅</span>' : `<span class="status-taken">❌ ${viewButton}</span>`}
-                </div>`;
-            });
-            html += `</div></div>`;
-        }
 
         // Render Platforms
         if (alt.availability.platforms && alt.availability.platforms.length > 0) {
@@ -1190,7 +1174,20 @@ function renderAvailableAlternatives(alternatives) {
                 const iconClass = optionKey ? PLATFORM_OPTIONS[optionKey].icon : 'fas fa-hashtag';
                 html += `<div class="result-item">
                     <span class="result-name"><i class="${iconClass}"></i> ${s.platform}</span>
-                    ${s.available ? '<span class="status-available">✅</span>' : `<span class="status-taken"><a href="${s.url}" target="_blank" class="view-link">❌</a></span>`}
+                    ${s.available ? '<span class="status-available">✅</span>' : '<span class="status-taken">❌</span>'}
+                </div>`;
+            });
+            html += `</div></div>`;
+        }
+
+        // Render Domains (if any)
+        if (alt.availability.domains && alt.availability.domains.length > 0) {
+            html += `<div class="availability-sub-section"><h4>Domains</h4><div class="results-list">`;
+            alt.availability.domains.forEach(d => {
+                const viewButton = `<a href="https://www.godaddy.com/domainsearch/find?checkAvail=1&domainToCheck=${d.domain}" target="_blank" class="view-link">(View)</a>`;
+                html += `<div class="result-item">
+                    <span class="result-name"><i class="fas fa-globe"></i> ${d.domain}</span>
+                    ${d.available ? '<span class="status-available">✅</span>' : `<span class="status-taken">❌ ${viewButton}</span>`}
                 </div>`;
             });
             html += `</div></div>`;
@@ -1654,7 +1651,6 @@ function sendPasswordReset() {
 }
 
 // Replace the existing handleDropdownExclusivity function
-// Replace the existing handleDropdownExclusivity function
 function handleDropdownExclusivity(changedList, otherList, otherBtn) {
     const isAnyChecked = changedList.querySelector('input[type="checkbox"]:checked');
     const otherCheckboxes = otherList.querySelectorAll('input[type="checkbox"]');
@@ -1670,7 +1666,6 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
             box.checked = false; // Uncheck all in the other list
         });
         updateDropdownButtonText(otherBtn, otherList, otherBtn.id.includes('domain') ? 'Domains' : 'Platforms');
-
     } else {
         // Enable the other list
         otherBtn.disabled = false;
@@ -1678,6 +1673,6 @@ function handleDropdownExclusivity(changedList, otherList, otherBtn) {
         otherCheckboxes.forEach(box => box.disabled = false);
     }
     
-    // Always hide the alternatives section when the selection changes
-    availableAlternativesSection.classList.add('hidden');
+    // Hide alternatives section when selections change
+    if (availableAlternativesSection) availableAlternativesSection.classList.add('hidden');
 }
