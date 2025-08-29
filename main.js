@@ -92,6 +92,7 @@ const combinerResultsContainer = document.getElementById("combiner-results-conta
 const summaryOutput = document.getElementById("summary-output");
 const combinerOutput = document.getElementById("combiner-output");
 const summarizerLoadingPlaceholder = document.getElementById("summarizer-loading-placeholder");
+const combinerLoadingPlaceholder = document.getElementById("combiner-loading-placeholder");
 const summaryHistorySection = document.getElementById("summary-history-section");
 const summaryHistoryDiv = document.getElementById("summary-history");
 const combinerHistorySection = document.getElementById("combiner-history-section");
@@ -333,16 +334,13 @@ function populateFontDropdowns() {
 
 function cleanNames(text) { return text.replace(/\*\*|`/g, ''); }
 
-// Update to the showLoading function to use a more professional loading animation (loading-dots instead of spinner-overlay).
-// Replace the entire showLoading function with this:
-
 function showLoading(targetElement) {
     if (!targetElement) return;
     targetElement.innerHTML = '';
     targetElement.classList.remove("fade-in-content");
     const overlay = document.createElement("div");
     overlay.className = "loading-overlay";
-    overlay.innerHTML = '<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+    overlay.innerHTML = '<div class="spinner-overlay show"><div class="spinner"></div></div>';
     targetElement.appendChild(overlay);
 }
 
@@ -1526,124 +1524,152 @@ async function fetchHistoryForImport() {
     }
 }
 
-// Add or update the summarizeText function (assuming it's similar to other generation functions; if it doesn't exist, add it after setupEventListeners).
-// This ensures different results via backend changes, and uses professional loading (if using showLoading on summaryOutput; otherwise, use the placeholder with loading-dots).
-// If your current summarizeText uses showLoading(summaryOutput), it will now use the updated professional animation.
-// If using summarizerLoadingPlaceholder, replace its set with this:
+function showProfessionalLoadingPlaceholder(targetElement, minHeight = '150px') {
+    if (!targetElement) return;
+    let loadingHtml = `
+        <div class="output-section">
+            <div class="output-box alternative-result-card loading-placeholder" style="min-height: ${minHeight}; width: 100%;">
+                <div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+            </div>
+        </div>
+    `;
+    targetElement.innerHTML = loadingHtml;
 
 async function summarizeText() {
+    if (summarizeBtn.disabled) return;
     const textInput = document.getElementById('text-to-summarize');
     const lengthSelect = document.getElementById('summary-length');
     const text = textInput.value.trim();
+
     if (!text) {
-        showTemporaryPlaceholderError(textInput, "Please enter text to summarize.");
+        showTemporaryPlaceholderError(textInput, "Please enter some text to summarize.");
         return;
     }
+
     document.getElementById("error").textContent = "";
-    if (summaryResultsContainer) summaryResultsContainer.classList.remove("hidden");
-    
-    // Professional loading animation (using placeholder if available, else showLoading on output)
-    if (summarizerLoadingPlaceholder) {
-        summarizerLoadingPlaceholder.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
+    if(summarizerLoadingPlaceholder) {
+        // CHANGE: Use the new professional loader
+        showProfessionalLoadingPlaceholder(summarizerLoadingPlaceholder, '100px'); 
         summarizerLoadingPlaceholder.classList.remove("hidden");
-    } else {
-        showLoading(summaryOutput);  // Uses updated professional animation
     }
-    
     disableButtons();
+
     try {
         const token = await getUserToken();
         const response = await fetch(`${BACKEND_URL}/summarize`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ text, length: lengthSelect.value })
+            body: JSON.stringify({ text: text, length: lengthSelect.value })
         });
-        if (!response.ok) throw new Error((await response.json()).detail || "Summarization failed.");
+
+        if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
-        if (summaryOutput) summaryOutput.textContent = data.summary;
-        
-        // Update history (assuming you have summaryHistoryLog and render function)
-        summaryHistoryLog.push({ text, summary: data.summary });
-        summaryHistoryLog = summaryHistoryLog.slice(-50);  // Limit to recent 50
-        renderSummaryHistory();  // Assume you have this function similar to renderCustomRefineHistory
-        if (summaryHistorySection) summaryHistorySection.classList.remove("hidden");
-        
-        if (data.credits !== undefined && window.updateGenerationCountUI) {
+
+        if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.credits);
         }
+
+        if(summaryOutput) {
+            summaryResultsContainer.classList.remove("hidden");
+            summaryOutput.textContent = data.summary;
+            summaryOutput.classList.add("fade-in-content");
+        }
+        
+        // Add to history and render
+        summaryHistoryLog.unshift({ text: text, summary: data.summary });
+        summaryHistoryLog = summaryHistoryLog.slice(0, 50); // Keep last 50
+        renderSummaryHistory();
+        if(summaryHistorySection) summaryHistorySection.classList.remove("hidden");
+
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
+        if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
     } finally {
-        if (summarizerLoadingPlaceholder) {
-            summarizerLoadingPlaceholder.classList.add("hidden");
-        } else {
-            hideLoading(summaryOutput);
-        }
-        enableButtons();
+        if(summarizerLoadingPlaceholder) summarizerLoadingPlaceholder.classList.add("hidden");
+        let countdown = 5;
+        if(summarizeBtn) summarizeBtn.textContent = `Please wait ${countdown}s...`;
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                if(summarizeBtn) summarizeBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(summarizeBtn) summarizeBtn.textContent = '📝 Summarize Text'; 
+                enableButtons(); 
+            }
+        }, 1000);
     }
 }
 
-// Add or update the combineWords function (assuming it's similar; if it doesn't exist, add it after setupEventListeners).
-// This ensures different results via backend changes, and uses professional loading (if using showLoading on combinerOutput; otherwise, use placeholder with loading-dots).
-// If your current combineWords uses showLoading(combinerOutput), it will now use the updated professional animation.
-// If using a combinerLoadingPlaceholder (add if needed), replace its set with this:
-
 async function combineWords() {
+    if (combineWordsBtn.disabled) return;
     const wordsInput = document.getElementById('words-to-combine');
     const lengthSelect = document.getElementById('combiner-length');
     const words = wordsInput.value.trim();
+
     if (!words) {
         showTemporaryPlaceholderError(wordsInput, "Please enter words to combine.");
         return;
     }
+
     document.getElementById("error").textContent = "";
-    if (combinerResultsContainer) combinerResultsContainer.classList.remove("hidden");
+    if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
     
-    // Professional loading animation (using placeholder if available, else showLoading on output)
-    // Note: If you don't have combinerLoadingPlaceholder, add it to HTML similar to summarizerLoadingPlaceholder and select it in DOM selectors.
-    const combinerLoadingPlaceholder = document.getElementById("combiner-loading-placeholder");  // Add this selector if needed
-    if (combinerLoadingPlaceholder) {
-        combinerLoadingPlaceholder.innerHTML = `<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+    // CHANGE: Use the new professional loader instead of the old one
+    if(combinerLoadingPlaceholder) {
+        showProfessionalLoadingPlaceholder(combinerLoadingPlaceholder, '80px');
         combinerLoadingPlaceholder.classList.remove("hidden");
-    } else {
-        showLoading(combinerOutput);  // Uses updated professional animation
     }
-    
     disableButtons();
+
     try {
         const token = await getUserToken();
         const response = await fetch(`${BACKEND_URL}/combine-words`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ words, length: lengthSelect.value })
+            body: JSON.stringify({ words: words, length: lengthSelect.value })
         });
-        if (!response.ok) throw new Error((await response.json()).detail || "Word combination failed.");
+
+        if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
-        if (combinerOutput) combinerOutput.textContent = data.combined_word;
-        
-        // Update history (assuming you have combinerHistoryLog and render function)
-        combinerHistoryLog.push({ words, combined: data.combined_word });
-        combinerHistoryLog = combinerHistoryLog.slice(-50);  // Limit to recent 50
-        renderCombinerHistory();  // Assume you have this function similar to renderCustomRefineHistory
-        if (combinerHistorySection) combinerHistorySection.classList.remove("hidden");
-        
-        if (data.credits !== undefined && window.updateGenerationCountUI) {
+
+        if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.credits);
         }
+
+        if(combinerOutput) {
+            combinerResultsContainer.classList.remove("hidden");
+            combinerOutput.textContent = data.combined_word;
+            combinerOutput.classList.add("fade-in-content");
+        }
+
+        // Add to history and render
+        combinerHistoryLog.unshift({ words: words, result: data.combined_word });
+        combinerHistoryLog = combinerHistoryLog.slice(0, 50);
+        renderCombinerHistory();
+        if(combinerHistorySection) combinerHistorySection.classList.remove("hidden");
+
     } catch (error) {
         document.getElementById("error").textContent = "Error: " + error.message;
+        if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
     } finally {
-        if (combinerLoadingPlaceholder) {
-            combinerLoadingPlaceholder.classList.add("hidden");
-        } else {
-            hideLoading(combinerOutput);
-        }
-        enableButtons();
+        // CHANGE: Hide the new placeholder
+        if(combinerLoadingPlaceholder) combinerLoadingPlaceholder.classList.add("hidden");
+        let countdown = 5;
+        if(combineWordsBtn) combineWordsBtn.textContent = `Please wait ${countdown}s...`;
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                if(combineWordsBtn) combineWordsBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                if(combineWordsBtn) combineWordsBtn.textContent = '✨ Combine Words'; 
+                enableButtons(); 
+            }
+        }, 1000);
     }
 }
-
-// Add these render functions if they don't exist (similar to renderCustomRefineHistory), after renderCustomRefineHistory.
-// These update the history display and allow clicking to restore inputs.
 
 function renderSummaryHistory() {
     if (!summaryHistoryDiv) return;
@@ -1652,14 +1678,15 @@ function renderSummaryHistory() {
         summaryHistoryDiv.innerHTML = "<p>*No summaries yet.*</p>";
         return;
     }
-    [...summaryHistoryLog].reverse().forEach(entry => {
+
+    summaryHistoryLog.forEach(entry => {
         const button = document.createElement('button');
         button.className = 'history-item';
-        button.title = `Original Text: ${entry.text}`;
+        button.title = `Original Text: ${entry.text.substring(0, 100)}...`;
         button.innerHTML = `<strong>${entry.summary}</strong>`;
         button.onclick = () => {
             const textInput = document.getElementById('text-to-summarize');
-            if (textInput) textInput.value = entry.text;
+            if(textInput) textInput.value = entry.text;
         };
         summaryHistoryDiv.appendChild(button);
     });
@@ -1672,14 +1699,16 @@ function renderCombinerHistory() {
         combinerHistoryDiv.innerHTML = "<p>*No combinations yet.*</p>";
         return;
     }
-    [...combinerHistoryLog].reverse().forEach(entry => {
+
+    combinerHistoryLog.forEach(entry => {
         const button = document.createElement('button');
         button.className = 'history-item';
         button.title = `Original Words: ${entry.words}`;
-        button.innerHTML = `<strong>${entry.combined}</strong>`;
+        const fromHTML = `<small class="pre-refined-history">from: ${entry.words}</small>`;
+        button.innerHTML = `<strong>${entry.result}</strong>${fromHTML}`;
         button.onclick = () => {
             const wordsInput = document.getElementById('words-to-combine');
-            if (wordsInput) wordsInput.value = entry.words;
+            if(wordsInput) wordsInput.value = entry.words;
         };
         combinerHistoryDiv.appendChild(button);
     });
