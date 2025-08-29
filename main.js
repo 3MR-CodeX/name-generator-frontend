@@ -1534,7 +1534,7 @@ function showProfessionalLoadingPlaceholder(targetElement, minHeight = '150px') 
         </div>
     `;
     targetElement.innerHTML = loadingHtml;
-
+}
 async function summarizeText() {
     if (summarizeBtn.disabled) return;
     const textInput = document.getElementById('text-to-summarize');
@@ -1548,8 +1548,9 @@ async function summarizeText() {
 
     document.getElementById("error").textContent = "";
     if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
+    
+    // KEY CHANGE: Using the new professional loader
     if(summarizerLoadingPlaceholder) {
-        // CHANGE: Use the new professional loader
         showProfessionalLoadingPlaceholder(summarizerLoadingPlaceholder, '100px'); 
         summarizerLoadingPlaceholder.classList.remove("hidden");
     }
@@ -1576,9 +1577,8 @@ async function summarizeText() {
             summaryOutput.classList.add("fade-in-content");
         }
         
-        // Add to history and render
         summaryHistoryLog.unshift({ text: text, summary: data.summary });
-        summaryHistoryLog = summaryHistoryLog.slice(0, 50); // Keep last 50
+        summaryHistoryLog = summaryHistoryLog.slice(0, 50);
         renderSummaryHistory();
         if(summaryHistorySection) summaryHistorySection.classList.remove("hidden");
 
@@ -1616,7 +1616,7 @@ async function combineWords() {
     document.getElementById("error").textContent = "";
     if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
     
-    // CHANGE: Use the new professional loader instead of the old one
+    // KEY CHANGE: Using the new professional loader
     if(combinerLoadingPlaceholder) {
         showProfessionalLoadingPlaceholder(combinerLoadingPlaceholder, '80px');
         combinerLoadingPlaceholder.classList.remove("hidden");
@@ -1644,7 +1644,6 @@ async function combineWords() {
             combinerOutput.classList.add("fade-in-content");
         }
 
-        // Add to history and render
         combinerHistoryLog.unshift({ words: words, result: data.combined_word });
         combinerHistoryLog = combinerHistoryLog.slice(0, 50);
         renderCombinerHistory();
@@ -1654,7 +1653,6 @@ async function combineWords() {
         document.getElementById("error").textContent = "Error: " + error.message;
         if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
     } finally {
-        // CHANGE: Hide the new placeholder
         if(combinerLoadingPlaceholder) combinerLoadingPlaceholder.classList.add("hidden");
         let countdown = 5;
         if(combineWordsBtn) combineWordsBtn.textContent = `Please wait ${countdown}s...`;
@@ -1888,3 +1886,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
