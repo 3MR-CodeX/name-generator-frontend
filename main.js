@@ -92,6 +92,7 @@ const combinerResultsContainer = document.getElementById("combiner-results-conta
 const summaryOutput = document.getElementById("summary-output");
 const combinerOutput = document.getElementById("combiner-output");
 const summarizerLoadingPlaceholder = document.getElementById("summarizer-loading-placeholder");
+const combinerExplanationOutput = document.getElementById("combiner-explanation-output");
 const summaryHistorySection = document.getElementById("summary-history-section");
 const summaryHistoryDiv = document.getElementById("summary-history");
 const combinerHistorySection = document.getElementById("combiner-history-section");
@@ -1532,6 +1533,7 @@ function showSingleOutputLoadingPlaceholder(targetElement) {
     targetElement.classList.remove("hidden");
 }
 
+
 async function summarizeText() {
     if (summarizeBtn.disabled) return;
     const textInput = document.getElementById('text-to-summarize');
@@ -1546,13 +1548,11 @@ async function summarizeText() {
     document.getElementById("error").textContent = "";
     if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
     
-    // --- UPDATED LOADING LOGIC ---
     const summarizerLoadingPlaceholder = document.getElementById('summarizer-loading-placeholder');
     if(summarizerLoadingPlaceholder) {
-        showSingleOutputLoadingPlaceholder(summarizerLoadingPlaceholder); // Use the new professional loader
+        showSingleOutputLoadingPlaceholder(summarizerLoadingPlaceholder);
     }
-    // --- END OF UPDATE ---
-
+    
     disableButtons();
 
     try {
@@ -1570,13 +1570,16 @@ async function summarizeText() {
             window.updateGenerationCountUI(data.credits);
         }
 
-        if(summaryOutput) {
+        // Handle the list of summaries
+        if(summaryOutput && data.summaries && data.summaries.length > 0) {
             summaryResultsContainer.classList.remove("hidden");
-            summaryOutput.textContent = data.summary;
+            // Join the array of summaries with line breaks for display
+            summaryOutput.textContent = data.summaries.join("\n\n");
             summaryOutput.classList.add("fade-in-content");
         }
         
-        summaryHistoryLog.unshift({ text: text, summary: data.summary });
+        // Store the full array in history
+        summaryHistoryLog.unshift({ text: text, summaries: data.summaries });
         summaryHistoryLog = summaryHistoryLog.slice(0, 50);
         renderSummaryHistory();
         if(summaryHistorySection) summaryHistorySection.classList.remove("hidden");
@@ -1613,14 +1616,12 @@ async function combineWords() {
     }
 
     document.getElementById("error").textContent = "";
-    if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
+    if(combinerResultsContainer) combinerResultsContainer.classList.remove("hidden");
 
-    // --- UPDATED LOADING LOGIC ---
     const combinerLoadingPlaceholder = document.getElementById('combiner-loading-placeholder');
     if(combinerLoadingPlaceholder) {
-        showSingleOutputLoadingPlaceholder(combinerLoadingPlaceholder); // Use the new professional loader
+        showSingleOutputLoadingPlaceholder(combinerLoadingPlaceholder);
     }
-    // --- END OF UPDATE ---
 
     disableButtons();
 
@@ -1639,13 +1640,22 @@ async function combineWords() {
             window.updateGenerationCountUI(data.credits);
         }
 
-        if(combinerOutput) {
+        // Handle the list of combinations and explanations
+        if(combinerOutput && combinerExplanationOutput && data.combinations && data.combinations.length > 0) {
             combinerResultsContainer.classList.remove("hidden");
-            combinerOutput.textContent = data.combined_word;
+            
+            const combinedWordsText = data.combinations.map(item => item.combined_word).join("\n");
+            const explanationsText = data.combinations.map(item => item.explanation).join("\n\n");
+
+            combinerOutput.textContent = combinedWordsText;
+            combinerExplanationOutput.textContent = explanationsText;
+
             combinerOutput.classList.add("fade-in-content");
+            combinerExplanationOutput.classList.add("fade-in-content");
         }
 
-        combinerHistoryLog.unshift({ words: words, result: data.combined_word });
+        // Store the full array of objects in history
+        combinerHistoryLog.unshift({ words: words, results: data.combinations });
         combinerHistoryLog = combinerHistoryLog.slice(0, 50);
         renderCombinerHistory();
         if(combinerHistorySection) combinerHistorySection.classList.remove("hidden");
@@ -1654,10 +1664,7 @@ async function combineWords() {
         document.getElementById("error").textContent = "Error: " + error.message;
         if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
     } finally {
-        // --- HIDE THE NEW LOADER ---
         if(combinerLoadingPlaceholder) combinerLoadingPlaceholder.classList.add("hidden");
-        // --- END OF UPDATE ---
-        
         let countdown = 5;
         if(combineWordsBtn) combineWordsBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
@@ -1685,7 +1692,9 @@ function renderSummaryHistory() {
         const button = document.createElement('button');
         button.className = 'history-item';
         button.title = `Original Text: ${entry.text.substring(0, 100)}...`;
-        button.innerHTML = `<strong>${entry.summary}</strong>`;
+        // Display the first summary from the array
+        const firstSummary = entry.summaries && entry.summaries.length > 0 ? entry.summaries[0] : "Summary";
+        button.innerHTML = `<strong>${firstSummary}</strong>`;
         button.onclick = () => {
             const textInput = document.getElementById('text-to-summarize');
             if(textInput) textInput.value = entry.text;
@@ -1706,8 +1715,10 @@ function renderCombinerHistory() {
         const button = document.createElement('button');
         button.className = 'history-item';
         button.title = `Original Words: ${entry.words}`;
+        // Display the first combined word from the array
+        const firstResult = entry.results && entry.results.length > 0 ? entry.results[0].combined_word : "Combination";
         const fromHTML = `<small class="pre-refined-history">from: ${entry.words}</small>`;
-        button.innerHTML = `<strong>${entry.result}</strong>${fromHTML}`;
+        button.innerHTML = `<strong>${firstResult}</strong>${fromHTML}`;
         button.onclick = () => {
             const wordsInput = document.getElementById('words-to-combine');
             if(wordsInput) wordsInput.value = entry.words;
@@ -1890,3 +1901,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
