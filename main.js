@@ -1570,16 +1570,15 @@ async function summarizeText() {
             window.updateGenerationCountUI(data.credits);
         }
 
-        // Handle the list of summaries
-        if(summaryOutput && data.summaries && data.summaries.length > 0) {
+        // Handle the SINGLE summary string
+        if(summaryOutput && data.summary) {
             summaryResultsContainer.classList.remove("hidden");
-            // Join the array of summaries with line breaks for display
-            summaryOutput.textContent = data.summaries.join("\n\n");
+            summaryOutput.textContent = data.summary;
             summaryOutput.classList.add("fade-in-content");
         }
         
-        // Store the full array in history
-        summaryHistoryLog.unshift({ text: text, summaries: data.summaries });
+        // Store the single summary in history
+        summaryHistoryLog.unshift({ text: text, summary: data.summary });
         summaryHistoryLog = summaryHistoryLog.slice(0, 50);
         renderSummaryHistory();
         if(summaryHistorySection) summaryHistorySection.classList.remove("hidden");
@@ -1680,6 +1679,7 @@ async function combineWords() {
     }
 }
 
+
 function renderSummaryHistory() {
     if (!summaryHistoryDiv) return;
     summaryHistoryDiv.innerHTML = "";
@@ -1692,9 +1692,8 @@ function renderSummaryHistory() {
         const button = document.createElement('button');
         button.className = 'history-item';
         button.title = `Original Text: ${entry.text.substring(0, 100)}...`;
-        // Display the first summary from the array
-        const firstSummary = entry.summaries && entry.summaries.length > 0 ? entry.summaries[0] : "Summary";
-        button.innerHTML = `<strong>${firstSummary}</strong>`;
+        // Display the single summary string from history
+        button.innerHTML = `<strong>${entry.summary}</strong>`;
         button.onclick = () => {
             const textInput = document.getElementById('text-to-summarize');
             if(textInput) textInput.value = entry.text;
@@ -1702,7 +1701,6 @@ function renderSummaryHistory() {
         summaryHistoryDiv.appendChild(button);
     });
 }
-
 function renderCombinerHistory() {
     if (!combinerHistoryDiv) return;
     combinerHistoryDiv.innerHTML = "";
@@ -1901,4 +1899,5 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
