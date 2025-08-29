@@ -2229,3 +2229,19 @@ body.light-theme {
     color: #aaa;
     margin-left: 10px;
 }
+
+/* Add this new CSS class to the end of your style.css file.
+   This style creates a professional-looking placeholder card for loading states.
+*/
+.single-output-loading-placeholder {
+    background-color: rgba(42, 42, 42, 0.75);
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 40px;
+}
