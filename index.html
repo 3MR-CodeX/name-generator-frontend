@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-    <!-- Loading Animation -->
     <div id="loader-wrapper">
         <img src="Hexagon_starter.png" alt="Loading..." class="loader-hexagon">
     </div>
@@ -614,10 +613,10 @@
             <div id="summary-results-container" class="output-section hidden">
                 <div class="output-box" style="width: 100%;">
                     <div class="output-header">
-                        <label>AI Summary</label>
+                        <label>AI Summaries</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('summary-output')">📋</button>
                     </div>
-                    <pre id="summary-output" style="min-height: 100px;"></pre>
+                    <pre id="summary-output"></pre>
                 </div>
             </div>
             <div id="summary-history-section" class="history-section hidden">
@@ -647,17 +646,25 @@
             <div class="button-section">
                 <button id="combine-words-btn" class="generate-btn">✨ Combine Words</button>
             </div>
-            <!-- THIS IS THE NEW DIV FOR THE LOADING PLACEHOLDER -->
             <div id="combiner-loading-placeholder" class="hidden"></div>
+            
             <div id="combiner-results-container" class="output-section hidden">
-                 <div class="output-box" style="width: 100%;">
+                 <div class="output-box">
                     <div class="output-header">
-                        <label>Combined Word</label>
+                        <label>Combined Words</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-output')">📋</button>
                     </div>
-                    <pre id="combiner-output" style="min-height: 50px; text-align: center; font-size: 1.5em; font-weight: bold;"></pre>
+                    <pre id="combiner-output"></pre>
+                </div>
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Explanations</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-explanation-output')">📋</button>
+                    </div>
+                    <pre id="combiner-explanation-output"></pre>
                 </div>
             </div>
+
             <div id="combiner-history-section" class="history-section hidden">
                 <h2>✨ Recent Combinations</h2>
                 <div id="combiner-history" class="history-inner"></div>
