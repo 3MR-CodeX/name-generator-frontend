@@ -2245,3 +2245,39 @@ body.light-theme {
     width: 100%;
     margin-bottom: 40px;
 }
+
+/* --- Text Summarizer & Word Combiner UI Updates --- */
+
+/* Rule for larger font in the Text Summarizer results */
+#summary-output {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Rule for the list of combined words */
+#combiner-output {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.8;
+}
+
+/* Rule for the new explanation box */
+#combiner-explanation-output {
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+/* Add this new CSS class for the professional loading placeholder */
+.single-output-loading-placeholder {
+    background-color: rgba(42, 42, 42, 0.75);
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 40px;
+}
