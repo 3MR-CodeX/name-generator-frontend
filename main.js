@@ -1533,178 +1533,182 @@ function showSingleOutputLoadingPlaceholder(targetElement) {
     targetElement.classList.remove("hidden");
 }
 
+// Summarize Text
+async function summarizeText() {
+    if (summarizeBtn.disabled) return;
+    const textInput = document.getElementById('text-to-summarize');
+    const lengthSelect = document.getElementById('summary-length');
+    const text = textInput.value.trim();
 
-// Reusable utility to handle API calls, loading, and history
-async function processApiRequest({
-    button, input, lengthSelect, resultsContainer, output, explanationOutput,
-    loadingPlaceholder, historyLog, historySection, historyDiv, endpoint,
-    payloadKey, historyRenderFn, outputFormatter
-}) {
-    if (button.disabled) return;
-
-    const inputText = input.value.trim();
-    if (!inputText) {
-        showTemporaryPlaceholderError(input, `Please enter ${payloadKey} to process.`);
+    if (!text) {
+        showTemporaryPlaceholderError(textInput, "Please enter some text to summarize.");
         return;
     }
 
     document.getElementById("error").textContent = "";
-    resultsContainer?.classList.remove("hidden");
-    if (loadingPlaceholder) {
-        loadingPlaceholder.innerHTML = '<div class="loader-container"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
-        loadingPlaceholder.classList.remove("hidden");
-    }
-
+    summaryResultsContainer.classList.remove("hidden");
+    showSingleOutputLoadingPlaceholder(summarizerLoadingPlaceholder);
+    
     disableButtons();
 
     try {
         const token = await getUserToken();
-        const response = await fetch(`${BACKEND_URL}/${endpoint}`, {
+        const response = await fetch(`${BACKEND_URL}/summarize`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ [payloadKey]: inputText, length: lengthSelect.value })
+            body: JSON.stringify({ text: text, length: lengthSelect.value })
         });
 
-        if (!response.ok) throw new Error((await response.json()).detail || "Server error occurred.");
+        if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
 
         if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.credits);
         }
 
-        // Handle output rendering
-        resultsContainer?.classList.remove("hidden");
-        outputFormatter(data, output, explanationOutput, resultsContainer);
-
-        // Update history
-        historyLog.unshift({ input: inputText, results: data[endpoint === "summarize" ? "summary" : "combinations"] });
-        historyLog.length = Math.min(historyLog.length, 50);
-        historyRenderFn();
-        historySection?.classList.remove("hidden");
+        // Handle the SINGLE summary string
+        if (summaryOutput && data.summary) {
+            summaryOutput.textContent = data.summary;
+            summaryOutput.classList.add("fade-in-content");
+        }
+        
+        // Store the single summary in history
+        summaryHistoryLog.unshift({ text: text, summary: data.summary });
+        summaryHistoryLog = summaryHistoryLog.slice(0, 50);
+        renderSummaryHistory();
+        if (summaryHistorySection) summaryHistorySection.classList.remove("hidden");
 
     } catch (error) {
-        document.getElementById("error").textContent = `Error: ${error.message}`;
-        resultsContainer?.classList.add("hidden");
+        document.getElementById("error").textContent = "Error: " + error.message;
+        summaryResultsContainer.classList.add("hidden");
     } finally {
-        loadingPlaceholder?.classList.add("hidden");
+        summarizerLoadingPlaceholder.classList.add("hidden");
         let countdown = 5;
-        button.textContent = `Please wait ${countdown}s...`;
+        summarizeBtn.textContent = `Please wait ${countdown}s...`;
         const interval = setInterval(() => {
             countdown--;
-            if (countdown <= 0) {
-                clearInterval(interval);
-                button.textContent = endpoint === "summarize" ? "📝 Summarize Text" : "✨ Combine Words";
-                enableButtons();
-            } else {
-                button.textContent = `Please wait ${countdown}s...`;
+            if (countdown > 0) {
+                summarizeBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                summarizeBtn.textContent = '📝 Summarize Text'; 
+                enableButtons(); 
+            }
+        }, 1000);
+    }
+}
+// Combine Words
+async function combineWords() {
+    if (combineWordsBtn.disabled) return;
+    const wordsInput = document.getElementById('words-to-combine');
+    const lengthSelect = document.getElementById('combiner-length');
+    const words = wordsInput.value.trim();
+
+    if (!words) {
+        showTemporaryPlaceholderError(wordsInput, "Please enter words to combine.");
+        return;
+    }
+
+    document.getElementById("error").textContent = "";
+    combinerResultsContainer.classList.remove("hidden");
+    showSingleOutputLoadingPlaceholder(combinerLoadingPlaceholder);
+
+    disableButtons();
+
+    try {
+        const token = await getUserToken();
+        const response = await fetch(`${BACKEND_URL}/combine-words`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            body: JSON.stringify({ words: words, length: lengthSelect.value })
+        });
+
+        if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
+        const data = await response.json();
+
+        if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
+            window.updateGenerationCountUI(data.credits);
+        }
+
+        // Handle the SINGLE combined word and explanation
+        if (combinerOutput && data.combined_word) {
+            combinerOutput.textContent = data.combined_word;
+            combinerOutput.classList.add("fade-in-content");
+        }
+        if (combinerExplanationOutput && data.explanation) {
+            combinerExplanationOutput.textContent = data.explanation;
+            combinerExplanationOutput.classList.add("fade-in-content");
+        }
+
+        // Store the single result in history
+        combinerHistoryLog.unshift({ words: words, combined_word: data.combined_word, explanation: data.explanation });
+        combinerHistoryLog = combinerHistoryLog.slice(0, 50);
+        renderCombinerHistory();
+        if (combinerHistorySection) combinerHistorySection.classList.remove("hidden");
+
+    } catch (error) {
+        document.getElementById("error").textContent = "Error: " + error.message;
+        combinerResultsContainer.classList.add("hidden");
+    } finally {
+        combinerLoadingPlaceholder.classList.add("hidden");
+        let countdown = 5;
+        combineWordsBtn.textContent = `Please wait ${countdown}s...`;
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                combineWordsBtn.textContent = `Please wait ${countdown}s...`;
+            } else { 
+                clearInterval(interval); 
+                combineWordsBtn.textContent = '✨ Combine Words'; 
+                enableButtons(); 
             }
         }, 1000);
     }
 }
 
-// Summarize Text
-async function summarizeText() {
-    processApiRequest({
-        button: summarizeBtn,
-        input: document.getElementById('text-to-summarize'),
-        lengthSelect: document.getElementById('summary-length'),
-        resultsContainer: summaryResultsContainer,
-        output: summaryOutput,
-        loadingPlaceholder: document.getElementById('summarizer-loading-placeholder'),
-        historyLog: summaryHistoryLog,
-        historySection: summaryHistorySection,
-        historyDiv: summaryHistoryDiv,
-        endpoint: "summarize",
-        payloadKey: "text",
-        historyRenderFn: renderSummaryHistory,
-        outputFormatter: (data, output, _, container) => {
-            if (output && data.summary) {
-                output.textContent = data.summary;
-                output.classList.add("fade-in-content");
-                container.appendChild(output);
-            }
-        }
-    });
-}
-
-// Combine Words
-async function combineWords() {
-    processApiRequest({
-        button: combineWordsBtn,
-        input: document.getElementById('words-to-combine'),
-        lengthSelect: document.getElementById('combiner-length'),
-        resultsContainer: combinerResultsContainer,
-        output: combinerOutput,
-        explanationOutput: combinerExplanationOutput,
-        loadingPlaceholder: document.getElementById('combiner-loading-placeholder'),
-        historyLog: combinerHistoryLog,
-        historySection: combinerHistorySection,
-        historyDiv: combinerHistoryDiv,
-        endpoint: "combine-words",
-        payloadKey: "words",
-        historyRenderFn: renderCombinerHistory,
-        outputFormatter: (data, output, explanationOutput, container) => {
-            if (output && explanationOutput && data.combinations?.length) {
-                output.textContent = data.combinations.map(item => item.combined_word).join("\n");
-                explanationOutput.textContent = data.combinations.map(item => item.explanation).join("\n\n");
-                [output, explanationOutput].forEach(el => {
-                    el.classList.add("fade-in-content");
-                    container.appendChild(el);
-                });
-            }
-        }
-    });
-}
-
-// Optimized history rendering with debouncing
-const debounce = (func, wait) => {
-    let timeout;
-    return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(...args), wait);
-    };
-};
-
 function renderSummaryHistory() {
     if (!summaryHistoryDiv) return;
-    summaryHistoryDiv.innerHTML = summaryHistoryLog.length ? "" : "<p>*No summaries yet.*</p>";
+    summaryHistoryDiv.innerHTML = "";
+    if (summaryHistoryLog.length === 0) {
+        summaryHistoryDiv.innerHTML = "<p>*No summaries yet.*</p>";
+        return;
+    }
 
     summaryHistoryLog.forEach(entry => {
-        if (typeof entry !== 'object' || !entry.input || !entry.results) return;
         const button = document.createElement('button');
         button.className = 'history-item';
-        button.title = `Original Text: ${entry.input.substring(0, 100)}...`;
-        button.innerHTML = `<strong>${entry.results}</strong>`;
+        button.title = `Original Text: ${entry.text.substring(0, 100)}...`;
+        // Display the single summary string from history
+        button.innerHTML = `<strong>${entry.summary}</strong>`;
         button.onclick = () => {
             const textInput = document.getElementById('text-to-summarize');
-            if (textInput) textInput.value = entry.input;
+            if(textInput) textInput.value = entry.text;
         };
         summaryHistoryDiv.appendChild(button);
     });
 }
 
-const debouncedRenderSummaryHistory = debounce(renderSummaryHistory, 100);
-
 // Assumes similar structure for renderCombinerHistory
 function renderCombinerHistory() {
     if (!combinerHistoryDiv) return;
-    combinerHistoryDiv.innerHTML = combinerHistoryLog.length ? "" : "<p>*No combinations yet.*</p>";
+    combinerHistoryDiv.innerHTML = "";
+    if (combinerHistoryLog.length === 0) {
+        combinerHistoryDiv.innerHTML = "<p>*No combinations yet.*</p>";
+        return;
+    }
 
     combinerHistoryLog.forEach(entry => {
-        if (typeof entry !== 'object' || !entry.input || !entry.results?.length) return;
         const button = document.createElement('button');
         button.className = 'history-item';
-        button.title = `Original Words: ${entry.input.substring(0, 100)}...`;
-        button.innerHTML = `<strong>${entry.results.map(item => item.combined_word).join(", ")}</strong>`;
+        button.title = `Original Words: ${entry.words.substring(0, 100)}...\nExplanation: ${entry.explanation}`;
+        button.innerHTML = `<strong>${entry.combined_word}</strong>`;
         button.onclick = () => {
             const wordsInput = document.getElementById('words-to-combine');
-            if (wordsInput) wordsInput.value = entry.input;
+            if(wordsInput) wordsInput.value = entry.words;
         };
         combinerHistoryDiv.appendChild(button);
     });
 }
-
-const debouncedRenderCombinerHistory = debounce(renderCombinerHistory, 100);
 
 function initializeSettings() {
     const settings = {
@@ -1880,6 +1884,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
