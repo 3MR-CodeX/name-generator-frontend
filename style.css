@@ -2357,33 +2357,36 @@ body.light-theme {
 }
 @keyframes slide-across-v2 { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
-/* Type 4 (pattern 9): Color Shifting Background */
-@keyframes full-bg-color-shift {
+/* Type 4 (pattern 9): Color Shifting Background V2 */
+@keyframes vibrant-color-shift {
     0%, 100% { background-color: var(--primary-accent); }
-    33% { background-color: var(--line-accent-glow); }
-    66% { background-color: var(--line-accent-default); }
+    20% { background-color: var(--secondary-accent); }
+    40% { background-color: var(--line-accent-glow); }
+    60% { background-color: var(--line-accent-default); }
+    80% { background-color: var(--secondary-accent); }
 }
 #animation-layer .color-shift-bg {
     position: absolute;
     width: 100%;
     height: 100%;
-    opacity: 0.3;
-    animation: full-bg-color-shift 15s infinite ease-in-out;
+    opacity: 0.35; /* Slightly more vibrant */
+    animation: vibrant-color-shift 8s infinite ease-in-out; /* Faster, more dynamic shift */
 }
 
-/* Type 5 (pattern 10): Color Shifting Bar */
-@keyframes full-screen-slide {
+/* Type 5 (pattern 10): Color Shifting Bar V2 */
+@keyframes slide-across-full {
     0% { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
+    100% { transform: translateX(-50vw); } /* Bar width is 50vw, so this moves it fully off-screen */
 }
 #animation-layer .color-shifting-bar {
     position: absolute;
-    top: 25vh; /* Centered vertically */
+    top: 0;
     left: 0;
-    width: 100vw;
-    height: 50vh; /* Half the screen height */
+    width: 50vw;   /* Half screen width */
+    height: 100vh; /* Full screen height */
     filter: blur(50px);
-    animation: full-screen-slide 10s infinite linear, full-bg-color-shift 15s infinite ease-in-out;
+    /* Re-using the new vibrant shift and matching the slide duration for a synchronized effect */
+    animation: slide-across-full 8s infinite linear, vibrant-color-shift 8s infinite ease-in-out;
 }
 
 /* Type 5.5 (pattern 11): Random Flicker */
@@ -2418,3 +2421,5 @@ body.light-theme {
 .animated-bar {
     display: none;
 }
+```
+
