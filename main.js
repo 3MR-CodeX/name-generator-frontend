@@ -57,11 +57,12 @@ const BACKGROUND_ANIMATIONS = {
     'pattern1': 'default', 'pattern2': 'default', 'pattern3': 'default',
     'pattern4': 'circles', 'pattern5': 'circles', 'pattern6': 'circles',
     'pattern7': 'sliding-bar', 'pattern8': 'sliding-bar',
-    'pattern9': 'vertical-closing-bars',
+    'pattern9': 'color-shift',
     'pattern10': 'corner-pincers',
     'pattern11': 'corner-pincers-fast',
     'pattern12': 'vertical-crossing-bars'
 };
+
 
 
 let customRefineHistoryLog = [];
@@ -1785,7 +1786,7 @@ function applyBackground(patternName, save = true) {
 
     let htmlToSet = '';
 
-    // --- Helper function for the randomized circle V3 ---
+    // Helper function for the randomized circle V3
     const createRandomCircle = () => {
         animationLayer.innerHTML = ''; // Clear the old circle
         const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
@@ -1808,14 +1809,14 @@ function applyBackground(patternName, save = true) {
             htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
             break;
         case 'circles':
-            createRandomCircle(); // Create the first one immediately
-            animationLayer.timerId = setInterval(createRandomCircle, 10000); // Create a new one every 10 seconds
+            createRandomCircle();
+            animationLayer.timerId = setInterval(createRandomCircle, 10000);
             break;
         case 'sliding-bar':
             htmlToSet = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
             break;
-        case 'vertical-closing-bars':
-            htmlToSet = `<div class="vertical-closing-bar top"></div><div class="vertical-closing-bar bottom"></div>`;
+        case 'color-shift':
+            htmlToSet = `<div class="color-shift-bg"></div>`;
             break;
         case 'corner-pincers':
             htmlToSet = `<div class="corner-pincer-bar top-left"></div><div class="corner-pincer-bar bottom-right"></div>`;
@@ -1828,13 +1829,10 @@ function applyBackground(patternName, save = true) {
             break;
     }
     
-    // Set HTML for non-circle animations
     if (animationType !== 'circles') {
         animationLayer.innerHTML = htmlToSet;
     }
 }
-
-
 
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
@@ -1999,6 +1997,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
