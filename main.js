@@ -1779,21 +1779,31 @@ function applyBackground(patternName, save = true) {
     // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
 
+    // --- Helper function for the randomized circle ---
+    const createRandomCircle = () => {
+        const size = Math.random() * 300 + 200; // 2x bigger again
+        const circle = document.createElement('div');
+        circle.className = 'drifting-circle';
+        circle.style.cssText = `
+            width: ${size}px; height: ${size}px;
+            top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+            --x-start: ${Math.random() * 80 - 40}vw; --y-start: ${Math.random() * 80 - 40}vh;
+            --x-end: ${Math.random() * 80 - 40}vw; --y-end: ${Math.random() * 80 - 40}vh;
+        `;
+        // When one animation finishes, create a new one
+        circle.addEventListener('animationend', () => {
+            circle.remove();
+            createRandomCircle();
+        });
+        animationLayer.appendChild(circle);
+    };
+
     switch (animationType) {
         case 'default':
             animationLayer.innerHTML = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
             break;
         case 'circles':
-            // Generates only one, larger circle as requested
-            const size = Math.random() * 150 + 100; // 3x bigger
-            const delay = Math.random() * 12;
-            animationLayer.innerHTML = `<div class="drifting-circle" style="
-                width: ${size}px; height: ${size}px;
-                top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
-                animation-delay: ${delay}s;
-                --x-start: ${Math.random() * 100 - 50}vw; --y-start: ${Math.random() * 100 - 50}vh;
-                --x-end: ${Math.random() * 100 - 50}vw; --y-end: ${Math.random() * 100 - 50}vh;
-            "></div>`;
+            createRandomCircle(); // Initial call
             break;
         case 'sliding-bar':
             animationLayer.innerHTML = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
@@ -1808,11 +1818,11 @@ function applyBackground(patternName, save = true) {
             animationLayer.innerHTML = `<div class="diagonal-bar top-left fast"></div><div class="diagonal-bar bottom-right fast"></div>`;
             break;
         case 'crossing-bars':
-            animationLayer.innerHTML = `<div class="horizontal-bar top"></div><div class="horizontal-bar bottom" style="animation-delay: -4.5s;"></div>`;
+            // Removed delay to make them start together
+            animationLayer.innerHTML = `<div class="crossing-bar top"></div><div class="crossing-bar bottom"></div>`;
             break;
     }
 }
-
 
 
 function applyAnimationSetting(enabled, save = true) {
@@ -1978,6 +1988,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
