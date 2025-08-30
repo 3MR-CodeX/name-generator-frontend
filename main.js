@@ -120,6 +120,14 @@ const alternativesResultsContainer = document.getElementById("alternatives-resul
 const availableAlternativesSection = document.getElementById("available-alternatives-section");
 const generateAvailableAltBtn = document.getElementById("generate-available-alt-btn");
 const availableAlternativesResults = document.getElementById("available-alternatives-results");
+
+// --- ADD/UPDATE these selectors at the top of main.js ---
+const combinerResultsContainer = document.getElementById("combiner-results-container");
+const combinerOutput = document.getElementById("combiner-output");
+const combinerExplanation = document.getElementById("combiner-explanation"); // Add this line
+const summarizerLoadingPlaceholder = document.getElementById("summarizer-loading-placeholder");
+const combinerLoadingPlaceholder = document.getElementById("combiner-loading-placeholder");
+
 // --- Settings Page Selectors ---
 const themeSelect = document.getElementById('theme-select');
 const fontSelect = document.getElementById('font-select');
@@ -1616,9 +1624,8 @@ async function combineWords() {
     document.getElementById("error").textContent = "";
     if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
     
-    // KEY CHANGE: Using the new professional loader
     if(combinerLoadingPlaceholder) {
-        showProfessionalLoadingPlaceholder(combinerLoadingPlaceholder, '80px');
+        showProfessionalLoadingPlaceholder(combinerLoadingPlaceholder, '100px');
         combinerLoadingPlaceholder.classList.remove("hidden");
     }
     disableButtons();
@@ -1638,13 +1645,17 @@ async function combineWords() {
             window.updateGenerationCountUI(data.credits);
         }
 
-        if(combinerOutput) {
+        // Updated to handle both the word and the explanation
+        if(combinerOutput && combinerExplanation) {
             combinerResultsContainer.classList.remove("hidden");
             combinerOutput.textContent = data.combined_word;
+            combinerExplanation.textContent = data.explanation; // Set the explanation text
             combinerOutput.classList.add("fade-in-content");
+            combinerExplanation.classList.add("fade-in-content"); // Animate the explanation
         }
 
-        combinerHistoryLog.unshift({ words: words, result: data.combined_word });
+        // Add the explanation to the history log
+        combinerHistoryLog.unshift({ words: words, result: data.combined_word, explanation: data.explanation });
         combinerHistoryLog = combinerHistoryLog.slice(0, 50);
         renderCombinerHistory();
         if(combinerHistorySection) combinerHistorySection.classList.remove("hidden");
@@ -1701,7 +1712,8 @@ function renderCombinerHistory() {
     combinerHistoryLog.forEach(entry => {
         const button = document.createElement('button');
         button.className = 'history-item';
-        button.title = `Original Words: ${entry.words}`;
+        // Updated to include the explanation in the tooltip
+        button.title = `Original Words: ${entry.words}\n\nExplanation: ${entry.explanation || 'N/A'}`;
         const fromHTML = `<small class="pre-refined-history">from: ${entry.words}</small>`;
         button.innerHTML = `<strong>${entry.result}</strong>${fromHTML}`;
         button.onclick = () => {
@@ -1886,4 +1898,5 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
