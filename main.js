@@ -63,8 +63,6 @@ const BACKGROUND_ANIMATIONS = {
     'pattern12': 'vertical-crossing-bars'
 };
 
-
-
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
 let combinerHistoryLog = [];
@@ -1985,4 +1983,5 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
