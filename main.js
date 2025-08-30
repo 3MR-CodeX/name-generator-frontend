@@ -1772,7 +1772,7 @@ function applyBackground(patternName, save = true) {
     // Set the static background image
     patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
     
-    // Clear previous animations and timers
+    // Clear previous animations and timers from any previous logic
     animationLayer.innerHTML = '';
     if (animationLayer.timerId) {
         clearInterval(animationLayer.timerId);
@@ -1782,49 +1782,49 @@ function applyBackground(patternName, save = true) {
     // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
 
-    // --- Helper function for the randomized circle V3 ---
-    const createRandomCircle = () => {
-        const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const size = Math.random() * 300 + 400; // Bigger balls
-        const circle = document.createElement('div');
-        circle.className = 'drifting-circle';
-        circle.style.cssText = `
-            width: ${size}px; height: ${size}px;
-            top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
-            background-color: ${randomColor};
-            --x-start: ${Math.random() * 80 - 40}vw; --y-start: ${Math.random() * 80 - 40}vh;
-            --x-end: ${Math.random() * 80 - 40}vw; --y-end: ${Math.random() * 80 - 40}vh;
-        `;
-        circle.addEventListener('animationend', () => circle.remove());
-        animationLayer.appendChild(circle);
-    };
+    let htmlToSet = '';
 
     switch (animationType) {
         case 'default':
-            animationLayer.innerHTML = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
+            htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
             break;
         case 'circles':
-            createRandomCircle(); // Create the first one
-            animationLayer.timerId = setInterval(createRandomCircle, 8000); // Create a new one every 8 seconds
+            // This pseudo-random method uses pure CSS. It creates 10 circles,
+            // each with a different size, position, and animation delay,
+            // which creates a continuous, non-repetitive effect.
+            for (let i = 0; i < 10; i++) {
+                const size = Math.random() * 300 + 400;
+                const delay = Math.random() * 12;
+                htmlToSet += `<div class="drifting-circle" style="
+                    width: ${size}px; height: ${size}px;
+                    top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+                    animation-delay: ${delay}s;
+                    --x-start: ${Math.random() * 80 - 40}vw; --y-start: ${Math.random() * 80 - 40}vh;
+                    --x-end: ${Math.random() * 80 - 40}vw; --y-end: ${Math.random() * 80 - 40}vh;
+                "></div>`;
+            }
             break;
         case 'sliding-bar':
-            animationLayer.innerHTML = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
+            htmlToSet = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
             break;
         case 'shrinking-circle-fixed':
-            animationLayer.innerHTML = `<div class="shrinking-circle-fixed"></div>`;
+            htmlToSet = `<div class="shrinking-circle-fixed"></div>`;
             break;
-        case 'swooping-bar':
-            animationLayer.innerHTML = `<div class="swooping-bar"></div>`;
+        case 'diagonal-bars-sequential':
+            htmlToSet = `<div class="diagonal-bar one"></div><div class="diagonal-bar two"></div>`;
             break;
-        case 'swooping-bar-fast':
-            animationLayer.innerHTML = `<div class="swooping-bar fast"></div>`;
+        case 'diagonal-bars-sequential-fast':
+            htmlToSet = `<div class="diagonal-bar one fast"></div><div class="diagonal-bar two fast"></div>`;
             break;
         case 'vertical-crossing-bars':
-            animationLayer.innerHTML = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
+            htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
             break;
     }
+    
+    animationLayer.innerHTML = htmlToSet;
 }
+
+
 
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
@@ -1989,6 +1989,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
