@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,8 +20,7 @@
     </div>
 
     <div id="background-container">
-        <div class="animated-bar left"></div>
-        <div class="animated-bar right"></div>
+        <div id="animation-layer"></div>
         <div class="background-pattern"></div>
     </div>
 
@@ -360,6 +358,23 @@
                         </select>
                     </div>
                     <div class="setting-row">
+                        <label for="background-select">Background Pattern</label>
+                        <select id="background-select" class="settings-select">
+                            <option value="pattern1">Pattern 1</option>
+                            <option value="pattern2">Pattern 2</option>
+                            <option value="pattern3">Pattern 3</option>
+                            <option value="pattern4">Pattern 4</option>
+                            <option value="pattern5">Pattern 5</option>
+                            <option value="pattern6">Pattern 6</option>
+                            <option value="pattern7">Pattern 7</option>
+                            <option value="pattern8">Pattern 8</option>
+                            <option value="pattern9">Pattern 9</option>
+                            <option value="pattern10">Pattern 10</option>
+                            <option value="pattern11">Pattern 11</option>
+                            <option value="pattern12">Pattern 12</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
                         <label for="font-select">UI Font Family</label>
                         <select id="font-select" class="settings-select"></select>
                     </div>
@@ -663,22 +678,20 @@
                 <button id="combine-words-btn" class="generate-btn">✨ Combine Words</button>
             </div>
             <div id="combiner-loading-placeholder" class="hidden"></div>
-            <!-- This container now holds two boxes side-by-side -->
             <div id="combiner-results-container" class="output-section hidden">
                  <div class="output-box">
                     <div class="output-header">
                         <label>Combined Word</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-output')">📋</button>
                     </div>
-                    <pre id="combiner-output" style="min-height: 80px; display: grid; place-items: center; font-size: 1.8em; font-weight: bold;"></pre>
+                    <pre id="combiner-output"></pre>
                 </div>
-                <!-- This is the new explanation box -->
                 <div class="output-box">
                     <div class="output-header">
                         <label>Explanation</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-explanation')">📋</button>
                     </div>
-                    <pre id="combiner-explanation" style="min-height: 80px;"></pre>
+                    <pre id="combiner-explanation"></pre>
                 </div>
             </div>
             <div id="combiner-history-section" class="history-section hidden">
@@ -686,7 +699,6 @@
                 <div id="combiner-history" class="history-inner"></div>
             </div>
         </div>
-        <!-- END OF UPDATED SECTION -->
 
 
         <div class="container">
