@@ -597,20 +597,34 @@
                 <div class="input-box" style="width: 100%; min-height: auto;">
                     <label for="text-to-summarize">Text to Summarize</label>
                     <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1; min-height: 250px;"></textarea>
-                    <label for="summary-length" style="margin-top: 20px;">Summary Length</label>
-                    <select id="summary-length">
-                        <option value="1 word">1 Word</option>
-                        <option value="2 words">2 Words</option>
-                        <option value="short sentence" selected>Short Sentence (3-5 Words)</option>
-                        <option value="long sentence">Long Sentence (6-12 Words)</option>
-                        <option value="small paragraph">Small Paragraph (2-3 Sentences)</option>
-                    </select>
+                    
+                    <!-- New wrapper for dropdowns -->
+                    <div class="summarizer-options">
+                        <div class="option-group">
+                            <label for="summary-length">Summary Length</label>
+                            <select id="summary-length">
+                                <option value="1 word">1 Word</option>
+                                <option value="2 words">2 Words</option>
+                                <option value="short sentence" selected>Short Sentence (3-5 Words)</option>
+                                <option value="long sentence">Long Sentence (6-12 Words)</option>
+                                <option value="small paragraph">Small Paragraph</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label for="summary-tone">Summary Tone</label>
+                            <select id="summary-tone">
+                                <option value="Professional" selected>Professional</option>
+                                <option value="Intriguing">Intriguing</option>
+                                <option value="Dramatic">Dramatic</option>
+                                <option value="Concise">Concise</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="button-section">
                 <button id="summarize-btn" class="generate-btn">📝 Summarize Text</button>
             </div>
-            <!-- This placeholder is for the new professional loading animation -->
             <div id="summarizer-loading-placeholder" class="hidden"></div>
             <div id="summary-results-container" class="output-section hidden">
                 <div class="output-box" style="width: 100%;">
@@ -627,7 +641,6 @@
             </div>
         </div>
 
-        <!-- START OF UPDATED SECTION -->
         <div id="word-combiner-view" class="hidden">
             <h1>Word Combiner</h1>
             <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
@@ -734,3 +747,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+
