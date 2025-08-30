@@ -1773,37 +1773,58 @@ function applyBackground(patternName, save = true) {
     // Set the static background image
     patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
     
-    // Clear previous animations
+    // Clear previous animations and timers
     animationLayer.innerHTML = '';
+    if (animationLayer.timerId) {
+        clearInterval(animationLayer.timerId);
+        animationLayer.timerId = null;
+    }
 
     // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
 
-    // --- Helper function for the randomized circle ---
+    // --- Helper function for the randomized circle V2 ---
     const createRandomCircle = () => {
-        const size = Math.random() * 300 + 200; // 2x bigger again
+        const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const size = Math.random() * 300 + 400; // Bigger balls
         const circle = document.createElement('div');
         circle.className = 'drifting-circle';
         circle.style.cssText = `
             width: ${size}px; height: ${size}px;
             top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+            background-color: ${randomColor};
             --x-start: ${Math.random() * 80 - 40}vw; --y-start: ${Math.random() * 80 - 40}vh;
             --x-end: ${Math.random() * 80 - 40}vw; --y-end: ${Math.random() * 80 - 40}vh;
         `;
-        // When one animation finishes, create a new one
-        circle.addEventListener('animationend', () => {
-            circle.remove();
-            createRandomCircle();
-        });
+        circle.addEventListener('animationend', () => circle.remove());
         animationLayer.appendChild(circle);
     };
+    
+    // --- Helper function for sequential diagonal bars ---
+    const runDiagonalSequence = (isFast) => {
+        const duration = isFast ? 1000 : 3000;
+        const totalLoopTime = duration * 2;
+        
+        const createBars = () => {
+            animationLayer.innerHTML = `
+                <div class="diagonal-bar-sequential one ${isFast ? 'fast' : ''}"></div>
+                <div class="diagonal-bar-sequential two ${isFast ? 'fast' : ''}"></div>
+            `;
+        };
+
+        createBars(); // Initial run
+        animationLayer.timerId = setInterval(createBars, totalLoopTime); // Loop
+    };
+
 
     switch (animationType) {
         case 'default':
             animationLayer.innerHTML = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
             break;
         case 'circles':
-            createRandomCircle(); // Initial call
+            createRandomCircle(); // Create the first one
+            animationLayer.timerId = setInterval(createRandomCircle, 8000); // Create a new one every 8 seconds
             break;
         case 'sliding-bar':
             animationLayer.innerHTML = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
@@ -1812,17 +1833,18 @@ function applyBackground(patternName, save = true) {
             animationLayer.innerHTML = `<div class="shrinking-circle-fixed"></div>`;
             break;
         case 'diagonal-bars':
-            animationLayer.innerHTML = `<div class="diagonal-bar top-left"></div><div class="diagonal-bar bottom-right"></div>`;
+            runDiagonalSequence(false);
             break;
         case 'diagonal-bars-fast':
-            animationLayer.innerHTML = `<div class="diagonal-bar top-left fast"></div><div class="diagonal-bar bottom-right fast"></div>`;
+            runDiagonalSequence(true);
             break;
         case 'crossing-bars':
-            // Removed delay to make them start together
             animationLayer.innerHTML = `<div class="crossing-bar top"></div><div class="crossing-bar bottom"></div>`;
             break;
     }
 }
+
+
 
 
 function applyAnimationSetting(enabled, save = true) {
@@ -1988,6 +2010,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
