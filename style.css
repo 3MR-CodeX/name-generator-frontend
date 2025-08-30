@@ -2311,3 +2311,122 @@ body.light-theme {
     margin-bottom: 5px;
 }
 
+/* --- New Background Animation System --- */
+#animation-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none; /* Allows clicks to go through */
+}
+
+/* Type 1: Default Sweep (replaces original .animated-bar) */
+#animation-layer .sweep-bar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 20%;
+    opacity: 0;
+    background: linear-gradient(to right, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2), transparent);
+}
+#animation-layer .sweep-bar.left {
+    left: 0;
+    animation: sweep-left-to-center 8s infinite linear;
+}
+#animation-layer .sweep-bar.right {
+    right: 0;
+    animation: sweep-right-to-center 8s infinite linear;
+}
+
+/* Type 2: Drifting Circles */
+@keyframes drift-fade {
+    0% { transform: translate(var(--x-start), var(--y-start)) scale(0); opacity: 0; }
+    20% { opacity: 0.7; }
+    80% { opacity: 0.7; }
+    100% { transform: translate(var(--x-end), var(--y-end)) scale(1.5); opacity: 0; }
+}
+#animation-layer .drifting-circle {
+    position: absolute;
+    background-color: var(--line-accent-glow);
+    border-radius: 50%;
+    animation: drift-fade 10s infinite ease-in-out;
+}
+
+/* Type 3: Sliding Bar */
+@keyframes slide-across {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100vw); }
+}
+#animation-layer .sliding-bar {
+    position: absolute;
+    height: 100%;
+    width: 40vw;
+    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), transparent);
+    animation: slide-across 12s infinite linear;
+}
+
+/* Type 4: Shrinking Hollow Circle */
+@keyframes shrink-disappear {
+    0% { transform: scale(3); opacity: 0.5; }
+    100% { transform: scale(0); opacity: 0; }
+}
+#animation-layer .shrinking-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vmax;
+    height: 100vmax;
+    margin-left: -50vmax;
+    margin-top: -50vmax;
+    border-radius: 50%;
+    border: 5px solid;
+    border-color: var(--line-accent-default) transparent var(--line-accent-glow) transparent;
+    animation: shrink-disappear 8s infinite ease-in;
+}
+
+/* Type 5: Lightning */
+@keyframes lightning-flash {
+    0%, 100% { opacity: 0; }
+    5%, 50% { opacity: 1; }
+    5.1%, 50.1% { opacity: 0.3; }
+}
+#animation-layer .lightning-bolt {
+    position: absolute;
+    width: 3px;
+    background-color: white;
+    box-shadow: 0 0 10px 2px white;
+    animation: lightning-flash 2.5s infinite;
+}
+
+/* Type 6: Dual Sliding Bars */
+@keyframes slide-down-left {
+    0% { transform: translateY(-100vh) skewX(-20deg); }
+    100% { transform: translateY(100vh) skewX(-20deg); }
+}
+@keyframes slide-up-right {
+    0% { transform: translateY(100vh) skewX(-20deg); }
+    100% { transform: translateY(-100vh) skewX(-20deg); }
+}
+#animation-layer .dual-bar {
+    position: absolute;
+    width: 25%;
+    height: 100vh;
+    background: linear-gradient(180deg, transparent, var(--animated-bar-color-2), transparent);
+}
+#animation-layer .dual-bar.left {
+    left: 15%;
+    animation: slide-down-left 9s infinite linear;
+}
+#animation-layer .dual-bar.right {
+    right: 15%;
+    animation: slide-up-right 9s infinite linear;
+}
+
+/* Remove original animated bars as they are now handled by JS */
+.animated-bar {
+    display: none;
+}
+
