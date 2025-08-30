@@ -2321,25 +2321,19 @@ body.light-theme {
     height: 100%;
     z-index: 1;
     overflow: hidden;
-    pointer-events: none; /* Allows clicks to go through */
+    pointer-events: none;
 }
 
-/* Type 1 (patterns 1-3): Default Sweep V2 */
+/* Type 1 (patterns 1-3): Default Sweep */
 #animation-layer .sweep-bar {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 25%;
-    opacity: 0;
-    background: linear-gradient(to right, transparent, var(--animated-bar-color-1), var(--primary-accent), var(--animated-bar-color-2), transparent);
-    filter: blur(25px);
-    border-radius: 30px;
+    position: absolute; top: 0; height: 100%; width: 20%; opacity: 0;
+    background: linear-gradient(to right, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2), transparent);
 }
 #animation-layer .sweep-bar.left { left: 0; animation: sweep-left-to-center 8s infinite linear; }
 #animation-layer .sweep-bar.right { right: 0; animation: sweep-right-to-center 8s infinite linear; }
 
-/* Type 2 (patterns 4-6): Drifting Circle V3 */
-@keyframes drift-fade-v3 {
+/* Type 2 (patterns 4-6): Drifting Circles (Pseudo-random via CSS) */
+@keyframes drift-fade-v2 {
     0% { transform: translate(var(--x-start), var(--y-start)) scale(0.8); opacity: 0; }
     20% { opacity: 0.6; }
     80% { opacity: 0.6; }
@@ -2347,20 +2341,19 @@ body.light-theme {
 }
 #animation-layer .drifting-circle {
     position: absolute;
+    background-color: var(--line-accent-glow);
     border-radius: 50%;
-    animation: drift-fade-v3 8s ease-in-out forwards;
+    animation: drift-fade-v2 12s infinite ease-in-out;
     filter: blur(40px);
 }
 
-/* Type 3 (patterns 7-8): Sliding Bar V2 */
+/* Type 3 (patterns 7-8): Sliding Bar */
 @keyframes slide-across-v2 {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100vw); }
 }
 #animation-layer .sliding-bar {
-    position: absolute;
-    height: 100%;
-    width: 40vw;
+    position: absolute; height: 100%; width: 40vw;
     background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--primary-accent), var(--animated-bar-color-2), transparent);
     animation: slide-across-v2 12s infinite linear;
     filter: blur(20px);
@@ -2373,49 +2366,55 @@ body.light-theme {
     100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
 }
 #animation-layer .shrinking-circle-fixed {
-    position: absolute;
-    top: 50%; left: 50%;
+    position: absolute; top: 50%; left: 50%;
     width: 100vmax; height: 100vmax;
     border-radius: 50%;
-    /* Visually substantial border, similar in presence to the sliding bar */
-    border: 80px solid; 
+    border: 80px solid;
     border-image: conic-gradient(var(--line-accent-default), var(--line-accent-glow), var(--primary-accent), var(--line-accent-default)) 1;
     animation: shrink-from-outside-v2 10s infinite ease-in; /* Slower animation */
 }
 
-/* Type 5 (patterns 10-11): Swooping Bar */
-@keyframes swoop-down-and-up {
-    0% { transform: translateY(-100%); }
-    50% { transform: translateY(100vh); }
-    100% { transform: translateY(-100%); }
+/* Type 5 (patterns 10-11): Sequential Diagonal Bars V2 */
+@keyframes slide-tl-br {
+    0% { transform: translate(-70vw, -70vh) rotate(45deg); }
+    100% { transform: translate(70vw, 70vh) rotate(45deg); }
 }
-#animation-layer .swooping-bar {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 240px; /* 2x thicker */
-    background: linear-gradient(180deg, var(--line-accent-default), var(--primary-accent), var(--line-accent-glow));
-    filter: blur(40px);
-    animation: swoop-down-and-up 6s infinite ease-in-out;
+@keyframes slide-br-tl {
+    0% { transform: translate(70vw, 70vh) rotate(45deg); }
+    100% { transform: translate(-70vw, -70vh) rotate(45deg); }
 }
-#animation-layer .swooping-bar.fast {
-    animation-duration: 3s; /* Faster animation */
+#animation-layer .diagonal-bar {
+    position: absolute; width: 100vw; height: 240px; /* Thicker */
+    top: 50%; left: 50%;
+    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--primary-accent), var(--animated-bar-color-2), transparent);
+    filter: blur(30px);
+}
+#animation-layer .diagonal-bar.one {
+    animation: slide-tl-br 6s infinite ease-in-out;
+}
+#animation-layer .diagonal-bar.two {
+    animation: slide-br-tl 6s infinite ease-in-out;
+    animation-delay: -3s; /* Offset to be sequential */
+}
+#animation-layer .diagonal-bar.fast {
+    animation-duration: 3s;
+    background: linear-gradient(90deg, var(--line-accent-default), var(--primary-accent), var(--line-accent-glow));
+}
+#animation-layer .diagonal-bar.fast.two {
+    animation-delay: -1.5s;
 }
 
-/* Type 6 (pattern 12): Vertical Crossing Bars */
+/* Type 6 (pattern 12): Vertical Crossing Bars V2 */
 @keyframes slide-down-screen {
-    0% { transform: translateY(-150px); }
+    0% { transform: translateY(-100%); }
     100% { transform: translateY(100vh); }
 }
 @keyframes slide-up-screen {
-    0% { transform: translateY(150px); }
+    0% { transform: translateY(100%); }
     100% { transform: translateY(-100vh); }
 }
 #animation-layer .vertical-crossing-bar {
-    position: absolute;
-    width: 100vw;
-    height: 150px; /* Thicker bars */
+    position: absolute; width: 100vw; height: 150px; /* Thicker */
     left: 0;
     background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2), transparent);
     filter: blur(30px);
@@ -2427,7 +2426,7 @@ body.light-theme {
 #animation-layer .vertical-crossing-bar.bottom {
     bottom: 0;
     animation: slide-up-screen 8s infinite linear;
-    animation-delay: -4s; /* Offset to cross in the middle */
+    animation-delay: -4s;
 }
 
 /* Original animated-bar is now obsolete */
