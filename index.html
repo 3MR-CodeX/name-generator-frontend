@@ -627,6 +627,7 @@
             </div>
         </div>
 
+        <!-- START OF UPDATED SECTION -->
         <div id="word-combiner-view" class="hidden">
             <h1>Word Combiner</h1>
             <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
@@ -648,15 +649,23 @@
             <div class="button-section">
                 <button id="combine-words-btn" class="generate-btn">✨ Combine Words</button>
             </div>
-            <!-- This placeholder is for the new professional loading animation -->
             <div id="combiner-loading-placeholder" class="hidden"></div>
+            <!-- This container now holds two boxes side-by-side -->
             <div id="combiner-results-container" class="output-section hidden">
-                 <div class="output-box" style="width: 100%;">
+                 <div class="output-box">
                     <div class="output-header">
                         <label>Combined Word</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-output')">📋</button>
                     </div>
-                    <pre id="combiner-output" style="min-height: 50px; text-align: center; font-size: 1.5em; font-weight: bold;"></pre>
+                    <pre id="combiner-output" style="min-height: 80px; display: grid; place-items: center; font-size: 1.8em; font-weight: bold;"></pre>
+                </div>
+                <!-- This is the new explanation box -->
+                <div class="output-box">
+                    <div class="output-header">
+                        <label>Explanation</label>
+                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-explanation')">📋</button>
+                    </div>
+                    <pre id="combiner-explanation" style="min-height: 80px;"></pre>
                 </div>
             </div>
             <div id="combiner-history-section" class="history-section hidden">
@@ -664,6 +673,7 @@
                 <div id="combiner-history" class="history-inner"></div>
             </div>
         </div>
+        <!-- END OF UPDATED SECTION -->
 
 
         <div class="container">
@@ -724,4 +734,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
