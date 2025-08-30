@@ -2293,3 +2293,21 @@ body.light-theme {
     font-size: 1.8em;
     font-weight: bold;
 }
+
+/* --- New Styles for Summarizer Options --- */
+.summarizer-options {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.option-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.option-group label {
+    margin-bottom: 5px;
+}
+
