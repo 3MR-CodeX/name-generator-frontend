@@ -58,8 +58,8 @@ const BACKGROUND_ANIMATIONS = {
     'pattern4': 'circles', 'pattern5': 'circles', 'pattern6': 'circles',
     'pattern7': 'sliding-bar', 'pattern8': 'sliding-bar',
     'pattern9': 'shrinking-circle-fixed',
-    'pattern10': 'swooping-bar',
-    'pattern11': 'swooping-bar-fast',
+    'pattern10': 'diagonal-bars-sequential',
+    'pattern11': 'diagonal-bars-sequential-fast',
     'pattern12': 'vertical-crossing-bars'
 };
 
@@ -1989,6 +1989,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
