@@ -2329,11 +2329,11 @@ body.light-theme {
     position: absolute;
     top: 0;
     height: 100%;
-    width: 25%; /* Slightly wider */
+    width: 25%;
     opacity: 0;
     background: linear-gradient(to right, transparent, var(--animated-bar-color-1), var(--primary-accent), var(--animated-bar-color-2), transparent);
-    filter: blur(25px); /* Blurry effect */
-    border-radius: 30px; /* Rounded sides */
+    filter: blur(25px);
+    border-radius: 30px;
 }
 #animation-layer .sweep-bar.left { left: 0; animation: sweep-left-to-center 8s infinite linear; }
 #animation-layer .sweep-bar.right { right: 0; animation: sweep-right-to-center 8s infinite linear; }
@@ -2348,7 +2348,7 @@ body.light-theme {
 #animation-layer .drifting-circle {
     position: absolute;
     border-radius: 50%;
-    animation: drift-fade-v3 8s ease-in-out forwards; /* Faster loop (8s) */
+    animation: drift-fade-v3 8s ease-in-out forwards;
     filter: blur(40px);
 }
 
@@ -2366,9 +2366,9 @@ body.light-theme {
     filter: blur(20px);
 }
 
-/* Type 4 (pattern 9): Shrinking Hollow Circle V2 */
-@keyframes shrink-from-outside {
-    0% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; } /* Starts larger (off-screen) */
+/* Type 4 (pattern 9): Shrinking Hollow Circle V3 */
+@keyframes shrink-from-outside-v2 {
+    0% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
     10% { opacity: 0.8; }
     100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
 }
@@ -2377,75 +2377,57 @@ body.light-theme {
     top: 50%; left: 50%;
     width: 100vmax; height: 100vmax;
     border-radius: 50%;
-    border: 40px solid; /* 10x thicker */
+    /* Visually substantial border, similar in presence to the sliding bar */
+    border: 80px solid; 
     border-image: conic-gradient(var(--line-accent-default), var(--line-accent-glow), var(--primary-accent), var(--line-accent-default)) 1;
-    animation: shrink-from-outside 7s infinite ease-in;
+    animation: shrink-from-outside-v2 10s infinite ease-in; /* Slower animation */
 }
 
-/* Type 5 (patterns 10-11): Sequential Diagonal Bars */
-@keyframes slide-tl-br {
-    0% { transform: translate(-50vw, -50vh) rotate(45deg); opacity: 0.7; }
-    100% { transform: translate(50vw, 50vh) rotate(45deg); opacity: 0.7; }
+/* Type 5 (patterns 10-11): Swooping Bar */
+@keyframes swoop-down-and-up {
+    0% { transform: translateY(-100%); }
+    50% { transform: translateY(100vh); }
+    100% { transform: translateY(-100%); }
 }
-@keyframes slide-br-tl {
-    0% { transform: translate(50vw, 50vh) rotate(45deg); opacity: 0.7; }
-    100% { transform: translate(-50vw, -50vh) rotate(45deg); opacity: 0.7; }
-}
-#animation-layer .diagonal-bar-sequential {
+#animation-layer .swooping-bar {
     position: absolute;
-    width: 100vw; /* Wider to ensure it covers corners */
-    height: 120px; /* 3x thicker */
-    top: 50%; left: 50%;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 240px; /* 2x thicker */
+    background: linear-gradient(180deg, var(--line-accent-default), var(--primary-accent), var(--line-accent-glow));
+    filter: blur(40px);
+    animation: swoop-down-and-up 6s infinite ease-in-out;
+}
+#animation-layer .swooping-bar.fast {
+    animation-duration: 3s; /* Faster animation */
+}
+
+/* Type 6 (pattern 12): Vertical Crossing Bars */
+@keyframes slide-down-screen {
+    0% { transform: translateY(-150px); }
+    100% { transform: translateY(100vh); }
+}
+@keyframes slide-up-screen {
+    0% { transform: translateY(150px); }
+    100% { transform: translateY(-100vh); }
+}
+#animation-layer .vertical-crossing-bar {
+    position: absolute;
+    width: 100vw;
+    height: 150px; /* Thicker bars */
+    left: 0;
     background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2), transparent);
     filter: blur(30px);
-    opacity: 0; /* Hidden by default */
 }
-#animation-layer .diagonal-bar-sequential.one {
-    animation: slide-tl-br 3s ease-in-out, fade-in-out 3s ease-in-out;
-    animation-iteration-count: 1, 1;
+#animation-layer .vertical-crossing-bar.top {
+    top: 0;
+    animation: slide-down-screen 8s infinite linear;
 }
-#animation-layer .diagonal-bar-sequential.two {
-    animation: slide-br-tl 3s ease-in-out, fade-in-out 3s ease-in-out;
-    animation-iteration-count: 1, 1;
-    animation-delay: 3s; /* Starts after the first one finishes */
-}
-/* Keyframes for fade-in/out to hide between sequential runs */
-@keyframes fade-in-out { 0% { opacity: 0.7; } 100% { opacity: 0; } }
-
-/* Faster, more colorful version for pattern 11 */
-#animation-layer .diagonal-bar-sequential.fast {
-    animation-duration: 1s;
-    animation-delay: 0s !important; /* Reset delay for fast version */
-    background: linear-gradient(90deg, var(--line-accent-default), var(--primary-accent), var(--line-accent-glow));
-}
-#animation-layer .diagonal-bar-sequential.fast.two {
-    animation-delay: 1s !important; /* Fast version delay */
-}
-
-
-/* Type 6 (pattern 12): Crossing Horizontal Bars */
-@keyframes slide-horizontal-left-right {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(200vw); }
-}
-@keyframes slide-horizontal-right-left {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-200vw); }
-}
-#animation-layer .crossing-bar {
-    position: absolute;
-    width: 50%;
-    height: 80px;
-    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2), transparent);
-    filter: blur(35px);
-}
-#animation-layer .crossing-bar.top {
-    left: -50vw; top: 20%;
-    animation: slide-horizontal-left-right 9s infinite linear;
-}
-#animation-layer .crossing-bar.bottom {
-    right: -50vw; bottom: 20%;
-    animation: slide-horizontal-right-left 9s infinite linear;
+#animation-layer .vertical-crossing-bar.bottom {
+    bottom: 0;
+    animation: slide-up-screen 8s infinite linear;
+    animation-delay: -4s; /* Offset to cross in the middle */
 }
 
 /* Original animated-bar is now obsolete */
