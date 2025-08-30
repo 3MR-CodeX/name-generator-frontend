@@ -57,11 +57,12 @@ const BACKGROUND_ANIMATIONS = {
     'pattern1': 'default', 'pattern2': 'default', 'pattern3': 'default',
     'pattern4': 'circles', 'pattern5': 'circles', 'pattern6': 'circles',
     'pattern7': 'sliding-bar', 'pattern8': 'sliding-bar',
-    'pattern9': 'shrinking-circle-fixed',
-    'pattern10': 'diagonal-bars-sequential',
-    'pattern11': 'diagonal-bars-sequential-fast',
+    'pattern9': 'vertical-sweep',
+    'pattern10': 'reversing-diagonal-bar',
+    'pattern11': 'reversing-diagonal-bar-fast',
     'pattern12': 'vertical-crossing-bars'
 };
+
 
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
@@ -1772,12 +1773,8 @@ function applyBackground(patternName, save = true) {
     // Set the static background image
     patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
     
-    // Clear previous animations and timers from any previous logic
+    // Clear previous animations
     animationLayer.innerHTML = '';
-    if (animationLayer.timerId) {
-        clearInterval(animationLayer.timerId);
-        animationLayer.timerId = null;
-    }
 
     // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
@@ -1789,9 +1786,6 @@ function applyBackground(patternName, save = true) {
             htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
             break;
         case 'circles':
-            // This pseudo-random method uses pure CSS. It creates 10 circles,
-            // each with a different size, position, and animation delay,
-            // which creates a continuous, non-repetitive effect.
             for (let i = 0; i < 10; i++) {
                 const size = Math.random() * 300 + 400;
                 const delay = Math.random() * 12;
@@ -1807,14 +1801,14 @@ function applyBackground(patternName, save = true) {
         case 'sliding-bar':
             htmlToSet = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
             break;
-        case 'shrinking-circle-fixed':
-            htmlToSet = `<div class="shrinking-circle-fixed"></div>`;
+        case 'vertical-sweep':
+            htmlToSet = `<div class="vertical-sweep-bar top"></div><div class="vertical-sweep-bar bottom"></div>`;
             break;
-        case 'diagonal-bars-sequential':
-            htmlToSet = `<div class="diagonal-bar one"></div><div class="diagonal-bar two"></div>`;
+        case 'reversing-diagonal-bar':
+            htmlToSet = `<div class="reversing-diagonal-bar"></div>`;
             break;
-        case 'diagonal-bars-sequential-fast':
-            htmlToSet = `<div class="diagonal-bar one fast"></div><div class="diagonal-bar two fast"></div>`;
+        case 'reversing-diagonal-bar-fast':
+            htmlToSet = `<div class="reversing-diagonal-bar fast"></div>`;
             break;
         case 'vertical-crossing-bars':
             htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
@@ -1823,7 +1817,6 @@ function applyBackground(patternName, save = true) {
     
     animationLayer.innerHTML = htmlToSet;
 }
-
 
 
 function applyAnimationSetting(enabled, save = true) {
@@ -1989,6 +1982,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
