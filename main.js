@@ -91,6 +91,7 @@ const summaryResultsContainer = document.getElementById("summary-results-contain
 const combinerResultsContainer = document.getElementById("combiner-results-container");
 const summaryOutput = document.getElementById("summary-output");
 const combinerOutput = document.getElementById("combiner-output");
+const combinerExplanation = document.getElementById("combiner-explanation"); // New selector
 const summarizerLoadingPlaceholder = document.getElementById("summarizer-loading-placeholder");
 const combinerLoadingPlaceholder = document.getElementById("combiner-loading-placeholder");
 const summaryHistorySection = document.getElementById("summary-history-section");
@@ -120,14 +121,6 @@ const alternativesResultsContainer = document.getElementById("alternatives-resul
 const availableAlternativesSection = document.getElementById("available-alternatives-section");
 const generateAvailableAltBtn = document.getElementById("generate-available-alt-btn");
 const availableAlternativesResults = document.getElementById("available-alternatives-results");
-
-// --- ADD/UPDATE these selectors at the top of main.js ---
-const combinerResultsContainer = document.getElementById("combiner-results-container");
-const combinerOutput = document.getElementById("combiner-output");
-const combinerExplanation = document.getElementById("combiner-explanation"); // Add this line
-const summarizerLoadingPlaceholder = document.getElementById("summarizer-loading-placeholder");
-const combinerLoadingPlaceholder = document.getElementById("combiner-loading-placeholder");
-
 // --- Settings Page Selectors ---
 const themeSelect = document.getElementById('theme-select');
 const fontSelect = document.getElementById('font-select');
@@ -1898,5 +1891,6 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
