@@ -58,11 +58,10 @@ const BACKGROUND_ANIMATIONS = {
     'pattern4': 'circles', 'pattern5': 'circles', 'pattern6': 'circles',
     'pattern7': 'sliding-bar', 'pattern8': 'sliding-bar',
     'pattern9': 'shrinking-circle-fixed',
-    'pattern10': 'diagonal-bars',
-    'pattern11': 'diagonal-bars-fast',
-    'pattern12': 'crossing-bars'
+    'pattern10': 'swooping-bar',
+    'pattern11': 'swooping-bar-fast',
+    'pattern12': 'vertical-crossing-bars'
 };
-
 
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
@@ -1783,7 +1782,7 @@ function applyBackground(patternName, save = true) {
     // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
 
-    // --- Helper function for the randomized circle V2 ---
+    // --- Helper function for the randomized circle V3 ---
     const createRandomCircle = () => {
         const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -1800,23 +1799,6 @@ function applyBackground(patternName, save = true) {
         circle.addEventListener('animationend', () => circle.remove());
         animationLayer.appendChild(circle);
     };
-    
-    // --- Helper function for sequential diagonal bars ---
-    const runDiagonalSequence = (isFast) => {
-        const duration = isFast ? 1000 : 3000;
-        const totalLoopTime = duration * 2;
-        
-        const createBars = () => {
-            animationLayer.innerHTML = `
-                <div class="diagonal-bar-sequential one ${isFast ? 'fast' : ''}"></div>
-                <div class="diagonal-bar-sequential two ${isFast ? 'fast' : ''}"></div>
-            `;
-        };
-
-        createBars(); // Initial run
-        animationLayer.timerId = setInterval(createBars, totalLoopTime); // Loop
-    };
-
 
     switch (animationType) {
         case 'default':
@@ -1832,20 +1814,17 @@ function applyBackground(patternName, save = true) {
         case 'shrinking-circle-fixed':
             animationLayer.innerHTML = `<div class="shrinking-circle-fixed"></div>`;
             break;
-        case 'diagonal-bars':
-            runDiagonalSequence(false);
+        case 'swooping-bar':
+            animationLayer.innerHTML = `<div class="swooping-bar"></div>`;
             break;
-        case 'diagonal-bars-fast':
-            runDiagonalSequence(true);
+        case 'swooping-bar-fast':
+            animationLayer.innerHTML = `<div class="swooping-bar fast"></div>`;
             break;
-        case 'crossing-bars':
-            animationLayer.innerHTML = `<div class="crossing-bar top"></div><div class="crossing-bar bottom"></div>`;
+        case 'vertical-crossing-bars':
+            animationLayer.innerHTML = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
             break;
     }
 }
-
-
-
 
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
@@ -2010,6 +1989,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
