@@ -57,11 +57,12 @@ const BACKGROUND_ANIMATIONS = {
     'pattern1': 'default', 'pattern2': 'default', 'pattern3': 'default',
     'pattern4': 'circles', 'pattern5': 'circles', 'pattern6': 'circles',
     'pattern7': 'sliding-bar', 'pattern8': 'sliding-bar',
-    'pattern9': 'shrinking-circle-fixed',
-    'pattern10': 'diagonal-bars-sequential',
-    'pattern11': 'diagonal-bars-sequential-fast',
+    'pattern9': 'vertical-closing-bars',
+    'pattern10': 'corner-pincers',
+    'pattern11': 'corner-pincers-fast',
     'pattern12': 'vertical-crossing-bars'
 };
+
 
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
@@ -1772,53 +1773,68 @@ function applyBackground(patternName, save = true) {
     // Set the static background image
     patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
     
-    // Clear previous animations
+    // Clear previous animations AND any running timers
     animationLayer.innerHTML = '';
+    if (animationLayer.timerId) {
+        clearInterval(animationLayer.timerId);
+        animationLayer.timerId = null;
+    }
 
     // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
 
     let htmlToSet = '';
 
+    // --- Helper function for the randomized circle V3 ---
+    const createRandomCircle = () => {
+        animationLayer.innerHTML = ''; // Clear the old circle
+        const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const size = Math.random() * 300 + 400; 
+        const circle = document.createElement('div');
+        circle.className = 'drifting-circle';
+        circle.style.cssText = `
+            width: ${size}px; height: ${size}px;
+            top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+            background-color: ${randomColor};
+            --x-start: ${Math.random() * 80 - 40}vw; --y-start: ${Math.random() * 80 - 40}vh;
+            --x-end: ${Math.random() * 80 - 40}vw; --y-end: ${Math.random() * 80 - 40}vh;
+        `;
+        animationLayer.appendChild(circle);
+    };
+
     switch (animationType) {
         case 'default':
             htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
             break;
         case 'circles':
-            const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
-            for (let i = 0; i < 10; i++) {
-                const size = Math.random() * 300 + 400;
-                const delay = Math.random() * 10;
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                htmlToSet += `<div class="drifting-circle" style="
-                    width: ${size}px; height: ${size}px;
-                    top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
-                    animation-delay: ${delay}s;
-                    background-color: ${randomColor};
-                    --x-start: ${Math.random() * 80 - 40}vw; --y-start: ${Math.random() * 80 - 40}vh;
-                    --x-end: ${Math.random() * 80 - 40}vw; --y-end: ${Math.random() * 80 - 40}vh;
-                "></div>`;
-            }
+            createRandomCircle(); // Create the first one immediately
+            animationLayer.timerId = setInterval(createRandomCircle, 10000); // Create a new one every 10 seconds
             break;
         case 'sliding-bar':
             htmlToSet = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
             break;
-        case 'shrinking-circle-fixed':
-            htmlToSet = `<div class="shrinking-circle-fixed"></div>`;
+        case 'vertical-closing-bars':
+            htmlToSet = `<div class="vertical-closing-bar top"></div><div class="vertical-closing-bar bottom"></div>`;
             break;
-        case 'diagonal-bars-sequential':
-            htmlToSet = `<div class="diagonal-bar one"></div><div class="diagonal-bar two"></div>`;
+        case 'corner-pincers':
+            htmlToSet = `<div class="corner-pincer-bar top-left"></div><div class="corner-pincer-bar bottom-right"></div>`;
             break;
-        case 'diagonal-bars-sequential-fast':
-            htmlToSet = `<div class="diagonal-bar one fast"></div><div class="diagonal-bar two fast"></div>`;
+        case 'corner-pincers-fast':
+            htmlToSet = `<div class="corner-pincer-bar top-left fast"></div><div class="corner-pincer-bar bottom-right fast"></div>`;
             break;
         case 'vertical-crossing-bars':
             htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
             break;
     }
     
-    animationLayer.innerHTML = htmlToSet;
+    // Set HTML for non-circle animations
+    if (animationType !== 'circles') {
+        animationLayer.innerHTML = htmlToSet;
+    }
 }
+
+
 
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
@@ -1983,5 +1999,6 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
