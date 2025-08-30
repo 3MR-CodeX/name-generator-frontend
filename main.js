@@ -1540,6 +1540,7 @@ async function summarizeText() {
     if (summarizeBtn.disabled) return;
     const textInput = document.getElementById('text-to-summarize');
     const lengthSelect = document.getElementById('summary-length');
+    const toneSelect = document.getElementById('summary-tone'); // New: Get tone dropdown
     const text = textInput.value.trim();
 
     if (!text) {
@@ -1550,7 +1551,6 @@ async function summarizeText() {
     document.getElementById("error").textContent = "";
     if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
     
-    // KEY CHANGE: Using the new professional loader
     if(summarizerLoadingPlaceholder) {
         showProfessionalLoadingPlaceholder(summarizerLoadingPlaceholder, '100px'); 
         summarizerLoadingPlaceholder.classList.remove("hidden");
@@ -1562,7 +1562,8 @@ async function summarizeText() {
         const response = await fetch(`${BACKEND_URL}/summarize`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            body: JSON.stringify({ text: text, length: lengthSelect.value })
+            // New: Pass both length and tone to the backend
+            body: JSON.stringify({ text: text, length: lengthSelect.value, tone: toneSelect.value })
         });
 
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
@@ -1602,6 +1603,8 @@ async function summarizeText() {
         }, 1000);
     }
 }
+
+
 
 async function combineWords() {
     if (combineWordsBtn.disabled) return;
@@ -1891,6 +1894,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
