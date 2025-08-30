@@ -2324,7 +2324,7 @@ body.light-theme {
     pointer-events: none; /* Allows clicks to go through */
 }
 
-/* Type 1: Default Sweep (replaces original .animated-bar) */
+/* Type 1: Default Sweep */
 #animation-layer .sweep-bar {
     position: absolute;
     top: 0;
@@ -2333,32 +2333,26 @@ body.light-theme {
     opacity: 0;
     background: linear-gradient(to right, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2), transparent);
 }
-#animation-layer .sweep-bar.left {
-    left: 0;
-    animation: sweep-left-to-center 8s infinite linear;
-}
-#animation-layer .sweep-bar.right {
-    right: 0;
-    animation: sweep-right-to-center 8s infinite linear;
-}
+#animation-layer .sweep-bar.left { left: 0; animation: sweep-left-to-center 8s infinite linear; }
+#animation-layer .sweep-bar.right { right: 0; animation: sweep-right-to-center 8s infinite linear; }
 
-/* Type 2 (patterns 4-6): Drifting Circle */
-@keyframes drift-fade {
+/* Type 2 (patterns 4-6): Drifting Circle V2 */
+@keyframes drift-fade-v2 {
     0% { transform: translate(var(--x-start), var(--y-start)) scale(0.8); opacity: 0; }
-    20% { opacity: 0.7; }
-    80% { opacity: 0.7; }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.6; }
     100% { transform: translate(var(--x-end), var(--y-end)) scale(1.2); opacity: 0; }
 }
 #animation-layer .drifting-circle {
     position: absolute;
     background-color: var(--line-accent-glow);
     border-radius: 50%;
-    animation: drift-fade 12s infinite ease-in-out;
-    filter: blur(30px); /* Increased blur */
+    animation: drift-fade-v2 12s ease-in-out forwards; /* Changed to 'forwards' */
+    filter: blur(40px);
 }
 
-/* Type 3 (patterns 7-8): Sliding Bar */
-@keyframes slide-across {
+/* Type 3 (patterns 7-8): Sliding Bar V2 */
+@keyframes slide-across-v2 {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100vw); }
 }
@@ -2366,11 +2360,12 @@ body.light-theme {
     position: absolute;
     height: 100%;
     width: 40vw;
-    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), transparent);
-    animation: slide-across 12s infinite linear;
+    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--primary-accent), var(--animated-bar-color-2), transparent);
+    animation: slide-across-v2 12s infinite linear;
+    filter: blur(20px);
 }
 
-/* Type 4 (pattern 9): Shrinking Hollow Circle (Fixed) */
+/* Type 4 (pattern 9): Shrinking Hollow Circle */
 @keyframes shrink-fade-in-out {
     0% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
     10% { opacity: 0.7; }
@@ -2378,79 +2373,75 @@ body.light-theme {
 }
 #animation-layer .shrinking-circle-fixed {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100vmax;
-    height: 100vmax;
+    top: 50%; left: 50%;
+    width: 100vmax; height: 100vmax;
     border-radius: 50%;
     border: 4px solid;
-    /* Creates the colorful outline effect */
     border-image: conic-gradient(var(--line-accent-default), var(--line-accent-glow), var(--primary-accent), var(--line-accent-default)) 1;
     animation: shrink-fade-in-out 7s infinite ease-in;
 }
 
-/* Type 5 (patterns 10-11): Diagonal Bars */
-@keyframes diagonal-fade {
-    0% { opacity: 0; transform: translate(0, 0) rotate(45deg); }
-    50% { opacity: 0.6; }
-    100% { opacity: 0; transform: var(--transform-end) rotate(45deg); }
+/* Type 5 (patterns 10-11): Diagonal Bars V2 */
+@keyframes diagonal-slide {
+    0% { transform: translateX(-150%) rotate(45deg); opacity: 0.7; }
+    100% { transform: translateX(150%) rotate(45deg); opacity: 0.7; }
 }
 #animation-layer .diagonal-bar {
     position: absolute;
-    width: 60vw;
-    height: 4px;
-    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2));
-    animation: diagonal-fade 6s infinite ease-in-out;
+    width: 80vw;
+    height: 40px; /* Thicker bar */
+    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2), transparent);
+    filter: blur(25px); /* Blurry effect */
+    animation: diagonal-slide 6s infinite linear;
 }
 #animation-layer .diagonal-bar.top-left {
-    top: 0;
-    left: 0;
-    transform-origin: top left;
-    --transform-end: translate(50vw, 50vh);
+    top: -20vh;
+    left: -20vw;
+    transform-origin: center;
 }
 #animation-layer .diagonal-bar.bottom-right {
-    bottom: 0;
-    right: 0;
-    transform-origin: bottom right;
-    --transform-end: translate(-50vw, -50vh);
+    bottom: -20vh;
+    right: -20vw;
+    transform-origin: center;
     animation-delay: -3s; /* Offset animation */
 }
 /* Faster, more colorful version for pattern 11 */
 #animation-layer .diagonal-bar.fast {
-    animation-duration: 2.5s;
+    animation-duration: 2s; /* 3x faster */
     background: linear-gradient(90deg, var(--line-accent-default), var(--primary-accent), var(--line-accent-glow));
 }
 #animation-layer .diagonal-bar.fast.bottom-right {
-    animation-delay: -1.25s;
+    animation-delay: -1s; /* Offset for faster loop */
 }
 
-/* Type 6 (pattern 12): Crossing Horizontal Bars */
-@keyframes slide-vertical-down {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100vh); }
+/* Type 6 (pattern 12): Crossing Horizontal Bars V2 */
+@keyframes slide-horizontal-left-right {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200vw); }
 }
-@keyframes slide-vertical-up {
-    0% { transform: translateY(100vh); }
-    100% { transform: translateY(-100%); }
+@keyframes slide-horizontal-right-left {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-200vw); }
 }
-#animation-layer .horizontal-bar {
+#animation-layer .crossing-bar {
     position: absolute;
     width: 50%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--line-accent-default), var(--line-accent-glow));
+    height: 80px; /* Thicker bar */
+    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--animated-bar-color-2), transparent);
+    filter: blur(35px); /* Blurry effect */
 }
-#animation-layer .horizontal-bar.top {
-    left: 0;
-    top: 0;
-    animation: slide-vertical-down 9s infinite linear;
+#animation-layer .crossing-bar.top {
+    left: -50vw;
+    top: 20%;
+    animation: slide-horizontal-left-right 9s infinite linear;
 }
-#animation-layer .horizontal-bar.bottom {
-    right: 0;
-    bottom: 0;
-    animation: slide-vertical-up 9s infinite linear;
+#animation-layer .crossing-bar.bottom {
+    right: -50vw;
+    bottom: 20%;
+    animation: slide-horizontal-right-left 9s infinite linear;
 }
 
-/* Remove original animated bars as they are now handled by JS */
+/* Original animated-bar is now obsolete */
 .animated-bar {
     display: none;
 }
