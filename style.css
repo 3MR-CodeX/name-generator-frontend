@@ -2284,3 +2284,12 @@ body.light-theme {
 .loading-placeholder .loader-container {
     padding: 0;
 }
+
+/* Add this to style.css to better display the combined word */
+
+#combiner-output {
+    display: grid;
+    place-items: center;
+    font-size: 1.8em;
+    font-weight: bold;
+}
