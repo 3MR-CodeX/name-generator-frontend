@@ -57,9 +57,10 @@ const BACKGROUND_ANIMATIONS = {
     'pattern1': 'default', 'pattern2': 'default', 'pattern3': 'default',
     'pattern4': 'circles', 'pattern5': 'circles', 'pattern6': 'circles',
     'pattern7': 'sliding-bar', 'pattern8': 'sliding-bar',
-    'pattern9': 'shrinking-circle', 'pattern10': 'shrinking-circle',
-    'pattern11': 'lightning',
-    'pattern12': 'dual-bars'
+    'pattern9': 'shrinking-circle-fixed',
+    'pattern10': 'diagonal-bars',
+    'pattern11': 'diagonal-bars-fast',
+    'pattern12': 'crossing-bars'
 };
 
 
@@ -1783,43 +1784,36 @@ function applyBackground(patternName, save = true) {
             animationLayer.innerHTML = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
             break;
         case 'circles':
-            let circlesHtml = '';
-            for (let i = 0; i < 10; i++) {
-                const size = Math.random() * 50 + 10;
-                const delay = Math.random() * 10;
-                circlesHtml += `<div class="drifting-circle" style="
-                    width: ${size}px; height: ${size}px;
-                    top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
-                    animation-delay: ${delay}s;
-                    --x-start: ${Math.random() * 100 - 50}vw; --y-start: ${Math.random() * 100 - 50}vh;
-                    --x-end: ${Math.random() * 100 - 50}vw; --y-end: ${Math.random() * 100 - 50}vh;
-                "></div>`;
-            }
-            animationLayer.innerHTML = circlesHtml;
+            // Generates only one, larger circle as requested
+            const size = Math.random() * 150 + 100; // 3x bigger
+            const delay = Math.random() * 12;
+            animationLayer.innerHTML = `<div class="drifting-circle" style="
+                width: ${size}px; height: ${size}px;
+                top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+                animation-delay: ${delay}s;
+                --x-start: ${Math.random() * 100 - 50}vw; --y-start: ${Math.random() * 100 - 50}vh;
+                --x-end: ${Math.random() * 100 - 50}vw; --y-end: ${Math.random() * 100 - 50}vh;
+            "></div>`;
             break;
         case 'sliding-bar':
             animationLayer.innerHTML = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
             break;
-        case 'shrinking-circle':
-            animationLayer.innerHTML = `<div class="shrinking-circle"></div>`;
+        case 'shrinking-circle-fixed':
+            animationLayer.innerHTML = `<div class="shrinking-circle-fixed"></div>`;
             break;
-        case 'lightning':
-            let boltsHtml = '';
-            for (let i = 0; i < 5; i++) {
-                boltsHtml += `<div class="lightning-bolt" style="
-                    left: ${Math.random() * 100}%;
-                    height: ${Math.random() * 80 + 20}vh;
-                    transform: rotate(${Math.random() * 40 - 20}deg);
-                    animation-delay: ${Math.random() * 2.5}s;
-                "></div>`;
-            }
-            animationLayer.innerHTML = boltsHtml;
+        case 'diagonal-bars':
+            animationLayer.innerHTML = `<div class="diagonal-bar top-left"></div><div class="diagonal-bar bottom-right"></div>`;
             break;
-        case 'dual-bars':
-            animationLayer.innerHTML = `<div class="dual-bar left"></div><div class="dual-bar right" style="animation-delay: -4.5s;"></div>`;
+        case 'diagonal-bars-fast':
+            animationLayer.innerHTML = `<div class="diagonal-bar top-left fast"></div><div class="diagonal-bar bottom-right fast"></div>`;
+            break;
+        case 'crossing-bars':
+            animationLayer.innerHTML = `<div class="horizontal-bar top"></div><div class="horizontal-bar bottom" style="animation-delay: -4.5s;"></div>`;
             break;
     }
 }
+
+
 
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
@@ -1984,6 +1978,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
