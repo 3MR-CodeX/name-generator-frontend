@@ -2371,37 +2371,31 @@ body.light-theme {
     animation: full-bg-color-shift 15s infinite ease-in-out;
 }
 
-/* Type 5 (patterns 10-11): Corner Pincer Bars V2 */
-@keyframes pincer-tl-to-center-v2 {
-    0%, 100% { transform: translate(-20vw, -20vh) rotate(45deg); }
-    50% { transform: translate(70vw, 70vh) rotate(45deg); }
+/* Type 5 (pattern 10): Color Shifting Bar */
+@keyframes full-screen-slide {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
 }
-@keyframes pincer-br-to-center-v2 {
-    0%, 100% { transform: translate(20vw, 20vh) rotate(45deg); }
-    50% { transform: translate(-70vw, -70vh) rotate(45deg); }
-}
-#animation-layer .corner-pincer-bar {
+#animation-layer .color-shifting-bar {
     position: absolute;
-    width: 70vw; height: 250px; /* Thicker */
-    background: linear-gradient(90deg, transparent, var(--animated-bar-color-1), var(--primary-accent), var(--animated-bar-color-2), transparent);
-    filter: blur(30px);
+    top: 25vh; /* Centered vertically */
+    left: 0;
+    width: 100vw;
+    height: 50vh; /* Half the screen height */
+    filter: blur(50px);
+    animation: full-screen-slide 10s infinite linear, full-bg-color-shift 15s infinite ease-in-out;
 }
-#animation-layer .corner-pincer-bar.top-left {
-    top: 0; left: 0;
-    transform-origin: top left;
-    animation: pincer-tl-to-center-v2 8s infinite ease-in-out;
+
+/* Type 5.5 (pattern 11): Random Flicker */
+@keyframes flicker-effect {
+    0%, 100% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 0.7; transform: scale(1); }
 }
-#animation-layer .corner-pincer-bar.bottom-right {
-    bottom: 0; right: 0;
-    transform-origin: bottom right;
-    animation: pincer-br-to-center-v2 8s infinite ease-in-out;
-    animation-delay: -4s; /* Offset by 50% */
-}
-#animation-layer .corner-pincer-bar.fast {
-    animation-duration: 1.6s; /* 5x faster than 8s */
-}
-#animation-layer .corner-pincer-bar.fast.bottom-right {
-    animation-delay: -0.8s; /* Offset by 50% of faster duration */
+#animation-layer .flicker-spot {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(50px);
+    animation: flicker-effect 0.5s ease-in-out forwards;
 }
 
 /* Type 6 (pattern 12): Vertical Crossing Bars V2 */
