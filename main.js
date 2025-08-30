@@ -53,6 +53,15 @@ const DOMAIN_OPTIONS = {
     ".me": { value: "me" },
 };
 
+const BACKGROUND_ANIMATIONS = {
+    'pattern1': 'default', 'pattern2': 'default', 'pattern3': 'default',
+    'pattern4': 'circles', 'pattern5': 'circles', 'pattern6': 'circles',
+    'pattern7': 'sliding-bar', 'pattern8': 'sliding-bar',
+    'pattern9': 'shrinking-circle', 'pattern10': 'shrinking-circle',
+    'pattern11': 'lightning',
+    'pattern12': 'dual-bars'
+};
+
 
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
@@ -123,6 +132,7 @@ const generateAvailableAltBtn = document.getElementById("generate-available-alt-
 const availableAlternativesResults = document.getElementById("available-alternatives-results");
 // --- Settings Page Selectors ---
 const themeSelect = document.getElementById('theme-select');
+const backgroundSelect = document.getElementById('background-select');
 const fontSelect = document.getElementById('font-select');
 const fontSizeSlider = document.getElementById('font-size-slider');
 const resultsFontSelect = document.getElementById('results-font-select');
@@ -178,6 +188,8 @@ function initializeUI() {
     if (editBox && !editBox.dataset.originalPlaceholder) editBox.dataset.originalPlaceholder = editBox.placeholder;
 }
 
+// --- Full Updated setupEventListeners Function (Replace your existing function) ---
+
 function setupEventListeners() {
     if (historyModal && closeButtonHistoryModal) {
         closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
@@ -205,6 +217,7 @@ function setupEventListeners() {
     if (generateAvailableAltBtn) generateAvailableAltBtn.onclick = generateAvailableAlternatives;
     if (summarizeBtn) summarizeBtn.onclick = summarizeText;
     if (combineWordsBtn) combineWordsBtn.onclick = combineWords;
+    
     // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
     if (fontSelect) fontSelect.addEventListener('change', (e) => applyFont(e.target.value));
@@ -212,9 +225,11 @@ function setupEventListeners() {
     if (resultsFontSelect) resultsFontSelect.addEventListener('change', (e) => applyResultsFont(e.target.value));
     if (resultsFontSizeSlider) resultsFontSizeSlider.addEventListener('input', (e) => applyResultsFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
+    if (backgroundSelect) backgroundSelect.addEventListener('change', (e) => applyBackground(e.target.value)); // New listener
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
+
     const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
     const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
     const tierDropdown = document.getElementById("tier-dropdown");
@@ -1722,17 +1737,13 @@ function renderCombinerHistory() {
 
 function initializeSettings() {
     const settings = {
-        theme: localStorage.getItem('nameit-theme') ||
-        'synthwave',
-        font: localStorage.getItem('nameit-font') ||
-        "'Roboto', sans-serif",
-        fontSize: localStorage.getItem('nameit-fontSize') ||
-        '100',
-        resultsFont: localStorage.getItem('nameit-results-font') ||
-        "'Roboto', sans-serif",
-        resultsFontSize: localStorage.getItem('nameit-results-fontSize') ||
-        '100',
-        animations: localStorage.getItem('nameit-animations') !== 'false'
+        theme: localStorage.getItem('nameit-theme') || 'synthwave',
+        font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
+        fontSize: localStorage.getItem('nameit-fontSize') || '100',
+        resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
+        resultsFontSize: localStorage.getItem('nameit-results-fontSize') || '100',
+        animations: localStorage.getItem('nameit-animations') !== 'false',
+        background: localStorage.getItem('nameit-background') || 'pattern1'
     };
     if (themeSelect) themeSelect.value = settings.theme;
     if (fontSelect) fontSelect.value = settings.font;
@@ -1740,14 +1751,93 @@ function initializeSettings() {
     if (resultsFontSelect) resultsFontSelect.value = settings.resultsFont;
     if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
     if (animationsToggle) animationsToggle.checked = settings.animations;
+    if (backgroundSelect) backgroundSelect.value = settings.background;
 
     applyTheme(settings.theme, false);
     applyFont(settings.font, false);
     applyFontSize(settings.fontSize, false);
     applyResultsFont(settings.resultsFont, false);
     applyResultsFontSize(settings.resultsFontSize, false);
+    applyBackground(settings.background, false);
     applyAnimationSetting(settings.animations, false);
 }
+
+function applyBackground(patternName, save = true) {
+    if (save) localStorage.setItem('nameit-background', patternName);
+
+    const patternElement = document.querySelector('.background-pattern');
+    const animationLayer = document.getElementById('animation-layer');
+    if (!patternElement || !animationLayer) return;
+
+    // Set the static background image
+    patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
+    
+    // Clear previous animations
+    animationLayer.innerHTML = '';
+
+    // Generate new animation layer based on selection
+    const animationType = BACKGROUND_ANIMATIONS[patternName];
+
+    switch (animationType) {
+        case 'default':
+            animationLayer.innerHTML = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
+            break;
+        case 'circles':
+            let circlesHtml = '';
+            for (let i = 0; i < 10; i++) {
+                const size = Math.random() * 50 + 10;
+                const delay = Math.random() * 10;
+                circlesHtml += `<div class="drifting-circle" style="
+                    width: ${size}px; height: ${size}px;
+                    top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+                    animation-delay: ${delay}s;
+                    --x-start: ${Math.random() * 100 - 50}vw; --y-start: ${Math.random() * 100 - 50}vh;
+                    --x-end: ${Math.random() * 100 - 50}vw; --y-end: ${Math.random() * 100 - 50}vh;
+                "></div>`;
+            }
+            animationLayer.innerHTML = circlesHtml;
+            break;
+        case 'sliding-bar':
+            animationLayer.innerHTML = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
+            break;
+        case 'shrinking-circle':
+            animationLayer.innerHTML = `<div class="shrinking-circle"></div>`;
+            break;
+        case 'lightning':
+            let boltsHtml = '';
+            for (let i = 0; i < 5; i++) {
+                boltsHtml += `<div class="lightning-bolt" style="
+                    left: ${Math.random() * 100}%;
+                    height: ${Math.random() * 80 + 20}vh;
+                    transform: rotate(${Math.random() * 40 - 20}deg);
+                    animation-delay: ${Math.random() * 2.5}s;
+                "></div>`;
+            }
+            animationLayer.innerHTML = boltsHtml;
+            break;
+        case 'dual-bars':
+            animationLayer.innerHTML = `<div class="dual-bar left"></div><div class="dual-bar right" style="animation-delay: -4.5s;"></div>`;
+            break;
+    }
+}
+
+function applyAnimationSetting(enabled, save = true) {
+    if (save) localStorage.setItem('nameit-animations', enabled);
+    
+    const showcaseContainer = document.querySelector('.showcase-container');
+    const animationLayer = document.getElementById('animation-layer');
+
+    if (enabled) {
+        document.body.classList.remove('animations-disabled');
+        if (showcaseContainer) showcaseContainer.style.display = 'flex';
+        if (animationLayer) animationLayer.style.display = 'block';
+    } else {
+        document.body.classList.add('animations-disabled');
+        if (showcaseContainer) showcaseContainer.style.display = 'none';
+        if (animationLayer) animationLayer.style.display = 'none';
+    }
+}
+
 
 function applyTheme(theme, save = true) {
     if (save) localStorage.setItem('nameit-theme', theme);
@@ -1894,6 +1984,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
