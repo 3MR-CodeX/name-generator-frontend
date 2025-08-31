@@ -1,0 +1,23 @@
+/* components/premium-locks.css */
+
+.premium-feature-lock {
+    display: inline-block;
+    margin-left: 8px;
+    color: #f1fa8c; /* A gold/yellow color */
+    font-size: 0.8em;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-content ul li.locked > a {
+    color: #888;
+    pointer-events: none; /* Disables clicking on the link */
+    background-color: #2f2f2f; /* A darker, disabled background */
+    cursor: not-allowed;
+}
+
+.sidebar-content ul li.locked > a:hover {
+    background-color: #2f2f2f; /* Ensure hover doesn't change color */
+    transform: none; /* Prevent hover transform effect */
+}
+
