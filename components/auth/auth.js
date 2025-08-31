@@ -1,4 +1,4 @@
-// components/auth/auth.js
+/// components/auth/auth.js
 
 // These functions are now globally accessible
 function openSignInModal() {
@@ -82,7 +82,7 @@ function initializeAuth() {
         if (tierBadge) {
             tierBadge.textContent = data.tier;
             tierBadge.className = 'tier-badge';
-            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Premium Tier": 'premium-tier', "Business Tier": 'business-tier' };
+            const tiers = { "Anonymous": 'free-tier', "Free": 'free-tier', "Starter": 'premium-tier', "Pro": 'premium-tier', "Business": 'business-tier' };
             if (tiers[data.tier]) {
                 tierBadge.classList.add(tiers[data.tier]);
             }
@@ -90,7 +90,7 @@ function initializeAuth() {
         window.updateGenerationCountUI(data.credits);
     }
     
-    window.updateUserStatusUI = (user) => {
+    window.updateUserStatusUI = (user, forceBackendUpdate = false) => {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
@@ -122,15 +122,18 @@ function initializeAuth() {
                     if(surpriseBtn) surpriseBtn.disabled = false;
                     userStatusContainer.classList.remove('hidden');
                     
-                    user.getIdToken().then(token => {
+                    user.getIdToken(forceBackendUpdate).then(token => {
                         fetch(`${BACKEND_URL}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
-                        .then(res => res.json())
+                        .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch status'))
                         .then(status => {
                             updateSubscriptionDisplay({
                                 tier: status.tier,
                                 credits: status.credits
                             });
-                        });
+                            if (typeof applyTierStylingAndLocks === 'function') {
+                                applyTierStylingAndLocks(status.tier_level);
+                            }
+                        }).catch(err => console.error("Status fetch error:", err));
                     });
                 } else {
                     if(generateBtn) generateBtn.disabled = true;
@@ -139,6 +142,9 @@ function initializeAuth() {
                     verificationNotice.classList.remove('hidden');
                     verificationNotice.innerHTML = `Please check your inbox to verify your email address. <a id="resend-verification">Resend verification email.</a>`;
                     document.getElementById('resend-verification').addEventListener('click', resendVerificationEmail);
+                     if (typeof applyTierStylingAndLocks === 'function') {
+                        applyTierStylingAndLocks(0); // Lock features for unverified users
+                    }
                 }
             });
         } else { // --- USER IS NOT LOGGED IN (ANONYMOUS) ---
@@ -152,6 +158,9 @@ function initializeAuth() {
                 tier: "Anonymous",
                 credits: Math.max(0, 25 - anonGenerations)
             });
+             if (typeof applyTierStylingAndLocks === 'function') {
+                applyTierStylingAndLocks(0); // Apply free tier limitations
+            }
         }
     };
 
@@ -261,3 +270,4 @@ function initializeAuth() {
         }
     }
 }
+
