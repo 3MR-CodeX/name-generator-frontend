@@ -87,6 +87,7 @@ const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refineButtonSection = document.querySelector(".refine-button-section");
 const contactForm = document.getElementById('contact-form');
+const catalogView = document.getElementById("catalog-view");
 const refinedOutputs = document.getElementById("refined_outputs");
 const namesPre = document.getElementById("names");
 const reasonsPre = document.getElementById("reasons");
@@ -205,7 +206,7 @@ async function handleContactFormSubmit(event) {
     const submitButton = document.getElementById('contact-submit-btn');
     const submissionMessage = document.getElementById('form-submission-message');
     
-    // New: Verify user is logged in at the moment of submission
+    // Verify user is logged in at the moment of submission
     const user = window.auth.currentUser;
     if (!user || !user.email) {
         submissionMessage.style.display = 'block';
@@ -219,8 +220,7 @@ async function handleContactFormSubmit(event) {
 
     const data = new FormData(form);
     
-    // New: Manually set the email in the form data just before sending
-    // This is the crucial fix.
+    // Manually set the email in the form data just before sending
     data.set('email', user.email);
 
     try {
@@ -275,6 +275,7 @@ function setupEventListeners() {
             else showTemporaryPlaceholderError(editBox, "Please enter a refine instruction.");
         };
     }
+    if (contactForm) contactForm.addEventListener('submit', handleContactFormSubmit);
     if (customRefineBtn) customRefineBtn.onclick = customRefineName;
     if (checkAvailabilityBtn) checkAvailabilityBtn.onclick = checkAvailability;
     if (analyzeNameBtn) analyzeNameBtn.onclick = analyzeName;
@@ -282,11 +283,7 @@ function setupEventListeners() {
     if (generateAvailableAltBtn) generateAvailableAltBtn.onclick = generateAvailableAlternatives;
     if (summarizeBtn) summarizeBtn.onclick = summarizeText;
     if (combineWordsBtn) combineWordsBtn.onclick = combineWords;
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleContactFormSubmit);
-    }
 
-    // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
     if (fontSelect) fontSelect.addEventListener('change', (e) => applyFont(e.target.value));
     if (fontSizeSlider) fontSizeSlider.addEventListener('input', (e) => applyFontSize(e.target.value));
@@ -301,7 +298,9 @@ function setupEventListeners() {
     const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
     const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
     const tierDropdown = document.getElementById("tier-dropdown");
+    const contactSignInLink = document.getElementById('contact-signin-link');
 
+    if (contactSignInLink) contactSignInLink.addEventListener('click', (e) => { e.preventDefault(); openSignInModal(); });
     if (buyCreditsShortcutBtn) {
         buyCreditsShortcutBtn.addEventListener('click', () => { 
             showView('credits'); 
@@ -317,53 +316,58 @@ function setupEventListeners() {
     }
 
     setTimeout(() => {
-        const homeLink = document.getElementById('home-link');
-        const customRefineLink = document.getElementById('custom-refine-link');
-        const availabilityCheckLink = document.getElementById('availability-check-link');
-        const nameAnalyzerLink = document.getElementById('name-analyzer-link');
-        const summarizerLink = document.getElementById('summarizer-link');
-        const wordCombinerLink = document.getElementById('word-combiner-link');
-        const settingsLink = document.getElementById('settings-link');
-        const aboutLink = document.getElementById('about-link');
-        const contactLink = document.getElementById('contact-link');
-        const premiumLink = document.getElementById('go-premium-link');
-        const buyCreditsLink = document.getElementById('buy-credits-link');
-        const termsLink = document.getElementById('terms-link');
-        const privacyLink = document.getElementById('privacy-link');
-        const contactSignInLink = document.getElementById('contact-signin-link');
+        const links = {
+            'home-link': 'generator',
+            'custom-refine-link': 'refiner',
+            'availability-check-link': 'availability-checker',
+            'name-analyzer-link': 'name-analyzer',
+            'summarizer-link': 'summarizer',
+            'word-combiner-link': 'word-combiner',
+            'settings-link': 'settings',
+            'about-link': 'about',
+            'premium-link': 'premium',
+            'buy-credits-link': 'credits',
+            'catalog-link': 'catalog',
+            'contact-link': 'contact'
+        };
 
+        for (const [id, view] of Object.entries(links)) {
+            const linkElement = document.getElementById(id);
+            if (linkElement) {
+                linkElement.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = ''; // Clear hash for non-policy pages
+                    showView(view);
+                    if (window.isSidebarOpen) toggleSidebar();
+                });
+            }
+        }
 
-        if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); window.location.hash = ''; showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (summarizerLink) summarizerLink.addEventListener('click', (e) => { e.preventDefault(); showView('summarizer'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (wordCombinerLink) wordCombinerLink.addEventListener('click', (e) => { e.preventDefault(); showView('word-combiner'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (contactLink) contactLink.addEventListener('click', (e) => { e.preventDefault(); showView('contact'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (buyCreditsLink) buyCreditsLink.addEventListener('click', (e) => { e.preventDefault(); showView('credits'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (contactSignInLink) contactSignInLink.addEventListener('click', (e) => { e.preventDefault(); openSignInModal(); });
-        
-        if (termsLink) termsLink.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            window.location.hash = 'terms'; 
-            if (window.isSidebarOpen) toggleSidebar(); 
-        });
-        if (privacyLink) privacyLink.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            window.location.hash = 'privacy'; 
-            if (window.isSidebarOpen) toggleSidebar(); 
-        });
+        const policyLinks = {
+            'terms-link': 'terms',
+            'privacy-link': 'privacy'
+        };
+
+        for (const [id, hash] of Object.entries(policyLinks)) {
+            const linkElement = document.getElementById(id);
+            if (linkElement) {
+                linkElement.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = hash;
+                    if (window.isSidebarOpen) toggleSidebar();
+                });
+            }
+        }
     }, 500);
 }
 
+
 function showView(viewName) {
-    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView];
+    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView, catalogView];
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
+
     if (viewName !== 'generator') {
         if (outputContainer) outputContainer.classList.add('hidden');
         if (refineSection) refineSection.classList.add('hidden');
@@ -382,56 +386,40 @@ function showView(viewName) {
         }
     }
 
-    if (viewName === 'generator') {
-        if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
-    } else if (viewName === 'refiner') {
-        if(customRefinerView) customRefinerView.classList.remove('hidden');
-    } else if (viewName === 'availability-checker') {
-        if(availabilityCheckerView) availabilityCheckerView.classList.remove('hidden');
-    } else if (viewName === 'name-analyzer') {
-        if(nameAnalyzerView) nameAnalyzerView.classList.remove('hidden');
-    } else if (viewName === 'settings') {
-        if(settingsView) settingsView.classList.remove('hidden');
-    } else if (viewName === 'about') {
-        if(aboutView) aboutView.classList.remove('hidden');
-    } else if (viewName === 'premium') {
-        if(premiumView) premiumView.classList.remove('hidden');
-    } else if (viewName === 'credits') {
-        if(creditsView) creditsView.classList.remove('hidden');
-    } else if (viewName === 'summarizer') {
-        if(summarizerView) summarizerView.classList.remove('hidden');
-    } else if (viewName === 'word-combiner') {
-        if(wordCombinerView) wordCombinerView.classList.remove('hidden');
-    } else if (viewName === 'terms') {
-        if(termsView) termsView.classList.remove('hidden');
-    } else if (viewName === 'privacy') {
-        if(privacyView) privacyView.classList.remove('hidden');
-    } else if (viewName === 'contact') {
-        if(contactView) contactView.classList.remove('hidden');
-        
-        // ** NEW LOGIC STARTS HERE **
-        const user = window.auth.currentUser;
-        const contactFormElement = document.getElementById('contact-form');
-        const loginPromptElement = document.getElementById('contact-login-prompt');
-        const emailDisplayElement = document.getElementById('contact-user-email-display');
-        const hiddenEmailInputElement = document.getElementById('contact-email');
+    const views = {
+        'generator': mainGeneratorView,
+        'refiner': customRefinerView,
+        'availability-checker': availabilityCheckerView,
+        'name-analyzer': nameAnalyzerView,
+        'settings': settingsView,
+        'about': aboutView,
+        'premium': premiumView,
+        'credits': creditsView,
+        'summarizer': summarizerView,
+        'word-combiner': wordCombinerView,
+        'terms': termsView,
+        'privacy': privacyView,
+        'contact': contactView,
+        'catalog': catalogView
+    };
 
-        if (user) {
-            // User is logged in, show the form and populate their email
-            loginPromptElement.classList.add('hidden');
-            contactFormElement.classList.remove('hidden');
-            emailDisplayElement.textContent = user.email;
-            hiddenEmailInputElement.value = user.email;
+    if (views[viewName]) {
+        views[viewName].classList.remove('hidden');
+    }
+    
+    if (viewName === 'contact') {
+        const user = window.auth.currentUser;
+        const form = document.getElementById('contact-form');
+        const prompt = document.getElementById('contact-login-prompt');
+        if (user && user.email) {
+            form.classList.remove('hidden');
+            prompt.classList.add('hidden');
         } else {
-            // User is not logged in, show the prompt and hide the form
-            loginPromptElement.classList.remove('hidden');
-            contactFormElement.classList.add('hidden');
+            form.classList.add('hidden');
+            prompt.classList.remove('hidden');
         }
-        // ** NEW LOGIC ENDS HERE **
     }
 }
-
-
 function populateDropdown(id, options) {
     const select = document.getElementById(id);
     if (!select) return;
@@ -2140,6 +2128,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
