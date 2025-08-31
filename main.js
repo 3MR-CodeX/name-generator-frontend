@@ -199,7 +199,47 @@ function initializeUI() {
     if (editBox && !editBox.dataset.originalPlaceholder) editBox.dataset.originalPlaceholder = editBox.placeholder;
 }
 
+async function handleContactFormSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const submitButton = document.getElementById('contact-submit-btn');
+    const submissionMessage = document.getElementById('form-submission-message');
+    
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+
+    const data = new FormData(form);
+
+    try {
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        submissionMessage.style.display = 'block';
+
+        if (response.ok) {
+            submissionMessage.textContent = 'Thank you! Your message has been sent successfully.';
+            submissionMessage.className = 'success';
+            form.style.display = 'none'; // Hide the form
+        } else {
+            const responseData = await response.json();
+            const errorMessage = responseData.errors ? responseData.errors.map(error => error.message).join(', ') : 'Oops! There was a problem submitting your form.';
+            throw new Error(errorMessage);
+        }
+    } catch (error) {
+        submissionMessage.textContent = error.message;
+        submissionMessage.className = 'error';
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send Message';
+    }
+}
+
 // --- Full Updated setupEventListeners Function (Replace your existing function) ---
+
 function setupEventListeners() {
     if (historyModal && closeButtonHistoryModal) {
         closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
@@ -2064,6 +2104,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
