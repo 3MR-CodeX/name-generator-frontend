@@ -82,6 +82,7 @@ const summarizerView = document.getElementById("summarizer-view");
 const wordCombinerView = document.getElementById("word-combiner-view");
 const termsView = document.getElementById("terms-view");
 const privacyView = document.getElementById("privacy-view");
+const contactView = document.getElementById("contact-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refineButtonSection = document.querySelector(".refine-button-section");
@@ -265,6 +266,7 @@ function setupEventListeners() {
         const wordCombinerLink = document.getElementById('word-combiner-link');
         const settingsLink = document.getElementById('settings-link');
         const aboutLink = document.getElementById('about-link');
+        const contactLink = document.getElementById('contact-link');
         const premiumLink = document.getElementById('go-premium-link');
         const buyCreditsLink = document.getElementById('buy-credits-link');
         const termsLink = document.getElementById('terms-link');
@@ -279,6 +281,7 @@ function setupEventListeners() {
         if (wordCombinerLink) wordCombinerLink.addEventListener('click', (e) => { e.preventDefault(); showView('word-combiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (settingsLink) settingsLink.addEventListener('click', (e) => { e.preventDefault(); showView('settings'); if (window.isSidebarOpen) toggleSidebar(); });
         if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (contactLink) contactLink.addEventListener('click', (e) => { e.preventDefault(); showView('contact'); if (window.isSidebarOpen) toggleSidebar(); });
         if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); });
         if (buyCreditsLink) buyCreditsLink.addEventListener('click', (e) => { e.preventDefault(); showView('credits'); if (window.isSidebarOpen) toggleSidebar(); });
         
@@ -295,8 +298,10 @@ function setupEventListeners() {
     }, 500);
 }
 
+
+
 function showView(viewName) {
-    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView];
+    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView];
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
@@ -330,6 +335,8 @@ function showView(viewName) {
         if(settingsView) settingsView.classList.remove('hidden');
     } else if (viewName === 'about') {
         if(aboutView) aboutView.classList.remove('hidden');
+    } else if (viewName === 'contact') {
+        if(contactView) contactView.classList.remove('hidden');
     } else if (viewName === 'premium') {
         if(premiumView) premiumView.classList.remove('hidden');
     } else if (viewName === 'credits') {
@@ -2053,6 +2060,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
