@@ -376,6 +376,7 @@ const availableAlternativesResults = document.getElementById("available-alternat
 // --- Settings Page Selectors ---
 const themeSelect = document.getElementById('theme-select');
 const backgroundSelect = document.getElementById('background-select');
+const languageSelect = document.getElementById('language-select');
 const fontSelect = document.getElementById('font-select');
 const fontSizeSlider = document.getElementById('font-size-slider');
 const resultsFontSelect = document.getElementById('results-font-select');
@@ -2381,4 +2382,5 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
