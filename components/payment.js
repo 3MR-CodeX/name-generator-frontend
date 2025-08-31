@@ -1,50 +1,27 @@
 // components/payment.js
 
-// This function initializes all payment-related event listeners.
 function initializePaymentSystem() {
-    // Event listeners for Premium Pack purchases
-    const starterBtn = document.querySelector('.pricing-card button[onclick="purchasePlan(\'starter\')"]');
-    const proBtn = document.querySelector('.pricing-card button[onclick="purchasePlan(\'pro\')"]');
-    const businessBtn = document.querySelector('.pricing-card button[onclick="purchasePlan(\'business\')"]');
-
-    if (starterBtn) starterBtn.addEventListener('click', () => confirmPurchase('Starter Pack', 4.99, 1000));
-    if (proBtn) proBtn.addEventListener('click', () => confirmPurchase('Pro Pack', 9.99, 2500));
-    if (businessBtn) businessBtn.addEventListener('click', () => confirmPurchase('Business Pack', 19.99, 6000));
-
-    // Event listeners for Credit Top-up purchases
-    const creditBtn1 = document.querySelector('.pricing-card button[onclick="purchaseCredits(100)"]');
-    const creditBtn2 = document.querySelector('.pricing-card button[onclick="purchaseCredits(500)"]');
-    const creditBtn3 = document.querySelector('.pricing-card button[onclick="purchaseCredits(1200)"]');
-    const creditBtn4 = document.querySelector('.pricing-card button[onclick="purchaseCredits(3000)"]');
-
-    if (creditBtn1) creditBtn1.addEventListener('click', () => confirmPurchase('Quick Top-up', 0.99, 100));
-    if (creditBtn2) creditBtn2.addEventListener('click', () => confirmPurchase('Refill', 2.99, 500));
-    if (creditBtn3) creditBtn3.addEventListener('click', () => confirmPurchase('Boost', 4.99, 1200));
-    if (creditBtn4) creditBtn4.addEventListener('click', () => confirmPurchase('Mega Pack', 9.99, 3000));
-
-    // Event listeners for the confirmation modal itself
-    const cancelBtn = document.getElementById('payment-cancel-btn');
-    const confirmBtn = document.getElementById('payment-confirm-btn');
-    const closeBtn = document.querySelector('#payment-modal .close-button');
-    const paymentModal = document.getElementById('payment-modal');
-
-    if (cancelBtn) cancelBtn.addEventListener('click', closePaymentModal);
-    if (closeBtn) closeBtn.addEventListener('click', closePaymentModal);
-    if (paymentModal) window.addEventListener('click', (event) => { if (event.target == paymentModal) closePaymentModal(); });
-
-    if (confirmBtn) confirmBtn.addEventListener('click', () => {
-        const amount = parseInt(confirmBtn.dataset.creditAmount, 10);
-        if (!isNaN(amount)) {
-            processPurchase(amount);
-        }
-    });
+    // Event listeners are now in the HTML via onclick, this function can be simplified or removed
+    // but we'll keep it as a placeholder for future logic if needed.
 }
 
-// Shows the confirmation modal with details about the selected item.
-function confirmPurchase(itemName, price, credits) {
+// UPDATED: Now accepts tierLevel and passes it to the confirmation modal
+function purchasePlan(planName, tierLevel, credits, price) {
+    const planTitle = planName.charAt(0).toUpperCase() + planName.slice(1) + " Pack";
+    confirmPurchase(planTitle, price, credits, tierLevel);
+}
+
+// UPDATED: Now accepts just credits and price for top-ups
+function purchaseCredits(credits, price) {
+    const creditTitle = `${credits.toLocaleString()} Credits`;
+    confirmPurchase(creditTitle, price, credits, null); // Pass null for tierLevel
+}
+
+
+// UPDATED: Handles the optional tierLevel
+function confirmPurchase(itemName, price, credits, tierLevel = null) {
     const user = window.auth.currentUser;
     if (!user) {
-        // If user is not logged in, prompt them to sign up/in
         if (typeof openSignUpModal === 'function') openSignUpModal();
         document.getElementById("error").textContent = "Please create an account to make a purchase.";
         return;
@@ -56,12 +33,19 @@ function confirmPurchase(itemName, price, credits) {
     document.getElementById('payment-item-name').textContent = itemName;
     document.getElementById('payment-item-price').textContent = `$${price.toFixed(2)}`;
     document.getElementById('payment-item-credits').textContent = `${credits.toLocaleString()} Credits`;
-    document.getElementById('payment-confirm-btn').dataset.creditAmount = credits;
+    
+    const confirmBtn = document.getElementById('payment-confirm-btn');
+    confirmBtn.dataset.creditAmount = credits;
+    // Store tierLevel in the button's dataset if it exists
+    if (tierLevel !== null) {
+        confirmBtn.dataset.tierLevel = tierLevel;
+    } else {
+        delete confirmBtn.dataset.tierLevel;
+    }
 
     modal.classList.add('active');
 }
 
-// Closes the payment confirmation modal.
 function closePaymentModal() {
     const modal = document.getElementById('payment-modal');
     if (modal) {
@@ -72,16 +56,25 @@ function closePaymentModal() {
     }
 }
 
-// Simulates processing the purchase by calling the backend.
-async function processPurchase(creditAmount) {
+// UPDATED: Sends tierLevel to the backend if present
+async function processPurchase() {
     const confirmBtn = document.getElementById('payment-confirm-btn');
     confirmBtn.disabled = true;
     confirmBtn.textContent = 'Processing...';
 
+    const creditAmount = parseInt(confirmBtn.dataset.creditAmount, 10);
+    // Retrieve tierLevel if it was set
+    const tierLevel = confirmBtn.dataset.tierLevel ? parseInt(confirmBtn.dataset.tierLevel, 10) : null;
+    
     try {
-        const token = await getUserToken(); // This function should be available from main.js
+        const token = await getUserToken();
         if (!token) {
             throw new Error("You must be signed in to complete a purchase.");
+        }
+        
+        const payload = { credits: creditAmount };
+        if (tierLevel !== null) {
+            payload.tier_level = tierLevel;
         }
 
         const response = await fetch(`${BACKEND_URL}/purchase-credits`, {
@@ -90,7 +83,7 @@ async function processPurchase(creditAmount) {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}` 
             },
-            body: JSON.stringify({ credits: creditAmount })
+            body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
@@ -100,17 +93,18 @@ async function processPurchase(creditAmount) {
 
         const data = await response.json();
         
-        // Update UI with new credit balance
-        if (window.updateUserStatusUI) {
-            // We refetch the user status from the auth state change listener
-            // which gets triggered after a successful backend update.
-            // For an immediate visual update, we can call it directly:
-            window.updateGenerationCountUI(data.newTotalCredits);
+        if (window.updateUserStatusUI && window.auth.currentUser) {
+            // Force a refresh of the user status from the backend
+            window.updateUserStatusUI(window.auth.currentUser, true);
         }
 
         confirmBtn.textContent = 'Success!';
         setTimeout(() => {
             closePaymentModal();
+            // If it was a plan purchase, redirect to the main page
+            if (tierLevel !== null) {
+                showView('generator');
+            }
         }, 1500);
 
     } catch (error) {
@@ -122,3 +116,19 @@ async function processPurchase(creditAmount) {
         }, 3000);
     }
 }
+
+
+// Self-initialize the listeners when the script loads
+document.addEventListener('DOMContentLoaded', () => {
+    const confirmBtn = document.getElementById('payment-confirm-btn');
+    const cancelBtn = document.getElementById('payment-cancel-btn');
+    const closeBtn = document.querySelector('#payment-modal .close-button');
+    const paymentModal = document.getElementById('payment-modal');
+
+    if (confirmBtn) confirmBtn.addEventListener('click', processPurchase);
+    if (cancelBtn) cancelBtn.addEventListener('click', closePaymentModal);
+    if (closeBtn) closeBtn.addEventListener('click', closePaymentModal);
+    if (paymentModal) window.addEventListener('click', (event) => { 
+        if (event.target == paymentModal) closePaymentModal(); 
+    });
+});
