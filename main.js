@@ -379,8 +379,6 @@ function showView(viewName) {
         if(settingsView) settingsView.classList.remove('hidden');
     } else if (viewName === 'about') {
         if(aboutView) aboutView.classList.remove('hidden');
-    } else if (viewName === 'contact') {
-        if(contactView) contactView.classList.remove('hidden');
     } else if (viewName === 'premium') {
         if(premiumView) premiumView.classList.remove('hidden');
     } else if (viewName === 'credits') {
@@ -393,8 +391,31 @@ function showView(viewName) {
         if(termsView) termsView.classList.remove('hidden');
     } else if (viewName === 'privacy') {
         if(privacyView) privacyView.classList.remove('hidden');
+    } else if (viewName === 'contact') {
+        if(contactView) contactView.classList.remove('hidden');
+        
+        // ** NEW LOGIC STARTS HERE **
+        const user = window.auth.currentUser;
+        const contactFormElement = document.getElementById('contact-form');
+        const loginPromptElement = document.getElementById('contact-login-prompt');
+        const emailDisplayElement = document.getElementById('contact-user-email-display');
+        const hiddenEmailInputElement = document.getElementById('contact-email');
+
+        if (user) {
+            // User is logged in, show the form and populate their email
+            loginPromptElement.classList.add('hidden');
+            contactFormElement.classList.remove('hidden');
+            emailDisplayElement.textContent = user.email;
+            hiddenEmailInputElement.value = user.email;
+        } else {
+            // User is not logged in, show the prompt and hide the form
+            loginPromptElement.classList.remove('hidden');
+            contactFormElement.classList.add('hidden');
+        }
+        // ** NEW LOGIC ENDS HERE **
     }
 }
+
 
 function populateDropdown(id, options) {
     const select = document.getElementById(id);
@@ -2104,6 +2125,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
