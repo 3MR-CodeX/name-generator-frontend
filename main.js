@@ -70,6 +70,12 @@ let summaryHistoryLog = [];
 let combinerHistoryLog = [];
 
 // --- DOM Element Selectors ---
+const premiumView = document.getElementById("premium-view");
+const creditsView = document.getElementById("credits-view");
+const summarizerView = document.getElementById("summarizer-view");
+const wordCombinerView = document.getElementById("word-combiner-view");
+const termsView = document.getElementById("terms-view");
+const privacyView = document.getElementById("privacy-view");
 const mainGeneratorView = document.getElementById("main-generator-view");
 const customRefinerView = document.getElementById("custom-refiner-view");
 const availabilityCheckerView = document.getElementById("availability-checker-view");
@@ -219,7 +225,7 @@ function setupEventListeners() {
     if (generateAvailableAltBtn) generateAvailableAltBtn.onclick = generateAvailableAlternatives;
     if (summarizeBtn) summarizeBtn.onclick = summarizeText;
     if (combineWordsBtn) combineWordsBtn.onclick = combineWords;
-    
+
     // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
     if (fontSelect) fontSelect.addEventListener('change', (e) => applyFont(e.target.value));
@@ -227,7 +233,9 @@ function setupEventListeners() {
     if (resultsFontSelect) resultsFontSelect.addEventListener('change', (e) => applyResultsFont(e.target.value));
     if (resultsFontSizeSlider) resultsFontSizeSlider.addEventListener('input', (e) => applyResultsFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
-    if (backgroundSelect) backgroundSelect.addEventListener('change', (e) => applyBackground(e.target.value)); // New listener
+    if (backgroundSelect) backgroundSelect.addEventListener('change', (e) => applyBackground(e.target.value));
+
+    // New listener
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
@@ -235,6 +243,7 @@ function setupEventListeners() {
     const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
     const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
     const tierDropdown = document.getElementById("tier-dropdown");
+
     if (buyCreditsShortcutBtn) {
         buyCreditsShortcutBtn.addEventListener('click', () => { 
             showView('credits'); 
@@ -260,12 +269,13 @@ function setupEventListeners() {
         const aboutLink = document.getElementById('about-link');
         const premiumLink = document.getElementById('go-premium-link');
         const buyCreditsLink = document.getElementById('buy-credits-link');
+        const termsLink = document.getElementById('terms-link');
+        const privacyLink = document.getElementById('privacy-link');
 
       
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault();
-        showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
         if (summarizerLink) summarizerLink.addEventListener('click', (e) => { e.preventDefault(); showView('summarizer'); if (window.isSidebarOpen) toggleSidebar(); });
         if (wordCombinerLink) wordCombinerLink.addEventListener('click', (e) => { e.preventDefault(); showView('word-combiner'); if (window.isSidebarOpen) toggleSidebar(); });
@@ -273,11 +283,13 @@ function setupEventListeners() {
         if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); });
         if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); });
         if (buyCreditsLink) buyCreditsLink.addEventListener('click', (e) => { e.preventDefault(); showView('credits'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (termsLink) termsLink.addEventListener('click', (e) => { e.preventDefault(); showView('terms'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (privacyLink) privacyLink.addEventListener('click', (e) => { e.preventDefault(); showView('privacy'); if (window.isSidebarOpen) toggleSidebar(); });
     }, 500);
 }
 
 function showView(viewName) {
-    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView];
+    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView];
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
@@ -319,6 +331,10 @@ function showView(viewName) {
         if(summarizerView) summarizerView.classList.remove('hidden');
     } else if (viewName === 'word-combiner') {
         if(wordCombinerView) wordCombinerView.classList.remove('hidden');
+    } else if (viewName === 'terms') {
+        if(termsView) termsView.classList.remove('hidden');
+    } else if (viewName === 'privacy') {
+        if(privacyView) privacyView.classList.remove('hidden');
     }
 }
 
@@ -1559,7 +1575,6 @@ async function summarizeText() {
     const lengthSelect = document.getElementById('summary-length');
     const toneSelect = document.getElementById('summary-tone'); // New: Get tone dropdown
     const text = textInput.value.trim();
-
     if (!text) {
         showTemporaryPlaceholderError(textInput, "Please enter some text to summarize.");
         return;
@@ -1569,7 +1584,7 @@ async function summarizeText() {
     if(summaryResultsContainer) summaryResultsContainer.classList.add("hidden");
     
     if(summarizerLoadingPlaceholder) {
-        showProfessionalLoadingPlaceholder(summarizerLoadingPlaceholder, '100px'); 
+        showProfessionalLoadingPlaceholder(summarizerLoadingPlaceholder, '100px');
         summarizerLoadingPlaceholder.classList.remove("hidden");
     }
     disableButtons();
@@ -1582,10 +1597,8 @@ async function summarizeText() {
             // New: Pass both length and tone to the backend
             body: JSON.stringify({ text: text, length: lengthSelect.value, tone: toneSelect.value })
         });
-
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
-
         if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.credits);
         }
@@ -1636,13 +1649,11 @@ async function combineWords() {
 
     document.getElementById("error").textContent = "";
     if(combinerResultsContainer) combinerResultsContainer.classList.add("hidden");
-    
     if(combinerLoadingPlaceholder) {
         showProfessionalLoadingPlaceholder(combinerLoadingPlaceholder, '100px');
         combinerLoadingPlaceholder.classList.remove("hidden");
     }
     disableButtons();
-
     try {
         const token = await getUserToken();
         const response = await fetch(`${BACKEND_URL}/combine-words`, {
@@ -1650,10 +1661,8 @@ async function combineWords() {
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
             body: JSON.stringify({ words: words, length: lengthSelect.value })
         });
-
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
         const data = await response.json();
-
         if (window.auth.currentUser && data.credits !== undefined && window.updateGenerationCountUI) {
             window.updateGenerationCountUI(data.credits);
         }
@@ -1730,7 +1739,7 @@ function renderCombinerHistory() {
         const fromHTML = `<small class="pre-refined-history">from: ${entry.words}</small>`;
         button.innerHTML = `<strong>${entry.result}</strong>${fromHTML}`;
         button.onclick = () => {
-            const wordsInput = document.getElementById('words-to-combine');
+             const wordsInput = document.getElementById('words-to-combine');
             if(wordsInput) wordsInput.value = entry.words;
         };
         combinerHistoryDiv.appendChild(button);
@@ -2026,6 +2035,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
