@@ -198,7 +198,6 @@ function initializeUI() {
 }
 
 // --- Full Updated setupEventListeners Function (Replace your existing function) ---
-
 function setupEventListeners() {
     if (historyModal && closeButtonHistoryModal) {
         closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
@@ -235,8 +234,6 @@ function setupEventListeners() {
     if (resultsFontSizeSlider) resultsFontSizeSlider.addEventListener('input', (e) => applyResultsFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (backgroundSelect) backgroundSelect.addEventListener('change', (e) => applyBackground(e.target.value));
-
-    // New listener
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
@@ -274,7 +271,7 @@ function setupEventListeners() {
         const privacyLink = document.getElementById('privacy-link');
 
       
-        if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); window.location.hash = ''; showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
@@ -284,8 +281,17 @@ function setupEventListeners() {
         if (aboutLink) aboutLink.addEventListener('click', (e) => { e.preventDefault(); showView('about'); if (window.isSidebarOpen) toggleSidebar(); });
         if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); });
         if (buyCreditsLink) buyCreditsLink.addEventListener('click', (e) => { e.preventDefault(); showView('credits'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (termsLink) termsLink.addEventListener('click', (e) => { e.preventDefault(); showView('terms'); if (window.isSidebarOpen) toggleSidebar(); });
-        if (privacyLink) privacyLink.addEventListener('click', (e) => { e.preventDefault(); showView('privacy'); if (window.isSidebarOpen) toggleSidebar(); });
+        
+        if (termsLink) termsLink.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            window.location.hash = 'terms'; 
+            if (window.isSidebarOpen) toggleSidebar(); 
+        });
+        if (privacyLink) privacyLink.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            window.location.hash = 'privacy'; 
+            if (window.isSidebarOpen) toggleSidebar(); 
+        });
     }, 500);
 }
 
@@ -1783,6 +1789,8 @@ function handleHashChange() {
     }
 }
 
+window.addEventListener('hashchange', handleHashChange);
+
 function applyBackground(patternName, save = true) {
     if (save) localStorage.setItem('nameit-background', patternName);
 
@@ -2045,6 +2053,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
