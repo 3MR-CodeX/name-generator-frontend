@@ -1,93 +1,35 @@
 /* components/contact.css */
 
-.contact-form-container {
-    max-width: 700px;
-    margin: 20px auto 0 auto;
+/* ... (your existing styles for .contact-form-container, etc.) ... */
+
+.contact-email-display {
     background-color: rgba(58, 58, 58, 0.75);
+    color: #cccccc; /* A slightly dimmer color to show it's not editable */
     border: 1px solid #4a4a4a;
     border-radius: 8px;
-    padding: 25px;
-}
-
-.contact-form .input-group {
-    margin-bottom: 20px;
-}
-
-.contact-form label {
-    display: block;
-    color: #cccccc;
-    margin-bottom: 8px;
-    font-size: 1em;
-    font-weight: 500;
-}
-
-.contact-form input[type="text"],
-.contact-form input[type="email"],
-.contact-form textarea {
-    width: 100%;
     padding: 12px;
-    background-color: rgba(42, 42, 42, 0.9);
-    color: #e0e0e0;
+    font-size: 1em;
+    width: 100%;
+    margin-top: 5px;
+}
+
+#contact-login-prompt {
+    text-align: center;
+    font-size: 1.1em;
+    background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
-    font-size: 16px;
-    font-family: 'Roboto', sans-serif;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    padding: 30px;
 }
 
-.contact-form input[type="text"]:focus,
-.contact-form input[type="email"]:focus,
-.contact-form textarea:focus {
-    outline: none;
-    border-color: var(--primary-accent);
-    box-shadow: 0 0 8px var(--primary-accent);
-}
-
-.contact-form textarea {
-    min-height: 150px;
-    resize: vertical;
-}
-
-.contact-form .submit-btn {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1em;
+#contact-login-prompt a {
+    color: var(--line-accent-default);
     font-weight: bold;
-    background-color: var(--primary-accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    text-decoration: underline;
 }
 
-.contact-form .submit-btn:hover:not(:disabled) {
-    background-color: var(--secondary-accent);
-    transform: translateY(-2px);
+#contact-login-prompt.hidden {
+    display: none;
 }
 
-.contact-form .submit-btn:disabled {
-    background-color: var(--disabled-accent);
-    cursor: not-allowed;
-}
-
-#form-submission-message {
-    text-align: center;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-size: 1.2em;
-    display: none; /* Initially hidden */
-}
-
-#form-submission-message.success {
-    background-color: rgba(80, 250, 123, 0.1);
-    border: 1px solid #50fa7b;
-    color: #50fa7b;
-}
-
-#form-submission-message.error {
-    background-color: rgba(255, 85, 85, 0.1);
-    border: 1px solid #ff5555;
-    color: #ff5555;
-}
