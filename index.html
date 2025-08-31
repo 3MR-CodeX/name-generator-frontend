@@ -467,20 +467,25 @@
             </div>
         </div>
 
-        <!-- NEW CONTACT PAGE VIEW -->
         <div id="contact-view" class="hidden">
             <h1>Contact Us</h1>
             <p class="description">Have a question or feedback? We'd love to hear from you.</p>
             <div class="contact-form-container">
                 <div id="form-submission-message"></div>
+                
+                <div id="contact-login-prompt" class="hidden">
+                    <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
+                </div>
+
                 <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form">
+                    <div class="input-group">
+                        <label>Your Email</label>
+                        <p id="contact-user-email-display" class="contact-email-display"></p>
+                        <input type="hidden" id="contact-email" name="email">
+                    </div>
                     <div class="input-group">
                         <label for="contact-name">Your Name</label>
                         <input type="text" id="contact-name" name="name" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="contact-email">Your Email</label>
-                        <input type="email" id="contact-email" name="email" required>
                     </div>
                     <div class="input-group">
                         <label for="contact-message">Message</label>
@@ -824,4 +829,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
