@@ -1,24 +1,86 @@
 /* components/contact.css */
 
-/* ... (your existing styles for .contact-form-container, etc.) ... */
-
-.contact-email-display {
-    background-color: rgba(58, 58, 58, 0.75);
-    color: #cccccc; /* A slightly dimmer color to show it's not editable */
-    border: 1px solid #4a4a4a;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 1em;
-    width: 100%;
-    margin-top: 5px;
-}
-
-#contact-login-prompt {
-    text-align: center;
-    font-size: 1.1em;
+.contact-form-container {
+    max-width: 700px;
+    margin: 20px auto;
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
+    padding: 30px;
+}
+
+.contact-form .input-group {
+    margin-bottom: 20px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.contact-form input[type="text"],
+.contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    background-color: rgba(58, 58, 58, 0.75);
+    color: #e0e0e0;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.contact-form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.contact-form .submit-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: var(--primary-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact-form .submit-btn:hover:not(:disabled) {
+    background-color: var(--secondary-accent);
+}
+
+.contact-form .submit-btn:disabled {
+    background-color: var(--disabled-accent);
+    cursor: not-allowed;
+}
+
+/* Styles for the success/error message box */
+#form-submission-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.1em;
+    display: none; /* Hidden by default */
+}
+
+#form-submission-message.success {
+    background-color: #28a745; /* Green for success */
+    color: white;
+}
+
+#form-submission-message.error {
+    background-color: #dc3545; /* Red for error */
+    color: white;
+}
+
+/* Styles for the login prompt */
+#contact-login-prompt {
+    text-align: center;
+    font-size: 1.1em;
     padding: 30px;
 }
 
@@ -29,7 +91,8 @@
     text-decoration: underline;
 }
 
-#contact-login-prompt.hidden {
+#contact-login-prompt.hidden,
+.contact-form.hidden {
     display: none;
 }
 
