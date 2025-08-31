@@ -602,6 +602,8 @@ function showView(viewName) {
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
+
+    // Hide generator-specific sections when switching away
     if (viewName !== 'generator') {
         if (outputContainer) outputContainer.classList.add('hidden');
         if (refineSection) refineSection.classList.add('hidden');
@@ -609,6 +611,7 @@ function showView(viewName) {
         if (refinedOutputs) refinedOutputs.classList.add('hidden');
         if (recentHistorySection) recentHistorySection.classList.add('hidden');
     } 
+    // Show generator-specific sections only if there's content
     else {
         if (namesPre && namesPre.innerHTML.trim() !== "") {
             if (outputContainer) outputContainer.classList.remove('hidden');
@@ -620,52 +623,44 @@ function showView(viewName) {
         }
     }
 
-    if (viewName === 'generator') {
-        if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
-    } else if (viewName === 'refiner') {
-        if(customRefinerView) customRefinerView.classList.remove('hidden');
-    } else if (viewName === 'availability-checker') {
-        if(availabilityCheckerView) availabilityCheckerView.classList.remove('hidden');
-    } else if (viewName === 'name-analyzer') {
-        if(nameAnalyzerView) nameAnalyzerView.classList.remove('hidden');
-    } else if (viewName === 'settings') {
-        if(settingsView) settingsView.classList.remove('hidden');
-    } else if (viewName === 'about') {
-        if(aboutView) aboutView.classList.remove('hidden');
-    } else if (viewName === 'premium') {
-        if(premiumView) premiumView.classList.remove('hidden');
-    } else if (viewName === 'credits') {
-        if(creditsView) creditsView.classList.remove('hidden');
-    } else if (viewName === 'summarizer') {
-        if(summarizerView) summarizerView.classList.remove('hidden');
-    } else if (viewName === 'word-combiner') {
-        if(wordCombinerView) wordCombinerView.classList.remove('hidden');
-    } else if (viewName === 'terms') {
-        if(termsView) termsView.classList.remove('hidden');
-    } else if (viewName === 'privacy') {
-        if(privacyView) privacyView.classList.remove('hidden');
-    } else if (viewName === 'contact') {
-        if(contactView) contactView.classList.remove('hidden');
-        
-        // ** NEW LOGIC STARTS HERE **
+    const viewMap = {
+        'generator': mainGeneratorView,
+        'refiner': customRefinerView,
+        'availability-checker': availabilityCheckerView,
+        'name-analyzer': nameAnalyzerView,
+        'settings': settingsView,
+        'about': aboutView,
+        'premium': premiumView,
+        'credits': creditsView,
+        'summarizer': summarizerView,
+        'word-combiner': wordCombinerView,
+        'terms': termsView,
+        'privacy': privacyView,
+        'contact': contactView
+    };
+
+    if (viewMap[viewName]) {
+        viewMap[viewName].classList.remove('hidden');
+    }
+
+    // Safely handle contact view logic
+    if (viewName === 'contact') {
         const user = window.auth.currentUser;
         const contactFormElement = document.getElementById('contact-form');
         const loginPromptElement = document.getElementById('contact-login-prompt');
-        const emailDisplayElement = document.getElementById('contact-user-email-display');
         const hiddenEmailInputElement = document.getElementById('contact-email');
 
-        if (user) {
-            // User is logged in, show the form and populate their email
-            loginPromptElement.classList.add('hidden');
-            contactFormElement.classList.remove('hidden');
-            emailDisplayElement.textContent = user.email;
-            hiddenEmailInputElement.value = user.email;
-        } else {
-            // User is not logged in, show the prompt and hide the form
-            loginPromptElement.classList.remove('hidden');
-            contactFormElement.classList.add('hidden');
+        // Check if elements exist before manipulating them
+        if (loginPromptElement && contactFormElement && hiddenEmailInputElement) {
+            if (user) {
+                loginPromptElement.classList.add('hidden');
+                contactFormElement.classList.remove('hidden');
+                hiddenEmailInputElement.value = user.email;
+            } else {
+                loginPromptElement.classList.remove('hidden');
+                contactFormElement.classList.add('hidden');
+            }
         }
-        // ** NEW LOGIC ENDS HERE **
     }
 }
 
@@ -2382,5 +2377,6 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
