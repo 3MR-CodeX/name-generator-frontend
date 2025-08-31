@@ -70,12 +70,6 @@ let summaryHistoryLog = [];
 let combinerHistoryLog = [];
 
 // --- DOM Element Selectors ---
-const premiumView = document.getElementById("premium-view");
-const creditsView = document.getElementById("credits-view");
-const summarizerView = document.getElementById("summarizer-view");
-const wordCombinerView = document.getElementById("word-combiner-view");
-const termsView = document.getElementById("terms-view");
-const privacyView = document.getElementById("privacy-view");
 const mainGeneratorView = document.getElementById("main-generator-view");
 const customRefinerView = document.getElementById("custom-refiner-view");
 const availabilityCheckerView = document.getElementById("availability-checker-view");
@@ -86,6 +80,8 @@ const premiumView = document.getElementById("premium-view");
 const creditsView = document.getElementById("credits-view");
 const summarizerView = document.getElementById("summarizer-view");
 const wordCombinerView = document.getElementById("word-combiner-view");
+const termsView = document.getElementById("terms-view");
+const privacyView = document.getElementById("privacy-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refineButtonSection = document.querySelector(".refine-button-section");
@@ -108,7 +104,7 @@ const summaryResultsContainer = document.getElementById("summary-results-contain
 const combinerResultsContainer = document.getElementById("combiner-results-container");
 const summaryOutput = document.getElementById("summary-output");
 const combinerOutput = document.getElementById("combiner-output");
-const combinerExplanation = document.getElementById("combiner-explanation"); // New selector
+const combinerExplanation = document.getElementById("combiner-explanation");
 const summarizerLoadingPlaceholder = document.getElementById("summarizer-loading-placeholder");
 const combinerLoadingPlaceholder = document.getElementById("combiner-loading-placeholder");
 const summaryHistorySection = document.getElementById("summary-history-section");
@@ -150,6 +146,8 @@ const changePasswordBtn = document.getElementById('change-password-btn');
 const manageSubscriptionBtn = document.getElementById('manage-subscription-btn');
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -2035,6 +2033,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
