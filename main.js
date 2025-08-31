@@ -65,6 +65,243 @@ const BACKGROUND_ANIMATIONS = {
 
 
 
+// ADD THIS NEW FUNCTION to main.js
+function applyTierStylingAndLocks(tierLevel) {
+    currentUserTier = tierLevel; // Update global state
+    document.body.dataset.tier = 'free'; // Default to free
+
+    if (tierLevel >= 1) document.body.dataset.tier = 'starter';
+    if (tierLevel >= 2) document.body.dataset.tier = 'pro';
+    if (tierLevel >= 3) document.body.dataset.tier = 'business';
+
+    // Handle feature locking
+    document.querySelectorAll('[data-required-tier]').forEach(element => {
+        const requiredTier = parseInt(element.dataset.requiredTier, 10);
+        const toolWrapper = element.closest('.tool-content-wrapper');
+
+        if (currentUserTier >= requiredTier) {
+            element.classList.add('hidden'); // Hide the lock icon
+            if (toolWrapper) toolWrapper.classList.remove('locked');
+        } else {
+            element.classList.remove('hidden'); // Show the lock icon
+            if (toolWrapper) toolWrapper.classList.add('locked');
+        }
+    });
+}
+
+// ADD THIS NEW FUNCTION and language data to main.js
+const languageData = {
+    // English translations...
+    "en": {
+        "appDescription": "Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.",
+        "whatToName": "What do you want to name?",
+        "keywords": "Keywords", "optional": "(optional)", "keywordRelevancy": "Keyword Relevancy",
+        "strict": "Strict", "creative": "Creative", "numberOfNames": "Number of Names", "category": "Category",
+        "style": "Style", "language": "Language", "pattern": "Pattern", "generateNames": "🎯 Generate Names",
+        "surpriseMe": "🎲 Surprise Me", "moreLikeThis": "More Like This", "customRefiningTitle": "Custom Name Refining",
+        "customRefiningDesc": "Provide a name and instructions to have the AI refine it for you.",
+        "nameToBeRefined": "Name to be Refined", "creativity": "Creativity", "refinementInstructions": "Refinement Instructions",
+        "refineName": "🤖 Refine Name", "refinedSuggestions": "Refined Suggestions", "refinedExplanations": "Refined Explanations",
+        "recentRefinements": "✨ Recent Refinements", "availabilityCheckTitle": "Name Availability Check",
+        "availabilityCheckDesc": "Check if your desired name is available as a domain and on social media.",
+        "nameToCheck": "Name to Check", "platforms": "Platforms", "selectPlatforms": "Select Platforms",
+        "domains": "Domains", "selectDomains": "Select Domains", "checkAvailability": "🔍 Check Availability",
+        "generateAvailableAlternatives": "💡 Generate Available Alternatives", "nameAnalyzerTitle": "Name Analyzer",
+        "nameAnalyzerDesc": "Get an AI-powered brandability check and targeted audience analysis.",
+        "nameToAnalyze": "Name to Analyze", "projectContext": "Project Context", "targetAudience": "Target Audience",
+        "location": "Location", "keyValues": "Key Values", "analyzeName": "🔬 Analyze Name",
+        "generateBetterAlternatives": "🧠 Generate Better Alternatives", "settingsTitle": "Settings",
+        "settingsDesc": "Customize your experience and manage your account.", "appearance": "Appearance",
+        "colorTheme": "Color Theme", "backgroundPattern": "Background Pattern", "appLanguage": "App Language",
+        "uiFont": "UI Font Family", "uiFontSize": "UI Font Size", "resultsFont": "Results Font Family",
+        "resultsFontSize": "Results Font Size", "account": "Account", "changePassword": "Change Password",
+        "sendResetEmail": "Send Reset Email", "subscription": "Subscription", "manageSubscription": "Manage Subscription",
+        "dataPrivacy": "Data & Privacy", "exportHistory": "Export History", "exportAsJSON": "Export as JSON",
+        "clearHistory": "Clear History", "clearAllHistory": "Clear All History", "accessibility": "Accessibility",
+        "reduceAnimations": "Reduce Animations", "aboutTitle": "About NameIT",
+        "aboutDesc": "The ultimate AI-powered tool for creative naming and branding.",
+        "ourStoryTitle": "Our Story: Why We Built NameIT",
+        "ourStoryP1": "NameIT was born from a simple, universal struggle: the daunting task of finding the perfect name. As creators, developers, and entrepreneurs ourselves, we’ve spent countless hours brainstorming, only to find our best ideas were already taken or didn't quite capture the essence of our projects. We knew there had to be a better way.",
+        "ourStoryP2": "We envisioned a tool that wasn’t just a random word generator, but an intelligent partner in the creative process. A platform that could understand the nuance of an idea, explore different creative avenues, and instantly validate the results. NameIT is our solution—an AI-powered muse designed to break through creative blocks and turn the frustration of naming into an inspiring journey of discovery.",
+        "whoIsItForTitle": "Who is NameIT For?",
+        "whoIsItForP1": "NameIT is for the dreamers and the doers. It’s for...",
+        "whoIsItForLi1": "The Entrepreneur launching a groundbreaking startup.",
+        "whoIsItForLi2": "The Developer looking for a catchy name for their next app or game.",
+        "whoIsItForLi3": "The Marketer building a memorable brand identity.",
+        "whoIsItForLi4": "The Author searching for the perfect title for their next bestseller.",
+        "whoIsItForLi5": "The Creator naming a podcast, YouTube channel, or artistic project.",
+        "whoIsItForLi6": "...and anyone in need of a creative spark.",
+        "meetTheAITitle": "Meet the NameIT Engine",
+        "meetTheAIP": "The creative force behind NameIT is our advanced AI engine. By using specialized prompts to harness the power of a world-class language model, our system goes beyond simply combining words. It understands nuance, emotion, and market trends to craft names that are both memorable and meaningful. It's your tireless brainstorming partner, ready 24/7 to help you discover the perfect name.",
+        "premiumTitle": "NameIT Premium Packs",
+        "premiumDesc": "Choose the right pack to unlock your full creative potential. One-time payments, lifetime access.",
+        "starterTier": "Starter", "starterSub": "For personal projects & hobbyists", "proTier": "Pro",
+        "proSub": "For professionals & startups", "businessTier": "Business", "businessSub": "For agencies & power users",
+        "oneTimePayment": "One-Time Payment", "mostPopular": "Most Popular", "bestValue": "Best Value",
+        "getStarted": "Get Started", "goPro": "Go Pro", "goBusiness": "Go Business",
+        "starterFeature1": "Enhanced AI Model", "starterFeature2": "Word Combiner Tool", "starterFeature3": "Expanded Styles & Options",
+        "proFeature1": "Advanced AI Model", "proFeature2": "Text Summarizer Tool", "proFeature3": "Name Availability Checker",
+        "proFeature4": "Basic Name Analyzer", "proFeature5": "Includes All Starter Features", "proFeature6": "Priority Support",
+        "businessFeature1": "Everything in Pro, plus:", "businessFeature2": "Audience Persona Analysis", "businessFeature3": "Flagship AI Model",
+        "businessFeature4": "Exclusive Customization", "businessFeature5": "Top Priority Support", "businessFeature6": "Early Access to New Features",
+        "faqTitle": "Frequently Asked Questions", "faq1Title": "Are these one-time payments?",
+        "faq1Answer": "Yes. This is not a subscription. You buy a credit pack once and use the credits at your own pace. They never expire.",
+        "faq2Title": "What can I use credits on?",
+        "faq2Answer": "Credits are used for all AI actions. A basic name generation costs 1 credit per name, while advanced tools like the Name Analyzer cost a few more. Your credit balance is always visible at the top of the page.",
+        "faq3Title": "What happens when I run out of credits?",
+        "faq3Answer": "You can purchase another top-up pack from the \"Buy Credits\" page at any time. All your unlocked Pro features will remain active, and you'll also receive 250 free credits every month.",
+        "buyCreditsTitle": "Buy More Credits",
+        "buyCreditsDesc": "Ran out of credits? Top up your balance with a one-time purchase. Your features remain unlocked.",
+        "creditPack1": "Quick Top-up", "creditPack2": "Refill", "creditPack3": "Boost", "creditPack4": "Mega Pack",
+        "buyNow": "Buy Now", "quickQuestions": "Quick Questions", "faq4Title": "How are credits used?",
+        "faq4Answer": "Each AI action, like generating a name or running an analysis, consumes credits. The cost varies by complexity—a basic generation might be 1 credit per name, while a detailed Persona Analysis costs more. Your balance is always visible.",
+        "faq5Title": "Do my credits expire?",
+        "faq5Answer": "No, they don't. Credits from one-time purchases are yours to keep and use whenever you need them. They will remain in your account permanently.",
+        "summarizerTitle": "Text Summarizer", "proFeature": "PRO FEATURE",
+        "summarizerDesc": "Enter a long paragraph or text, and the AI will provide a concise summary.",
+        "textToSummarize": "Text to Summarize", "summaryLength": "Summary Length", "oneWord": "1 Word",
+        "twoWords": "2 Words", "shortSentence": "Short Sentence (3-5 Words)", "longSentence": "Long Sentence (6-12 Words)",
+        "smallParagraph": "Small Paragraph", "summaryTone": "Summary Tone", "toneProfessional": "Professional",
+        "toneIntriguing": "Intriguing", "toneDramatic": "Dramatic", "toneConcise": "Concise",
+        "summarizeText": "📝 Summarize Text", "aiSummary": "AI Summary", "recentSummaries": "📝 Recent Summaries",
+        "combinerTitle": "Word Combiner", "starterFeature": "STARTER FEATURE",
+        "combinerDesc": "Enter a few words or concepts, and the AI will merge them into a single, creative new word.",
+        "wordsToCombine": "Words to Combine", "combinerNote": "(3 words minimum)", "combinedWordLength": "Combined Word Length",
+        "lengthShort": "Short", "lengthMedium": "Medium", "lengthLong": "Long",
+        "combineWords": "✨ Combine Words", "combinedWord": "Combined Word", "explanation": "Explanation",
+        "recentCombinations": "✨ Recent Combinations", "contactTitle": "Contact Us",
+        "contactDesc": "Have a question, feedback, or a business inquiry? We'd love to hear from you.",
+        "contactSignInPrompt": "Please sign in to send a message. This helps us verify your identity and respond to you directly.",
+        "yourName": "Your Name", "message": "Message", "sendMessage": "Send Message",
+        "generatedNames": "Generated Names/Titles", "explanations": "Explanations",
+        "refineSuggestionsLabel": "Refine the suggestions", "refineSuggestionsBtn": "🛠️ Refine Suggestions",
+        "recentHistory": "🕘 Recent History", "fullHistoryTitle": "Full History", "historyDetailsTitle": "History Entry Details",
+        "importNameTitle": "Import a Name from History", "signIn": "Sign In", "or": "or",
+        "signInGoogle": "Sign In with Google", "createAccountTitle": "Create Your Account",
+        "createAccount": "Create Account", "signUpGoogle": "Sign Up with Google",
+        "confirmPurchaseTitle": "Confirm Your Purchase",
+        "confirmPurchaseDesc": "You are about to purchase the following item.",
+        "item": "Item", "price": "Price", "credits": "Credits", "cancel": "Cancel",
+        "confirmPurchase": "Confirm Purchase", "demoTransaction": "This is a simulated transaction for demonstration purposes."
+    },
+    // Arabic translations...
+    "ar": {
+        "appDescription": "أطلق اسمًا على أي شيء - منتج، علامة تجارية، مكان، شركة، فيديو، أو حتى كلمة جديدة. ثم قم بتنقيحه على الفور.",
+        "whatToName": "ماذا تريد أن تسمي؟",
+        "keywords": "كلمات مفتاحية", "optional": "(اختياري)", "keywordRelevancy": "صلة الكلمات المفتاحية",
+        "strict": "صارم", "creative": "إبداعي", "numberOfNames": "عدد الأسماء", "category": "الفئة",
+        "style": "النمط", "language": "اللغة", "pattern": "النسق", "generateNames": "🎯 توليد أسماء",
+        "surpriseMe": "🎲 فاجئني", "moreLikeThis": "المزيد مثل هذا", "customRefiningTitle": "تنقيح مخصص للأسماء",
+        "customRefiningDesc": "قدم اسمًا وتعليمات لجعل الذكاء الاصطناعي ينقحه لك.",
+        "nameToBeRefined": "الاسم المراد تنقيحه", "creativity": "الإبداع", "refinementInstructions": "تعليمات التنقيح",
+        "refineName": "🤖 تنقيح الاسم", "refinedSuggestions": "اقتراحات منقحة", "refinedExplanations": "شروحات منقحة",
+        "recentRefinements": "✨ التنقيحات الأخيرة", "availabilityCheckTitle": "التحقق من توفر الاسم",
+        "availabilityCheckDesc": "تحقق مما إذا كان اسمك المطلوب متاحًا كنطاق وعلى وسائل التواصل الاجتماعي.",
+        "nameToCheck": "الاسم للتحقق", "platforms": "المنصات", "selectPlatforms": "اختر المنصات",
+        "domains": "النطاقات", "selectDomains": "اختر النطاقات", "checkAvailability": "🔍 تحقق من التوفر",
+        "generateAvailableAlternatives": "💡 توليد بدائل متاحة", "nameAnalyzerTitle": "محلل الأسماء",
+        "nameAnalyzerDesc": "احصل على فحص للعلامة التجارية وتحليل للجمهور المستهدف مدعوم بالذكاء الاصطناعي.",
+        "nameToAnalyze": "الاسم للتحليل", "projectContext": "سياق المشروع", "targetAudience": "الجمهور المستهدف",
+        "location": "الموقع", "keyValues": "القيم الأساسية", "analyzeName": "🔬 تحليل الاسم",
+        "generateBetterAlternatives": "🧠 توليد بدائل أفضل", "settingsTitle": "الإعدادات",
+        "settingsDesc": "خصص تجربتك وقم بإدارة حسابك.", "appearance": "المظهر",
+        "colorTheme": "سمة اللون", "backgroundPattern": "نمط الخلفية", "appLanguage": "لغة التطبيق",
+        "uiFont": "خط واجهة المستخدم", "uiFontSize": "حجم خط واجهة المستخدم", "resultsFont": "خط النتائج",
+        "resultsFontSize": "حجم خط النتائج", "account": "الحساب", "changePassword": "تغيير كلمة المرور",
+        "sendResetEmail": "إرسال بريد إعادة التعيين", "subscription": "الاشتراك", "manageSubscription": "إدارة الاشتراك",
+        "dataPrivacy": "البيانات والخصوصية", "exportHistory": "تصدير السجل", "exportAsJSON": "تصدير كـ JSON",
+        "clearHistory": "مسح السجل", "clearAllHistory": "مسح كل السجل", "accessibility": "إمكانية الوصول",
+        "reduceAnimations": "تقليل الرسوم المتحركة", "aboutTitle": "عن NameIT",
+        "aboutDesc": "الأداة النهائية المدعومة بالذكاء الاصطناعي للتسمية الإبداعية والعلامات التجارية.",
+        "ourStoryTitle": "قصتنا: لماذا بنينا NameIT",
+        "ourStoryP1": "وُلد NameIT من صراع بسيط وعالمي: المهمة الشاقة المتمثلة في العثور على الاسم المثالي. بصفتنا مبدعين ومطورين ورجال أعمال، قضينا ساعات لا تحصى في العصف الذهني، لنجد فقط أن أفضل أفكارنا كانت مأخوذة بالفعل أو لم تعبر تمامًا عن جوهر مشاريعنا. كنا نعلم أنه يجب أن تكون هناك طريقة أفضل.",
+        "ourStoryP2": "تصورنا أداة لم تكن مجرد مولد كلمات عشوائي، بل شريكًا ذكيًا في العملية الإبداعية. منصة يمكنها فهم الفروق الدقيقة في الفكرة، واستكشاف طرق إبداعية مختلفة، والتحقق من النتائج على الفور. NameIT هو حلنا - ملهمة مدعومة بالذكاء الاصطناعي مصممة لكسر الحواجز الإبداعية وتحويل إحباط التسمية إلى رحلة اكتشاف ملهمة.",
+        "whoIsItForTitle": "لمن هو NameIT؟",
+        "whoIsItForP1": "NameIT للحالمين والفاعلين. إنه لـ...",
+        "whoIsItForLi1": "رائد الأعمال الذي يطلق شركة ناشئة رائدة.",
+        "whoIsItForLi2": "المطور الذي يبحث عن اسم جذاب لتطبيقه أو لعبته التالية.",
+        "whoIsItForLi3": "المسوق الذي يبني هوية علامة تجارية لا تنسى.",
+        "whoIsItForLi4": "المؤلف الذي يبحث عن العنوان المثالي لكتابه الأكثر مبيعًا.",
+        "whoIsItForLi5": "المبدع الذي يسمي بودكاست أو قناة يوتيوب أو مشروعًا فنيًا.",
+        "whoIsItForLi6": "...وأي شخص يحتاج إلى شرارة إبداعية.",
+        "meetTheAITitle": "تعرف على محرك NameIT",
+        "meetTheAIP": "القوة الإبداعية وراء NameIT هي محرك الذكاء الاصطناعي المتقدم لدينا. باستخدام مطالبات متخصصة لتسخير قوة نموذج لغوي عالمي المستوى، يتجاوز نظامنا مجرد الجمع بين الكلمات. إنه يفهم الفروق الدقيقة والعاطفة واتجاهات السوق لصياغة أسماء لا تنسى وذات معنى. إنه شريكك الدؤوب في العصف الذهني، جاهز على مدار الساعة طوال أيام الأسبوع لمساعدتك في اكتشاف الاسم المثالي.",
+        "premiumTitle": "باقات NameIT المميزة",
+        "premiumDesc": "اختر الباقة المناسبة لإطلاق العنان لإمكانياتك الإبداعية الكاملة. مدفوعات لمرة واحدة، وصول مدى الحياة.",
+        "starterTier": "المبتدئة", "starterSub": "للمشاريع الشخصية والهواة", "proTier": "المحترفة",
+        "proSub": "للمحترفين والشركات الناشئة", "businessTier": "الأعمال", "businessSub": "للوكالات والمستخدمين المتقدمين",
+        "oneTimePayment": "دفعة لمرة واحدة", "mostPopular": "الأكثر شيوعًا", "bestValue": "أفضل قيمة",
+        "getStarted": "ابدأ الآن", "goPro": "انتقل إلى المحترفة", "goBusiness": "انتقل إلى الأعمال",
+        "starterFeature1": "نموذج ذكاء اصطناعي محسن", "starterFeature2": "أداة دمج الكلمات", "starterFeature3": "أنماط وخيارات موسعة",
+        "proFeature1": "نموذج ذكاء اصطناعي متقدم", "proFeature2": "أداة تلخيص النصوص", "proFeature3": "التحقق من توفر الاسم",
+        "proFeature4": "محلل الأسماء الأساسي", "proFeature5": "يشمل جميع ميزات المبتدئة", "proFeature6": "دعم ذو أولوية",
+        "businessFeature1": "كل شيء في المحترفة، بالإضافة إلى:", "businessFeature2": "تحليل شخصية الجمهور", "businessFeature3": "نموذج الذكاء الاصطناعي الرائد",
+        "businessFeature4": "تخصيص حصري", "businessFeature5": "دعم بأولوية قصوى", "businessFeature6": "وصول مبكر للميزات الجديدة",
+        "faqTitle": "الأسئلة الشائعة", "faq1Title": "هل هذه مدفوعات لمرة واحدة؟",
+        "faq1Answer": "نعم. هذا ليس اشتراكًا. تشتري حزمة أرصدة مرة واحدة وتستخدم الأرصدة بالسرعة التي تناسبك. لا تنتهي صلاحيتها أبدًا.",
+        "faq2Title": "فيم يمكنني استخدام الأرصدة؟",
+        "faq2Answer": "تُستخدم الأرصدة لجميع إجراءات الذكاء الاصطناعي. يكلف توليد اسم أساسي رصيدًا واحدًا لكل اسم، بينما تكلف الأدوات المتقدمة مثل محلل الأسماء أكثر قليلاً. رصيدك مرئي دائمًا في أعلى الصفحة.",
+        "faq3Title": "ماذا يحدث عندما تنفد أرصدتي؟",
+        "faq3Answer": "يمكنك شراء حزمة تعبئة أخرى من صفحة \"شراء الأرصدة\" في أي وقت. ستظل جميع ميزات Pro التي فتحتها نشطة، وستتلقى أيضًا 250 رصيدًا مجانيًا كل شهر.",
+        "buyCreditsTitle": "شراء المزيد من الأرصدة",
+        "buyCreditsDesc": "نفدت الأرصدة؟ قم بتعبئة رصيدك بشراء لمرة واحدة. تظل ميزاتك مفتوحة.",
+        "creditPack1": "تعبئة سريعة", "creditPack2": "إعادة تعبئة", "creditPack3": "تعزيز", "creditPack4": "حزمة ضخمة",
+        "buyNow": "اشتر الآن", "quickQuestions": "أسئلة سريعة", "faq4Title": "كيف يتم استخدام الأرصدة؟",
+        "faq4Answer": "كل إجراء للذكاء الاصطناعي، مثل توليد اسم أو إجراء تحليل، يستهلك أرصدة. تختلف التكلفة حسب التعقيد - قد يكون التوليد الأساسي رصيدًا واحدًا لكل اسم، بينما يكلف تحليل الشخصية المفصل أكثر. رصيدك مرئي دائمًا.",
+        "faq5Title": "هل تنتهي صلاحية أرصدتي؟",
+        "faq5Answer": "لا، لا تنتهي. الأرصدة من عمليات الشراء لمرة واحدة ملكك لتحتفظ بها وتستخدمها كلما احتجت إليها. ستبقى في حسابك بشكل دائم.",
+        "summarizerTitle": "ملخص النصوص", "proFeature": "ميزة احترافية",
+        "summarizerDesc": "أدخل فقرة أو نصًا طويلاً، وسيقدم الذكاء الاصطناعي ملخصًا موجزًا.",
+        "textToSummarize": "النص المراد تلخيصه", "summaryLength": "طول الملخص", "oneWord": "كلمة واحدة",
+        "twoWords": "كلمتان", "shortSentence": "جملة قصيرة (3-5 كلمات)", "longSentence": "جملة طويلة (6-12 كلمة)",
+        "smallParagraph": "فقرة صغيرة", "summaryTone": "نبرة الملخص", "toneProfessional": "احترافي",
+        "toneIntriguing": "مثير للاهتمام", "toneDramatic": "درامي", "toneConcise": "موجز",
+        "summarizeText": "📝 تلخيص النص", "aiSummary": "ملخص الذكاء الاصطناعي", "recentSummaries": "📝 الملخصات الأخيرة",
+        "combinerTitle": "دمج الكلمات", "starterFeature": "ميزة للمبتدئين",
+        "combinerDesc": "أدخل بضع كلمات أو مفاهيم، وسيدمجها الذكاء الاصطناعي في كلمة جديدة ومبتكرة.",
+        "wordsToCombine": "الكلمات المراد دمجها", "combinerNote": "(3 كلمات كحد أدنى)", "combinedWordLength": "طول الكلمة المدمجة",
+        "lengthShort": "قصير", "lengthMedium": "متوسط", "lengthLong": "طويل",
+        "combineWords": "✨ دمج الكلمات", "combinedWord": "الكلمة المدمجة", "explanation": "الشرح",
+        "recentCombinations": "✨ الدمج الأخير", "contactTitle": "اتصل بنا",
+        "contactDesc": "هل لديك سؤال أو ملاحظات أو استفسار تجاري؟ نود أن نسمع منك.",
+        "contactSignInPrompt": "يرجى تسجيل الدخول لإرسال رسالة. هذا يساعدنا على التحقق من هويتك والرد عليك مباشرة.",
+        "yourName": "اسمك", "message": "الرسالة", "sendMessage": "إرسال الرسالة",
+        "generatedNames": "الأسماء/العناوين المولدة", "explanations": "الشروحات",
+        "refineSuggestionsLabel": "تنقيح الاقتراحات", "refineSuggestionsBtn": "🛠️ تنقيح الاقتراحات",
+        "recentHistory": "🕘 السجل الأخير", "fullHistoryTitle": "السجل الكامل", "historyDetailsTitle": "تفاصيل إدخال السجل",
+        "importNameTitle": "استيراد اسم من السجل", "signIn": "تسجيل الدخول", "or": "أو",
+        "signInGoogle": "تسجيل الدخول باستخدام جوجل", "createAccountTitle": "إنشاء حسابك",
+        "createAccount": "إنشاء حساب", "signUpGoogle": "التسجيل باستخدام جوجل",
+        "confirmPurchaseTitle": "تأكيد الشراء",
+        "confirmPurchaseDesc": "أنت على وشك شراء العنصر التالي.",
+        "item": "العنصر", "price": "السعر", "credits": "الأرصدة", "cancel": "إلغاء",
+        "confirmPurchase": "تأكيد الشراء", "demoTransaction": "هذه معاملة محاكاة لأغراض العرض التوضيحي."
+    }
+    // ... add other languages here
+};
+
+async function setLanguage(lang) {
+    localStorage.setItem('nameit-language', lang);
+    const translations = languageData[lang] || languageData['en'];
+
+    document.querySelectorAll('[data-lang-key]').forEach(element => {
+        const key = element.dataset.langKey;
+        if (translations[key]) {
+            element.textContent = translations[key];
+        }
+    });
+    
+    // Handle RTL for Arabic
+    if (lang === 'ar') {
+        document.body.classList.add('rtl');
+    } else {
+        document.body.classList.remove('rtl');
+    }
+}
+
+
+
+
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
 let combinerHistoryLog = [];
@@ -254,7 +491,6 @@ async function handleContactFormSubmit(event) {
 
 
 // --- Full Updated setupEventListeners Function (Replace your existing function) ---
-
 function setupEventListeners() {
     if (historyModal && closeButtonHistoryModal) {
         closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
@@ -294,6 +530,7 @@ function setupEventListeners() {
     if (resultsFontSizeSlider) resultsFontSizeSlider.addEventListener('input', (e) => applyResultsFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (backgroundSelect) backgroundSelect.addEventListener('change', (e) => applyBackground(e.target.value));
+    if (languageSelect) languageSelect.addEventListener('change', (e) => setLanguage(e.target.value)); // ADDED
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
@@ -1848,7 +2085,8 @@ function initializeSettings() {
         resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
         resultsFontSize: localStorage.getItem('nameit-results-fontSize') || '100',
         animations: localStorage.getItem('nameit-animations') !== 'false',
-        background: localStorage.getItem('nameit-background') || 'pattern1'
+        background: localStorage.getItem('nameit-background') || 'pattern1',
+        language: localStorage.getItem('nameit-language') || 'en'
     };
     if (themeSelect) themeSelect.value = settings.theme;
     if (fontSelect) fontSelect.value = settings.font;
@@ -1857,6 +2095,8 @@ function initializeSettings() {
     if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
     if (animationsToggle) animationsToggle.checked = settings.animations;
     if (backgroundSelect) backgroundSelect.value = settings.background;
+    if (languageSelect) languageSelect.value = settings.language;
+
 
     applyTheme(settings.theme, false);
     applyFont(settings.font, false);
@@ -1865,6 +2105,7 @@ function initializeSettings() {
     applyResultsFontSize(settings.resultsFontSize, false);
     applyBackground(settings.background, false);
     applyAnimationSetting(settings.animations, false);
+    setLanguage(settings.language);
 }
 
 function handleHashChange() {
@@ -2140,3 +2381,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
