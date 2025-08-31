@@ -86,6 +86,7 @@ const contactView = document.getElementById("contact-view");
 const outputContainer = document.getElementById("output_container");
 const refineSection = document.getElementById("refine_section");
 const refineButtonSection = document.querySelector(".refine-button-section");
+const contactForm = document.getElementById('contact-form');
 const refinedOutputs = document.getElementById("refined_outputs");
 const namesPre = document.getElementById("names");
 const reasonsPre = document.getElementById("reasons");
@@ -226,6 +227,9 @@ function setupEventListeners() {
     if (generateAvailableAltBtn) generateAvailableAltBtn.onclick = generateAvailableAlternatives;
     if (summarizeBtn) summarizeBtn.onclick = summarizeText;
     if (combineWordsBtn) combineWordsBtn.onclick = combineWords;
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactFormSubmit);
+    }
 
     // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
@@ -297,6 +301,8 @@ function setupEventListeners() {
         });
     }, 500);
 }
+
+
 
 
 
@@ -2060,6 +2066,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
