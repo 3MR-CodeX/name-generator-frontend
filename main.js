@@ -160,6 +160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof initializePaymentSystem === 'function') initializePaymentSystem();
     
     initializeUI();
+    handleHashChange(); // This line is added to handle direct linking
     initializeSettings();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
@@ -177,6 +178,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }, 5000);
 });
+
+
 
 async function loadComponent(placeholderId, componentUrl) {
     try {
@@ -1771,6 +1774,15 @@ function initializeSettings() {
     applyAnimationSetting(settings.animations, false);
 }
 
+function handleHashChange() {
+    const hash = window.location.hash;
+    if (hash === '#terms') {
+        showView('terms');
+    } else if (hash === '#privacy') {
+        showView('privacy');
+    }
+}
+
 function applyBackground(patternName, save = true) {
     if (save) localStorage.setItem('nameit-background', patternName);
 
@@ -2033,6 +2045,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
