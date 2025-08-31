@@ -34,21 +34,21 @@
     <div id="history-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>Full History</h2>
+            <h2 data-lang-key="fullHistoryTitle">Full History</h2>
             <div id="full-history-list" class="history-inner"></div>
         </div>
     </div>
     <div id="history-details-modal" class="modal">
         <div class="modal-content history-details-content">
             <span class="close-button">&times;</span>
-            <h2>History Entry Details</h2>
+            <h2 data-lang-key="historyDetailsTitle">History Entry Details</h2>
             <div id="details-content"></div>
         </div>
     </div>
     <div id="history-import-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>Import a Name from History</h2>
+            <h2 data-lang-key="importNameTitle">Import a Name from History</h2>
             <div id="history-import-list" class="history-inner"></div>
         </div>
     </div>
@@ -62,19 +62,19 @@
             <div class="input-group">
                 <input type="password" id="signin-password" placeholder="Password" required>
             </div>
-            <button id="signin-submit-btn" class="auth-button">Sign In</button>
+            <button id="signin-submit-btn" class="auth-button" data-lang-key="signIn">Sign In</button>
             <div id="auth-error-message-signin" class="error"></div>
-            <div class="auth-divider">or</div>
+            <div class="auth-divider" data-lang-key="or">or</div>
             <button id="signin-google-btn" class="auth-button google-button">
                 <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> 
-                Sign In with Google
+                <span data-lang-key="signInGoogle">Sign In with Google</span>
             </button>
         </div>
     </div>
     <div id="sign-up-modal" class="modal auth-modal">
         <div class="modal-content auth-modal-content">
             <span class="close-button">&times;</span>
-            <h2>Create Your Account</h2>
+            <h2 data-lang-key="createAccountTitle">Create Your Account</h2>
             <div class="input-group">
                 <input type="email" id="signup-email" placeholder="Email Address" required>
             </div>
@@ -84,30 +84,30 @@
             <div class="input-group">
                 <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
             </div>
-            <button id="signup-submit-btn" class="auth-button">Create Account</button>
+            <button id="signup-submit-btn" class="auth-button" data-lang-key="createAccount">Create Account</button>
             <div id="auth-error-message-signup" class="error"></div>
-            <div class="auth-divider">or</div>
+            <div class="auth-divider" data-lang-key="or">or</div>
             <button id="signup-google-btn" class="auth-button google-button">
                 <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> 
-                Sign Up with Google
+                <span data-lang-key="signUpGoogle">Sign Up with Google</span>
             </button>
         </div>
     </div>
     <div id="payment-modal" class="modal">
         <div class="modal-content" style="max-width: 500px; text-align: center;">
             <span class="close-button">&times;</span>
-            <h2>Confirm Your Purchase</h2>
-            <p style="margin-bottom: 20px;">You are about to purchase the following item.</p>
+            <h2 data-lang-key="confirmPurchaseTitle">Confirm Your Purchase</h2>
+            <p style="margin-bottom: 20px;" data-lang-key="confirmPurchaseDesc">You are about to purchase the following item.</p>
             <div class="payment-details">
-                <p><strong>Item:</strong> <span id="payment-item-name"></span></p>
-                <p><strong>Price:</strong> <span id="payment-item-price"></span></p>
-                <p><strong>Credits:</strong> <span id="payment-item-credits"></span></p>
+                <p><strong><span data-lang-key="item">Item</span>:</strong> <span id="payment-item-name"></span></p>
+                <p><strong><span data-lang-key="price">Price</span>:</strong> <span id="payment-item-price"></span></p>
+                <p><strong><span data-lang-key="credits">Credits</span>:</strong> <span id="payment-item-credits"></span></p>
             </div>
             <div class="payment-buttons">
-                <button id="payment-cancel-btn" class="settings-btn danger-btn">Cancel</button>
-                <button id="payment-confirm-btn" class="settings-btn premium-btn">Confirm Purchase</button>
+                <button id="payment-cancel-btn" class="settings-btn danger-btn" data-lang-key="cancel">Cancel</button>
+                <button id="payment-confirm-btn" class="settings-btn premium-btn" data-lang-key="confirmPurchase">Confirm Purchase</button>
             </div>
-            <p class="payment-note">This is a simulated transaction for demonstration purposes.</p>
+            <p class="payment-note" data-lang-key="demoTransaction">This is a simulated transaction for demonstration purposes.</p>
         </div>
     </div>
 
@@ -121,32 +121,32 @@
         </div>
         
         <div id="main-generator-view">
-            <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
+            <p class="description" data-lang-key="appDescription">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
             <div id="verification-notice" class="hidden"></div>
             
             <div class="container">
                 <div class="input-section">
                     <div class="input-box textbox-column">
-                        <label for="prompt">What do you want to name?</label>
+                        <label for="prompt" data-lang-key="whatToName">What do you want to name?</label>
                         <textarea id="prompt" placeholder="Enter a description!"></textarea>
-                        <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
+                        <label for="keywords" data-lang-key="keywords">Keywords <span class="optional-text" data-lang-key="optional">(optional)</span></label>
                         <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
                         <div class="sliders-wrapper">
                             <div class="slider-container relevancy-display">
-                                <label>Keyword Relevancy</label>
+                                <label data-lang-key="keywordRelevancy">Keyword Relevancy</label>
                                 <div class="slider-ui-wrapper">
-                                    <span class="slider-label-end">Strict</span>
+                                    <span class="slider-label-end" data-lang-key="strict">Strict</span>
                                     <div class="slider-track">
                                         <input type="range" min="1" max="5" value="3" class="relevancy-slider" id="generator-relevancy">
                                         <div class="slider-ticks">
                                             <span></span><span></span><span></span><span></span><span></span>
                                         </div>
                                     </div>
-                                    <span class="slider-label-end">Creative</span>
+                                    <span class="slider-label-end" data-lang-key="creative">Creative</span>
                                 </div>
                             </div>
                             <div class="slider-container amount-display">
-                                <label>Number of Names</label>
+                                <label data-lang-key="numberOfNames">Number of Names</label>
                                 <div class="slider-ui-wrapper">
                                     <div class="slider-track">
                                         <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="generator-amount">
@@ -159,49 +159,49 @@
                         </div>
                     </div>
                     <div class="input-box right-column">
-                        <label for="category">Category</label><select id="category"></select>
-                        <label for="style">Style</label><select id="style"></select>
-                        <label for="language">Language</label><select id="language"><option value="English">English</option><option value="Arabic">Arabic</option></select>
-                        <label for="pattern">Pattern</label><select id="pattern"></select>
+                        <label for="category" data-lang-key="category">Category</label><select id="category"></select>
+                        <label for="style" data-lang-key="style">Style</label><select id="style"></select>
+                        <label for="language" data-lang-key="language">Language</label><select id="language"><option value="English">English</option><option value="Arabic">Arabic</option></select>
+                        <label for="pattern" data-lang-key="pattern">Pattern</label><select id="pattern"></select>
                     </div>
                 </div>
                 <div class="button-section">
-                    <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
-                    <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
+                    <button class="generate-btn" onclick="generateName()"><span data-lang-key="generateNames">🎯 Generate Names</span></button>
+                    <button class="surprise-btn" onclick="surpriseMe()"><span data-lang-key="surpriseMe">🎲 Surprise Me</span></button>
                 </div>
                 <div id="more-like-this-section">
-                    <label>More Like This</label>
+                    <label data-lang-key="moreLikeThis">More Like This</label>
                     <div id="more-like-this-container"></div>
                 </div>
             </div>
         </div>
 
         <div id="custom-refiner-view" class="hidden">
-            <h1>Custom Name Refining</h1>
-            <p class="description">Provide a name and instructions to have the AI refine it for you.</p>
+            <h1 data-lang-key="customRefiningTitle">Custom Name Refining</h1>
+            <p class="description" data-lang-key="customRefiningDesc">Provide a name and instructions to have the AI refine it for you.</p>
             <div class="input-section custom-refiner-inputs">
                 <div class="input-box">
-                     <label for="name-to-refine">Name to be Refined</label>
+                     <label for="name-to-refine" data-lang-key="nameToBeRefined">Name to be Refined</label>
                     <textarea id="name-to-refine" placeholder="Type your name here..." style="flex-grow: 1;"></textarea>
                     <div class="slider-container relevancy-display">
-                        <label>Creativity</label>
+                        <label data-lang-key="creativity">Creativity</label>
                         <div class="slider-ui-wrapper">
-                            <span class="slider-label-end">Strict</span>
+                            <span class="slider-label-end" data-lang-key="strict">Strict</span>
                             <div class="slider-track">
                                 <input type="range" min="1" max="5" value="3" class="relevancy-slider" id="refiner-relevancy">
                                 <div class="slider-ticks">
                                     <span></span><span></span><span></span><span></span><span></span>
                                 </div>
                             </div>
-                            <span class="slider-label-end">Creative</span>
+                            <span class="slider-label-end" data-lang-key="creative">Creative</span>
                         </div>
                     </div>
                 </div>
                 <div class="input-box">
-                    <label for="refinement-instructions">Refinement Instructions</label>
+                    <label for="refinement-instructions" data-lang-key="refinementInstructions">Refinement Instructions</label>
                     <textarea id="refinement-instructions" placeholder="Type how you want to refine your name..."></textarea>
                      <div class="slider-container amount-display">
-                        <label>Number of Names</label>
+                        <label data-lang-key="numberOfNames">Number of Names</label>
                         <div class="slider-ui-wrapper">
                              <div class="slider-track">
                                 <input type="range" min="1" max="5" value="5" class="relevancy-slider" id="refiner-amount">
@@ -214,62 +214,62 @@
                 </div>
             </div>
             <div class="button-section">
-                <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
+                <button id="custom-refine-btn" class="generate-btn"><span data-lang-key="refineName">🤖 Refine Name</span></button>
             </div>
             <div class="container">
                 <div id="refiner-loading-placeholder" class="hidden"></div>
                 <div id="refined_outputs_custom" class="output-section hidden">
                     <div class="output-box">
                         <div class="output-header">
-                            <label>Refined Suggestions</label>
+                            <label data-lang-key="refinedSuggestions">Refined Suggestions</label>
                             <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names_custom')">📋</button>
                         </div>
                         <pre id="refined_names_custom"></pre>
                     </div>
                     <div class="output-box">
                        <div class="output-header">
-                            <label>Refined Explanations</label>
+                            <label data-lang-key="refinedExplanations">Refined Explanations</label>
                             <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons_custom')">📋</button>
                         </div>
                         <pre id="refined_reasons_custom"></pre>
                     </div>
                 </div>
                 <div id="custom-refine-history-section" class="history-section hidden">
-                    <h2>✨ Recent Refinements</h2>
+                    <h2 data-lang-key="recentRefinements">✨ Recent Refinements</h2>
                     <div id="custom-refine-history" class="history-inner"></div>
                 </div>
             </div>
         </div>
 
         <div id="availability-checker-view" class="hidden">
-            <h1>Name Availability Check</h1>
-            <p class="description">Check if your desired name is available as a domain and on social media.</p>
+            <h1 data-lang-key="availabilityCheckTitle">Name Availability Check</h1>
+            <p class="description" data-lang-key="availabilityCheckDesc">Check if your desired name is available as a domain and on social media.</p>
         
             <div class="outer-input-box">
                 <div class="availability-input-container">
                     <div class="input-wrapper" style="flex: 2;">
                         <div class="label-with-button">
-                            <label for="name-to-check">Name to Check</label>
+                            <label for="name-to-check" data-lang-key="nameToCheck">Name to Check</label>
                             <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-check')">+</button>
                         </div>
                         <input type="text" id="name-to-check" placeholder="e.g., NovaCore">
                     </div>
                     <div class="availability-dropdowns-grid">
                         <div class="input-wrapper">
-                            <label>Platforms</label>
+                            <label data-lang-key="platforms">Platforms</label>
                             <div class="dropdown-check-container">
                                 <button id="platforms-dropdown-btn" class="dropdown-btn">
-                                    <span>Select Platforms</span>
+                                    <span data-lang-key="selectPlatforms">Select Platforms</span>
                                     <span class="arrow"></span>
                                 </button>
                                 <div id="platforms-dropdown-list" class="dropdown-content hidden"></div>
                             </div>
                         </div>
                         <div class="input-wrapper">
-                            <label>Domains</label>
+                            <label data-lang-key="domains">Domains</label>
                             <div class="dropdown-check-container">
                                 <button id="domains-dropdown-btn" class="dropdown-btn">
-                                    <span>Select Domains</span>
+                                    <span data-lang-key="selectDomains">Select Domains</span>
                                     <span class="arrow"></span>
                                 </button>
                                 <div id="domains-dropdown-list" class="dropdown-content hidden"></div>
@@ -279,7 +279,7 @@
                 </div>
             
                 <div class="button-section" style="margin-top: 20px; margin-bottom: 0;">
-                    <button id="check-availability-btn" class="generate-btn">🔍 Check Availability</button>
+                    <button id="check-availability-btn" class="generate-btn"><span data-lang-key="checkAvailability">🔍 Check Availability</span></button>
                 </div>
             </div>
         
@@ -287,61 +287,61 @@
             
             <div id="available-alternatives-section" class="hidden" style="margin-top: 20px;">
                 <div class="button-section" style="margin-bottom: 20px;">
-                    <button id="generate-available-alt-btn" class="generate-btn">💡 Generate Available Alternatives</button>
+                    <button id="generate-available-alt-btn" class="generate-btn"><span data-lang-key="generateAvailableAlternatives">💡 Generate Available Alternatives</span></button>
                 </div>
                 <div id="available-alternatives-results"></div>
             </div>
         </div>
 
         <div id="name-analyzer-view" class="hidden">
-            <h1>Name Analyzer</h1>
-            <p class="description">Get an AI-powered brandability check and targeted audience analysis.</p>
+            <h1 data-lang-key="nameAnalyzerTitle">Name Analyzer</h1>
+            <p class="description" data-lang-key="nameAnalyzerDesc">Get an AI-powered brandability check and targeted audience analysis.</p>
             <div class="input-section">
                 <div class="input-box" style="flex: 1;">
                     <div class="label-with-button">
-                        <label for="name-to-analyze">Name to Analyze</label>
+                        <label for="name-to-analyze" data-lang-key="nameToAnalyze">Name to Analyze</label>
                         <button class="import-history-btn" title="Import name from history" onclick="openHistoryImportModal('name-to-analyze')">+</button>
                     </div>
                     <input type="text" id="name-to-analyze" placeholder="e.g., AlphaTech">
         
-                    <label for="analysis-context" style="margin-top: 15px;">Project Context</label>
+                    <label for="analysis-context" style="margin-top: 15px;" data-lang-key="projectContext">Project Context</label>
                     <textarea id="analysis-context" placeholder="What is this name for? e.g., A tech startup focused on AI"></textarea>
                 </div>
                 <div class="input-box persona-section" style="flex: 1.5;">
-                    <label for="audience-description">Target Audience</label>
+                    <label for="audience-description" data-lang-key="targetAudience">Target Audience</label>
                     <textarea id="audience-description" placeholder="e.g., University students, new parents, tech enthusiasts"></textarea>
                     
                     <div class="persona-inputs-row">
                         <div class="persona-input-group">
-                            <label for="audience-location">Location</label>
+                            <label for="audience-location" data-lang-key="location">Location</label>
                             <input type="text" id="audience-location" placeholder="e.g., Egypt, Cairo, Global">
                         </div>
                         <div class="persona-input-group">
-                            <label for="audience-values">Key Values</label>
+                            <label for="audience-values" data-lang-key="keyValues">Key Values</label>
                             <input type="text" id="audience-values" placeholder="e.g., eco-conscious, luxury, gaming">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="button-section" style="margin-top: -20px;">
-                <button id="analyze-name-btn" class="generate-btn">🔬 Analyze Name</button>
+                <button id="analyze-name-btn" class="generate-btn"><span data-lang-key="analyzeName">🔬 Analyze Name</span></button>
             </div>
             <div id="analyzer-results-container"></div>
             <div id="alternatives-generator-section" class="button-section hidden">
-                <button id="generate-alternatives-btn" class="generate-btn">🧠 Generate Better Alternatives</button>
+                <button id="generate-alternatives-btn" class="generate-btn"><span data-lang-key="generateBetterAlternatives">🧠 Generate Better Alternatives</span></button>
             </div>
             <div id="alternatives-results-container"></div>
         </div>
 
         <div id="settings-view" class="hidden">
-            <h1>Settings</h1>
-            <p class="description">Customize your experience and manage your account.</p>
+            <h1 data-lang-key="settingsTitle">Settings</h1>
+            <p class="description" data-lang-key="settingsDesc">Customize your experience and manage your account.</p>
         
             <div class="settings-container">
                 <div class="setting-section">
-                    <h2><i class="fas fa-paint-brush"></i> Appearance</h2>
+                    <h2 data-lang-key="appearance"><i class="fas fa-paint-brush"></i> Appearance</h2>
                     <div class="setting-row">
-                        <label for="theme-select">Color Theme</label>
+                        <label for="theme-select" data-lang-key="colorTheme">Color Theme</label>
                         <select id="theme-select" class="settings-select">
                             <option value="synthwave">Synthwave</option>
                             <option value="sunset-blaze">Sunset Blaze</option>
@@ -360,7 +360,7 @@
                         </select>
                     </div>
                     <div class="setting-row">
-                        <label for="background-select">Background Pattern</label>
+                        <label for="background-select" data-lang-key="backgroundPattern">Background Pattern</label>
                         <select id="background-select" class="settings-select">
                             <option value="pattern1">Pattern 1</option>
                             <option value="pattern2">Pattern 2</option>
@@ -376,52 +376,67 @@
                             <option value="pattern12">Pattern 12</option>
                         </select>
                     </div>
+                     <div class="setting-row">
+                        <label for="language-select" data-lang-key="appLanguage">App Language</label>
+                        <select id="language-select" class="settings-select">
+                            <option value="en">English</option>
+                            <option value="ar">العربية (Arabic)</option>
+                            <option value="es">Español (Spanish)</option>
+                            <option value="fr">Français (French)</option>
+                            <option value="de">Deutsch (German)</option>
+                             <option value="hi">हिन्दी (Hindi)</option>
+                            <option value="ja">日本語 (Japanese)</option>
+                            <option value="pt">Português (Portuguese)</option>
+                            <option value="ru">Русский (Russian)</option>
+                            <option value="zh">中文 (Chinese)</option>
+                        </select>
+                    </div>
                     <div class="setting-row">
-                        <label for="font-select">UI Font Family</label>
+                        <label for="font-select" data-lang-key="uiFont">UI Font Family</label>
                         <select id="font-select" class="settings-select"></select>
                     </div>
                      <div class="setting-row">
-                        <label for="font-size-slider">UI Font Size</label>
+                        <label for="font-size-slider" data-lang-key="uiFontSize">UI Font Size</label>
                         <input type="range" id="font-size-slider" min="80" max="120" value="100" step="5">
                     </div>
                     <div class="setting-row">
-                        <label for="results-font-select">Results Font Family</label>
+                        <label for="results-font-select" data-lang-key="resultsFont">Results Font Family</label>
                         <select id="results-font-select" class="settings-select"></select>
                     </div>
                     <div class="setting-row">
-                        <label for="results-font-size-slider">Results Font Size</label>
+                        <label for="results-font-size-slider" data-lang-key="resultsFontSize">Results Font Size</label>
                         <input type="range" id="results-font-size-slider" min="80" max="140" value="100" step="5">
                     </div>
                 </div>
         
                 <div class="setting-section">
-                    <h2><i class="fas fa-user-circle"></i> Account</h2>
+                    <h2 data-lang-key="account"><i class="fas fa-user-circle"></i> Account</h2>
                     <div class="setting-row">
-                        <label>Change Password</label>
-                        <button id="change-password-btn" class="settings-btn">Send Reset Email</button>
+                        <label data-lang-key="changePassword">Change Password</label>
+                        <button id="change-password-btn" class="settings-btn" data-lang-key="sendResetEmail">Send Reset Email</button>
                     </div>
                     <div class="setting-row">
-                        <label>Subscription</label>
-                        <button id="manage-subscription-btn" class="settings-btn premium-btn">Manage Subscription</button>
-                    </div>
-                </div>
-        
-                <div class="setting-section">
-                    <h2><i class="fas fa-database"></i> Data & Privacy</h2>
-                    <div class="setting-row">
-                        <label>Export History</label>
-                        <button id="export-history-btn" class="settings-btn">Export as JSON</button>
-                    </div>
-                    <div class="setting-row">
-                        <label>Clear History</label>
-                        <button id="clear-history-btn" class="settings-btn danger-btn">Clear All History</button>
+                        <label data-lang-key="subscription">Subscription</label>
+                        <button id="manage-subscription-btn" class="settings-btn premium-btn" data-lang-key="manageSubscription">Manage Subscription</button>
                     </div>
                 </div>
         
                 <div class="setting-section">
-                    <h2><i class="fas fa-universal-access"></i> Accessibility</h2>
+                    <h2 data-lang-key="dataPrivacy"><i class="fas fa-database"></i> Data & Privacy</h2>
                     <div class="setting-row">
-                        <label for="animations-toggle">Reduce Animations</label>
+                        <label data-lang-key="exportHistory">Export History</label>
+                        <button id="export-history-btn" class="settings-btn" data-lang-key="exportAsJSON">Export as JSON</button>
+                    </div>
+                    <div class="setting-row">
+                        <label data-lang-key="clearHistory">Clear History</label>
+                        <button id="clear-history-btn" class="settings-btn danger-btn" data-lang-key="clearAllHistory">Clear All History</button>
+                    </div>
+                </div>
+        
+                <div class="setting-section">
+                    <h2 data-lang-key="accessibility"><i class="fas fa-universal-access"></i> Accessibility</h2>
+                    <div class="setting-row">
+                        <label for="animations-toggle" data-lang-key="reduceAnimations">Reduce Animations</label>
                         <label class="switch">
                             <input type="checkbox" id="animations-toggle">
                             <span class="slider round"></span>
@@ -432,299 +447,306 @@
         </div>
 
         <div id="about-view" class="hidden">
-            <h1>About NameIT</h1>
-            <p class="description">The ultimate AI-powered tool for creative naming and branding.</p>
+            <h1 data-lang-key="aboutTitle">About NameIT</h1>
+            <p class="description" data-lang-key="aboutDesc">The ultimate AI-powered tool for creative naming and branding.</p>
             <div class="about-section">
-                <h2><i class="fas fa-rocket"></i> Our Mission</h2>
-                <p>At NameIT, our mission is to eliminate the creative block that comes with naming. We believe that a great name is the cornerstone of any great idea. Whether you're a developer launching an app, an author writing a book, or an entrepreneur building a brand, NameIT provides the creative spark you need to find the perfect name that resonates and inspires.</p>
+                <h2 data-lang-key="ourStoryTitle"><i class="fas fa-lightbulb"></i> Our Story: Why We Built NameIT</h2>
+                <p data-lang-key="ourStoryP1">NameIT was born from a simple, universal struggle: the daunting task of finding the perfect name. As creators, developers, and entrepreneurs ourselves, we’ve spent countless hours brainstorming, only to find our best ideas were already taken or didn't quite capture the essence of our projects. We knew there had to be a better way.</p>
+                <p data-lang-key="ourStoryP2">We envisioned a tool that wasn’t just a random word generator, but an intelligent partner in the creative process. A platform that could understand the nuance of an idea, explore different creative avenues, and instantly validate the results. NameIT is our solution—an AI-powered muse designed to break through creative blocks and turn the frustration of naming into an inspiring journey of discovery.</p>
             </div>
-            <div class="about-section features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-brain"></i>
-                    <h3>Intelligent Generation</h3>
-                    <p>Leverage the power of advanced AI to get name suggestions that are not just random, but contextually relevant, creative, and aligned with your specified style and category.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-cogs"></i>
-                    <h3>Deep Customization</h3>
-                    <p>Go beyond simple descriptions. Fine-tune your results by providing keywords, choosing a style, defining a pattern, and even using existing names as inspiration.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-search-dollar"></i>
-                    <h3>Instant Analysis</h3>
-                    <p>Don't just find a name, validate it. Our tools allow you to instantly check domain and social media availability, and get an AI-powered brandability analysis.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-paint-brush"></i>
-                    <h3>Personalized Experience</h3>
-                    <p>Make NameIT your own. Customize the theme, fonts, and other settings to create a workspace that inspires you. Your history is always saved for easy access.</p>
-                </div>
+            <div class="about-section">
+                <h2 data-lang-key="whoIsItForTitle"><i class="fas fa-users"></i> Who is NameIT For?</h2>
+                <p data-lang-key="whoIsItForP1">NameIT is for the dreamers and the doers. It’s for...</p>
+                <ul>
+                    <li data-lang-key="whoIsItForLi1">The <strong>Entrepreneur</strong> launching a groundbreaking startup.</li>
+                    <li data-lang-key="whoIsItForLi2">The <strong>Developer</strong> looking for a catchy name for their next app or game.</li>
+                    <li data-lang-key="whoIsItForLi3">The <strong>Marketer</strong> building a memorable brand identity.</li>
+                    <li data-lang-key="whoIsItForLi4">The <strong>Author</strong> searching for the perfect title for their next bestseller.</li>
+                    <li data-lang-key="whoIsItForLi5">The <strong>Creator</strong> naming a podcast, YouTube channel, or artistic project.</li>
+                    <li data-lang-key="whoIsItForLi6">...and anyone in need of a creative spark.</li>
+                </ul>
             </div>
              <div class="about-section meet-the-ai">
                 <img src="Hexagon_starter.png" alt="NameIT AI" class="ai-logo">
                 <div>
-                    <h2>Meet the NameIT Engine</h2>
-                    <p>The creative force behind NameIT is our advanced AI engine. By using specialized prompts to harness the power of a world-class language model, our system goes beyond simply combining words. It understands nuance, emotion, and market trends to craft names that are both memorable and meaningful. It's your tireless brainstorming partner, ready 24/7 to help you discover the perfect name.</p>
+                    <h2 data-lang-key="meetTheAITitle">Meet the NameIT Engine</h2>
+                    <p data-lang-key="meetTheAIP">The creative force behind NameIT is our advanced AI engine. By using specialized prompts to harness the power of a world-class language model, our system goes beyond simply combining words. It understands nuance, emotion, and market trends to craft names that are both memorable and meaningful. It's your tireless brainstorming partner, ready 24/7 to help you discover the perfect name.</p>
                 </div>
             </div>
         </div>
 
         <div id="premium-view" class="hidden">
-            <h1><i class="fas fa-crown"></i> NameIT Premium Packs</h1>
-            <p class="description">Choose the right pack to unlock your full creative potential. One-time payments, lifetime access.</p>
+            <h1 data-lang-key="premiumTitle"><i class="fas fa-crown"></i> NameIT Premium Packs</h1>
+            <p class="description" data-lang-key="premiumDesc">Choose the right pack to unlock your full creative potential. One-time payments, lifetime access.</p>
             
             <div class="premium-container">
                 <div class="pricing-grid">
-                    <div class="pricing-card">
+                    <div class="pricing-card" data-tier="starter">
                         <div class="plan-header">
-                            <h2>Starter</h2>
-                            <p class="plan-subtitle">For personal projects</p>
+                            <h2 data-lang-key="starterTier">Starter</h2>
+                            <p class="plan-subtitle" data-lang-key="starterSub">For personal projects & hobbyists</p>
                         </div>
                         <div class="plan-price">$4.99</div>
-                        <p class="price-description">One-Time Payment</p>
+                        <p class="price-description" data-lang-key="oneTimePayment">One-Time Payment</p>
                         <div class="credit-amount">
                             <i class="fas fa-coins"></i> 1,000 Credits
                         </div>
                         <ul class="features-list">
-                            <li class="feature-item included"><i class="fas fa-check"></i> Smarter AI Model</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
-                            <li class="feature-item excluded"><i class="fas fa-times"></i> Availability Checker</li>
-                            <li class="feature-item excluded"><i class="fas fa-times"></i> Basic Name Analyzer</li>
-                            <li class="feature-item excluded"><i class="fas fa-times"></i> Priority Support</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> <strong data-lang-key="starterFeature1">Enhanced AI Model</strong></li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong data-lang-key="starterFeature2">Word Combiner Tool</strong></li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> <span data-lang-key="starterFeature3">Expanded Styles & Options</span></li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> <span data-lang-key="proFeature2">Text Summarizer Tool</span></li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> <span data-lang-key="proFeature3">Name Availability Checker</span></li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> <span data-lang-key="proFeature4">Basic Name Analyzer</span></li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> <span data-lang-key="businessFeature2">Audience Persona Analysis</span></li>
                         </ul>
-                        <button class="cta-button" onclick="purchasePlan('starter')">Get Started</button>
+                        <button class="cta-button" onclick="purchasePlan('starter', 1, 1000, 4.99)"><span data-lang-key="getStarted">Get Started</span></button>
                     </div>
 
-                    <div class="pricing-card popular">
+                    <div class="pricing-card popular" data-tier="pro">
                         <div class="plan-header">
-                            <h2>Pro</h2>
-                            <p class="plan-subtitle">For professionals & startups</p>
-                            <div class="most-popular-badge">Most Popular</div>
+                            <h2 data-lang-key="proTier">Pro</h2>
+                            <p class="plan-subtitle" data-lang-key="proSub">For professionals & startups</p>
+                            <div class="most-popular-badge" data-lang-key="mostPopular">Most Popular</div>
                         </div>
                         <div class="plan-price">$9.99</div>
-                        <p class="price-description">One-Time Payment</p>
+                        <p class="price-description" data-lang-key="oneTimePayment">One-Time Payment</p>
                         <div class="credit-amount">
                             <i class="fas fa-coins"></i> 2,500 Credits
                         </div>
                         <ul class="features-list">
-                            <li class="feature-item included"><i class="fas fa-check"></i> Even Smarter AI Model</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Availability Checker</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Basic Name Analyzer</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Priority Support</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> <strong data-lang-key="proFeature1">Advanced AI Model</strong></li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong data-lang-key="proFeature2">Text Summarizer Tool</strong></li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong data-lang-key="proFeature3">Name Availability Checker</strong></li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong data-lang-key="proFeature4">Basic Name Analyzer</strong></li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> <span data-lang-key="proFeature5">Includes All Starter Features</span></li>
+                            <li class="feature-item excluded"><i class="fas fa-times"></i> <span data-lang-key="businessFeature2">Audience Persona Analysis</span></li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> <span data-lang-key="proFeature6">Priority Support</span></li>
                         </ul>
-                        <button class="cta-button" onclick="purchasePlan('pro')">Go Pro</button>
+                        <button class="cta-button" onclick="purchasePlan('pro', 2, 2500, 9.99)"><span data-lang-key="goPro">Go Pro</span></button>
                     </div>
 
-                    <div class="pricing-card business-highlight">
+                    <div class="pricing-card business-highlight" data-tier="business">
                         <div class="plan-header">
-                            <h2>Business</h2>
-                            <p class="plan-subtitle">For agencies & power users</p>
-                            <div class="best-value-badge">Best Value</div>
+                            <h2 data-lang-key="businessTier">Business</h2>
+                            <p class="plan-subtitle" data-lang-key="businessSub">For agencies & power users</p>
+                            <div class="best-value-badge" data-lang-key="bestValue">Best Value</div>
                         </div>
                         <div class="plan-price">$19.99</div>
-                        <p class="price-description">One-Time Payment</p>
+                        <p class="price-description" data-lang-key="oneTimePayment">One-Time Payment</p>
                         <div class="credit-amount">
                             <i class="fas fa-coins"></i> 6,000 Credits
                         </div>
                         <ul class="features-list">
-                            <li class="feature-item included"><i class="fas fa-check"></i> Everything in Pro, plus:</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Ultra Smart AI Model</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Exclusive Customization</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Audience Persona Analysis</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Logo Generator (Soon)</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Top Priority Support</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> <strong data-lang-key="businessFeature1">Everything in Pro, plus:</strong></li>
+                            <li class="feature-item included"><i class="fas fa-star"></i> <strong data-lang-key="businessFeature2">Audience Persona Analysis</strong></li>
+                            <li class="feature-item included"><i class="fas fa-rocket"></i> <span data-lang-key="businessFeature3">Flagship AI Model</span></li>
+                            <li class="feature-item included"><i class="fas fa-sliders-h"></i> <span data-lang-key="businessFeature4">Exclusive Customization</span></li>
+                            <li class="feature-item included"><i class="fas fa-headset"></i> <span data-lang-key="businessFeature5">Top Priority Support</span></li>
+                            <li class="feature-item included"><i class="fas fa-gem"></i> <span data-lang-key="businessFeature6">Early Access to New Features</span></li>
                         </ul>
-                        <button class="cta-button" onclick="purchasePlan('business')">Go Business</button>
+                        <button class="cta-button" onclick="purchasePlan('business', 3, 6000, 19.99)"><span data-lang-key="goBusiness">Go Business</span></button>
                     </div>
                 </div>
 
                 <div class="faq-section">
-                    <h3>Frequently Asked Questions</h3>
+                    <h3 data-lang-key="faqTitle">Frequently Asked Questions</h3>
                     <div class="faq-item">
-                        <h4>Are these one-time payments?</h4>
-                        <p>Yes. This is not a subscription. You buy a credit pack once and use the credits at your own pace. They never expire.</p>
+                        <h4 data-lang-key="faq1Title">Are these one-time payments?</h4>
+                        <p data-lang-key="faq1Answer">Yes. This is not a subscription. You buy a credit pack once and use the credits at your own pace. They never expire.</p>
                     </div>
                     <div class="faq-item">
-                        <h4>What can I use credits on?</h4>
-                        <p>Credits are used for all AI actions. A basic name generation costs 1 credit per name, while advanced tools like the Name Analyzer cost a few more. Your credit balance is always visible at the top of the page.</p>
+                        <h4 data-lang-key="faq2Title">What can I use credits on?</h4>
+                        <p data-lang-key="faq2Answer">Credits are used for all AI actions. A basic name generation costs 1 credit per name, while advanced tools like the Name Analyzer cost a few more. Your credit balance is always visible at the top of the page.</p>
                     </div>
                     <div class="faq-item">
-                        <h4>What happens when I run out of credits?</h4>
-                        <p>You can purchase another top-up pack from the "Buy Credits" page at any time. All your unlocked Pro features will remain active, and you'll also receive 250 free credits every month.</p>
+                        <h4 data-lang-key="faq3Title">What happens when I run out of credits?</h4>
+                        <p data-lang-key="faq3Answer">You can purchase another top-up pack from the "Buy Credits" page at any time. All your unlocked Pro features will remain active, and you'll also receive 250 free credits every month.</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="credits-view" class="hidden">
-            <h1><i class="fas fa-coins"></i> Buy More Credits</h1>
-            <p class="description">Ran out of credits? Top up your balance with a one-time purchase. Your features remain unlocked.</p>
+            <h1 data-lang-key="buyCreditsTitle"><i class="fas fa-coins"></i> Buy More Credits</h1>
+            <p class="description" data-lang-key="buyCreditsDesc">Ran out of credits? Top up your balance with a one-time purchase. Your features remain unlocked.</p>
             
             <div class="premium-container">
                 <div class="pricing-grid">
                     <div class="pricing-card">
-                        <div class="plan-header"><h2>Quick Top-up</h2></div>
+                        <div class="plan-header"><h2 data-lang-key="creditPack1">Quick Top-up</h2></div>
                         <div class="plan-price">$0.99</div>
                         <div class="credit-amount"><i class="fas fa-coins"></i> 100 Credits</div>
-                        <button class="cta-button" onclick="purchaseCredits(100)">Buy Now</button>
+                        <button class="cta-button" onclick="purchaseCredits(100, 0.99)"><span data-lang-key="buyNow">Buy Now</span></button>
                     </div>
                     
                     <div class="pricing-card">
-                        <div class="plan-header"><h2>Refill</h2></div>
+                        <div class="plan-header"><h2 data-lang-key="creditPack2">Refill</h2></div>
                         <div class="plan-price">$2.99</div>
                         <div class="credit-amount"><i class="fas fa-coins"></i> 500 Credits</div>
-                        <button class="cta-button" onclick="purchaseCredits(500)">Buy Now</button>
+                        <button class="cta-button" onclick="purchaseCredits(500, 2.99)"><span data-lang-key="buyNow">Buy Now</span></button>
                     </div>
 
                     <div class="pricing-card">
-                         <div class="plan-header"><h2>Boost</h2></div>
+                         <div class="plan-header"><h2 data-lang-key="creditPack3">Boost</h2></div>
                         <div class="plan-price">$4.99</div>
                         <div class="credit-amount"><i class="fas fa-coins"></i> 1,200 Credits</div>
-                        <button class="cta-button" onclick="purchaseCredits(1200)">Buy Now</button>
+                        <button class="cta-button" onclick="purchaseCredits(1200, 4.99)"><span data-lang-key="buyNow">Buy Now</span></button>
                     </div>
 
                     <div class="pricing-card">
-                        <div class="plan-header"><h2>Mega Pack</h2></div>
+                        <div class="plan-header"><h2 data-lang-key="creditPack4">Mega Pack</h2></div>
                         <div class="plan-price">$9.99</div>
                         <div class="credit-amount"><i class="fas fa-coins"></i> 3,000 Credits</div>
-                        <button class="cta-button" onclick="purchaseCredits(3000)">Buy Now</button>
+                        <button class="cta-button" onclick="purchaseCredits(3000, 9.99)"><span data-lang-key="buyNow">Buy Now</span></button>
                     </div>
                 </div>
             </div>
             <div class="faq-section" style="margin-top: 50px;">
-                <h3>Quick Questions</h3>
+                <h3 data-lang-key="quickQuestions">Quick Questions</h3>
                 <div class="faq-item">
-                    <h4>How are credits used?</h4>
-                    <p>Each AI action, like generating a name or running an analysis, consumes credits. The cost varies by complexity—a basic generation might be 1 credit per name, while a detailed Persona Analysis costs more. Your balance is always visible.</p>
+                    <h4 data-lang-key="faq4Title">How are credits used?</h4>
+                    <p data-lang-key="faq4Answer">Each AI action, like generating a name or running an analysis, consumes credits. The cost varies by complexity—a basic generation might be 1 credit per name, while a detailed Persona Analysis costs more. Your balance is always visible.</p>
                 </div>
                 <div class="faq-item">
-                    <h4>Do my credits expire?</h4>
-                    <p>No, they don't. Credits from one-time purchases are yours to keep and use whenever you need them. They will remain in your account permanently.</p>
+                    <h4 data-lang-key="faq5Title">Do my credits expire?</h4>
+                    <p data-lang-key="faq5Answer">No, they don't. Credits from one-time purchases are yours to keep and use whenever you need them. They will remain in your account permanently.</p>
                 </div>
             </div>
         </div>
 
         <div id="summarizer-view" class="hidden">
-            <h1>Text Summarizer</h1>
-            <p class="description">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
-            <div class="input-section">
-                <div class="input-box" style="width: 100%; min-height: auto;">
-                    <label for="text-to-summarize">Text to Summarize</label>
-                    <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1; min-height: 250px;"></textarea>
-                    
-                    <!-- New wrapper for dropdowns -->
-                    <div class="summarizer-options">
-                        <div class="option-group">
-                            <label for="summary-length">Summary Length</label>
-                            <select id="summary-length">
-                                <option value="1 word">1 Word</option>
-                                <option value="2 words">2 Words</option>
-                                <option value="short sentence" selected>Short Sentence (3-5 Words)</option>
-                                <option value="long sentence">Long Sentence (6-12 Words)</option>
-                                <option value="small paragraph">Small Paragraph</option>
-                            </select>
-                        </div>
-                        <div class="option-group">
-                            <label for="summary-tone">Summary Tone</label>
-                            <select id="summary-tone">
-                                <option value="Professional" selected>Professional</option>
-                                <option value="Intriguing">Intriguing</option>
-                                <option value="Dramatic">Dramatic</option>
-                                <option value="Concise">Concise</option>
-                            </select>
+            <div class="page-header-container">
+                <h1 data-lang-key="summarizerTitle">Text Summarizer</h1>
+                <div class="lock-container" data-required-tier="2">
+                    <i class="fas fa-lock"></i>
+                    <span data-lang-key="proFeature">PRO FEATURE</span>
+                </div>
+            </div>
+            <p class="description" data-lang-key="summarizerDesc">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
+            <div class="tool-content-wrapper">
+                <div class="input-section">
+                    <div class="input-box" style="width: 100%; min-height: auto;">
+                        <label for="text-to-summarize" data-lang-key="textToSummarize">Text to Summarize</label>
+                        <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1; min-height: 250px;"></textarea>
+                        
+                        <div class="summarizer-options">
+                            <div class="option-group">
+                                <label for="summary-length" data-lang-key="summaryLength">Summary Length</label>
+                                <select id="summary-length">
+                                    <option value="1 word" data-lang-key="oneWord">1 Word</option>
+                                    <option value="2 words" data-lang-key="twoWords">2 Words</option>
+                                    <option value="short sentence" selected data-lang-key="shortSentence">Short Sentence (3-5 Words)</option>
+                                    <option value="long sentence" data-lang-key="longSentence">Long Sentence (6-12 Words)</option>
+                                    <option value="small paragraph" data-lang-key="smallParagraph">Small Paragraph</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label for="summary-tone" data-lang-key="summaryTone">Summary Tone</label>
+                                <select id="summary-tone">
+                                    <option value="Professional" selected data-lang-key="toneProfessional">Professional</option>
+                                    <option value="Intriguing" data-lang-key="toneIntriguing">Intriguing</option>
+                                    <option value="Dramatic" data-lang-key="toneDramatic">Dramatic</option>
+                                    <option value="Concise" data-lang-key="toneConcise">Concise</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="button-section">
-                <button id="summarize-btn" class="generate-btn">📝 Summarize Text</button>
-            </div>
-            <div id="summarizer-loading-placeholder" class="hidden"></div>
-            <div id="summary-results-container" class="output-section hidden">
-                <div class="output-box" style="width: 100%;">
-                    <div class="output-header">
-                        <label>AI Summary</label>
-                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('summary-output')">📋</button>
-                    </div>
-                    <pre id="summary-output" style="min-height: 100px;"></pre>
+                <div class="button-section">
+                    <button id="summarize-btn" class="generate-btn"><span data-lang-key="summarizeText">📝 Summarize Text</span></button>
                 </div>
-            </div>
-            <div id="summary-history-section" class="history-section hidden">
-                <h2>📝 Recent Summaries</h2>
-                <div id="summary-history" class="history-inner"></div>
+                <div id="summarizer-loading-placeholder" class="hidden"></div>
+                <div id="summary-results-container" class="output-section hidden">
+                    <div class="output-box" style="width: 100%;">
+                        <div class="output-header">
+                            <label data-lang-key="aiSummary">AI Summary</label>
+                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('summary-output')">📋</button>
+                        </div>
+                        <pre id="summary-output" style="min-height: 100px;"></pre>
+                    </div>
+                </div>
+                <div id="summary-history-section" class="history-section hidden">
+                    <h2 data-lang-key="recentSummaries">📝 Recent Summaries</h2>
+                    <div id="summary-history" class="history-inner"></div>
+                </div>
             </div>
         </div>
 
         <div id="word-combiner-view" class="hidden">
-            <h1>Word Combiner</h1>
-            <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
-            <div class="input-section">
-                <div class="input-box" style="width: 100%; min-height: auto;">
-                    <label for="words-to-combine">
-                        Words to Combine
-                        <span class="input-note">(3 words minimum)</span>
-                    </label>
-                    <input type="text" id="words-to-combine" placeholder="e.g., galaxy, quest, digital">
-                    <label for="combiner-length" style="margin-top: 20px;">Combined Word Length</label>
-                    <select id="combiner-length">
-                        <option value="Short">Short</option>
-                        <option value="Medium" selected>Medium</option>
-                        <option value="Long">Long</option>
-                    </select>
+            <div class="page-header-container">
+                <h1 data-lang-key="combinerTitle">Word Combiner</h1>
+                <div class="lock-container" data-required-tier="1">
+                    <i class="fas fa-lock"></i>
+                    <span data-lang-key="starterFeature">STARTER FEATURE</span>
                 </div>
             </div>
-            <div class="button-section">
-                <button id="combine-words-btn" class="generate-btn">✨ Combine Words</button>
-            </div>
-            <div id="combiner-loading-placeholder" class="hidden"></div>
-            <div id="combiner-results-container" class="output-section hidden">
-                 <div class="output-box">
-                    <div class="output-header">
-                        <label>Combined Word</label>
-                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-output')">📋</button>
+            <p class="description" data-lang-key="combinerDesc">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
+            <div class="tool-content-wrapper">
+                <div class="input-section">
+                    <div class="input-box" style="width: 100%; min-height: auto;">
+                        <label for="words-to-combine">
+                            <span data-lang-key="wordsToCombine">Words to Combine</span>
+                            <span class="input-note" data-lang-key="combinerNote">(3 words minimum)</span>
+                        </label>
+                        <input type="text" id="words-to-combine" placeholder="e.g., galaxy, quest, digital">
+                        <label for="combiner-length" style="margin-top: 20px;" data-lang-key="combinedWordLength">Combined Word Length</label>
+                        <select id="combiner-length">
+                            <option value="Short" data-lang-key="lengthShort">Short</option>
+                            <option value="Medium" selected data-lang-key="lengthMedium">Medium</option>
+                            <option value="Long" data-lang-key="lengthLong">Long</option>
+                        </select>
                     </div>
-                    <pre id="combiner-output"></pre>
                 </div>
-                <div class="output-box">
-                    <div class="output-header">
-                        <label>Explanation</label>
-                        <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-explanation')">📋</button>
+                <div class="button-section">
+                    <button id="combine-words-btn" class="generate-btn"><span data-lang-key="combineWords">✨ Combine Words</span></button>
+                </div>
+                <div id="combiner-loading-placeholder" class="hidden"></div>
+                <div id="combiner-results-container" class="output-section hidden">
+                     <div class="output-box">
+                        <div class="output-header">
+                            <label data-lang-key="combinedWord">Combined Word</label>
+                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-output')">📋</button>
+                        </div>
+                        <pre id="combiner-output"></pre>
                     </div>
-                    <pre id="combiner-explanation"></pre>
+                    <div class="output-box">
+                        <div class="output-header">
+                            <label data-lang-key="explanation">Explanation</label>
+                            <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('combiner-explanation')">📋</button>
+                        </div>
+                        <pre id="combiner-explanation"></pre>
+                    </div>
                 </div>
-            </div>
-            <div id="combiner-history-section" class="history-section hidden">
-                <h2>✨ Recent Combinations</h2>
-                <div id="combiner-history" class="history-inner"></div>
+                <div id="combiner-history-section" class="history-section hidden">
+                    <h2 data-lang-key="recentCombinations">✨ Recent Combinations</h2>
+                    <div id="combiner-history" class="history-inner"></div>
+                </div>
             </div>
         </div>
         
         <div id="contact-view" class="hidden">
-            <h1>Contact Us</h1>
-            <p class="description">Have a question or feedback? We'd love to hear from you.</p>
+            <h1 data-lang-key="contactTitle">Contact Us</h1>
+            <p class="description" data-lang-key="contactDesc">Have a question, feedback, or a business inquiry? We'd love to hear from you.</p>
             <div class="contact-form-container">
                 <div id="form-submission-message"></div>
                 
                 <div id="contact-login-prompt" class="hidden">
-                    <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
+                    <p data-lang-key="contactSignInPrompt">Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
                 </div>
 
                 <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form">
-                    <!-- The user's email is now completely hidden -->
                     <input type="hidden" id="contact-email" name="email">
                     
                     <div class="input-group">
-                        <label for="contact-name">Your Name</label>
+                        <label for="contact-name" data-lang-key="yourName">Your Name</label>
                         <input type="text" id="contact-name" name="name" required>
                     </div>
                     <div class="input-group">
-                        <label for="contact-message">Message</label>
+                        <label for="contact-message" data-lang-key="message">Message</label>
                         <textarea id="contact-message" name="message" required></textarea>
                     </div>
-                    <button type="submit" id="contact-submit-btn" class="submit-btn">Send Message</button>
+                    <button type="submit" id="contact-submit-btn" class="submit-btn"><span data-lang-key="sendMessage">Send Message</span></button>
                 </form>
             </div>
         </div>
@@ -774,44 +796,44 @@
             <div id="output_container" class="output-section hidden">
                 <div class="output-box">
                     <div class="output-header">
-                        <label>Generated Names/Titles</label>
+                        <label data-lang-key="generatedNames">Generated Names/Titles</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('names')">📋</button>
                     </div>
                     <pre id="names"></pre>
                 </div>
                 <div class="output-box">
                     <div class="output-header">
-                        <label>Explanations</label>
+                        <label data-lang-key="explanations">Explanations</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('reasons')">📋</button>
                     </div>
                     <pre id="reasons"></pre>
                 </div>
             </div>
             <div id="refine_section" class="refine-section hidden">
-                <label for="edit_box">Refine the suggestions</label>
+                <label for="edit_box" data-lang-key="refineSuggestionsLabel">Refine the suggestions</label>
                 <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
             </div>
             <div class="refine-button-section hidden">
-                <button class="refine-btn">🛠️ Refine Suggestions</button>
+                <button class="refine-btn"><span data-lang-key="refineSuggestionsBtn">🛠️ Refine Suggestions</span></button>
             </div>
             <div id="refined_outputs" class="output-section hidden">
                 <div class="output-box">
                     <div class="output-header">
-                        <label>Refined Suggestions</label>
+                        <label data-lang-key="refinedSuggestions">Refined Suggestions</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_names')">📋</button>
                     </div>
                     <pre id="refined_names"></pre>
                 </div>
                 <div class="output-box">
                    <div class="output-header">
-                        <label>Refined Explanations</label>
+                        <label data-lang-key="refinedExplanations">Refined Explanations</label>
                         <button class="copy-button" aria-label="Copy to clipboard" onclick="copyToClipboard('refined_reasons')">📋</button>
                     </div>
                     <pre id="refined_reasons"></pre>
                 </div>
             </div>
             <div id="history_section" class="history-section hidden">
-                <h2>🕘 Recent History</h2>
+                <h2 data-lang-key="recentHistory">🕘 Recent History</h2>
                 <div id="history" class="history-inner"></div>
             </div>
             <div id="error" class="error"></div>
