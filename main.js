@@ -261,47 +261,6 @@ function setupEventListeners() {
         });
     }
 
-async function handleContactFormSubmit(event) {
-    event.preventDefault();
-    const form = event.target;
-    const submitButton = document.getElementById('contact-submit-btn');
-    const submissionMessage = document.getElementById('form-submission-message');
-    
-    submitButton.disabled = true;
-    submitButton.textContent = 'Sending...';
-
-    const data = new FormData(form);
-
-    try {
-        const response = await fetch(form.action, {
-            method: form.method,
-            body: data,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-
-        submissionMessage.style.display = 'block';
-
-        if (response.ok) {
-            submissionMessage.textContent = 'Thank you! Your message has been sent successfully.';
-            submissionMessage.className = 'success';
-            form.style.display = 'none'; // Hide the form
-        } else {
-            const responseData = await response.json();
-            const errorMessage = responseData.errors ? responseData.errors.map(error => error.message).join(', ') : 'Oops! There was a problem submitting your form.';
-            throw new Error(errorMessage);
-        }
-    } catch (error) {
-        submissionMessage.textContent = error.message;
-        submissionMessage.className = 'error';
-        submitButton.disabled = false;
-        submitButton.textContent = 'Send Message';
-    }
-}
-
-
-
     setTimeout(() => {
         const homeLink = document.getElementById('home-link');
         const customRefineLink = document.getElementById('custom-refine-link');
@@ -316,8 +275,9 @@ async function handleContactFormSubmit(event) {
         const buyCreditsLink = document.getElementById('buy-credits-link');
         const termsLink = document.getElementById('terms-link');
         const privacyLink = document.getElementById('privacy-link');
+        const contactSignInLink = document.getElementById('contact-signin-link');
 
-      
+
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); window.location.hash = ''; showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
@@ -329,6 +289,7 @@ async function handleContactFormSubmit(event) {
         if (contactLink) contactLink.addEventListener('click', (e) => { e.preventDefault(); showView('contact'); if (window.isSidebarOpen) toggleSidebar(); });
         if (premiumLink) premiumLink.addEventListener('click', (e) => { e.preventDefault(); showView('premium'); if (window.isSidebarOpen) toggleSidebar(); });
         if (buyCreditsLink) buyCreditsLink.addEventListener('click', (e) => { e.preventDefault(); showView('credits'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (contactSignInLink) contactSignInLink.addEventListener('click', (e) => { e.preventDefault(); openSignInModal(); });
         
         if (termsLink) termsLink.addEventListener('click', (e) => { 
             e.preventDefault(); 
@@ -342,10 +303,6 @@ async function handleContactFormSubmit(event) {
         });
     }, 500);
 }
-
-
-
-
 
 function showView(viewName) {
     const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView];
@@ -2107,6 +2064,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
