@@ -205,10 +205,23 @@ async function handleContactFormSubmit(event) {
     const submitButton = document.getElementById('contact-submit-btn');
     const submissionMessage = document.getElementById('form-submission-message');
     
+    // New: Verify user is logged in at the moment of submission
+    const user = window.auth.currentUser;
+    if (!user || !user.email) {
+        submissionMessage.style.display = 'block';
+        submissionMessage.textContent = 'You must be logged in to send a message.';
+        submissionMessage.className = 'error';
+        return; // Stop the submission
+    }
+
     submitButton.disabled = true;
     submitButton.textContent = 'Sending...';
 
     const data = new FormData(form);
+    
+    // New: Manually set the email in the form data just before sending
+    // This is the crucial fix.
+    data.set('email', user.email);
 
     try {
         const response = await fetch(form.action, {
@@ -224,7 +237,7 @@ async function handleContactFormSubmit(event) {
         if (response.ok) {
             submissionMessage.textContent = 'Thank you! Your message has been sent successfully.';
             submissionMessage.className = 'success';
-            form.style.display = 'none'; // Hide the form
+            form.style.display = 'none'; // Hide the form after success
         } else {
             const responseData = await response.json();
             const errorMessage = responseData.errors ? responseData.errors.map(error => error.message).join(', ') : 'Oops! There was a problem submitting your form.';
@@ -237,6 +250,8 @@ async function handleContactFormSubmit(event) {
         submitButton.textContent = 'Send Message';
     }
 }
+
+
 
 // --- Full Updated setupEventListeners Function (Replace your existing function) ---
 
@@ -2125,6 +2140,7 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
 
 
