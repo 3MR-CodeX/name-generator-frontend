@@ -432,15 +432,17 @@
         </div>
 
         <div id="about-view" class="hidden">
+            <h1>About NameIT</h1>
+            <p class="description">The ultimate AI-powered tool for creative naming and branding.</p>
             <div class="about-section">
                 <h2><i class="fas fa-rocket"></i> Our Mission</h2>
-                <p>At NameIT, our mission is to eliminate the creative block that comes with naming. We believe a great name is the cornerstone of any great idea. As a solo developer, I built NameIT to provide the creative spark needed to find the perfect name that resonates and inspires—for fellow developers, authors, and entrepreneurs alike.</p>
+                <p>At NameIT, our mission is to eliminate the creative block that comes with naming. We believe that a great name is the cornerstone of any great idea. Whether you're a developer launching an app, an author writing a book, or an entrepreneur building a brand, NameIT provides the creative spark you need to find the perfect name that resonates and inspires.</p>
             </div>
             <div class="about-section features-grid">
-                 <div class="feature-card">
+                <div class="feature-card">
                     <i class="fas fa-brain"></i>
                     <h3>Intelligent Generation</h3>
-                    <p>Leverage advanced AI to get name suggestions that are contextually relevant, creative, and aligned with your specified style and category.</p>
+                    <p>Leverage the power of advanced AI to get name suggestions that are not just random, but contextually relevant, creative, and aligned with your specified style and category.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-cogs"></i>
@@ -462,37 +464,8 @@
                 <img src="Hexagon_starter.png" alt="NameIT AI" class="ai-logo">
                 <div>
                     <h2>Meet the NameIT Engine</h2>
-                    <p>The creative force behind NameIT is an advanced AI engine. By using specialized prompts to harness the power of a world-class language model, the system goes beyond simply combining words. It understands nuance, emotion, and market trends to craft names that are both memorable and meaningful. It's your tireless brainstorming partner, ready 24/7 to help you discover the perfect name.</p>
+                    <p>The creative force behind NameIT is our advanced AI engine. By using specialized prompts to harness the power of a world-class language model, our system goes beyond simply combining words. It understands nuance, emotion, and market trends to craft names that are both memorable and meaningful. It's your tireless brainstorming partner, ready 24/7 to help you discover the perfect name.</p>
                 </div>
-            </div>
-        </div>
-
-        <div id="contact-view" class="hidden">
-            <h1>Contact Us</h1>
-            <p class="description">Have a question or feedback? We'd love to hear from you.</p>
-            <div class="contact-form-container">
-                <div id="form-submission-message"></div>
-                
-                <div id="contact-login-prompt" class="hidden">
-                    <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
-                </div>
-
-                <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form">
-                    <div class="input-group">
-                        <label>Your Email</label>
-                        <p id="contact-user-email-display" class="contact-email-display"></p>
-                        <input type="hidden" id="contact-email" name="email">
-                    </div>
-                    <div class="input-group">
-                        <label for="contact-name">Your Name</label>
-                        <input type="text" id="contact-name" name="name" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="contact-message">Message</label>
-                        <textarea id="contact-message" name="message" required></textarea>
-                    </div>
-                    <button type="submit" id="contact-submit-btn" class="submit-btn">Send Message</button>
-                </form>
             </div>
         </div>
 
@@ -642,6 +615,7 @@
                     <label for="text-to-summarize">Text to Summarize</label>
                     <textarea id="text-to-summarize" placeholder="Paste your text here..." style="flex-grow: 1; min-height: 250px;"></textarea>
                     
+                    <!-- New wrapper for dropdowns -->
                     <div class="summarizer-options">
                         <div class="option-group">
                             <label for="summary-length">Summary Length</label>
@@ -727,8 +701,34 @@
                 <div id="combiner-history" class="history-inner"></div>
             </div>
         </div>
+        
+        <div id="contact-view" class="hidden">
+            <h1>Contact Us</h1>
+            <p class="description">Have a question or feedback? We'd love to hear from you.</p>
+            <div class="contact-form-container">
+                <div id="form-submission-message"></div>
+                
+                <div id="contact-login-prompt" class="hidden">
+                    <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
+                </div>
 
-        <!-- TERMS OF SERVICE VIEW -->
+                <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form">
+                    <!-- The user's email is now completely hidden -->
+                    <input type="hidden" id="contact-email" name="email">
+                    
+                    <div class="input-group">
+                        <label for="contact-name">Your Name</label>
+                        <input type="text" id="contact-name" name="name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="contact-message">Message</label>
+                        <textarea id="contact-message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" id="contact-submit-btn" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+
         <div id="terms-view" class="hidden">
             <div class="about-section">
                 <h2><i class="fas fa-file-contract"></i> Terms of Service</h2>
@@ -752,7 +752,6 @@
             </div>
         </div>
 
-        <!-- PRIVACY POLICY VIEW -->
         <div id="privacy-view" class="hidden">
             <div class="about-section">
                 <h2><i class="fas fa-user-shield"></i> Privacy Policy</h2>
@@ -829,3 +828,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+
