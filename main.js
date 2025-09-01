@@ -149,6 +149,42 @@ const manageSubscriptionBtn = document.getElementById('manage-subscription-btn')
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
 
+// --- NEW: Credit Cost Data ---
+const TIER_COSTS = {
+    "Anonymous": { "generate": 5, "custom_refine": 5 },
+    "Free Tier": { "generate": 5, "custom_refine": 5 },
+    "Starter Tier": { "generate": 2, "custom_refine": 2 },
+    "Pro Tier": { "generate": 1, "custom_refine": 1, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 25 },
+    "Business Tier": { "generate": 1, "custom_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
+};
+
+// --- NEW: Function to update UI with credit costs ---
+window.updateCreditCostsUI = (tier) => {
+    const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
+    
+    // A helper to safely update the text content of a cost display span
+    const setCost = (id, costValue, perName = false) => {
+        const el = document.getElementById(id);
+        if (el) {
+            let text = `(${costValue} Credits`;
+            if (perName) text += "/name";
+            text += ")";
+            el.textContent = text;
+        }
+    };
+
+    // Update all cost displays
+    setCost("generator-cost", costs.generate, true);
+    setCost("refiner-cost", costs.custom_refine, true);
+    setCost("summarize-cost", costs.summarize);
+    setCost("combine-words-cost", costs.combine_words);
+    setCost("check-availability-cost", costs.check_availability);
+    setCost("analyze-name-cost", costs.analyze_name);
+    setCost("generate-alternatives-cost", costs.generate_alternatives);
+    setCost("generate-available-alt-cost", costs.generate_available_alternatives);
+};
+
+
 
 
 
@@ -2190,4 +2226,5 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
