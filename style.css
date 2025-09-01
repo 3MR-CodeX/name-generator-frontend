@@ -2470,9 +2470,15 @@ body.light-theme {
     background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
 }
 
-/* --- TIER-BASED STYLING --- */
+/* --- TIER-BASED STYLING (NEW) --- */
 
-/* --- Pro Tier: "Cobalt" Theme --- */
+/* --- Pro Tier: "Regal Gold" Theme --- */
+@keyframes gold-border-glow {
+    0% { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+    50% { border-color: #FFD700; box-shadow: 0 0 25px rgba(255, 215, 0, 0.7); }
+    100% { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+}
+
 body[data-tier="pro"] .input-box,
 body[data-tier="pro"] .output-box,
 body[data-tier="pro"] .refine-section,
@@ -2481,45 +2487,59 @@ body[data-tier="pro"] .setting-section,
 body[data-tier="pro"] .about-section,
 body[data-tier="pro"] .contact-container,
 body[data-tier="pro"] .outer-input-box {
-    border-color: #0047AB; /* Cobalt Blue */
-    box-shadow: 0 0 10px rgba(0, 71, 171, 0.3);
-    transition: all 0.3s ease;
+    border: 1px solid #D4AF37;
+    background-color: rgba(20, 16, 5, 0.4); /* Faint gold bg */
 }
 
-body[data-tier="pro"] label {
-    color: #F5F5DC; /* Ivory */
+body[data-tier="pro"] textarea:focus,
+body[data-tier="pro"] input:focus {
+     animation: gold-border-glow 2s infinite;
+}
+
+body[data-tier="pro"] h1,
+body[data-tier="pro"] h2 {
+    color: #FFD700; /* Gold */
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 body[data-tier="pro"] .generate-btn,
 body[data-tier="pro"] .refine-btn,
 body[data-tier="pro"] .cta-button,
 body[data-tier="pro"] .submit-btn {
-    background: linear-gradient(45deg, #0047AB, #2a65c7);
-    border: 1px solid #2a65c7;
+    background: #D4AF37;
+    color: black;
+    font-weight: bold;
+    border: 1px solid #FFD700;
 }
-
-body[data-tier="pro"] .surprise-btn {
-    border-color: #0047AB;
-    color: #F5F5DC;
-}
-
-body[data-tier="pro"] .surprise-btn:hover {
-    background-color: #0047AB;
+body[data-tier="pro"] .generate-btn:hover,
+body[data-tier="pro"] .refine-btn:hover {
+    background: #FFD700;
 }
 
 body[data-tier="pro"] .topbar-title {
-    color: #F5F5DC;
+    color: #FFD700;
+    text-shadow: 0 0 8px #D4AF37;
 }
 
 body[data-tier="pro"] #top-bar {
-    border-bottom-color: #0047AB;
+    background-color: rgba(20, 16, 5, 0.85);
+    border-bottom: 2px solid #D4AF37;
 }
 
-/* --- Business Tier: "Regal Gold" Theme --- */
-@keyframes gold-border-glow {
-    0% { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
-    50% { border-color: #FFD700; box-shadow: 0 0 25px rgba(255, 215, 0, 0.7); }
-    100% { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+
+/* --- Business Tier: "Chroma Shift" Theme --- */
+@keyframes business-chroma-shift {
+    0%   { border-color: #a500ff; } /* Synthwave */
+    10%  { border-color: #d62828; } /* Sunset Blaze */
+    20%  { border-color: #0077b6; } /* Oceanic Citrus */
+    30%  { border-color: #FF0090; } /* Crimson Tide */
+    40%  { border-color: #008080; } /* Emerald Forest */
+    50%  { border-color: #9b59b6; } /* Cosmic Lilac */
+    60%  { border-color: #e74c3c; } /* Solar Flare */
+    70%  { border-color: #2c3e50; } /* Arctic Night */
+    80%  { border-color: #FF2400; } /* Scarlet */
+    90%  { border-color: #0047AB; } /* Cobalt */
+    100% { border-color: #a500ff; } /* Return to start */
 }
 
 body[data-tier="business"] .input-box,
@@ -2529,45 +2549,44 @@ body[data-tier="business"] .history-section,
 body[data-tier="business"] .setting-section,
 body[data-tier="business"] .about-section,
 body[data-tier="business"] .contact-container,
-body[data-tier="business"] .outer-input-box {
-    border: 1px solid #D4AF37;
-    background-color: rgba(20, 16, 5, 0.4); /* Faint gold bg */
-}
-
-body[data-tier="business"] textarea:focus,
-body[data-tier="business"] input:focus {
-     animation: gold-border-glow 2s infinite;
-}
-
-body[data-tier="business"] h1,
-body[data-tier="business"] h2 {
-    color: #FFD700; /* Gold */
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+body[data-tier="business"] .outer-input-box,
+body[data-tier="business"] #top-bar {
+    animation: business-chroma-shift 20s infinite linear;
+    border-width: 1px;
+    border-style: solid;
 }
 
 body[data-tier="business"] .generate-btn,
-body[data-tier="business"] .refine-btn,
-body[data-tier="business"] .cta-button,
-body[data-tier="business"] .submit-btn {
-    background: #D4AF37;
-    color: black;
-    font-weight: bold;
-    border: 1px solid #FFD700;
-}
-body[data-tier="business"] .generate-btn:hover,
-body[data-tier="business"] .refine-btn:hover {
-    background: #FFD700;
+body[data-tier="business"] .refine-btn {
+    position: relative;
+    overflow: hidden;
+    background: #2a2a2a;
+    border: none;
 }
 
-body[data-tier="business"] .topbar-title {
-    color: #FFD700;
-    text-shadow: 0 0 8px #D4AF37;
+body[data-tier="business"] .generate-btn::before,
+body[data-tier="business"] .refine-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 200%; height: 100%;
+    background: linear-gradient(90deg, #a500ff, #d62828, #0077b6, #FF0090, #008080, #9b59b6, #e74c3c, #2c3e50, #a500ff);
+    background-size: 50% 100%;
+    animation: business-button-scroll 15s infinite linear;
+    z-index: 0;
 }
 
-body[data-tier="business"] #top-bar {
-    background-color: rgba(20, 16, 5, 0.85);
-    border-bottom: 2px solid #D4AF37;
+body[data-tier="business"] .generate-btn span,
+body[data-tier="business"] .refine-btn span {
+    position: relative;
+    z-index: 1;
 }
+
+@keyframes business-button-scroll {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+}
+
 
 /* --- Credit Cost Display Styling --- */
 .credit-cost {
