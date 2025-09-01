@@ -147,6 +147,7 @@ body[data-tier="business"] .sidebar-business-design::after {
     height: 100%;
     background-color: var(--current-theme-color);
     z-index: -1;
-    clip-path: polygon(calc(100% - 2px) 5%, 100% 5%, 100% 95%, calc(100% - 2px) 95%);
+    clip-path: polygon(100% 5%, calc(100% - 2px) 5%, calc(100% - 2px) 95%, 100% 95%);
     transition: background-color 0.5s linear;
 }
+
