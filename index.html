@@ -241,6 +241,9 @@
         </div>
 
         <div id="availability-checker-view" class="hidden">
+            <div id="availability-checker-lock" class="feature-lock-banner hidden">
+                <i class="fas fa-lock"></i> The Availability Checker is a Pro feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
+            </div>
             <h1>Name Availability Check</h1>
             <p class="description">Check if your desired name is available as a domain and on social media.</p>
         
@@ -293,6 +296,12 @@
         </div>
 
         <div id="name-analyzer-view" class="hidden">
+             <div id="name-analyzer-lock" class="feature-lock-banner hidden">
+                <i class="fas fa-lock"></i> The Name Analyzer is a Pro feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
+            </div>
+            <div id="persona-analysis-lock" class="feature-lock-banner hidden" style="background-color: #3e2753;">
+                <i class="fas fa-star"></i> Persona Analysis is a Business feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> for the ultimate insights.
+            </div>
             <h1>Name Analyzer</h1>
             <p class="description">Get an AI-powered brandability check and targeted audience analysis.</p>
             <div class="input-section">
@@ -433,39 +442,34 @@
         <div id="about-view" class="hidden">
             <h1>About NameIT</h1>
             <p class="description">The ultimate AI-powered tool for creative naming and branding.</p>
-            
             <div class="about-section">
                 <h2><i class="fas fa-rocket"></i> Our Mission</h2>
-                <p>At NameIT, our mission is to eliminate the creative block that comes with naming. We believe that a great name is the cornerstone of any great idea. Whether you're a developer launching an app, an author writing a book, or an entrepreneur building a brand, NameIT provides the creative spark you need to find the perfect name that resonates, inspires, and stands out.</p>
+                <p>At NameIT, our mission is to eliminate the creative block that comes with naming. We believe that a great name is the cornerstone of any great idea. Whether you're a developer launching an app, an author writing a book, or an entrepreneur building a brand, NameIT provides the creative spark you need to find the perfect name that resonates and inspires.</p>
             </div>
-
-            <div class="about-section">
-                <h2><i class="fas fa-lightbulb"></i> How It Works</h2>
-                <div class="how-it-works-diagram">
+             <div class="about-section how-it-works">
+                <h2><i class="fas fa-sitemap"></i> How It Works</h2>
+                <div class="diagram">
                     <div class="diagram-step">
-                        <div class="diagram-icon"><i class="fas fa-keyboard"></i></div>
-                        <h3>1. Input Your Idea</h3>
-                        <p>Describe your concept, add keywords, and set your desired style.</p>
+                        <div class="step-icon"><i class="fas fa-lightbulb"></i></div>
+                        <h3>1. Input Idea</h3>
+                        <p>Describe your concept, keywords, and desired style.</p>
                     </div>
                     <div class="diagram-arrow">&rarr;</div>
                     <div class="diagram-step">
-                        <div class="diagram-icon">
-                            <svg class="ai-brain-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 2a48 48 0 00-34.6 82.6l.7-.7c1.8-1.8 4.2-2.9 6.7-2.9h54.4c2.5 0 4.9 1.1 6.7 2.9l.7.7A48 48 0 0050 2zM28.5 42.1a3.6 3.6 0 11-7.2 0 3.6 3.6 0 017.2 0zm10.8 14.4a3.6 3.6 0 11-7.2 0 3.6 3.6 0 017.2 0zm21.6 0a3.6 3.6 0 11-7.2 0 3.6 3.6 0 017.2 0zm10.8-14.4a3.6 3.6 0 11-7.2 0 3.6 3.6 0 017.2 0zM50 67.9a3.6 3.6 0 11-7.2 0 3.6 3.6 0 017.2 0zM35.9 52.3a3.6 3.6 0 110-7.2h28.2a3.6 3.6 0 110 7.2H35.9z"/></svg>
-                        </div>
-                        <h3>2. AI Analysis</h3>
-                        <p>Our engine processes your request, understanding nuance and context.</p>
+                        <div class="step-icon"><i class="fas fa-cogs"></i></div>
+                        <h3>2. AI Generation</h3>
+                        <p>Our engine analyzes your input and generates creative names.</p>
                     </div>
                     <div class="diagram-arrow">&rarr;</div>
                     <div class="diagram-step">
-                        <div class="diagram-icon"><i class="fas fa-list-alt"></i></div>
-                        <h3>3. Get Names</h3>
-                        <p>Receive a curated list of names with explanations, ready for you to refine.</p>
+                        <div class="step-icon"><i class="fas fa-wrench"></i></div>
+                        <h3>3. Refine & Analyze</h3>
+                        <p>Iterate on suggestions and check their availability and brandability.</p>
                     </div>
                 </div>
             </div>
-
             <div class="about-section features-grid">
-                <div class="feature-card">
+                 <div class="feature-card">
                     <i class="fas fa-brain"></i>
                     <h3>Intelligent Generation</h3>
                     <p>Leverage the power of advanced AI to get name suggestions that are not just random, but contextually relevant, creative, and aligned with your specified style and category.</p>
@@ -480,27 +484,62 @@
                     <h3>Instant Analysis</h3>
                     <p>Don't just find a name, validate it. Our tools allow you to instantly check domain and social media availability, and get an AI-powered brandability analysis.</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-paint-brush"></i>
-                    <h3>Personalized Experience</h3>
-                    <p>Make NameIT your own. Customize the theme, fonts, and other settings to create a workspace that inspires you. Your history is always saved for easy access.</p>
-                </div>
             </div>
              <div class="about-section meet-the-ai">
                 <img src="Hexagon_starter.png" alt="NameIT AI" class="ai-logo">
                 <div>
-                    <h2>Meet the NameIT Engine</h2>
-                    <p>The creative force behind NameIT is our advanced AI engine, meticulously fine-tuned for the art of naming. By using specialized prompts to harness the power of a world-class language model, our system goes beyond simply combining words. It understands nuance, emotion, and market trends to craft names that are both memorable and meaningful. It's your tireless brainstorming partner, ready 24/7 to help you discover the perfect name that will define your next big thing.</p>
+                    <h2>The NameIT Engine</h2>
+                    <p>The creative force behind NameIT is our advanced AI engine. By using specialized prompts to harness the power of a world-class language model, our system goes beyond simply combining words. It understands nuance, emotion, and market trends to craft names that are both memorable and meaningful. It's your tireless brainstorming partner, ready 24/7 to help you discover the perfect name.</p>
                 </div>
             </div>
         </div>
 
-
         <div id="premium-view" class="hidden">
-            <h1><i class="fas fa-crown"></i> NameIT Premium Packs</h1>
-            <p class="description">Choose the right pack to unlock your full creative potential. One-time payments, lifetime access.</p>
+            <h1><i class="fas fa-crown"></i> Unlock Your Creative Potential</h1>
+            <p class="description">NameIT's premium tools are designed to give you a competitive edge. Find the perfect plan below.</p>
             
             <div class="premium-container">
+                <!-- NEW: Feature Catalog Section -->
+                <div class="feature-catalog">
+                    <div class="feature-catalog-card">
+                        <i class="fas fa-search-dollar"></i>
+                        <h3>Availability Checker</h3>
+                        <p>Instantly check if your name is available across dozens of social media platforms and domain extensions (.com, .io, .ai, etc.). Save hours of manual searching.</p>
+                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
+                    </div>
+                    <div class="feature-catalog-card">
+                        <i class="fas fa-microscope"></i>
+                        <h3>Name Analyzer</h3>
+                        <p>Get a basic AI-powered brandability analysis. The AI checks for potential conflicts, memorability, and pronunciation issues to ensure your name is solid.</p>
+                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
+                    </div>
+                    <div class="feature-catalog-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Audience Persona Analysis</h3>
+                        <p>Go deeper with an advanced analysis tailored to a specific audience. The AI scores your name on cultural resonance, market fitness, and emotional connection for your target demographic.</p>
+                        <span class="tier-tag business-tier-tag">Business Tier</span>
+                    </div>
+                    <div class="feature-catalog-card">
+                        <i class="fas fa-cut"></i>
+                        <h3>Text Summarizer</h3>
+                        <p>Distill long-form text into concise summaries. Perfect for creating taglines, headlines, or understanding the core message of any document instantly.</p>
+                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
+                    </div>
+                    <div class="feature-catalog-card">
+                        <i class="fas fa-magic"></i>
+                        <h3>Word Combiner</h3>
+                        <p>Merge multiple ideas or keywords into a single, unique, and brandable new word. The AI intelligently blends phonetics and meaning to create memorable portmanteaus.</p>
+                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
+                    </div>
+                    <div class="feature-catalog-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Available Alternatives</h3>
+                        <p>If your name is taken, the AI will generate a list of similar, high-quality alternatives and automatically check their availability for you, finding a name that works.</p>
+                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
+                    </div>
+                </div>
+
+                <h2 class="pricing-title">Choose Your Plan</h2>
                 <div class="pricing-grid">
                     <div class="pricing-card">
                         <div class="plan-header">
@@ -520,7 +559,7 @@
                             <li class="feature-item excluded"><i class="fas fa-times"></i> Basic Name Analyzer</li>
                             <li class="feature-item excluded"><i class="fas fa-times"></i> Priority Support</li>
                         </ul>
-                        <button class="cta-button" onclick="purchasePlan('starter')">Get Started</button>
+                        <button class="cta-button" onclick="purchasePlan('starter', 4.99, 1000)">Get Started</button>
                     </div>
 
                     <div class="pricing-card popular">
@@ -542,7 +581,7 @@
                             <li class="feature-item included"><i class="fas fa-check"></i> Basic Name Analyzer</li>
                             <li class="feature-item included"><i class="fas fa-check"></i> Priority Support</li>
                         </ul>
-                        <button class="cta-button" onclick="purchasePlan('pro')">Go Pro</button>
+                        <button class="cta-button" onclick="purchasePlan('pro', 9.99, 2500)">Go Pro</button>
                     </div>
 
                     <div class="pricing-card business-highlight">
@@ -564,7 +603,7 @@
                             <li class="feature-item included"><i class="fas fa-star"></i> Logo Generator (Soon)</li>
                             <li class="feature-item included"><i class="fas fa-star"></i> Top Priority Support</li>
                         </ul>
-                        <button class="cta-button" onclick="purchasePlan('business')">Go Business</button>
+                        <button class="cta-button" onclick="purchasePlan('business', 19.99, 6000)">Go Business</button>
                     </div>
                 </div>
 
@@ -596,28 +635,28 @@
                         <div class="plan-header"><h2>Quick Top-up</h2></div>
                         <div class="plan-price">$0.99</div>
                         <div class="credit-amount"><i class="fas fa-coins"></i> 100 Credits</div>
-                        <button class="cta-button" onclick="purchaseCredits(100)">Buy Now</button>
+                        <button class="cta-button" onclick="purchaseCredits(100, 0.99)">Buy Now</button>
                     </div>
                     
                     <div class="pricing-card">
                         <div class="plan-header"><h2>Refill</h2></div>
                         <div class="plan-price">$2.99</div>
                         <div class="credit-amount"><i class="fas fa-coins"></i> 500 Credits</div>
-                        <button class="cta-button" onclick="purchaseCredits(500)">Buy Now</button>
+                        <button class="cta-button" onclick="purchaseCredits(500, 2.99)">Buy Now</button>
                     </div>
 
                     <div class="pricing-card">
                          <div class="plan-header"><h2>Boost</h2></div>
                         <div class="plan-price">$4.99</div>
                         <div class="credit-amount"><i class="fas fa-coins"></i> 1,200 Credits</div>
-                        <button class="cta-button" onclick="purchaseCredits(1200)">Buy Now</button>
+                        <button class="cta-button" onclick="purchaseCredits(1200, 4.99)">Buy Now</button>
                     </div>
 
                     <div class="pricing-card">
                         <div class="plan-header"><h2>Mega Pack</h2></div>
                         <div class="plan-price">$9.99</div>
                         <div class="credit-amount"><i class="fas fa-coins"></i> 3,000 Credits</div>
-                        <button class="cta-button" onclick="purchaseCredits(3000)">Buy Now</button>
+                        <button class="cta-button" onclick="purchaseCredits(3000, 9.99)">Buy Now</button>
                     </div>
                 </div>
             </div>
@@ -635,6 +674,9 @@
         </div>
 
         <div id="summarizer-view" class="hidden">
+            <div id="summarizer-lock" class="feature-lock-banner hidden">
+                <i class="fas fa-lock"></i> The Text Summarizer is a Pro feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
+            </div>
             <h1>Text Summarizer</h1>
             <p class="description">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
             <div class="input-section">
@@ -686,6 +728,9 @@
         </div>
 
         <div id="word-combiner-view" class="hidden">
+            <div id="word-combiner-lock" class="feature-lock-banner hidden">
+                <i class="fas fa-lock"></i> The Word Combiner is a Pro feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
+            </div>
             <h1>Word Combiner</h1>
             <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
             <div class="input-section">
@@ -731,55 +776,56 @@
         
         <div id="contact-view" class="hidden">
             <h1>Contact Us</h1>
-            <p class="description">Have a question, feedback, or a collaboration idea? We'd love to hear from you.</p>
-        
-            <div class="contact-grid">
-                <div class="contact-info-section">
+            <p class="description">Have a question or feedback? We'd love to hear from you.</p>
+            <div class="contact-container">
+                <div class="contact-info">
                     <h3>Get in Touch</h3>
-                    <p>For the fastest response, please use the contact form. If you prefer email, you can reach us at the addresses below.</p>
-                    <div class="contact-card">
-                        <i class="fas fa-headset"></i>
-                        <h4>General & Technical Support</h4>
-                        <p>For help with the app, questions about features, or to report a bug.</p>
-                        <a href="mailto:support@nameitapp.com">support@nameitapp.com</a>
+                    <p>For the fastest response, please use the contact form. We typically reply within 24 business hours.</p>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>support@nameitapp.com</span>
                     </div>
-                    <div class="contact-card">
-                        <i class="fas fa-briefcase"></i>
-                        <h4>Business & Press Inquiries</h4>
-                        <p>For partnership opportunities, media requests, and other business-related matters.</p>
-                        <a href="mailto:business@nameitapp.com">business@nameitapp.com</a>
+                    <div class="info-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>For technical issues, please include your User ID if possible.</span>
                     </div>
-                     <h3>Follow Us</h3>
-                     <p>Stay up-to-date with the latest news, features, and naming tips on our social media channels.</p>
                     <div class="social-links">
                         <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-        
-                <div class="contact-form-container">
-                    <h3>Send a Message</h3>
+                <div class="contact-form-wrapper">
                     <div id="form-submission-message"></div>
                     <div id="contact-login-prompt" class="hidden">
                         <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
                     </div>
-                    <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form">
-                        <input type="hidden" id="contact-email" name="email">
+                    <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form hidden">
+                        <input type="hidden" id="contact-email-hidden" name="email">
                         <div class="input-group">
                             <label for="contact-name">Your Name</label>
                             <input type="text" id="contact-name" name="name" required>
+                        </div>
+                         <div class="input-group">
+                            <label for="contact-subject">Subject</label>
+                            <select id="contact-subject" name="subject" required>
+                                <option value="General Inquiry">General Inquiry</option>
+                                <option value="Technical Support">Technical Support</option>
+                                <option value="Billing Question">Billing Question</option>
+                                <option value="Feedback & Suggestions">Feedback & Suggestions</option>
+                            </select>
                         </div>
                         <div class="input-group">
                             <label for="contact-message">Message</label>
                             <textarea id="contact-message" name="message" required></textarea>
                         </div>
+                        <p id="contact-user-email-display" class="email-display"></p>
                         <button type="submit" id="contact-submit-btn" class="submit-btn">Send Message</button>
                     </form>
                 </div>
             </div>
         </div>
+
 
         <div id="terms-view" class="hidden">
             <div class="about-section">
@@ -880,3 +926,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+
