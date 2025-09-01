@@ -2469,3 +2469,93 @@ body.light-theme {
 .business-tier-tag {
     background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
 }
+
+/* --- NEW: Tier-Based Theming System --- */
+
+/* Default (Free Tier - Grayscale) */
+body[data-tier-theme="free"],
+body[data-tier-theme="anonymous"] {
+    --tier-main-color: #888;
+    --tier-glow-color: #aaa;
+    --tier-button-text-color: #1a1a1a;
+}
+
+/* Starter Tier */
+body[data-tier-theme="starter"] {
+    --tier-main-color: var(--secondary-accent);
+    --tier-glow-color: var(--secondary-accent);
+    --tier-button-text-color: white;
+}
+
+/* Pro Tier */
+body[data-tier-theme="pro"] {
+    --tier-main-color: var(--primary-accent);
+    --tier-glow-color: var(--line-accent-glow);
+    --tier-button-text-color: white;
+}
+
+/* Business Tier (Animated) */
+body[data-tier-theme="business"] {
+    --tier-main-color: var(--primary-accent);
+    --tier-glow-color: var(--line-accent-default);
+    --tier-button-text-color: white;
+}
+
+/* Apply Tier Colors to Elements */
+.generate-btn, .refine-btn, .cta-button, .settings-btn.premium-btn,
+.import-history-btn, ::-webkit-scrollbar-thumb {
+    background-color: var(--tier-main-color);
+    border-color: var(--tier-main-color);
+    color: var(--tier-button-text-color);
+}
+
+.surprise-btn {
+    border-color: var(--tier-main-color);
+}
+.surprise-btn:hover:not(:disabled) {
+    background-color: var(--tier-main-color);
+    color: var(--tier-button-text-color);
+}
+
+.feature-lock-banner {
+    border-color: var(--tier-main-color);
+}
+.feature-lock-banner a {
+    color: var(--tier-glow-color);
+}
+
+.user-profile-pfp {
+    border-color: var(--tier-glow-color);
+}
+.user-profile-container:hover .user-profile-pfp {
+    box-shadow: 0 0 10px 2px var(--tier-glow-color);
+}
+
+/* ... (other selectors to apply tier colors) ... */
+
+
+/* --- Business Tier Animations --- */
+body[data-tier-theme="business"] .generate-btn,
+body[data-tier-theme="business"] .cta-button {
+    background: linear-gradient(90deg, var(--tier-main-color), var(--tier-glow-color), var(--tier-main-color));
+    background-size: 200% 100%;
+    animation: gradient-animation 4s infinite linear;
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+
+/* --- Credit Cost Display --- */
+.credit-cost-display {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 2px 8px;
+    font-size: 0.8em;
+    font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    vertical-align: middle;
+}
