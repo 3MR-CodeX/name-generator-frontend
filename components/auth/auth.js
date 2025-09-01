@@ -1,4 +1,4 @@
-/// components/auth/auth.js
+// components/auth/auth.js
 
 // These functions are now globally accessible
 function openSignInModal() {
@@ -78,16 +78,22 @@ function initializeAuth() {
         }
     };
     
-    function updateSubscriptionDisplay(data) {
+    function updateSubscriptionDisplay(tier, credits) {
         if (tierBadge) {
-            tierBadge.textContent = data.tier;
+            tierBadge.textContent = tier;
             tierBadge.className = 'tier-badge';
-            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Premium Tier": 'premium-tier', "Business Tier": 'business-tier' };
-            if (tiers[data.tier]) {
-                tierBadge.classList.add(tiers[data.tier]);
+            const tiers = { 
+                "Anonymous": 'free-tier', 
+                "Free Tier": 'free-tier', 
+                "Starter Tier": 'free-tier',
+                "Pro Tier": 'premium-tier', 
+                "Business Tier": 'business-tier' 
+            };
+            if (tiers[tier]) {
+                tierBadge.classList.add(tiers[tier]);
             }
         }
-        window.updateGenerationCountUI(data.credits);
+        window.updateGenerationCountUI(credits);
     }
     
     window.updateUserStatusUI = (user) => {
@@ -122,14 +128,15 @@ function initializeAuth() {
                     if(surpriseBtn) surpriseBtn.disabled = false;
                     userStatusContainer.classList.remove('hidden');
                     
-                    user.getIdToken().then(token => {
+                    user.getIdToken(true).then(token => { // Force token refresh
                         fetch(`${BACKEND_URL}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
-                        .then(res => res.json())
+                        .then(res => res.ok ? res.json() : { tier: 'Free Tier', credits: 0 })
                         .then(status => {
-                            updateSubscriptionDisplay({
-                                tier: status.tier,
-                                credits: status.credits
-                            });
+                            window.currentUserTier = status.tier;
+                            updateSubscriptionDisplay(status.tier, status.credits);
+                            if(typeof window.updateFeatureLocks === 'function') {
+                                window.updateFeatureLocks(status.tier);
+                            }
                         });
                     });
                 } else {
@@ -139,6 +146,10 @@ function initializeAuth() {
                     verificationNotice.classList.remove('hidden');
                     verificationNotice.innerHTML = `Please check your inbox to verify your email address. <a id="resend-verification">Resend verification email.</a>`;
                     document.getElementById('resend-verification').addEventListener('click', resendVerificationEmail);
+                    window.currentUserTier = 'Free Tier'; // Not verified is still free tier
+                     if(typeof window.updateFeatureLocks === 'function') {
+                        window.updateFeatureLocks('Free Tier');
+                    }
                 }
             });
         } else { // --- USER IS NOT LOGGED IN (ANONYMOUS) ---
@@ -148,10 +159,11 @@ function initializeAuth() {
             
             const anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
             userStatusContainer.classList.remove('hidden');
-            updateSubscriptionDisplay({
-                tier: "Anonymous",
-                credits: Math.max(0, 25 - anonGenerations)
-            });
+            window.currentUserTier = 'Anonymous';
+            updateSubscriptionDisplay("Anonymous", Math.max(0, 25 - anonGenerations));
+             if(typeof window.updateFeatureLocks === 'function') {
+                window.updateFeatureLocks('Anonymous');
+            }
         }
     };
 
@@ -261,3 +273,4 @@ function initializeAuth() {
         }
     }
 }
+
