@@ -2470,113 +2470,113 @@ body.light-theme {
     background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
 }
 
-/* --- Credit Cost Display --- */
-.credit-cost {
-    font-size: 0.75em;
-    font-weight: 400;
-    margin-left: 8px;
-    opacity: 0.8;
-    color: #fff;
-    background-color: rgba(0,0,0,0.3);
-    padding: 2px 6px;
-    border-radius: 4px;
-}
+/* --- TIER-BASED STYLING --- */
 
-/* --- TIER-BASED STYLING SYSTEM --- */
-
-/* --- Tier: FREE --- */
-/* Applies a grayscale filter to the main content for a clean, no-color look. */
-body[data-tier="free"] .main-content-wrapper {
-    filter: grayscale(100%);
-}
-body[data-tier="free"] #top-bar {
-    --primary-accent: #888;
-    --secondary-accent: #666;
-    --line-accent-default: #999;
-    --line-accent-glow: #aaa;
-}
-
-/* --- Tier: STARTER --- */
-/* Highlights key elements with the theme's secondary color. */
-body[data-tier="starter"] .input-box:focus-within,
-body[data-tier="starter"] .output-box,
-body[data-tier="starter"] .pricing-card:hover {
-    border-color: var(--secondary-accent);
-    box-shadow: 0 0 10px -2px var(--secondary-accent);
-}
-body[data-tier="starter"] .generate-btn,
-body[data-tier="starter"] .cta-button,
-body[data-tier="starter"] .tier-badge.premium-tier {
-    background-color: var(--secondary-accent);
-}
-body[data-tier="starter"] .user-profile-pfp {
-    border-color: var(--secondary-accent);
-}
-
-/* --- Tier: PRO --- */
-/* Upgrades highlights to the theme's primary color for a more vibrant feel. */
-body[data-tier="pro"] .input-box:focus-within,
+/* --- Pro Tier: "Cobalt" Theme --- */
+body[data-tier="pro"] .input-box,
 body[data-tier="pro"] .output-box,
-body[data-tier="pro"] .pricing-card:hover {
-    border-color: var(--primary-accent);
-    box-shadow: 0 0 12px -1px var(--primary-accent);
-}
-body[data-tier="pro"] .generate-btn,
-body[data-tier="pro"] .cta-button,
-body[data-tier="pro"] .tier-badge.premium-tier {
-    background-color: var(--primary-accent);
-}
-body[data-tier="pro"] .user-profile-pfp {
-    border-color: var(--primary-accent);
-}
-body[data-tier="pro"] .surprise-btn {
-    border-color: var(--primary-accent);
-}
-body[data-tier="pro"] .surprise-btn:hover {
-    background-color: var(--primary-accent);
+body[data-tier="pro"] .refine-section,
+body[data-tier="pro"] .history-section,
+body[data-tier="pro"] .setting-section,
+body[data-tier="pro"] .about-section,
+body[data-tier="pro"] .contact-container,
+body[data-tier="pro"] .outer-input-box {
+    border-color: #0047AB; /* Cobalt Blue */
+    box-shadow: 0 0 10px rgba(0, 71, 171, 0.3);
+    transition: all 0.3s ease;
 }
 
-/* --- Tier: BUSINESS (ANIMATED) --- */
-/* Adds a premium animated gradient border to key interactive elements. */
-@keyframes animated-gradient-border {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+body[data-tier="pro"] label {
+    color: #F5F5DC; /* Ivory */
+}
+
+body[data-tier="pro"] .generate-btn,
+body[data-tier="pro"] .refine-btn,
+body[data-tier="pro"] .cta-button,
+body[data-tier="pro"] .submit-btn {
+    background: linear-gradient(45deg, #0047AB, #2a65c7);
+    border: 1px solid #2a65c7;
+}
+
+body[data-tier="pro"] .surprise-btn {
+    border-color: #0047AB;
+    color: #F5F5DC;
+}
+
+body[data-tier="pro"] .surprise-btn:hover {
+    background-color: #0047AB;
+}
+
+body[data-tier="pro"] .topbar-title {
+    color: #F5F5DC;
+}
+
+body[data-tier="pro"] #top-bar {
+    border-bottom-color: #0047AB;
+}
+
+/* --- Business Tier: "Regal Gold" Theme --- */
+@keyframes gold-border-glow {
+    0% { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+    50% { border-color: #FFD700; box-shadow: 0 0 25px rgba(255, 215, 0, 0.7); }
+    100% { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
 }
 
 body[data-tier="business"] .input-box,
+body[data-tier="business"] .output-box,
+body[data-tier="business"] .refine-section,
+body[data-tier="business"] .history-section,
+body[data-tier="business"] .setting-section,
+body[data-tier="business"] .about-section,
+body[data-tier="business"] .contact-container,
+body[data-tier="business"] .outer-input-box {
+    border: 1px solid #D4AF37;
+    background-color: rgba(20, 16, 5, 0.4); /* Faint gold bg */
+}
+
+body[data-tier="business"] textarea:focus,
+body[data-tier="business"] input:focus {
+     animation: gold-border-glow 2s infinite;
+}
+
+body[data-tier="business"] h1,
+body[data-tier="business"] h2 {
+    color: #FFD700; /* Gold */
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
 body[data-tier="business"] .generate-btn,
-body[data-tier="business"] .pricing-card.business-highlight {
-    position: relative;
-    border: 2px solid transparent;
-    background-clip: padding-box;
+body[data-tier="business"] .refine-btn,
+body[data-tier="business"] .cta-button,
+body[data-tier="business"] .submit-btn {
+    background: #D4AF37;
+    color: black;
+    font-weight: bold;
+    border: 1px solid #FFD700;
+}
+body[data-tier="business"] .generate-btn:hover,
+body[data-tier="business"] .refine-btn:hover {
+    background: #FFD700;
 }
 
-body[data-tier="business"] .input-box::before,
-body[data-tier="business"] .generate-btn::before,
-body[data-tier="business"] .pricing-card.business-highlight::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    z-index: -1;
-    margin: -2px; /* Must match border width */
-    border-radius: inherit;
-    background: linear-gradient(120deg, var(--primary-accent), var(--secondary-accent), var(--line-accent-default), var(--primary-accent));
-    background-size: 300% 300%;
-    animation: animated-gradient-border 4s ease infinite;
+body[data-tier="business"] .topbar-title {
+    color: #FFD700;
+    text-shadow: 0 0 8px #D4AF37;
 }
 
-body[data-tier="business"] .user-profile-pfp {
-    border-color: transparent;
-    position: relative;
-    background-clip: padding-box;
+body[data-tier="business"] #top-bar {
+    background-color: rgba(20, 16, 5, 0.85);
+    border-bottom: 2px solid #D4AF37;
 }
-body[data-tier="business"] .user-profile-pfp::before {
-     content: '';
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    z-index: -1;
-    margin: -2px;
-    border-radius: inherit;
-    background: linear-gradient(120deg, var(--primary-accent), var(--line-accent-default));
+
+/* --- Credit Cost Display Styling --- */
+.credit-cost {
+    float: right;
+    font-size: 0.8em;
+    font-weight: 400;
+    color: #aaa;
+    background-color: rgba(58, 58, 58, 0.75);
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid #4a4a4a;
 }
