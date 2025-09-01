@@ -17,7 +17,7 @@
 <body>
     <!-- Loading Animation -->
     <div id="loader-wrapper">
-        <img src="Hexagon_starter.png" alt="Loading..." class="loader-hexagon">
+        <div id="loader-hexagon-icon" class="loader-hexagon"></div>
     </div>
 
     <div id="background-container">
@@ -165,7 +165,7 @@
                     </div>
                 </div>
                 <div class="button-section">
-                    <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
+                    <button class="generate-btn" onclick="generateName()">🎯 Generate Names <span class="credit-cost" id="generator-cost"></span></button>
                     <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
                 </div>
                 <div id="more-like-this-section">
@@ -213,7 +213,7 @@
                 </div>
             </div>
             <div class="button-section">
-                <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
+                <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name <span class="credit-cost" id="refiner-cost"></span></button>
             </div>
             <div class="container">
                 <div id="refiner-loading-placeholder" class="hidden"></div>
@@ -281,7 +281,7 @@
                 </div>
             
                 <div class="button-section" style="margin-top: 20px; margin-bottom: 0;">
-                    <button id="check-availability-btn" class="generate-btn">🔍 Check Availability</button>
+                    <button id="check-availability-btn" class="generate-btn">🔍 Check Availability <span class="credit-cost" id="check-availability-cost"></span></button>
                 </div>
             </div>
         
@@ -289,7 +289,7 @@
             
             <div id="available-alternatives-section" class="hidden" style="margin-top: 20px;">
                 <div class="button-section" style="margin-bottom: 20px;">
-                    <button id="generate-available-alt-btn" class="generate-btn">💡 Generate Available Alternatives</button>
+                    <button id="generate-available-alt-btn" class="generate-btn">💡 Generate Available Alternatives <span class="credit-cost" id="generate-available-alt-cost"></span></button>
                 </div>
                 <div id="available-alternatives-results"></div>
             </div>
@@ -332,11 +332,11 @@
                 </div>
             </div>
             <div class="button-section" style="margin-top: -20px;">
-                <button id="analyze-name-btn" class="generate-btn">🔬 Analyze Name</button>
+                <button id="analyze-name-btn" class="generate-btn">🔬 Analyze Name <span class="credit-cost" id="analyze-name-cost"></span><span class="credit-cost" id="analyze-persona-cost"></span></button>
             </div>
             <div id="analyzer-results-container"></div>
             <div id="alternatives-generator-section" class="button-section hidden">
-                <button id="generate-alternatives-btn" class="generate-btn">🧠 Generate Better Alternatives</button>
+                <button id="generate-alternatives-btn" class="generate-btn">🧠 Generate Better Alternatives <span class="credit-cost" id="generate-alternatives-cost"></span></button>
             </div>
             <div id="alternatives-results-container"></div>
         </div>
@@ -695,7 +695,7 @@
                 </div>
             </div>
             <div class="button-section">
-                <button id="summarize-btn" class="generate-btn">📝 Summarize Text</button>
+                <button id="summarize-btn" class="generate-btn">📝 Summarize Text <span class="credit-cost" id="summarize-cost"></span></button>
             </div>
             <div id="summarizer-loading-placeholder" class="hidden"></div>
             <div id="summary-results-container" class="output-section hidden">
@@ -735,7 +735,7 @@
                 </div>
             </div>
             <div class="button-section">
-                <button id="combine-words-btn" class="generate-btn">✨ Combine Words</button>
+                <button id="combine-words-btn" class="generate-btn">✨ Combine Words <span class="credit-cost" id="combine-words-cost"></span></button>
             </div>
             <div id="combiner-loading-placeholder" class="hidden"></div>
             <div id="combiner-results-container" class="output-section hidden">
@@ -913,3 +913,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+
