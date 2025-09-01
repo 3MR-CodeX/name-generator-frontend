@@ -1,4 +1,3 @@
-
 /* style.css */
 :root {
     --top-bar-height: 60px;
@@ -2423,155 +2422,62 @@ body.light-theme {
 }
 
 
-/* ... existing style.css content ... */
-
-/* --- UI Language & RTL Support --- */
-body.rtl {
-    direction: rtl;
+/* --- NEW Styles for About Page Diagrams --- */
+.how-it-works-diagram {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
 }
-
-body.rtl .sidebar-content ul li a:hover {
-    transform: translateX(-5px);
+.diagram-step {
+    flex: 1;
+    text-align: center;
 }
-
-body.rtl .topbar-title-container {
-    margin-left: 0;
-    margin-right: 20px;
-}
-
-/* --- Feature Locking --- */
-.page-header-container {
+.diagram-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(58, 58, 58, 0.75);
+    border: 2px solid var(--line-accent-default);
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    margin-bottom: -20px;
+    margin: 0 auto 15px auto;
 }
-
-.lock-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: rgba(241, 250, 140, 0.1);
-    border: 1px solid #f1fa8c;
-    color: #f1fa8c;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.9em;
-    font-weight: 500;
+.diagram-icon i {
+    font-size: 2.5em;
+    color: var(--line-accent-glow);
 }
-
-.tool-content-wrapper.locked {
-    opacity: 0.3;
-    pointer-events: none;
-    filter: blur(2px);
-    transition: opacity 0.3s ease, filter 0.3s ease;
+.diagram-step h3 {
+    font-size: 1.2em;
+    color: #ffffff;
+    margin-bottom: 8px;
 }
-
-/* --- Premium Tier-Specific Styles --- */
-body[data-tier="starter"] .pricing-card[data-tier="starter"] {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(80, 250, 123, 0.5);
+.diagram-step p {
+    font-size: 0.95em;
+    line-height: 1.5;
 }
-
-body[data-tier="pro"] .pricing-card[data-tier="pro"] {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px var(--primary-accent);
-}
-
-body[data-tier="business"] .pricing-card[data-tier="business"] {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px var(--line-accent-default);
-}
-
-/* Starter Tier Effects */
-body[data-tier="starter"] .generate-btn, 
-body[data-tier="starter"] .cta-button {
-    box-shadow: 0 0 15px -5px #50fa7b;
-}
-
-/* Pro Tier Effects */
-body[data-tier="pro"] #banner-background-effect {
-    animation: pro-glow 4s infinite alternate ease-in-out;
-}
-@keyframes pro-glow {
-    0% { filter: blur(2px) drop-shadow(0 0 15px var(--line-accent-default)); }
-    100% { filter: blur(4px) drop-shadow(0 0 30px var(--primary-accent)); }
-}
-body[data-tier="pro"] .generate-btn,
-body[data-tier="pro"] .cta-button {
-    transition: all 0.3s ease;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-}
-body[data-tier="pro"] .generate-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px -5px var(--primary-accent);
-}
-
-/* Business Tier Effects */
-body[data-tier="business"] #banner-img {
-    filter: drop-shadow(0 0 10px white);
-}
-body[data-tier="business"] .generate-btn,
-body[data-tier="business"] .cta-button {
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
-}
-body[data-tier="business"] .generate-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    transition: left 0.6s ease;
-    z-index: -1;
-}
-body[data-tier="business"] .generate-btn:hover::before {
-    left: 100%;
-}
-body[data-tier="business"] .topbar-title {
-    background: linear-gradient(45deg, var(--line-accent-default), var(--primary-accent), #fff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: business-text-flow 5s infinite linear;
-}
-@keyframes business-text-flow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-
-/* --- Improved About & Contact Page Styling --- */
-#about-view ul {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 15px;
-}
-
-#about-view ul li {
-    padding: 8px 0 8px 25px;
-    position: relative;
-    font-size: 1.1em;
-    color: #e0e0e0;
-}
-
-#about-view ul li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
+.diagram-arrow {
+    font-size: 2.5em;
     color: var(--line-accent-default);
-    font-weight: bold;
+    margin-top: 30px;
 }
 
-#contact-view .contact-form-container {
-    max-width: 800px;
+.ai-brain-svg {
+    width: 45px;
+    height: 45px;
+    fill: var(--line-accent-glow);
 }
 
-#contact-view .contact-form textarea {
-    min-height: 200px;
+
+@media (max-width: 768px) {
+    .how-it-works-diagram {
+        flex-direction: column;
+        align-items: center;
+    }
+    .diagram-arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+    }
 }
