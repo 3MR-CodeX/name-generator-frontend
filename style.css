@@ -1792,7 +1792,7 @@ body.light-theme {
     margin: 0 auto; /* Center on smaller screens */
 }
 
-/* --- NEW: 'How it Works' Diagram Styles --- */
+/* --- 'How it Works' Diagram Styles --- */
 .how-it-works .diagram {
     display: flex;
     justify-content: space-around;
@@ -2434,8 +2434,9 @@ body.light-theme {
 
 /* --- Premium Feature Locking --- */
 .feature-lock-banner {
-    background-color: var(--primary-accent);
-    color: white;
+    background-color: transparent;
+    border: 2px solid var(--primary-accent);
+    color: #cccccc;
     padding: 15px;
     text-align: center;
     border-radius: 8px;
@@ -2444,7 +2445,7 @@ body.light-theme {
 }
 
 .feature-lock-banner a {
-    color: #f0f0f0;
+    color: var(--line-accent-default);
     font-weight: bold;
     text-decoration: underline;
 }
