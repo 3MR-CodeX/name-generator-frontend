@@ -17,7 +17,7 @@
 <body>
     <!-- Loading Animation -->
     <div id="loader-wrapper">
-        <div id="loader-hexagon-icon" class="loader-hexagon"></div>
+        <img src="Hexagon_starter.png" alt="Loading..." class="loader-hexagon">
     </div>
 
     <div id="background-container">
@@ -126,7 +126,7 @@
             <div class="container">
                 <div class="input-section">
                     <div class="input-box textbox-column">
-                        <label for="prompt">What do you want to name?</label>
+                        <label for="prompt">What do you want to name? <span class="credit-cost" id="generator-cost"></span></label>
                         <textarea id="prompt" placeholder="Enter a description!"></textarea>
                         <label for="keywords">Keywords <span class="optional-text">(optional)</span></label>
                         <input type="text" id="keywords" placeholder="e.g., space, elegant, futuristic, powerful">
@@ -165,7 +165,7 @@
                     </div>
                 </div>
                 <div class="button-section">
-                    <button class="generate-btn" onclick="generateName()">🎯 Generate Names <span class="credit-cost" id="generator-cost"></span></button>
+                    <button class="generate-btn" onclick="generateName()">🎯 Generate Names</button>
                     <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
                 </div>
                 <div id="more-like-this-section">
@@ -180,7 +180,7 @@
             <p class="description">Provide a name and instructions to have the AI refine it for you.</p>
             <div class="input-section custom-refiner-inputs">
                 <div class="input-box">
-                     <label for="name-to-refine">Name to be Refined</label>
+                     <label for="name-to-refine">Name to be Refined <span class="credit-cost" id="refiner-cost"></span></label>
                     <textarea id="name-to-refine" placeholder="Type your name here..." style="flex-grow: 1;"></textarea>
                     <div class="slider-container relevancy-display">
                         <label>Creativity</label>
@@ -213,7 +213,7 @@
                 </div>
             </div>
             <div class="button-section">
-                <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name <span class="credit-cost" id="refiner-cost"></span></button>
+                <button id="custom-refine-btn" class="generate-btn">🤖 Refine Name</button>
             </div>
             <div class="container">
                 <div id="refiner-loading-placeholder" class="hidden"></div>
@@ -244,7 +244,7 @@
             <div id="availability-checker-lock" class="feature-lock-banner hidden">
                 <i class="fas fa-lock"></i> The Availability Checker is a Premium feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
             </div>
-            <h1>Name Availability Check</h1>
+            <h1>Name Availability Check <span class="credit-cost" id="check-availability-cost"></span></h1>
             <p class="description">Check if your desired name is available as a domain and on social media.</p>
         
             <div class="outer-input-box">
@@ -281,7 +281,7 @@
                 </div>
             
                 <div class="button-section" style="margin-top: 20px; margin-bottom: 0;">
-                    <button id="check-availability-btn" class="generate-btn">🔍 Check Availability <span class="credit-cost" id="check-availability-cost"></span></button>
+                    <button id="check-availability-btn" class="generate-btn">🔍 Check Availability</button>
                 </div>
             </div>
         
@@ -302,7 +302,7 @@
             <div id="persona-analysis-lock" class="feature-lock-banner hidden" style="background-color: transparent;">
                 <i class="fas fa-star"></i> Persona Analysis is a Business feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> for the ultimate insights.
             </div>
-            <h1>Name Analyzer</h1>
+            <h1>Name Analyzer <span class="credit-cost" id="analyze-name-cost"></span></h1>
             <p class="description">Get an AI-powered brandability check and targeted audience analysis.</p>
             <div class="input-section">
                 <div class="input-box" style="flex: 1;">
@@ -332,7 +332,7 @@
                 </div>
             </div>
             <div class="button-section" style="margin-top: -20px;">
-                <button id="analyze-name-btn" class="generate-btn">🔬 Analyze Name <span class="credit-cost" id="analyze-name-cost"></span><span class="credit-cost" id="analyze-persona-cost"></span></button>
+                <button id="analyze-name-btn" class="generate-btn">🔬 Analyze Name</button>
             </div>
             <div id="analyzer-results-container"></div>
             <div id="alternatives-generator-section" class="button-section hidden">
@@ -663,7 +663,7 @@
             <div id="summarizer-lock" class="feature-lock-banner hidden">
                 <i class="fas fa-lock"></i> The Text Summarizer is a Premium feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
             </div>
-            <h1>Text Summarizer</h1>
+            <h1>Text Summarizer <span class="credit-cost" id="summarize-cost"></span></h1>
             <p class="description">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
             <div class="input-section">
                 <div class="input-box" style="width: 100%; min-height: auto;">
@@ -695,7 +695,7 @@
                 </div>
             </div>
             <div class="button-section">
-                <button id="summarize-btn" class="generate-btn">📝 Summarize Text <span class="credit-cost" id="summarize-cost"></span></button>
+                <button id="summarize-btn" class="generate-btn">📝 Summarize Text</button>
             </div>
             <div id="summarizer-loading-placeholder" class="hidden"></div>
             <div id="summary-results-container" class="output-section hidden">
@@ -717,7 +717,7 @@
             <div id="word-combiner-lock" class="feature-lock-banner hidden">
                 <i class="fas fa-lock"></i> The Word Combiner is a Premium feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
             </div>
-            <h1>Word Combiner</h1>
+            <h1>Word Combiner <span class="credit-cost" id="combine-words-cost"></span></h1>
             <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
             <div class="input-section">
                 <div class="input-box" style="width: 100%; min-height: auto;">
@@ -735,7 +735,7 @@
                 </div>
             </div>
             <div class="button-section">
-                <button id="combine-words-btn" class="generate-btn">✨ Combine Words <span class="credit-cost" id="combine-words-cost"></span></button>
+                <button id="combine-words-btn" class="generate-btn">✨ Combine Words</button>
             </div>
             <div id="combiner-loading-placeholder" class="hidden"></div>
             <div id="combiner-results-container" class="output-section hidden">
@@ -873,7 +873,7 @@
                 </div>
             </div>
             <div id="refine_section" class="refine-section hidden">
-                <label for="edit_box">Refine the suggestions</label>
+                <label for="edit_box">Refine the suggestions <span class="credit-cost">(5 Credits)</span></label>
                 <textarea id="edit_box" placeholder="e.g., Make the names shorter and more playful"></textarea>
             </div>
             <div class="refine-button-section hidden">
@@ -913,4 +913,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
