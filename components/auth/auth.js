@@ -1,4 +1,4 @@
-// components/auth/auth.js
+/// components/auth/auth.js
 
 // These functions are now globally accessible
 function openSignInModal() {
@@ -78,86 +78,124 @@ function initializeAuth() {
         }
     };
     
-    // This is the updated updateUserStatusUI function in auth.js
+    function updateSubscriptionDisplay(data) {
+        if (tierBadge) {
+            tierBadge.textContent = data.tier;
+            tierBadge.className = 'tier-badge';
+            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Starter Tier": 'premium-tier', "Pro Tier": 'premium-tier', "Business Tier": 'business-tier' };
+            if (tiers[data.tier]) {
+                tierBadge.classList.add(tiers[data.tier]);
+            }
+        }
+        window.updateGenerationCountUI(data.credits);
+    }
+    
     window.updateUserStatusUI = (user) => {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
-    
-        // Hide all auth-related UI elements initially
-        const elementsToHide = [
-            "user-status-container", "verification-notice", "auth-buttons",
-            "user-profile", "sign-out-li", "full-history-li"
-        ];
-        elementsToHide.forEach(id => document.getElementById(id)?.classList.add('hidden'));
-    
-        const accountDropdown = document.getElementById("account-dropdown");
-        const tierDropdown = document.getElementById("tier-dropdown");
+
+        userStatusContainer.classList.add('hidden');
+        verificationNotice.classList.add('hidden');
+        authButtonsContainer.classList.add('hidden');
+        userProfileContainer.classList.add('hidden');
+        signOutLi.classList.add('hidden');
+        fullHistoryLi.classList.add('hidden');
         if (accountDropdown) accountDropdown.classList.remove('visible');
         if (tierDropdown) tierDropdown.classList.remove('visible');
-    
-        let currentTier = "Anonymous"; // Default tier
-    
+
         if (user) { // --- USER IS LOGGED IN ---
-            document.getElementById("user-profile").classList.remove('hidden');
-            document.getElementById("sign-out-li").classList.remove('hidden');
-            document.getElementById("full-history-li").classList.remove('hidden');
+            userProfileContainer.classList.remove('hidden');
+            signOutLi.classList.remove('hidden');
+            fullHistoryLi.classList.remove('hidden');
             userName.textContent = user.displayName || user.email;
             userPfp.src = user.photoURL || `https://placehold.co/40x40/800080/FFFFFF?text=${(user.email?.[0] || 'U').toUpperCase()}`;
+            
             document.getElementById('account-name-detail').textContent = user.displayName || 'Not set';
             document.getElementById('account-email-detail').textContent = user.email;
-            document.getElementById('account-created-detail').textContent = new Date(user.metadata.creationTime).toLocaleDateString();
-    
+            const creationDate = new Date(user.metadata.creationTime).toLocaleDateString();
+            document.getElementById('account-created-detail').textContent = creationDate;
+            
             user.reload().then(() => {
                 if (user.emailVerified) {
                     if(generateBtn) generateBtn.disabled = false;
                     if(surpriseBtn) surpriseBtn.disabled = false;
-                    document.getElementById("user-status-container").classList.remove('hidden');
+                    userStatusContainer.classList.remove('hidden');
                     
                     user.getIdToken().then(token => {
                         fetch(`${BACKEND_URL}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
                         .then(res => res.json())
                         .then(status => {
-                            currentTier = status.tier;
-                            document.getElementById("tier-badge").textContent = currentTier;
-                            window.updateGenerationCountUI(status.credits);
-                            window.updateCreditCostsUI(currentTier); // Update costs based on tier
-                            window.applyTierStyling(currentTier); // Apply visual theme for tier
-                            window.updateFeatureLocks(currentTier); // Lock/unlock features
+                            updateSubscriptionDisplay({
+                                tier: status.tier,
+                                credits: status.credits
+                            });
+                             // Set the data-tier for CSS styling
+                            if (status.tier && status.tier !== 'Free Tier' && status.tier !== 'Anonymous') {
+                                document.body.dataset.tier = status.tier.toLowerCase().replace(' tier', '');
+                            } else {
+                                delete document.body.dataset.tier;
+                            }
                         });
                     });
                 } else {
                     if(generateBtn) generateBtn.disabled = true;
                     if(surpriseBtn) surpriseBtn.disabled = true;
                     if(errorDiv) errorDiv.textContent = "";
-                    const notice = document.getElementById("verification-notice");
-                    notice.classList.remove('hidden');
-                    notice.innerHTML = `Please check your inbox to verify your email address. <a id="resend-verification">Resend verification email.</a>`;
+                    verificationNotice.classList.remove('hidden');
+                    verificationNotice.innerHTML = `Please check your inbox to verify your email address. <a id="resend-verification">Resend verification email.</a>`;
                     document.getElementById('resend-verification').addEventListener('click', resendVerificationEmail);
-                    currentTier = "Free Tier"; // Unverified users are on the Free Tier path
-                    window.applyTierStyling(currentTier);
-                    window.updateCreditCostsUI(currentTier);
-                    window.updateFeatureLocks(currentTier);
                 }
             });
         } else { // --- USER IS NOT LOGGED IN (ANONYMOUS) ---
             if(generateBtn) generateBtn.disabled = false;
             if(surpriseBtn) surpriseBtn.disabled = false;
-            document.getElementById("auth-buttons").classList.remove('hidden');
-            document.getElementById("user-status-container").classList.remove('hidden');
+            authButtonsContainer.classList.remove('hidden');
             
             const anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
-            document.getElementById("tier-badge").textContent = "Anonymous";
-            window.updateGenerationCountUI(Math.max(0, 25 - anonGenerations));
-            window.updateCreditCostsUI(currentTier); // Update costs for Anonymous tier
-            window.applyTierStyling(currentTier); // Apply visual theme for Anonymous tier
-            window.updateFeatureLocks(currentTier); // Lock features for Anonymous tier
+            userStatusContainer.classList.remove('hidden');
+            updateSubscriptionDisplay({
+                tier: "Anonymous",
+                credits: Math.max(0, 25 - anonGenerations)
+            });
+            delete document.body.dataset.tier; // Ensure no premium styles for anon users
         }
     };
 
     // --- Core Auth State Management ---
     auth.onAuthStateChanged(user => {
         window.updateUserStatusUI(user);
+
+        if (user && user.emailVerified) {
+            // Fetch the custom claims to get the user's tier
+            user.getIdTokenResult(true).then((idTokenResult) => {
+                // The backend now stores tier in a custom claim called 'tier'
+                const tier = idTokenResult.claims.tier || 'Free Tier';
+                
+                // Set the data-tier attribute on the body for dynamic CSS styling
+                document.body.dataset.tier = tier.toLowerCase().replace(' tier', '').replace(' ', '-');
+                
+                // Update which features are locked/unlocked based on the tier
+                if (typeof window.updateFeatureLocks === 'function') {
+                    window.updateFeatureLocks(tier);
+                }
+                
+                // Update the credit costs displayed in the UI
+                if (typeof window.updateCreditCostsUI === 'function') {
+                    window.updateCreditCostsUI(tier);
+                }
+            });
+        } else {
+            // Logic for logged-out or unverified users
+            delete document.body.dataset.tier;
+            if (typeof window.updateFeatureLocks === 'function') {
+                window.updateFeatureLocks('Anonymous');
+            }
+            if (typeof window.updateCreditCostsUI === 'function') {
+                window.updateCreditCostsUI('Anonymous');
+            }
+        }
+    
         if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
     });
 
@@ -261,4 +299,3 @@ function initializeAuth() {
         }
     }
 }
-
