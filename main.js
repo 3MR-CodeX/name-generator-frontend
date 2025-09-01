@@ -63,30 +63,23 @@ const BACKGROUND_ANIMATIONS = {
     'pattern12': 'vertical-crossing-bars'
 };
 
-// --- Tier-Specific Design Data ---
+// [CORRECTED] TIER_DESIGNS now uses colors for dynamic SVG generation
 const TIER_DESIGNS = {
-    "Anonymous": { tier_id: 'free', icon: 'Hexagon_free.png' },
-    "Free Tier": { tier_id: 'free', icon: 'Hexagon_free.png' },
-    "Starter Tier": { tier_id: 'starter', icon: 'Hexagon_starter.png' },
-    "Pro Tier": { tier_id: 'pro', icon: 'Hexagon_pro.png' },
-    "Business Tier": { tier_id: 'business', icon: 'Hexagon_business.png' }
+    "Anonymous":     { tier_id: 'free',     fill: '#888888' },
+    "Free Tier":     { tier_id: 'free',     fill: '#888888' },
+    "Starter Tier":  { tier_id: 'starter',  fill: 'var(--secondary-accent)' },
+    "Pro Tier":      { tier_id: 'pro',      fill: 'var(--primary-accent)' },
+    "Business Tier": { tier_id: 'business', useGradient: true }
 };
 
-// --- Credit Cost Data ---
+// [CORRECTED] Single, definitive TIER_COSTS object
 const TIER_COSTS = {
-    // Free users have limited, expensive generations.
     "Anonymous": { "generate": 5, "custom_refine": 10 },
     "Free Tier": { "generate": 5, "custom_refine": 10 },
-    // Starter gets a discount on core features.
     "Starter Tier": { "generate": 2, "custom_refine": 4 },
-    // Pro gets cheap core features and access to advanced tools.
     "Pro Tier": { "generate": 1, "custom_refine": 2, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 15, "generate_available_alternatives": 25, "generate_alternatives": 15 },
-    // Business gets the best rates and exclusive tools.
     "Business Tier": { "generate": 1, "custom_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 20, "generate_alternatives": 10, "analyze_persona": 25 }
 };
-
-
-
 
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
@@ -172,43 +165,8 @@ const manageSubscriptionBtn = document.getElementById('manage-subscription-btn')
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-// --- NEW: Credit Cost Data ---
-const TIER_COSTS = {
-    "Anonymous": { "generate": 5, "custom_refine": 5 },
-    "Free Tier": { "generate": 5, "custom_refine": 5 },
-    "Starter Tier": { "generate": 2, "custom_refine": 2 },
-    "Pro Tier": { "generate": 1, "custom_refine": 1, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 25 },
-    "Business Tier": { "generate": 1, "custom_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
-};
 
-// --- NEW: Function to update UI with credit costs ---
-window.updateCreditCostsUI = (tier) => {
-    const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
-    
-    // A helper to safely update the text content of a cost display span
-    const setCost = (id, costValue, perName = false) => {
-        const el = document.getElementById(id);
-        if (el) {
-            let text = `(${costValue} Credits`;
-            if (perName) text += "/name";
-            text += ")";
-            el.textContent = text;
-        }
-    };
-
-    // Update all cost displays
-    setCost("generator-cost", costs.generate, true);
-    setCost("refiner-cost", costs.custom_refine, true);
-    setCost("summarize-cost", costs.summarize);
-    setCost("combine-words-cost", costs.combine_words);
-    setCost("check-availability-cost", costs.check_availability);
-    setCost("analyze-name-cost", costs.analyze_name);
-    setCost("generate-alternatives-cost", costs.generate_alternatives);
-    setCost("generate-available-alt-cost", costs.generate_available_alternatives);
-};
-
-
-// --- Function to update UI with credit costs ---
+// [CORRECTED] Single, definitive updateCreditCostsUI function
 window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
     
@@ -240,21 +198,7 @@ window.updateCreditCostsUI = (tier) => {
     setCost("generate-available-alt-cost", costs.generate_available_alternatives);
 };
 
-// --- Function to apply tier-specific designs ---
-window.applyTierStyling = (tier) => {
-    const design = TIER_DESIGNS[tier] || TIER_DESIGNS["Anonymous"];
-    document.body.dataset.tier = design.tier_id;
-
-    // Update hexagon logos
-    // NOTE: You will need to create these image assets:
-    // Hexagon_free.png, Hexagon_pro.png, Hexagon_business.png
-    const loaderIcon = document.getElementById('loader-hexagon-icon');
-    const mainIcon = document.querySelector('.hexagon-image');
-    if(loaderIcon) loaderIcon.src = design.icon;
-    if(mainIcon) mainIcon.src = design.icon;
-};
-
-// --- NEW: Function to generate a dynamic SVG hexagon ---
+// [CORRECTED] This block was a mix of old and new code. It is now corrected.
 function generateHexagonSVG(design) {
     const gradientDef = `
         <defs>
@@ -278,8 +222,7 @@ function generateHexagonSVG(design) {
     `;
 }
 
-
-// --- Function to apply tier-specific designs ---
+// [CORRECTED] Single, definitive applyTierStyling function using SVGs
 window.applyTierStyling = (tier) => {
     const design = TIER_DESIGNS[tier] || TIER_DESIGNS["Anonymous"];
     document.body.dataset.tier = design.tier_id;
@@ -293,8 +236,6 @@ window.applyTierStyling = (tier) => {
     if(loaderIconContainer) loaderIconContainer.innerHTML = svgIconHtml;
     if(mainIconContainer) mainIconContainer.innerHTML = svgIconHtml;
 };
-
-
 
 
 document.addEventListener("DOMContentLoaded", async () => {
