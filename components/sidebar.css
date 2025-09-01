@@ -1,3 +1,4 @@
+
 /* sidebar.css */
 #sidebar {
     position: fixed;
@@ -121,4 +122,3 @@
 .sidebar-content ul li.locked .premium-lock-icon {
     display: inline-block;
 }
-
