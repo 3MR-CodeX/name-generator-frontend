@@ -1,4 +1,3 @@
-
 /* Top Bar Styling */
 #top-bar {
     position: fixed;
@@ -413,4 +412,39 @@
     border: none;
     padding: 6px 12px;
     font-size: 0.95em;
+}
+
+/* --- Business Tier Top Bar Design --- */
+body[data-tier="business"] #top-bar {
+    background: transparent;
+    border-bottom: none;
+    padding: 0; /* Remove padding to allow shape to fill space */
+}
+body[data-tier="business"] .topbar-business-design {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #111;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 95% 100%, 0 100%);
+}
+
+body[data-tier="business"] .topbar-business-design::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--current-theme-color);
+    z-index: -1;
+    clip-path: polygon(0 calc(100% - 2px), 95% calc(100% - 2px), 100% calc(70% - 2px), 100% 70%, 95% 100%, 0 100%);
+    transition: background-color 0.5s linear;
+}
+
+body[data-tier="business"] .topbar-content-wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
 }
