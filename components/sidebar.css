@@ -40,7 +40,9 @@
 }
 
 .sidebar-content ul li a {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 8px 12px;
     background-color: var(--primary-accent);
     color: white;
@@ -49,6 +51,7 @@
     transition: background-color 0.3s, transform 0.2s;
     font-size: 0.95em;
 }
+
 
 .sidebar-content ul li a:hover {
     background-color: var(--secondary-accent);
@@ -94,4 +97,30 @@
         background-color: var(--line-accent-default);
         box-shadow: 0 0 15px 5px var(--line-accent-default);
     }
+}
+
+/* --- MERGED FROM premium-locks.css --- */
+.premium-lock-icon {
+    display: inline-block;
+    margin-left: 8px;
+    color: #f1fa8c; /* A gold/yellow color */
+    font-size: 0.9em;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-content ul li.locked > a {
+    color: #999;
+    background-color: #3a3a3a;
+    cursor: not-allowed;
+    pointer-events: none; /* Disables clicking on the link */
+}
+
+.sidebar-content ul li.locked > a:hover {
+    background-color: #3a3a3a; /* Ensure hover doesn't change color */
+    transform: none; /* Prevent hover transform effect */
+}
+
+.sidebar-content ul li.locked .premium-lock-icon {
+    color: #777;
 }
