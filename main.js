@@ -63,243 +63,157 @@ const BACKGROUND_ANIMATIONS = {
     'pattern12': 'vertical-crossing-bars'
 };
 
-
-
-// ADD THIS NEW FUNCTION to main.js
-function applyTierStylingAndLocks(tierLevel) {
-    currentUserTier = tierLevel; // Update global state
-    document.body.dataset.tier = 'free'; // Default to free
-
-    if (tierLevel >= 1) document.body.dataset.tier = 'starter';
-    if (tierLevel >= 2) document.body.dataset.tier = 'pro';
-    if (tierLevel >= 3) document.body.dataset.tier = 'business';
-
-    // Handle feature locking
-    document.querySelectorAll('[data-required-tier]').forEach(element => {
-        const requiredTier = parseInt(element.dataset.requiredTier, 10);
-        const toolWrapper = element.closest('.tool-content-wrapper');
-
-        if (currentUserTier >= requiredTier) {
-            element.classList.add('hidden'); // Hide the lock icon
-            if (toolWrapper) toolWrapper.classList.remove('locked');
-        } else {
-            element.classList.remove('hidden'); // Show the lock icon
-            if (toolWrapper) toolWrapper.classList.add('locked');
-        }
-    });
-}
-
-// ADD THIS NEW FUNCTION and language data to main.js
-const languageData = {
-    // English translations...
-    "en": {
-        "appDescription": "Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.",
-        "whatToName": "What do you want to name?",
-        "keywords": "Keywords", "optional": "(optional)", "keywordRelevancy": "Keyword Relevancy",
-        "strict": "Strict", "creative": "Creative", "numberOfNames": "Number of Names", "category": "Category",
-        "style": "Style", "language": "Language", "pattern": "Pattern", "generateNames": "🎯 Generate Names",
-        "surpriseMe": "🎲 Surprise Me", "moreLikeThis": "More Like This", "customRefiningTitle": "Custom Name Refining",
-        "customRefiningDesc": "Provide a name and instructions to have the AI refine it for you.",
-        "nameToBeRefined": "Name to be Refined", "creativity": "Creativity", "refinementInstructions": "Refinement Instructions",
-        "refineName": "🤖 Refine Name", "refinedSuggestions": "Refined Suggestions", "refinedExplanations": "Refined Explanations",
-        "recentRefinements": "✨ Recent Refinements", "availabilityCheckTitle": "Name Availability Check",
-        "availabilityCheckDesc": "Check if your desired name is available as a domain and on social media.",
-        "nameToCheck": "Name to Check", "platforms": "Platforms", "selectPlatforms": "Select Platforms",
-        "domains": "Domains", "selectDomains": "Select Domains", "checkAvailability": "🔍 Check Availability",
-        "generateAvailableAlternatives": "💡 Generate Available Alternatives", "nameAnalyzerTitle": "Name Analyzer",
-        "nameAnalyzerDesc": "Get an AI-powered brandability check and targeted audience analysis.",
-        "nameToAnalyze": "Name to Analyze", "projectContext": "Project Context", "targetAudience": "Target Audience",
-        "location": "Location", "keyValues": "Key Values", "analyzeName": "🔬 Analyze Name",
-        "generateBetterAlternatives": "🧠 Generate Better Alternatives", "settingsTitle": "Settings",
-        "settingsDesc": "Customize your experience and manage your account.", "appearance": "Appearance",
-        "colorTheme": "Color Theme", "backgroundPattern": "Background Pattern", "appLanguage": "App Language",
-        "uiFont": "UI Font Family", "uiFontSize": "UI Font Size", "resultsFont": "Results Font Family",
-        "resultsFontSize": "Results Font Size", "account": "Account", "changePassword": "Change Password",
-        "sendResetEmail": "Send Reset Email", "subscription": "Subscription", "manageSubscription": "Manage Subscription",
-        "dataPrivacy": "Data & Privacy", "exportHistory": "Export History", "exportAsJSON": "Export as JSON",
-        "clearHistory": "Clear History", "clearAllHistory": "Clear All History", "accessibility": "Accessibility",
-        "reduceAnimations": "Reduce Animations", "aboutTitle": "About NameIT",
-        "aboutDesc": "The ultimate AI-powered tool for creative naming and branding.",
-        "ourStoryTitle": "Our Story: Why We Built NameIT",
-        "ourStoryP1": "NameIT was born from a simple, universal struggle: the daunting task of finding the perfect name. As creators, developers, and entrepreneurs ourselves, we’ve spent countless hours brainstorming, only to find our best ideas were already taken or didn't quite capture the essence of our projects. We knew there had to be a better way.",
-        "ourStoryP2": "We envisioned a tool that wasn’t just a random word generator, but an intelligent partner in the creative process. A platform that could understand the nuance of an idea, explore different creative avenues, and instantly validate the results. NameIT is our solution—an AI-powered muse designed to break through creative blocks and turn the frustration of naming into an inspiring journey of discovery.",
-        "whoIsItForTitle": "Who is NameIT For?",
-        "whoIsItForP1": "NameIT is for the dreamers and the doers. It’s for...",
-        "whoIsItForLi1": "The Entrepreneur launching a groundbreaking startup.",
-        "whoIsItForLi2": "The Developer looking for a catchy name for their next app or game.",
-        "whoIsItForLi3": "The Marketer building a memorable brand identity.",
-        "whoIsItForLi4": "The Author searching for the perfect title for their next bestseller.",
-        "whoIsItForLi5": "The Creator naming a podcast, YouTube channel, or artistic project.",
-        "whoIsItForLi6": "...and anyone in need of a creative spark.",
-        "meetTheAITitle": "Meet the NameIT Engine",
-        "meetTheAIP": "The creative force behind NameIT is our advanced AI engine. By using specialized prompts to harness the power of a world-class language model, our system goes beyond simply combining words. It understands nuance, emotion, and market trends to craft names that are both memorable and meaningful. It's your tireless brainstorming partner, ready 24/7 to help you discover the perfect name.",
-        "premiumTitle": "NameIT Premium Packs",
-        "premiumDesc": "Choose the right pack to unlock your full creative potential. One-time payments, lifetime access.",
-        "starterTier": "Starter", "starterSub": "For personal projects & hobbyists", "proTier": "Pro",
-        "proSub": "For professionals & startups", "businessTier": "Business", "businessSub": "For agencies & power users",
-        "oneTimePayment": "One-Time Payment", "mostPopular": "Most Popular", "bestValue": "Best Value",
-        "getStarted": "Get Started", "goPro": "Go Pro", "goBusiness": "Go Business",
-        "starterFeature1": "Enhanced AI Model", "starterFeature2": "Word Combiner Tool", "starterFeature3": "Expanded Styles & Options",
-        "proFeature1": "Advanced AI Model", "proFeature2": "Text Summarizer Tool", "proFeature3": "Name Availability Checker",
-        "proFeature4": "Basic Name Analyzer", "proFeature5": "Includes All Starter Features", "proFeature6": "Priority Support",
-        "businessFeature1": "Everything in Pro, plus:", "businessFeature2": "Audience Persona Analysis", "businessFeature3": "Flagship AI Model",
-        "businessFeature4": "Exclusive Customization", "businessFeature5": "Top Priority Support", "businessFeature6": "Early Access to New Features",
-        "faqTitle": "Frequently Asked Questions", "faq1Title": "Are these one-time payments?",
-        "faq1Answer": "Yes. This is not a subscription. You buy a credit pack once and use the credits at your own pace. They never expire.",
-        "faq2Title": "What can I use credits on?",
-        "faq2Answer": "Credits are used for all AI actions. A basic name generation costs 1 credit per name, while advanced tools like the Name Analyzer cost a few more. Your credit balance is always visible at the top of the page.",
-        "faq3Title": "What happens when I run out of credits?",
-        "faq3Answer": "You can purchase another top-up pack from the \"Buy Credits\" page at any time. All your unlocked Pro features will remain active, and you'll also receive 250 free credits every month.",
-        "buyCreditsTitle": "Buy More Credits",
-        "buyCreditsDesc": "Ran out of credits? Top up your balance with a one-time purchase. Your features remain unlocked.",
-        "creditPack1": "Quick Top-up", "creditPack2": "Refill", "creditPack3": "Boost", "creditPack4": "Mega Pack",
-        "buyNow": "Buy Now", "quickQuestions": "Quick Questions", "faq4Title": "How are credits used?",
-        "faq4Answer": "Each AI action, like generating a name or running an analysis, consumes credits. The cost varies by complexity—a basic generation might be 1 credit per name, while a detailed Persona Analysis costs more. Your balance is always visible.",
-        "faq5Title": "Do my credits expire?",
-        "faq5Answer": "No, they don't. Credits from one-time purchases are yours to keep and use whenever you need them. They will remain in your account permanently.",
-        "summarizerTitle": "Text Summarizer", "proFeature": "PRO FEATURE",
-        "summarizerDesc": "Enter a long paragraph or text, and the AI will provide a concise summary.",
-        "textToSummarize": "Text to Summarize", "summaryLength": "Summary Length", "oneWord": "1 Word",
-        "twoWords": "2 Words", "shortSentence": "Short Sentence (3-5 Words)", "longSentence": "Long Sentence (6-12 Words)",
-        "smallParagraph": "Small Paragraph", "summaryTone": "Summary Tone", "toneProfessional": "Professional",
-        "toneIntriguing": "Intriguing", "toneDramatic": "Dramatic", "toneConcise": "Concise",
-        "summarizeText": "📝 Summarize Text", "aiSummary": "AI Summary", "recentSummaries": "📝 Recent Summaries",
-        "combinerTitle": "Word Combiner", "starterFeature": "STARTER FEATURE",
-        "combinerDesc": "Enter a few words or concepts, and the AI will merge them into a single, creative new word.",
-        "wordsToCombine": "Words to Combine", "combinerNote": "(3 words minimum)", "combinedWordLength": "Combined Word Length",
-        "lengthShort": "Short", "lengthMedium": "Medium", "lengthLong": "Long",
-        "combineWords": "✨ Combine Words", "combinedWord": "Combined Word", "explanation": "Explanation",
-        "recentCombinations": "✨ Recent Combinations", "contactTitle": "Contact Us",
-        "contactDesc": "Have a question, feedback, or a business inquiry? We'd love to hear from you.",
-        "contactSignInPrompt": "Please sign in to send a message. This helps us verify your identity and respond to you directly.",
-        "yourName": "Your Name", "message": "Message", "sendMessage": "Send Message",
-        "generatedNames": "Generated Names/Titles", "explanations": "Explanations",
-        "refineSuggestionsLabel": "Refine the suggestions", "refineSuggestionsBtn": "🛠️ Refine Suggestions",
-        "recentHistory": "🕘 Recent History", "fullHistoryTitle": "Full History", "historyDetailsTitle": "History Entry Details",
-        "importNameTitle": "Import a Name from History", "signIn": "Sign In", "or": "or",
-        "signInGoogle": "Sign In with Google", "createAccountTitle": "Create Your Account",
-        "createAccount": "Create Account", "signUpGoogle": "Sign Up with Google",
-        "confirmPurchaseTitle": "Confirm Your Purchase",
-        "confirmPurchaseDesc": "You are about to purchase the following item.",
-        "item": "Item", "price": "Price", "credits": "Credits", "cancel": "Cancel",
-        "confirmPurchase": "Confirm Purchase", "demoTransaction": "This is a simulated transaction for demonstration purposes."
+// Add this translations object near the top of main.js
+const translations = {
+    en: {
+        // Top Bar & Sidebar
+        "go-premium-link": "✨ Go Premium",
+        "buy-credits-link": "💰 Buy Credits",
+        "home-link": "Name Generator",
+        "custom-refine-link": "Custom Name Refining",
+        "availability-check-link": "Name Availability Check",
+        "name-analyzer-link": "Name Analyzer",
+        "summarizer-link": "Text Summarizer",
+        "word-combiner-link": "Word Combiner",
+        "settings-link": "Settings",
+        "full-history-li-a": "Full History",
+        "contact-link": "Contact",
+        "about-link": "About",
+        // Main Generator
+        "generator-description": "Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.",
+        "prompt-label": "What do you want to name?",
+        "prompt-placeholder": "Enter a description!",
+        "keywords-label": "Keywords",
+        "keywords-placeholder": "e.g., space, elegant, futuristic, powerful",
+        "relevancy-label": "Keyword Relevancy",
+        "amount-label": "Number of Names",
+        "category-label": "Category",
+        "style-label": "Style",
+        "language-label": "Language",
+        "pattern-label": "Pattern",
+        "generate-btn": "🎯 Generate Names",
+        "surprise-btn": "🎲 Surprise Me",
+        "more-like-this-label": "More Like This",
+        "refine-label": "Refine the suggestions",
+        "refine-placeholder": "e.g., Make the names shorter and more playful",
+        "refine-btn-text": "🛠️ Refine Suggestions",
+        // Settings
+        "settings-title": "Settings",
+        "settings-description": "Customize your experience and manage your account.",
+        "appearance-header": "Appearance",
+        "theme-label": "Color Theme",
+        "background-label": "Background Pattern",
+        "ui-font-label": "UI Font Family",
+        "ui-font-size-label": "UI Font Size",
+        "results-font-label": "Results Font Family",
+        "results-font-size-label": "Results Font Size",
+        "language-setting-label": "App Language",
     },
-    // Arabic translations...
-    "ar": {
-        "appDescription": "أطلق اسمًا على أي شيء - منتج، علامة تجارية، مكان، شركة، فيديو، أو حتى كلمة جديدة. ثم قم بتنقيحه على الفور.",
-        "whatToName": "ماذا تريد أن تسمي؟",
-        "keywords": "كلمات مفتاحية", "optional": "(اختياري)", "keywordRelevancy": "صلة الكلمات المفتاحية",
-        "strict": "صارم", "creative": "إبداعي", "numberOfNames": "عدد الأسماء", "category": "الفئة",
-        "style": "النمط", "language": "اللغة", "pattern": "النسق", "generateNames": "🎯 توليد أسماء",
-        "surpriseMe": "🎲 فاجئني", "moreLikeThis": "المزيد مثل هذا", "customRefiningTitle": "تنقيح مخصص للأسماء",
-        "customRefiningDesc": "قدم اسمًا وتعليمات لجعل الذكاء الاصطناعي ينقحه لك.",
-        "nameToBeRefined": "الاسم المراد تنقيحه", "creativity": "الإبداع", "refinementInstructions": "تعليمات التنقيح",
-        "refineName": "🤖 تنقيح الاسم", "refinedSuggestions": "اقتراحات منقحة", "refinedExplanations": "شروحات منقحة",
-        "recentRefinements": "✨ التنقيحات الأخيرة", "availabilityCheckTitle": "التحقق من توفر الاسم",
-        "availabilityCheckDesc": "تحقق مما إذا كان اسمك المطلوب متاحًا كنطاق وعلى وسائل التواصل الاجتماعي.",
-        "nameToCheck": "الاسم للتحقق", "platforms": "المنصات", "selectPlatforms": "اختر المنصات",
-        "domains": "النطاقات", "selectDomains": "اختر النطاقات", "checkAvailability": "🔍 تحقق من التوفر",
-        "generateAvailableAlternatives": "💡 توليد بدائل متاحة", "nameAnalyzerTitle": "محلل الأسماء",
-        "nameAnalyzerDesc": "احصل على فحص للعلامة التجارية وتحليل للجمهور المستهدف مدعوم بالذكاء الاصطناعي.",
-        "nameToAnalyze": "الاسم للتحليل", "projectContext": "سياق المشروع", "targetAudience": "الجمهور المستهدف",
-        "location": "الموقع", "keyValues": "القيم الأساسية", "analyzeName": "🔬 تحليل الاسم",
-        "generateBetterAlternatives": "🧠 توليد بدائل أفضل", "settingsTitle": "الإعدادات",
-        "settingsDesc": "خصص تجربتك وقم بإدارة حسابك.", "appearance": "المظهر",
-        "colorTheme": "سمة اللون", "backgroundPattern": "نمط الخلفية", "appLanguage": "لغة التطبيق",
-        "uiFont": "خط واجهة المستخدم", "uiFontSize": "حجم خط واجهة المستخدم", "resultsFont": "خط النتائج",
-        "resultsFontSize": "حجم خط النتائج", "account": "الحساب", "changePassword": "تغيير كلمة المرور",
-        "sendResetEmail": "إرسال بريد إعادة التعيين", "subscription": "الاشتراك", "manageSubscription": "إدارة الاشتراك",
-        "dataPrivacy": "البيانات والخصوصية", "exportHistory": "تصدير السجل", "exportAsJSON": "تصدير كـ JSON",
-        "clearHistory": "مسح السجل", "clearAllHistory": "مسح كل السجل", "accessibility": "إمكانية الوصول",
-        "reduceAnimations": "تقليل الرسوم المتحركة", "aboutTitle": "عن NameIT",
-        "aboutDesc": "الأداة النهائية المدعومة بالذكاء الاصطناعي للتسمية الإبداعية والعلامات التجارية.",
-        "ourStoryTitle": "قصتنا: لماذا بنينا NameIT",
-        "ourStoryP1": "وُلد NameIT من صراع بسيط وعالمي: المهمة الشاقة المتمثلة في العثور على الاسم المثالي. بصفتنا مبدعين ومطورين ورجال أعمال، قضينا ساعات لا تحصى في العصف الذهني، لنجد فقط أن أفضل أفكارنا كانت مأخوذة بالفعل أو لم تعبر تمامًا عن جوهر مشاريعنا. كنا نعلم أنه يجب أن تكون هناك طريقة أفضل.",
-        "ourStoryP2": "تصورنا أداة لم تكن مجرد مولد كلمات عشوائي، بل شريكًا ذكيًا في العملية الإبداعية. منصة يمكنها فهم الفروق الدقيقة في الفكرة، واستكشاف طرق إبداعية مختلفة، والتحقق من النتائج على الفور. NameIT هو حلنا - ملهمة مدعومة بالذكاء الاصطناعي مصممة لكسر الحواجز الإبداعية وتحويل إحباط التسمية إلى رحلة اكتشاف ملهمة.",
-        "whoIsItForTitle": "لمن هو NameIT؟",
-        "whoIsItForP1": "NameIT للحالمين والفاعلين. إنه لـ...",
-        "whoIsItForLi1": "رائد الأعمال الذي يطلق شركة ناشئة رائدة.",
-        "whoIsItForLi2": "المطور الذي يبحث عن اسم جذاب لتطبيقه أو لعبته التالية.",
-        "whoIsItForLi3": "المسوق الذي يبني هوية علامة تجارية لا تنسى.",
-        "whoIsItForLi4": "المؤلف الذي يبحث عن العنوان المثالي لكتابه الأكثر مبيعًا.",
-        "whoIsItForLi5": "المبدع الذي يسمي بودكاست أو قناة يوتيوب أو مشروعًا فنيًا.",
-        "whoIsItForLi6": "...وأي شخص يحتاج إلى شرارة إبداعية.",
-        "meetTheAITitle": "تعرف على محرك NameIT",
-        "meetTheAIP": "القوة الإبداعية وراء NameIT هي محرك الذكاء الاصطناعي المتقدم لدينا. باستخدام مطالبات متخصصة لتسخير قوة نموذج لغوي عالمي المستوى، يتجاوز نظامنا مجرد الجمع بين الكلمات. إنه يفهم الفروق الدقيقة والعاطفة واتجاهات السوق لصياغة أسماء لا تنسى وذات معنى. إنه شريكك الدؤوب في العصف الذهني، جاهز على مدار الساعة طوال أيام الأسبوع لمساعدتك في اكتشاف الاسم المثالي.",
-        "premiumTitle": "باقات NameIT المميزة",
-        "premiumDesc": "اختر الباقة المناسبة لإطلاق العنان لإمكانياتك الإبداعية الكاملة. مدفوعات لمرة واحدة، وصول مدى الحياة.",
-        "starterTier": "المبتدئة", "starterSub": "للمشاريع الشخصية والهواة", "proTier": "المحترفة",
-        "proSub": "للمحترفين والشركات الناشئة", "businessTier": "الأعمال", "businessSub": "للوكالات والمستخدمين المتقدمين",
-        "oneTimePayment": "دفعة لمرة واحدة", "mostPopular": "الأكثر شيوعًا", "bestValue": "أفضل قيمة",
-        "getStarted": "ابدأ الآن", "goPro": "انتقل إلى المحترفة", "goBusiness": "انتقل إلى الأعمال",
-        "starterFeature1": "نموذج ذكاء اصطناعي محسن", "starterFeature2": "أداة دمج الكلمات", "starterFeature3": "أنماط وخيارات موسعة",
-        "proFeature1": "نموذج ذكاء اصطناعي متقدم", "proFeature2": "أداة تلخيص النصوص", "proFeature3": "التحقق من توفر الاسم",
-        "proFeature4": "محلل الأسماء الأساسي", "proFeature5": "يشمل جميع ميزات المبتدئة", "proFeature6": "دعم ذو أولوية",
-        "businessFeature1": "كل شيء في المحترفة، بالإضافة إلى:", "businessFeature2": "تحليل شخصية الجمهور", "businessFeature3": "نموذج الذكاء الاصطناعي الرائد",
-        "businessFeature4": "تخصيص حصري", "businessFeature5": "دعم بأولوية قصوى", "businessFeature6": "وصول مبكر للميزات الجديدة",
-        "faqTitle": "الأسئلة الشائعة", "faq1Title": "هل هذه مدفوعات لمرة واحدة؟",
-        "faq1Answer": "نعم. هذا ليس اشتراكًا. تشتري حزمة أرصدة مرة واحدة وتستخدم الأرصدة بالسرعة التي تناسبك. لا تنتهي صلاحيتها أبدًا.",
-        "faq2Title": "فيم يمكنني استخدام الأرصدة؟",
-        "faq2Answer": "تُستخدم الأرصدة لجميع إجراءات الذكاء الاصطناعي. يكلف توليد اسم أساسي رصيدًا واحدًا لكل اسم، بينما تكلف الأدوات المتقدمة مثل محلل الأسماء أكثر قليلاً. رصيدك مرئي دائمًا في أعلى الصفحة.",
-        "faq3Title": "ماذا يحدث عندما تنفد أرصدتي؟",
-        "faq3Answer": "يمكنك شراء حزمة تعبئة أخرى من صفحة \"شراء الأرصدة\" في أي وقت. ستظل جميع ميزات Pro التي فتحتها نشطة، وستتلقى أيضًا 250 رصيدًا مجانيًا كل شهر.",
-        "buyCreditsTitle": "شراء المزيد من الأرصدة",
-        "buyCreditsDesc": "نفدت الأرصدة؟ قم بتعبئة رصيدك بشراء لمرة واحدة. تظل ميزاتك مفتوحة.",
-        "creditPack1": "تعبئة سريعة", "creditPack2": "إعادة تعبئة", "creditPack3": "تعزيز", "creditPack4": "حزمة ضخمة",
-        "buyNow": "اشتر الآن", "quickQuestions": "أسئلة سريعة", "faq4Title": "كيف يتم استخدام الأرصدة؟",
-        "faq4Answer": "كل إجراء للذكاء الاصطناعي، مثل توليد اسم أو إجراء تحليل، يستهلك أرصدة. تختلف التكلفة حسب التعقيد - قد يكون التوليد الأساسي رصيدًا واحدًا لكل اسم، بينما يكلف تحليل الشخصية المفصل أكثر. رصيدك مرئي دائمًا.",
-        "faq5Title": "هل تنتهي صلاحية أرصدتي؟",
-        "faq5Answer": "لا، لا تنتهي. الأرصدة من عمليات الشراء لمرة واحدة ملكك لتحتفظ بها وتستخدمها كلما احتجت إليها. ستبقى في حسابك بشكل دائم.",
-        "summarizerTitle": "ملخص النصوص", "proFeature": "ميزة احترافية",
-        "summarizerDesc": "أدخل فقرة أو نصًا طويلاً، وسيقدم الذكاء الاصطناعي ملخصًا موجزًا.",
-        "textToSummarize": "النص المراد تلخيصه", "summaryLength": "طول الملخص", "oneWord": "كلمة واحدة",
-        "twoWords": "كلمتان", "shortSentence": "جملة قصيرة (3-5 كلمات)", "longSentence": "جملة طويلة (6-12 كلمة)",
-        "smallParagraph": "فقرة صغيرة", "summaryTone": "نبرة الملخص", "toneProfessional": "احترافي",
-        "toneIntriguing": "مثير للاهتمام", "toneDramatic": "درامي", "toneConcise": "موجز",
-        "summarizeText": "📝 تلخيص النص", "aiSummary": "ملخص الذكاء الاصطناعي", "recentSummaries": "📝 الملخصات الأخيرة",
-        "combinerTitle": "دمج الكلمات", "starterFeature": "ميزة للمبتدئين",
-        "combinerDesc": "أدخل بضع كلمات أو مفاهيم، وسيدمجها الذكاء الاصطناعي في كلمة جديدة ومبتكرة.",
-        "wordsToCombine": "الكلمات المراد دمجها", "combinerNote": "(3 كلمات كحد أدنى)", "combinedWordLength": "طول الكلمة المدمجة",
-        "lengthShort": "قصير", "lengthMedium": "متوسط", "lengthLong": "طويل",
-        "combineWords": "✨ دمج الكلمات", "combinedWord": "الكلمة المدمجة", "explanation": "الشرح",
-        "recentCombinations": "✨ الدمج الأخير", "contactTitle": "اتصل بنا",
-        "contactDesc": "هل لديك سؤال أو ملاحظات أو استفسار تجاري؟ نود أن نسمع منك.",
-        "contactSignInPrompt": "يرجى تسجيل الدخول لإرسال رسالة. هذا يساعدنا على التحقق من هويتك والرد عليك مباشرة.",
-        "yourName": "اسمك", "message": "الرسالة", "sendMessage": "إرسال الرسالة",
-        "generatedNames": "الأسماء/العناوين المولدة", "explanations": "الشروحات",
-        "refineSuggestionsLabel": "تنقيح الاقتراحات", "refineSuggestionsBtn": "🛠️ تنقيح الاقتراحات",
-        "recentHistory": "🕘 السجل الأخير", "fullHistoryTitle": "السجل الكامل", "historyDetailsTitle": "تفاصيل إدخال السجل",
-        "importNameTitle": "استيراد اسم من السجل", "signIn": "تسجيل الدخول", "or": "أو",
-        "signInGoogle": "تسجيل الدخول باستخدام جوجل", "createAccountTitle": "إنشاء حسابك",
-        "createAccount": "إنشاء حساب", "signUpGoogle": "التسجيل باستخدام جوجل",
-        "confirmPurchaseTitle": "تأكيد الشراء",
-        "confirmPurchaseDesc": "أنت على وشك شراء العنصر التالي.",
-        "item": "العنصر", "price": "السعر", "credits": "الأرصدة", "cancel": "إلغاء",
-        "confirmPurchase": "تأكيد الشراء", "demoTransaction": "هذه معاملة محاكاة لأغراض العرض التوضيحي."
+    ar: {
+        // Top Bar & Sidebar
+        "go-premium-link": "✨ الترقية إلى بريميوم",
+        "buy-credits-link": "💰 شراء أرصدة",
+        "home-link": "مولد الأسماء",
+        "custom-refine-link": "صقل اسم مخصص",
+        "availability-check-link": "التحقق من توفر الاسم",
+        "name-analyzer-link": "محلل الأسماء",
+        "summarizer-link": "ملخص النصوص",
+        "word-combiner-link": "دمج الكلمات",
+        "settings-link": "الإعدادات",
+        "full-history-li-a": "السجل الكامل",
+        "contact-link": "اتصل بنا",
+        "about-link": "حول التطبيق",
+        // Main Generator
+        "generator-description": "قم بتسمية أي شيء — منتج، علامة تجارية، مكان، شركة، فيديو، أو حتى كلمة جديدة. ثم قم بصقله على الفور.",
+        "prompt-label": "ماذا تريد أن تسمي؟",
+        "prompt-placeholder": "أدخل وصفًا!",
+        "keywords-label": "الكلمات المفتاحية",
+        "keywords-placeholder": "مثال: فضاء، أنيق، مستقبلي، قوي",
+        "relevancy-label": "صلة الكلمات المفتاحية",
+        "amount-label": "عدد الأسماء",
+        "category-label": "الفئة",
+        "style-label": "النمط",
+        "language-label": "اللغة",
+        "pattern-label": "النسق",
+        "generate-btn": "🎯 إنشاء أسماء",
+        "surprise-btn": "🎲 فاجئني",
+        "more-like-this-label": "المزيد مثل هذا",
+        "refine-label": "صقل الاقتراحات",
+        "refine-placeholder": "مثال: اجعل الأسماء أقصر وأكثر مرحًا",
+        "refine-btn-text": "🛠️ صقل الاقتراحات",
+        // Settings
+        "settings-title": "الإعدادات",
+        "settings-description": "خصص تجربتك وقم بإدارة حسابك.",
+        "appearance-header": "المظهر",
+        "theme-label": "سمة اللون",
+        "background-label": "نمط الخلفية",
+        "ui-font-label": "خط واجهة المستخدم",
+        "ui-font-size-label": "حجم خط واجهة المستخدم",
+        "results-font-label": "خط النتائج",
+        "results-font-size-label": "حجم خط النتائج",
+        "language-setting-label": "لغة التطبيق",
     }
-    // ... add other languages here
+    // Add other languages like 'es', 'fr', 'de', 'ja' here following the same structure.
 };
 
-async function setLanguage(lang) {
-    localStorage.setItem('nameit-language', lang);
-    const translations = languageData[lang] || languageData['en'];
+// Add these new functions to main.js
+// --- LANGUAGE FUNCTIONS (NEW) ---
+function setLanguage(lang) {
+    const langPack = translations[lang] || translations.en;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-    document.querySelectorAll('[data-lang-key]').forEach(element => {
-        const key = element.dataset.langKey;
-        if (translations[key]) {
-            element.textContent = translations[key];
-        }
-    });
+    // Elements with text content
+    document.querySelector('#home-link').textContent = langPack["home-link"];
+    document.querySelector('#custom-refine-link').textContent = langPack["custom-refine-link"];
+    document.querySelector('#availability-check-link').textContent = langPack["availability-check-link"];
+    document.querySelector('#name-analyzer-link').textContent = langPack["name-analyzer-link"];
+    document.querySelector('#summarizer-link').textContent = langPack["summarizer-link"];
+    document.querySelector('#word-combiner-link').textContent = langPack["word-combiner-link"];
+    document.querySelector('#settings-link').textContent = langPack["settings-link"];
+    document.querySelector('#contact-link').textContent = langPack["contact-link"];
+    document.querySelector('#about-link').textContent = langPack["about-link"];
+    document.querySelector('#go-premium-link').textContent = langPack["go-premium-link"];
+    document.querySelector('#buy-credits-link').textContent = langPack["buy-credits-link"];
     
-    // Handle RTL for Arabic
-    if (lang === 'ar') {
-        document.body.classList.add('rtl');
-    } else {
-        document.body.classList.remove('rtl');
-    }
+    // Main Generator View
+    if(document.querySelector('#main-generator-view .description')) document.querySelector('#main-generator-view .description').textContent = langPack["generator-description"];
+    if(document.querySelector('label[for="prompt"]')) document.querySelector('label[for="prompt"]').textContent = langPack["prompt-label"];
+    if(document.querySelector('label[for="keywords"]')) document.querySelector('label[for="keywords"]').textContent = langPack["keywords-label"];
+    if(document.querySelector('.relevancy-display label')) document.querySelector('.relevancy-display label').textContent = langPack["relevancy-label"];
+    if(document.querySelector('.amount-display label')) document.querySelector('.amount-display label').textContent = langPack["amount-label"];
+    if(document.querySelector('label[for="category"]')) document.querySelector('label[for="category"]').textContent = langPack["category-label"];
+    if(document.querySelector('label[for="style"]')) document.querySelector('label[for="style"]').textContent = langPack["style-label"];
+    if(document.querySelector('label[for="language"]')) document.querySelector('label[for="language"]').textContent = langPack["language-label"];
+    if(document.querySelector('label[for="pattern"]')) document.querySelector('label[for="pattern"]').textContent = langPack["pattern-label"];
+    if(generateBtn) generateBtn.textContent = langPack["generate-btn"];
+    if(surpriseBtn) surpriseBtn.textContent = langPack["surprise-btn"];
+    if(document.querySelector('#more-like-this-section label')) document.querySelector('#more-like-this-section label').textContent = langPack["more-like-this-label"];
+    if(document.querySelector('label[for="edit_box"]')) document.querySelector('label[for="edit_box"]').textContent = langPack["refine-label"];
+    if(refineBtn) refineBtn.textContent = langPack["refine-btn-text"];
+
+    // Placeholders
+    if(promptInput) promptInput.placeholder = langPack["prompt-placeholder"];
+    if(document.getElementById("keywords")) document.getElementById("keywords").placeholder = langPack["keywords-placeholder"];
+    if(editBox) editBox.placeholder = langPack["refine-placeholder"];
+    
+    // Settings Page
+    if(document.querySelector('#settings-view h1')) document.querySelector('#settings-view h1').textContent = langPack["settings-title"];
+    if(document.querySelector('#settings-view .description')) document.querySelector('#settings-view .description').textContent = langPack["settings-description"];
+    if(document.querySelector('.setting-section h2 i.fa-paint-brush')) document.querySelector('.setting-section h2 i.fa-paint-brush').parentElement.childNodes[1].textContent = ` ${langPack["appearance-header"]}`;
+    if(document.querySelector('label[for="theme-select"]')) document.querySelector('label[for="theme-select"]').textContent = langPack["theme-label"];
+    if(document.querySelector('label[for="background-select"]')) document.querySelector('label[for="background-select"]').textContent = langPack["background-label"];
+    if(document.querySelector('label[for="font-select"]')) document.querySelector('label[for="font-select"]').textContent = langPack["ui-font-label"];
+    if(document.querySelector('label[for="font-size-slider"]')) document.querySelector('label[for="font-size-slider"]').textContent = langPack["ui-font-size-label"];
+    if(document.querySelector('label[for="results-font-select"]')) document.querySelector('label[for="results-font-select"]').textContent = langPack["results-font-label"];
+    if(document.querySelector('label[for="results-font-size-slider"]')) document.querySelector('label[for="results-font-size-slider"]').textContent = langPack["results-font-size-label"];
+    if(document.querySelector('label[for="language-select"]')) document.querySelector('label[for="language-select"]').textContent = langPack["language-setting-label"];
 }
 
-
+function applyLanguage(lang, save = true) {
+    if (save) localStorage.setItem('nameit-language', lang);
+    setLanguage(lang);
+}
 
 
 let customRefineHistoryLog = [];
@@ -376,7 +290,6 @@ const availableAlternativesResults = document.getElementById("available-alternat
 // --- Settings Page Selectors ---
 const themeSelect = document.getElementById('theme-select');
 const backgroundSelect = document.getElementById('background-select');
-const languageSelect = document.getElementById('language-select');
 const fontSelect = document.getElementById('font-select');
 const fontSizeSlider = document.getElementById('font-size-slider');
 const resultsFontSelect = document.getElementById('results-font-select');
@@ -419,7 +332,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 5000);
 });
 
+function updateFeatureLocks() {
+    const tier = window.currentUserTier || "Anonymous";
+    
+    const wordCombinerLock = document.getElementById('word-combiner-lock');
+    const summarizerLock = document.getElementById('summarizer-lock');
+    
+    // Word Combiner: Unlocked for Starter, Pro, Business
+    const hasCombinerAccess = ['Starter Pack', 'Pro Pack', 'Business Pack'].includes(tier);
+    if (wordCombinerLock) wordCombinerLock.classList.toggle('hidden', hasCombinerAccess);
 
+    // Text Summarizer: Unlocked for Pro, Business
+    const hasSummarizerAccess = ['Pro Pack', 'Business Pack'].includes(tier);
+    if (summarizerLock) summarizerLock.classList.toggle('hidden', hasSummarizerAccess);
+}
 
 async function loadComponent(placeholderId, componentUrl) {
     try {
@@ -492,6 +418,7 @@ async function handleContactFormSubmit(event) {
 
 
 // --- Full Updated setupEventListeners Function (Replace your existing function) ---
+
 function setupEventListeners() {
     if (historyModal && closeButtonHistoryModal) {
         closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
@@ -531,7 +458,8 @@ function setupEventListeners() {
     if (resultsFontSizeSlider) resultsFontSizeSlider.addEventListener('input', (e) => applyResultsFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (backgroundSelect) backgroundSelect.addEventListener('change', (e) => applyBackground(e.target.value));
-    if (languageSelect) languageSelect.addEventListener('change', (e) => setLanguage(e.target.value)); // ADDED
+    const languageSelect = document.getElementById('language-select'); // ADDED
+    if (languageSelect) languageSelect.addEventListener('change', (e) => applyLanguage(e.target.value)); // ADDED
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
@@ -602,8 +530,6 @@ function showView(viewName) {
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
-
-    // Hide generator-specific sections when switching away
     if (viewName !== 'generator') {
         if (outputContainer) outputContainer.classList.add('hidden');
         if (refineSection) refineSection.classList.add('hidden');
@@ -611,7 +537,6 @@ function showView(viewName) {
         if (refinedOutputs) refinedOutputs.classList.add('hidden');
         if (recentHistorySection) recentHistorySection.classList.add('hidden');
     } 
-    // Show generator-specific sections only if there's content
     else {
         if (namesPre && namesPre.innerHTML.trim() !== "") {
             if (outputContainer) outputContainer.classList.remove('hidden');
@@ -623,44 +548,52 @@ function showView(viewName) {
         }
     }
 
-    const viewMap = {
-        'generator': mainGeneratorView,
-        'refiner': customRefinerView,
-        'availability-checker': availabilityCheckerView,
-        'name-analyzer': nameAnalyzerView,
-        'settings': settingsView,
-        'about': aboutView,
-        'premium': premiumView,
-        'credits': creditsView,
-        'summarizer': summarizerView,
-        'word-combiner': wordCombinerView,
-        'terms': termsView,
-        'privacy': privacyView,
-        'contact': contactView
-    };
-
-    if (viewMap[viewName]) {
-        viewMap[viewName].classList.remove('hidden');
-    }
-
-    // Safely handle contact view logic
-    if (viewName === 'contact') {
+    if (viewName === 'generator') {
+        if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
+    } else if (viewName === 'refiner') {
+        if(customRefinerView) customRefinerView.classList.remove('hidden');
+    } else if (viewName === 'availability-checker') {
+        if(availabilityCheckerView) availabilityCheckerView.classList.remove('hidden');
+    } else if (viewName === 'name-analyzer') {
+        if(nameAnalyzerView) nameAnalyzerView.classList.remove('hidden');
+    } else if (viewName === 'settings') {
+        if(settingsView) settingsView.classList.remove('hidden');
+    } else if (viewName === 'about') {
+        if(aboutView) aboutView.classList.remove('hidden');
+    } else if (viewName === 'premium') {
+        if(premiumView) premiumView.classList.remove('hidden');
+    } else if (viewName === 'credits') {
+        if(creditsView) creditsView.classList.remove('hidden');
+    } else if (viewName === 'summarizer') {
+        if(summarizerView) summarizerView.classList.remove('hidden');
+    } else if (viewName === 'word-combiner') {
+        if(wordCombinerView) wordCombinerView.classList.remove('hidden');
+    } else if (viewName === 'terms') {
+        if(termsView) termsView.classList.remove('hidden');
+    } else if (viewName === 'privacy') {
+        if(privacyView) privacyView.classList.remove('hidden');
+    } else if (viewName === 'contact') {
+        if(contactView) contactView.classList.remove('hidden');
+        
+        // ** NEW LOGIC STARTS HERE **
         const user = window.auth.currentUser;
         const contactFormElement = document.getElementById('contact-form');
         const loginPromptElement = document.getElementById('contact-login-prompt');
+        const emailDisplayElement = document.getElementById('contact-user-email-display');
         const hiddenEmailInputElement = document.getElementById('contact-email');
 
-        // Check if elements exist before manipulating them
-        if (loginPromptElement && contactFormElement && hiddenEmailInputElement) {
-            if (user) {
-                loginPromptElement.classList.add('hidden');
-                contactFormElement.classList.remove('hidden');
-                hiddenEmailInputElement.value = user.email;
-            } else {
-                loginPromptElement.classList.remove('hidden');
-                contactFormElement.classList.add('hidden');
-            }
+        if (user) {
+            // User is logged in, show the form and populate their email
+            loginPromptElement.classList.add('hidden');
+            contactFormElement.classList.remove('hidden');
+            emailDisplayElement.textContent = user.email;
+            hiddenEmailInputElement.value = user.email;
+        } else {
+            // User is not logged in, show the prompt and hide the form
+            loginPromptElement.classList.remove('hidden');
+            contactFormElement.classList.add('hidden');
         }
+        // ** NEW LOGIC ENDS HERE **
     }
 }
 
@@ -1896,11 +1829,19 @@ function showProfessionalLoadingPlaceholder(targetElement, minHeight = '150px') 
     `;
     targetElement.innerHTML = loadingHtml;
 }
+// --- TIER-LOCKED TOOL FUNCTIONS (UPDATED) ---
 async function summarizeText() {
+    // TIER CHECK
+    const hasAccess = ['Pro Pack', 'Business Pack'].includes(window.currentUserTier);
+    if (!hasAccess) {
+        showView('premium');
+        return;
+    }
+
     if (summarizeBtn.disabled) return;
     const textInput = document.getElementById('text-to-summarize');
     const lengthSelect = document.getElementById('summary-length');
-    const toneSelect = document.getElementById('summary-tone'); // New: Get tone dropdown
+    const toneSelect = document.getElementById('summary-tone');
     const text = textInput.value.trim();
     if (!text) {
         showTemporaryPlaceholderError(textInput, "Please enter some text to summarize.");
@@ -1921,7 +1862,6 @@ async function summarizeText() {
         const response = await fetch(`${BACKEND_URL}/summarize`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
-            // New: Pass both length and tone to the backend
             body: JSON.stringify({ text: text, length: lengthSelect.value, tone: toneSelect.value })
         });
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
@@ -1961,9 +1901,14 @@ async function summarizeText() {
     }
 }
 
-
-
 async function combineWords() {
+    // TIER CHECK
+    const hasAccess = ['Starter Pack', 'Pro Pack', 'Business Pack'].includes(window.currentUserTier);
+    if (!hasAccess) {
+        showView('premium');
+        return;
+    }
+
     if (combineWordsBtn.disabled) return;
     const wordsInput = document.getElementById('words-to-combine');
     const lengthSelect = document.getElementById('combiner-length');
@@ -1994,16 +1939,14 @@ async function combineWords() {
             window.updateGenerationCountUI(data.credits);
         }
 
-        // Updated to handle both the word and the explanation
         if(combinerOutput && combinerExplanation) {
             combinerResultsContainer.classList.remove("hidden");
             combinerOutput.textContent = data.combined_word;
-            combinerExplanation.textContent = data.explanation; // Set the explanation text
+            combinerExplanation.textContent = data.explanation;
             combinerOutput.classList.add("fade-in-content");
-            combinerExplanation.classList.add("fade-in-content"); // Animate the explanation
+            combinerExplanation.classList.add("fade-in-content");
         }
 
-        // Add the explanation to the history log
         combinerHistoryLog.unshift({ words: words, result: data.combined_word, explanation: data.explanation });
         combinerHistoryLog = combinerHistoryLog.slice(0, 50);
         renderCombinerHistory();
@@ -2028,6 +1971,8 @@ async function combineWords() {
         }, 1000);
     }
 }
+
+
 
 function renderSummaryHistory() {
     if (!summaryHistoryDiv) return;
@@ -2082,7 +2027,7 @@ function initializeSettings() {
         resultsFontSize: localStorage.getItem('nameit-results-fontSize') || '100',
         animations: localStorage.getItem('nameit-animations') !== 'false',
         background: localStorage.getItem('nameit-background') || 'pattern1',
-        language: localStorage.getItem('nameit-language') || 'en'
+        language: localStorage.getItem('nameit-language') || 'en' // ADDED
     };
     if (themeSelect) themeSelect.value = settings.theme;
     if (fontSelect) fontSelect.value = settings.font;
@@ -2091,8 +2036,8 @@ function initializeSettings() {
     if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
     if (animationsToggle) animationsToggle.checked = settings.animations;
     if (backgroundSelect) backgroundSelect.value = settings.background;
-    if (languageSelect) languageSelect.value = settings.language;
-
+    const languageSelect = document.getElementById('language-select'); // ADDED
+    if (languageSelect) languageSelect.value = settings.language; // ADDED
 
     applyTheme(settings.theme, false);
     applyFont(settings.font, false);
@@ -2101,7 +2046,7 @@ function initializeSettings() {
     applyResultsFontSize(settings.resultsFontSize, false);
     applyBackground(settings.background, false);
     applyAnimationSetting(settings.animations, false);
-    setLanguage(settings.language);
+    applyLanguage(settings.language, false); // ADDED
 }
 
 function handleHashChange() {
@@ -2377,6 +2322,3 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
-
-
-
