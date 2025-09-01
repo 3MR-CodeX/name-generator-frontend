@@ -1,3 +1,4 @@
+
 // topbar.js
 
 function initializeTopbar() {
