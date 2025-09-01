@@ -1,3 +1,4 @@
+
 // sidebar.js
 
 // Make isSidebarOpen globally accessible
