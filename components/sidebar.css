@@ -1,3 +1,4 @@
+/* sidebar.css */
 #sidebar {
     position: fixed;
     top: var(--top-bar-height);
@@ -40,9 +41,7 @@
 }
 
 .sidebar-content ul li a {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: block;
     padding: 8px 12px;
     background-color: var(--primary-accent);
     color: white;
@@ -51,7 +50,6 @@
     transition: background-color 0.3s, transform 0.2s;
     font-size: 0.95em;
 }
-
 
 .sidebar-content ul li a:hover {
     background-color: var(--secondary-accent);
@@ -99,47 +97,17 @@
     }
 }
 
-/* --- MERGED FROM premium-locks.css --- */
-.premium-lock-icon {
-    display: inline-block;
-    margin-left: 8px;
-    color: #f1fa8c; /* A gold/yellow color */
-    font-size: 0.9em;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-}
-
-.sidebar-content ul li.locked > a {
-    color: #999;
-    background-color: #3a3a3a;
-    cursor: not-allowed;
-    pointer-events: none; /* Disables clicking on the link */
-}
-
-.sidebar-content ul li.locked > a:hover {
-    background-color: #3a3a3a; /* Ensure hover doesn't change color */
-    transform: none; /* Prevent hover transform effect */
-}
-
-.sidebar-content ul li.locked .premium-lock-icon {
-    color: #777;
-}
-
-/* sidebar.css */
-/* ... (existing styles) ... */
 
 /* --- NEW: Tier-based Lock Styles --- */
 .sidebar-content ul li.locked > a {
-    color: #888;
-    pointer-events: none; /* Disables clicking on the link text */
+    color: #a0a0a0;
     background-color: #2f2f2f;
-    cursor: not-allowed;
-    position: relative;
+    cursor: default; /* Change cursor to default, not 'not-allowed' */
 }
 
 .sidebar-content ul li.locked > a:hover {
-    background-color: #2f2f2f;
-    transform: none;
+    background-color: #3a3a3a; /* Allow a subtle hover effect */
+    transform: translateX(5px);
 }
 
 /* Show the lock icon only on locked items */
