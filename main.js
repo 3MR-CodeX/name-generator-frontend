@@ -63,23 +63,7 @@ const BACKGROUND_ANIMATIONS = {
     'pattern12': 'vertical-crossing-bars'
 };
 
-// [CORRECTED] TIER_DESIGNS now uses colors for dynamic SVG generation
-const TIER_DESIGNS = {
-    "Anonymous":     { tier_id: 'free',     fill: '#888888' },
-    "Free Tier":     { tier_id: 'free',     fill: '#888888' },
-    "Starter Tier":  { tier_id: 'starter',  fill: 'var(--secondary-accent)' },
-    "Pro Tier":      { tier_id: 'pro',      fill: 'var(--primary-accent)' },
-    "Business Tier": { tier_id: 'business', useGradient: true }
-};
 
-// [CORRECTED] Single, definitive TIER_COSTS object
-const TIER_COSTS = {
-    "Anonymous": { "generate": 5, "custom_refine": 10 },
-    "Free Tier": { "generate": 5, "custom_refine": 10 },
-    "Starter Tier": { "generate": 2, "custom_refine": 4 },
-    "Pro Tier": { "generate": 1, "custom_refine": 2, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 15, "generate_available_alternatives": 25, "generate_alternatives": 15 },
-    "Business Tier": { "generate": 1, "custom_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 20, "generate_alternatives": 10, "analyze_persona": 25 }
-};
 
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
@@ -165,24 +149,28 @@ const manageSubscriptionBtn = document.getElementById('manage-subscription-btn')
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
 
+// --- NEW: Credit Cost Data ---
+// --- NEW: Credit Cost Data ---
+const TIER_COSTS = {
+    "Anonymous": { "generate": 5, "custom_refine": 5 },
+    "Free Tier": { "generate": 5, "custom_refine": 5 },
+    "Starter Tier": { "generate": 2, "custom_refine": 2 },
+    "Pro Tier": { "generate": 1, "custom_refine": 1, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 25 },
+    "Business Tier": { "generate": 1, "custom_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
+};
 
-// [CORRECTED] Single, definitive updateCreditCostsUI function
+// --- NEW: Function to update UI with credit costs ---
 window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
     
-    // Helper to safely update the text content of a cost display span
+    // A helper to safely update the text content of a cost display span
     const setCost = (id, costValue, perName = false) => {
         const el = document.getElementById(id);
         if (el) {
-            if (costValue !== undefined) {
-                let text = `(${costValue} Credit${costValue !== 1 ? 's' : ''}`;
-                if (perName) text += "/name";
-                text += ")";
-                el.textContent = text;
-                el.classList.remove('hidden');
-            } else {
-                el.classList.add('hidden');
-            }
+            let text = `(${costValue} Credits`;
+            if (perName) text += "/name";
+            text += ")";
+            el.textContent = text;
         }
     };
 
@@ -193,48 +181,8 @@ window.updateCreditCostsUI = (tier) => {
     setCost("combine-words-cost", costs.combine_words);
     setCost("check-availability-cost", costs.check_availability);
     setCost("analyze-name-cost", costs.analyze_name);
-    setCost("analyze-persona-cost", costs.analyze_persona);
     setCost("generate-alternatives-cost", costs.generate_alternatives);
     setCost("generate-available-alt-cost", costs.generate_available_alternatives);
-};
-
-// [CORRECTED] This block was a mix of old and new code. It is now corrected.
-function generateHexagonSVG(design) {
-    const gradientDef = `
-        <defs>
-            <linearGradient id="businessGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:var(--primary-accent)" />
-                <stop offset="50%" style="stop-color:var(--line-accent-default)" />
-                <stop offset="100%" style="stop-color:var(--secondary-accent)" />
-            </linearGradient>
-        </defs>
-    `;
-    const fill = design.useGradient ? "url(#businessGradient)" : design.fill;
-    
-    return `
-        <svg viewBox="0 0 100 115.47" style="width: 100%; height: 100%;">
-            ${design.useGradient ? gradientDef : ''}
-            <polygon 
-                points="50,0 95,28.87 95,86.6 50,115.47 5,86.6 5,28.87" 
-                fill="${fill}"
-            />
-        </svg>
-    `;
-}
-
-// [CORRECTED] Single, definitive applyTierStyling function using SVGs
-window.applyTierStyling = (tier) => {
-    const design = TIER_DESIGNS[tier] || TIER_DESIGNS["Anonymous"];
-    document.body.dataset.tier = design.tier_id;
-
-    // Generate and apply dynamic SVG icons
-    const svgIconHtml = generateHexagonSVG(design);
-    
-    const loaderIconContainer = document.getElementById('loader-hexagon-icon');
-    const mainIconContainer = document.querySelector('.hexagon-image');
-
-    if(loaderIconContainer) loaderIconContainer.innerHTML = svgIconHtml;
-    if(mainIconContainer) mainIconContainer.innerHTML = svgIconHtml;
 };
 
 
@@ -2276,4 +2224,3 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
-
