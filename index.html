@@ -242,7 +242,7 @@
 
         <div id="availability-checker-view" class="hidden">
             <div id="availability-checker-lock" class="feature-lock-banner hidden">
-                <i class="fas fa-lock"></i> The Availability Checker is a Pro feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
+                <i class="fas fa-lock"></i> The Availability Checker is a Premium feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
             </div>
             <h1>Name Availability Check</h1>
             <p class="description">Check if your desired name is available as a domain and on social media.</p>
@@ -297,9 +297,9 @@
 
         <div id="name-analyzer-view" class="hidden">
              <div id="name-analyzer-lock" class="feature-lock-banner hidden">
-                <i class="fas fa-lock"></i> The Name Analyzer is a Pro feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
+                <i class="fas fa-lock"></i> The Name Analyzer is a Premium feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
             </div>
-            <div id="persona-analysis-lock" class="feature-lock-banner hidden" style="background-color: #3e2753;">
+            <div id="persona-analysis-lock" class="feature-lock-banner hidden" style="background-color: transparent;">
                 <i class="fas fa-star"></i> Persona Analysis is a Business feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> for the ultimate insights.
             </div>
             <h1>Name Analyzer</h1>
@@ -446,30 +446,8 @@
                 <h2><i class="fas fa-rocket"></i> Our Mission</h2>
                 <p>At NameIT, our mission is to eliminate the creative block that comes with naming. We believe that a great name is the cornerstone of any great idea. Whether you're a developer launching an app, an author writing a book, or an entrepreneur building a brand, NameIT provides the creative spark you need to find the perfect name that resonates and inspires.</p>
             </div>
-             <div class="about-section how-it-works">
-                <h2><i class="fas fa-sitemap"></i> How It Works</h2>
-                <div class="diagram">
-                    <div class="diagram-step">
-                        <div class="step-icon"><i class="fas fa-lightbulb"></i></div>
-                        <h3>1. Input Idea</h3>
-                        <p>Describe your concept, keywords, and desired style.</p>
-                    </div>
-                    <div class="diagram-arrow">&rarr;</div>
-                    <div class="diagram-step">
-                        <div class="step-icon"><i class="fas fa-cogs"></i></div>
-                        <h3>2. AI Generation</h3>
-                        <p>Our engine analyzes your input and generates creative names.</p>
-                    </div>
-                    <div class="diagram-arrow">&rarr;</div>
-                    <div class="diagram-step">
-                        <div class="step-icon"><i class="fas fa-wrench"></i></div>
-                        <h3>3. Refine & Analyze</h3>
-                        <p>Iterate on suggestions and check their availability and brandability.</p>
-                    </div>
-                </div>
-            </div>
             <div class="about-section features-grid">
-                 <div class="feature-card">
+                <div class="feature-card">
                     <i class="fas fa-brain"></i>
                     <h3>Intelligent Generation</h3>
                     <p>Leverage the power of advanced AI to get name suggestions that are not just random, but contextually relevant, creative, and aligned with your specified style and category.</p>
@@ -483,6 +461,11 @@
                     <i class="fas fa-search-dollar"></i>
                     <h3>Instant Analysis</h3>
                     <p>Don't just find a name, validate it. Our tools allow you to instantly check domain and social media availability, and get an AI-powered brandability analysis.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-paint-brush"></i>
+                    <h3>Personalized Experience</h3>
+                    <p>Make NameIT your own. Customize the theme, fonts, and other settings to create a workspace that inspires you. Your history is always saved for easy access.</p>
                 </div>
             </div>
              <div class="about-section meet-the-ai">
@@ -675,7 +658,7 @@
 
         <div id="summarizer-view" class="hidden">
             <div id="summarizer-lock" class="feature-lock-banner hidden">
-                <i class="fas fa-lock"></i> The Text Summarizer is a Pro feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
+                <i class="fas fa-lock"></i> The Text Summarizer is a Premium feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
             </div>
             <h1>Text Summarizer</h1>
             <p class="description">Enter a long paragraph or text, and the AI will provide a concise summary.</p>
@@ -729,7 +712,7 @@
 
         <div id="word-combiner-view" class="hidden">
             <div id="word-combiner-lock" class="feature-lock-banner hidden">
-                <i class="fas fa-lock"></i> The Word Combiner is a Pro feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
+                <i class="fas fa-lock"></i> The Word Combiner is a Premium feature. <a href="#" onclick="showView('premium'); return false;">Upgrade Now</a> to unlock.
             </div>
             <h1>Word Combiner</h1>
             <p class="description">Enter a few words or concepts, and the AI will merge them into a single, creative new word.</p>
@@ -777,52 +760,27 @@
         <div id="contact-view" class="hidden">
             <h1>Contact Us</h1>
             <p class="description">Have a question or feedback? We'd love to hear from you.</p>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3>Get in Touch</h3>
-                    <p>For the fastest response, please use the contact form. We typically reply within 24 business hours.</p>
-                    <div class="info-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>support@nameitapp.com</span>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-question-circle"></i>
-                        <span>For technical issues, please include your User ID if possible.</span>
-                    </div>
-                    <div class="social-links">
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    </div>
+            <div class="contact-form-container">
+                <div id="form-submission-message"></div>
+                
+                <div id="contact-login-prompt" class="hidden">
+                    <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
                 </div>
-                <div class="contact-form-wrapper">
-                    <div id="form-submission-message"></div>
-                    <div id="contact-login-prompt" class="hidden">
-                        <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
+
+                <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form">
+                    <input type="hidden" id="contact-email-hidden" name="email">
+                    
+                    <div class="input-group">
+                        <label for="contact-name">Your Name</label>
+                        <input type="text" id="contact-name" name="name" required>
                     </div>
-                    <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form hidden">
-                        <input type="hidden" id="contact-email-hidden" name="email">
-                        <div class="input-group">
-                            <label for="contact-name">Your Name</label>
-                            <input type="text" id="contact-name" name="name" required>
-                        </div>
-                         <div class="input-group">
-                            <label for="contact-subject">Subject</label>
-                            <select id="contact-subject" name="subject" required>
-                                <option value="General Inquiry">General Inquiry</option>
-                                <option value="Technical Support">Technical Support</option>
-                                <option value="Billing Question">Billing Question</option>
-                                <option value="Feedback & Suggestions">Feedback & Suggestions</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label for="contact-message">Message</label>
-                            <textarea id="contact-message" name="message" required></textarea>
-                        </div>
-                        <p id="contact-user-email-display" class="email-display"></p>
-                        <button type="submit" id="contact-submit-btn" class="submit-btn">Send Message</button>
-                    </form>
-                </div>
+                    <div class="input-group">
+                        <label for="contact-message">Message</label>
+                        <textarea id="contact-message" name="message" required></textarea>
+                    </div>
+                    <p id="contact-user-email-display" class="email-display"></p>
+                    <button type="submit" id="contact-submit-btn" class="submit-btn">Send Message</button>
+                </form>
             </div>
         </div>
 
