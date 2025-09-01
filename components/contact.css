@@ -1,69 +1,12 @@
 /* components/contact.css */
 
-.contact-container {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 30px;
-    max-width: 900px;
+.contact-form-container {
+    max-width: 700px;
     margin: 20px auto;
     background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     padding: 30px;
-    align-items: start;
-}
-
-.contact-info {
-    padding-right: 30px;
-    border-right: 1px solid #4a4a4a;
-}
-
-.contact-info h3 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-    color: #ffffff;
-}
-
-.contact-info p {
-    line-height: 1.6;
-    color: #cccccc;
-    margin-bottom: 20px;
-}
-
-.info-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.info-item i {
-    font-size: 1.2em;
-    color: var(--primary-accent);
-}
-
-.social-links {
-    margin-top: 25px;
-    display: flex;
-    gap: 15px;
-}
-
-.social-icon {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #3a3a3a;
-    color: #e0e0e0;
-    text-decoration: none;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.social-icon:hover {
-    background-color: var(--primary-accent);
-    transform: translateY(-3px);
 }
 
 .contact-form .input-group {
@@ -77,7 +20,6 @@
 }
 
 .contact-form input[type="text"],
-.contact-form select,
 .contact-form textarea {
     width: 100%;
     padding: 12px;
@@ -115,6 +57,7 @@
     cursor: not-allowed;
 }
 
+/* Styles for the success/error message box */
 #form-submission-message {
     padding: 15px;
     margin-bottom: 20px;
@@ -125,15 +68,16 @@
 }
 
 #form-submission-message.success {
-    background-color: #28a745;
+    background-color: #28a745; /* Green for success */
     color: white;
 }
 
 #form-submission-message.error {
-    background-color: #dc3545;
+    background-color: #dc3545; /* Red for error */
     color: white;
 }
 
+/* Styles for the login prompt */
 #contact-login-prompt {
     text-align: center;
     font-size: 1.1em;
@@ -152,18 +96,5 @@
     font-size: 0.9em;
     color: #aaa;
     margin-bottom: 15px;
-}
-
-@media (max-width: 768px) {
-    .contact-container {
-        grid-template-columns: 1fr;
-    }
-    .contact-info {
-        border-right: none;
-        border-bottom: 1px solid #4a4a4a;
-        padding-right: 0;
-        padding-bottom: 20px;
-        margin-bottom: 20px;
-    }
 }
 
