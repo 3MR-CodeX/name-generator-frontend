@@ -2470,92 +2470,113 @@ body.light-theme {
     background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
 }
 
-/* --- NEW: Tier-Based Theming System --- */
-
-/* Default (Free Tier - Grayscale) */
-body[data-tier-theme="free"],
-body[data-tier-theme="anonymous"] {
-    --tier-main-color: #888;
-    --tier-glow-color: #aaa;
-    --tier-button-text-color: #1a1a1a;
-}
-
-/* Starter Tier */
-body[data-tier-theme="starter"] {
-    --tier-main-color: var(--secondary-accent);
-    --tier-glow-color: var(--secondary-accent);
-    --tier-button-text-color: white;
-}
-
-/* Pro Tier */
-body[data-tier-theme="pro"] {
-    --tier-main-color: var(--primary-accent);
-    --tier-glow-color: var(--line-accent-glow);
-    --tier-button-text-color: white;
-}
-
-/* Business Tier (Animated) */
-body[data-tier-theme="business"] {
-    --tier-main-color: var(--primary-accent);
-    --tier-glow-color: var(--line-accent-default);
-    --tier-button-text-color: white;
-}
-
-/* Apply Tier Colors to Elements */
-.generate-btn, .refine-btn, .cta-button, .settings-btn.premium-btn,
-.import-history-btn, ::-webkit-scrollbar-thumb {
-    background-color: var(--tier-main-color);
-    border-color: var(--tier-main-color);
-    color: var(--tier-button-text-color);
-}
-
-.surprise-btn {
-    border-color: var(--tier-main-color);
-}
-.surprise-btn:hover:not(:disabled) {
-    background-color: var(--tier-main-color);
-    color: var(--tier-button-text-color);
-}
-
-.feature-lock-banner {
-    border-color: var(--tier-main-color);
-}
-.feature-lock-banner a {
-    color: var(--tier-glow-color);
-}
-
-.user-profile-pfp {
-    border-color: var(--tier-glow-color);
-}
-.user-profile-container:hover .user-profile-pfp {
-    box-shadow: 0 0 10px 2px var(--tier-glow-color);
-}
-
-/* ... (other selectors to apply tier colors) ... */
-
-
-/* --- Business Tier Animations --- */
-body[data-tier-theme="business"] .generate-btn,
-body[data-tier-theme="business"] .cta-button {
-    background: linear-gradient(90deg, var(--tier-main-color), var(--tier-glow-color), var(--tier-main-color));
-    background-size: 200% 100%;
-    animation: gradient-animation 4s infinite linear;
-}
-
-@keyframes gradient-animation {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-
 /* --- Credit Cost Display --- */
-.credit-cost-display {
-    display: inline-block;
-    margin-left: 10px;
-    padding: 2px 8px;
-    font-size: 0.8em;
-    font-weight: 500;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    vertical-align: middle;
+.credit-cost {
+    font-size: 0.75em;
+    font-weight: 400;
+    margin-left: 8px;
+    opacity: 0.8;
+    color: #fff;
+    background-color: rgba(0,0,0,0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* --- TIER-BASED STYLING SYSTEM --- */
+
+/* --- Tier: FREE --- */
+/* Applies a grayscale filter to the main content for a clean, no-color look. */
+body[data-tier="free"] .main-content-wrapper {
+    filter: grayscale(100%);
+}
+body[data-tier="free"] #top-bar {
+    --primary-accent: #888;
+    --secondary-accent: #666;
+    --line-accent-default: #999;
+    --line-accent-glow: #aaa;
+}
+
+/* --- Tier: STARTER --- */
+/* Highlights key elements with the theme's secondary color. */
+body[data-tier="starter"] .input-box:focus-within,
+body[data-tier="starter"] .output-box,
+body[data-tier="starter"] .pricing-card:hover {
+    border-color: var(--secondary-accent);
+    box-shadow: 0 0 10px -2px var(--secondary-accent);
+}
+body[data-tier="starter"] .generate-btn,
+body[data-tier="starter"] .cta-button,
+body[data-tier="starter"] .tier-badge.premium-tier {
+    background-color: var(--secondary-accent);
+}
+body[data-tier="starter"] .user-profile-pfp {
+    border-color: var(--secondary-accent);
+}
+
+/* --- Tier: PRO --- */
+/* Upgrades highlights to the theme's primary color for a more vibrant feel. */
+body[data-tier="pro"] .input-box:focus-within,
+body[data-tier="pro"] .output-box,
+body[data-tier="pro"] .pricing-card:hover {
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 12px -1px var(--primary-accent);
+}
+body[data-tier="pro"] .generate-btn,
+body[data-tier="pro"] .cta-button,
+body[data-tier="pro"] .tier-badge.premium-tier {
+    background-color: var(--primary-accent);
+}
+body[data-tier="pro"] .user-profile-pfp {
+    border-color: var(--primary-accent);
+}
+body[data-tier="pro"] .surprise-btn {
+    border-color: var(--primary-accent);
+}
+body[data-tier="pro"] .surprise-btn:hover {
+    background-color: var(--primary-accent);
+}
+
+/* --- Tier: BUSINESS (ANIMATED) --- */
+/* Adds a premium animated gradient border to key interactive elements. */
+@keyframes animated-gradient-border {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body[data-tier="business"] .input-box,
+body[data-tier="business"] .generate-btn,
+body[data-tier="business"] .pricing-card.business-highlight {
+    position: relative;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+body[data-tier="business"] .input-box::before,
+body[data-tier="business"] .generate-btn::before,
+body[data-tier="business"] .pricing-card.business-highlight::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -1;
+    margin: -2px; /* Must match border width */
+    border-radius: inherit;
+    background: linear-gradient(120deg, var(--primary-accent), var(--secondary-accent), var(--line-accent-default), var(--primary-accent));
+    background-size: 300% 300%;
+    animation: animated-gradient-border 4s ease infinite;
+}
+
+body[data-tier="business"] .user-profile-pfp {
+    border-color: transparent;
+    position: relative;
+    background-clip: padding-box;
+}
+body[data-tier="business"] .user-profile-pfp::before {
+     content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -1;
+    margin: -2px;
+    border-radius: inherit;
+    background: linear-gradient(120deg, var(--primary-accent), var(--line-accent-default));
 }
