@@ -181,6 +181,56 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 5000);
 });
 
+// NEW GLOBAL FUNCTION: updateFeatureLocks
+window.updateFeatureLocks = function(tier) {
+    const isProOrHigher = tier === 'Pro Tier' || tier === 'Business Tier';
+    const isBusiness = tier === 'Business Tier';
+
+    // --- Tool Page Locks ---
+    const toolLocks = {
+        'availability-checker': { locked: !isProOrHigher },
+        'name-analyzer': { locked: !isProOrHigher },
+        'summarizer': { locked: !isProOrHigher },
+        'word-combiner': { locked: !isProOrHigher }
+    };
+
+    for (const tool in toolLocks) {
+        const banner = document.getElementById(`${tool}-lock`);
+        const view = document.getElementById(`${tool}-view`);
+        if (banner && view) {
+            const isLocked = toolLocks[tool].locked;
+            banner.classList.toggle('hidden', !isLocked);
+            // This class will disable all inputs/buttons within the view
+            view.classList.toggle('premium-locked', isLocked);
+        }
+    }
+    
+    // Specific lock for Persona Analysis within the Name Analyzer
+    const personaBanner = document.getElementById('persona-analysis-lock');
+    const personaSection = document.querySelector('.persona-section');
+    if (personaBanner && personaSection) {
+        const isLocked = !isBusiness;
+        // Show banner if they are Pro but not Business
+        personaBanner.classList.toggle('hidden', tier !== 'Pro Tier');
+        personaSection.classList.toggle('premium-locked', isLocked);
+    }
+
+
+    // --- Sidebar Link Locks ---
+    const sidebarLinks = {
+        'nav-checker': { locked: !isProOrHigher },
+        'nav-analyzer': { locked: !isProOrHigher },
+        'nav-summarizer': { locked: !isProOrHigher },
+        'nav-combiner': { locked: !isProOrHigher },
+    };
+
+    for (const id in sidebarLinks) {
+        const li = document.getElementById(id);
+        if (li) {
+            li.classList.toggle('locked', sidebarLinks[id].locked);
+        }
+    }
+}
 
 
 async function loadComponent(placeholderId, componentUrl) {
@@ -2140,3 +2190,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
