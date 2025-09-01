@@ -82,7 +82,7 @@ function initializeAuth() {
         if (tierBadge) {
             tierBadge.textContent = data.tier;
             tierBadge.className = 'tier-badge';
-            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Starter Pack": 'premium-tier', "Pro Pack": 'premium-tier', "Business Pack": 'business-tier' };
+            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Premium Tier": 'premium-tier', "Business Tier": 'business-tier' };
             if (tiers[data.tier]) {
                 tierBadge.classList.add(tiers[data.tier]);
             }
@@ -94,10 +94,7 @@ function initializeAuth() {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
         const errorDiv = document.getElementById("error");
-    
-        // Clear previous tier classes from body
-        document.body.classList.remove('tier-starter', 'tier-pro', 'tier-business');
-    
+
         userStatusContainer.classList.add('hidden');
         verificationNotice.classList.add('hidden');
         authButtonsContainer.classList.add('hidden');
@@ -106,7 +103,7 @@ function initializeAuth() {
         fullHistoryLi.classList.add('hidden');
         if (accountDropdown) accountDropdown.classList.remove('visible');
         if (tierDropdown) tierDropdown.classList.remove('visible');
-    
+
         if (user) { // --- USER IS LOGGED IN ---
             userProfileContainer.classList.remove('hidden');
             signOutLi.classList.remove('hidden');
@@ -129,18 +126,10 @@ function initializeAuth() {
                         fetch(`${BACKEND_URL}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
                         .then(res => res.json())
                         .then(status => {
-                            window.currentUserTier = status.tier; // Store tier globally
-                            // Apply tier class to body for CSS effects
-                            if (status.tier === 'Starter Pack') document.body.classList.add('tier-starter');
-                            if (status.tier === 'Pro Pack') document.body.classList.add('tier-pro');
-                            if (status.tier === 'Business Pack') document.body.classList.add('tier-business');
-    
                             updateSubscriptionDisplay({
                                 tier: status.tier,
                                 credits: status.credits
                             });
-                            // After tier is known, update locks
-                            if(typeof updateFeatureLocks === 'function') updateFeatureLocks(); 
                         });
                     });
                 } else {
@@ -153,7 +142,6 @@ function initializeAuth() {
                 }
             });
         } else { // --- USER IS NOT LOGGED IN (ANONYMOUS) ---
-            window.currentUserTier = "Anonymous"; // Set tier for anonymous users
             if(generateBtn) generateBtn.disabled = false;
             if(surpriseBtn) surpriseBtn.disabled = false;
             authButtonsContainer.classList.remove('hidden');
@@ -164,7 +152,6 @@ function initializeAuth() {
                 tier: "Anonymous",
                 credits: Math.max(0, 25 - anonGenerations)
             });
-            if(typeof updateFeatureLocks === 'function') updateFeatureLocks(); // Update locks for anonymous user
         }
     };
 
