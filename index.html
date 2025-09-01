@@ -442,33 +442,36 @@
         <div id="about-view" class="hidden">
             <h1>About NameIT</h1>
             <p class="description">The ultimate AI-powered tool for creative naming and branding.</p>
+            
             <div class="about-section">
                 <h2><i class="fas fa-rocket"></i> Our Mission</h2>
-                <p>At NameIT, our mission is to eliminate the creative block that comes with naming. We believe that a great name is the cornerstone of any great idea. Whether you're a developer launching an app, an author writing a book, or an entrepreneur building a brand, NameIT provides the creative spark you need to find the perfect name that resonates and inspires.</p>
+                <p>At NameIT, our mission is to eliminate the creative block that comes with naming. We believe that a great name is the cornerstone of any great idea. Whether you're an entrepreneur launching a startup, an author writing a book, or a developer shipping an app, NameIT provides the creative spark you need to find the perfect name that resonates and inspires.</p>
             </div>
-            <div class="about-section features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-brain"></i>
-                    <h3>Intelligent Generation</h3>
-                    <p>Leverage the power of advanced AI to get name suggestions that are not just random, but contextually relevant, creative, and aligned with your specified style and category.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-cogs"></i>
-                    <h3>Deep Customization</h3>
-                    <p>Go beyond simple descriptions. Fine-tune your results by providing keywords, choosing a style, defining a pattern, and even using existing names as inspiration.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-search-dollar"></i>
-                    <h3>Instant Analysis</h3>
-                    <p>Don't just find a name, validate it. Our tools allow you to instantly check domain and social media availability, and get an AI-powered brandability analysis.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-paint-brush"></i>
-                    <h3>Personalized Experience</h3>
-                    <p>Make NameIT your own. Customize the theme, fonts, and other settings to create a workspace that inspires you. Your history is always saved for easy access.</p>
+        
+            <div class="about-section how-it-works">
+                <h2><i class="fas fa-sitemap"></i> How It Works</h2>
+                <div class="diagram">
+                    <div class="diagram-step">
+                        <div class="step-icon">1</div>
+                        <h3>Describe Your Idea</h3>
+                        <p>Provide a simple description, keywords, and style for what you want to name.</p>
+                    </div>
+                    <div class="diagram-arrow">&rarr;</div>
+                    <div class="diagram-step">
+                        <div class="step-icon">2</div>
+                        <h3>Get AI Suggestions</h3>
+                        <p>Our AI engine generates a list of creative, context-aware names and explanations.</p>
+                    </div>
+                    <div class="diagram-arrow">&rarr;</div>
+                    <div class="diagram-step">
+                        <div class="step-icon">3</div>
+                        <h3>Refine & Analyze</h3>
+                        <p>Use premium tools to refine the names, check availability, and analyze brand potential.</p>
+                    </div>
                 </div>
             </div>
-             <div class="about-section meet-the-ai">
+        
+            <div class="about-section meet-the-ai">
                 <img src="Hexagon_starter.png" alt="NameIT AI" class="ai-logo">
                 <div>
                     <h2>The NameIT Engine</h2>
@@ -476,7 +479,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div id="premium-view" class="hidden">
             <h1><i class="fas fa-crown"></i> Unlock Your Creative Potential</h1>
             <p class="description">NameIT's premium tools are designed to give you a competitive edge. Find the perfect plan below.</p>
@@ -759,28 +762,54 @@
         
         <div id="contact-view" class="hidden">
             <h1>Contact Us</h1>
-            <p class="description">Have a question or feedback? We'd love to hear from you.</p>
-            <div class="contact-form-container">
-                <div id="form-submission-message"></div>
-                
-                <div id="contact-login-prompt" class="hidden">
-                    <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
+            <p class="description">Have a question, suggestion, or need support? We'd love to hear from you.</p>
+        
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p>Fill out the form to send us a message directly. For specific inquiries, please see the options below.</p>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>support@nameit.app</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>business@nameit.app</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    </div>
                 </div>
-
-                <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form">
-                    <input type="hidden" id="contact-email-hidden" name="email">
-                    
-                    <div class="input-group">
-                        <label for="contact-name">Your Name</label>
-                        <input type="text" id="contact-name" name="name" required>
+                <div class="contact-form-wrapper">
+                    <div id="form-submission-message"></div>
+                    <div id="contact-login-prompt" class="hidden">
+                        <p>Please <a href="#" id="contact-signin-link">sign in</a> to send a message. This helps us verify your identity and respond to you directly.</p>
                     </div>
-                    <div class="input-group">
-                        <label for="contact-message">Message</label>
-                        <textarea id="contact-message" name="message" required></textarea>
-                    </div>
-                    <p id="contact-user-email-display" class="email-display"></p>
-                    <button type="submit" id="contact-submit-btn" class="submit-btn">Send Message</button>
-                </form>
+                    <form id="contact-form" action="https://formspree.io/f/mvgbrbzd" method="POST" class="contact-form">
+                        <input type="hidden" id="contact-email-hidden" name="email">
+                        <div class="input-group">
+                            <label for="contact-name">Your Name</label>
+                            <input type="text" id="contact-name" name="name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="contact-subject">Subject</label>
+                            <select id="contact-subject" name="subject" required>
+                                <option value="General Question">General Question</option>
+                                <option value="Feedback & Suggestions">Feedback & Suggestions</option>
+                                <option value="Technical Support">Technical Support</option>
+                                <option value="Business Inquiry">Business Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="contact-message">Message</label>
+                            <textarea id="contact-message" name="message" required></textarea>
+                        </div>
+                        <p id="contact-user-email-display" class="email-display"></p>
+                        <button type="submit" id="contact-submit-btn" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
             </div>
         </div>
 
