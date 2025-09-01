@@ -1633,8 +1633,7 @@ body.light-theme {
 .light-theme .modal-content,
 .light-theme .about-section,
 .light-theme .feature-card,
-.light-theme .contact-container,
-.light-theme .user-type-card {
+.light-theme .contact-container {
     background-color: #ffffff;
     border-color: #dddfe2;
 }
@@ -1678,49 +1677,133 @@ body.light-theme {
     border-right-color: #dddfe2;
 }
 
-/* --- Who We Serve Section --- */
-.who-we-serve-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+/* --- Loading Animation --- */
+#loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out;
 }
-.user-type-card {
-    background-color: rgba(58, 58, 58, 0.75);
+
+.loader-hexagon {
+    width: 150px;
+    height: 150px;
+    animation: pulse-hexagon 2s infinite ease-in-out;
+}
+
+@keyframes pulse-hexagon {
+    0% {
+        transform: scale(0.95);
+        filter: drop-shadow(0 0 10px var(--line-accent-default));
+    }
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 25px var(--line-accent-glow));
+    }
+    100% {
+        transform: scale(0.95);
+        filter: drop-shadow(0 0 10px var(--line-accent-default));
+    }
+}
+
+#loader-wrapper.fade-out {
+    opacity: 0;
+}
+
+/* --- About Page Styles (Reverted) --- */
+.about-section {
+    background-color: rgba(42, 42, 42, 0.75);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
-    padding: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.about-section h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #4a4a4a;
+    color: #e0e0e0;
+    text-align: left;
+}
+
+.about-section h2 i {
+    margin-right: 12px;
+    color: var(--line-accent-default);
+}
+
+.about-section p {
+    line-height: 1.7;
+    font-size: 1.1em;
+    color: #cccccc;
+}
+
+.how-it-works .diagram {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.diagram-step {
+    flex: 1;
+    min-width: 200px;
     text-align: center;
 }
-.user-type-card i {
-    font-size: 2em;
-    margin-bottom: 10px;
-    color: var(--primary-accent);
+
+.step-icon {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    background-color: var(--primary-accent);
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0 auto 10px;
 }
-.user-type-card h3 {
-    margin-bottom: 10px;
+
+.diagram-step h3 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
     color: #fff;
 }
 
-/* --- Commitment List Section --- */
-.commitment-list {
-    list-style: none;
-    padding-left: 0;
+.diagram-step p {
+    font-size: 1em;
+    line-height: 1.5;
 }
-.commitment-list li {
-    position: relative;
-    padding-left: 30px;
-    margin-bottom: 15px;
-    font-size: 1.1em;
-}
-.commitment-list li::before {
-    content: '\f00c'; /* Font Awesome check icon */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 0;
-    top: 2px;
+
+.diagram-arrow {
+    font-size: 2em;
     color: var(--line-accent-default);
 }
+
+.meet-the-ai {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.meet-the-ai .ai-logo {
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    animation: pulse-hexagon 3s infinite ease-in-out;
+    margin: 0 auto;
+}
+
 
 /* --- Persona Analyzer Styles --- */
 .persona-section {
@@ -2386,4 +2469,3 @@ body.light-theme {
 .business-tier-tag {
     background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
 }
-
