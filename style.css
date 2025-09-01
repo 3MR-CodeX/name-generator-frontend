@@ -2521,17 +2521,6 @@ body[data-tier="pro"] .topbar-title {
     text-shadow: 0 0 8px #D4AF37;
 }
 
-body[data-tier="pro"] #top-bar {
-    background-color: rgba(20, 16, 5, 0.85);
-    border-bottom: 2px solid #D4AF37;
-}
-
-body[data-tier="pro"] #sidebar {
-    border-right: 2px solid #D4AF37;
-    background-color: rgba(20, 16, 5, 0.9);
-}
-
-
 /* --- Business Tier: "Chroma Shift" Theme --- */
 @keyframes theme-color-cycle {
     0%   { --current-theme-color: #a500ff; } /* Synthwave */
