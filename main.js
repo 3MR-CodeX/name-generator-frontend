@@ -254,6 +254,47 @@ window.applyTierStyling = (tier) => {
     if(mainIcon) mainIcon.src = design.icon;
 };
 
+// --- NEW: Function to generate a dynamic SVG hexagon ---
+function generateHexagonSVG(design) {
+    const gradientDef = `
+        <defs>
+            <linearGradient id="businessGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:var(--primary-accent)" />
+                <stop offset="50%" style="stop-color:var(--line-accent-default)" />
+                <stop offset="100%" style="stop-color:var(--secondary-accent)" />
+            </linearGradient>
+        </defs>
+    `;
+    const fill = design.useGradient ? "url(#businessGradient)" : design.fill;
+    
+    return `
+        <svg viewBox="0 0 100 115.47" style="width: 100%; height: 100%;">
+            ${design.useGradient ? gradientDef : ''}
+            <polygon 
+                points="50,0 95,28.87 95,86.6 50,115.47 5,86.6 5,28.87" 
+                fill="${fill}"
+            />
+        </svg>
+    `;
+}
+
+
+// --- Function to apply tier-specific designs ---
+window.applyTierStyling = (tier) => {
+    const design = TIER_DESIGNS[tier] || TIER_DESIGNS["Anonymous"];
+    document.body.dataset.tier = design.tier_id;
+
+    // Generate and apply dynamic SVG icons
+    const svgIconHtml = generateHexagonSVG(design);
+    
+    const loaderIconContainer = document.getElementById('loader-hexagon-icon');
+    const mainIconContainer = document.querySelector('.hexagon-image');
+
+    if(loaderIconContainer) loaderIconContainer.innerHTML = svgIconHtml;
+    if(mainIconContainer) mainIconContainer.innerHTML = svgIconHtml;
+};
+
+
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -2294,3 +2335,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
