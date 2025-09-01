@@ -63,157 +63,6 @@ const BACKGROUND_ANIMATIONS = {
     'pattern12': 'vertical-crossing-bars'
 };
 
-// Add this translations object near the top of main.js
-const translations = {
-    en: {
-        // Top Bar & Sidebar
-        "go-premium-link": "✨ Go Premium",
-        "buy-credits-link": "💰 Buy Credits",
-        "home-link": "Name Generator",
-        "custom-refine-link": "Custom Name Refining",
-        "availability-check-link": "Name Availability Check",
-        "name-analyzer-link": "Name Analyzer",
-        "summarizer-link": "Text Summarizer",
-        "word-combiner-link": "Word Combiner",
-        "settings-link": "Settings",
-        "full-history-li-a": "Full History",
-        "contact-link": "Contact",
-        "about-link": "About",
-        // Main Generator
-        "generator-description": "Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.",
-        "prompt-label": "What do you want to name?",
-        "prompt-placeholder": "Enter a description!",
-        "keywords-label": "Keywords",
-        "keywords-placeholder": "e.g., space, elegant, futuristic, powerful",
-        "relevancy-label": "Keyword Relevancy",
-        "amount-label": "Number of Names",
-        "category-label": "Category",
-        "style-label": "Style",
-        "language-label": "Language",
-        "pattern-label": "Pattern",
-        "generate-btn": "🎯 Generate Names",
-        "surprise-btn": "🎲 Surprise Me",
-        "more-like-this-label": "More Like This",
-        "refine-label": "Refine the suggestions",
-        "refine-placeholder": "e.g., Make the names shorter and more playful",
-        "refine-btn-text": "🛠️ Refine Suggestions",
-        // Settings
-        "settings-title": "Settings",
-        "settings-description": "Customize your experience and manage your account.",
-        "appearance-header": "Appearance",
-        "theme-label": "Color Theme",
-        "background-label": "Background Pattern",
-        "ui-font-label": "UI Font Family",
-        "ui-font-size-label": "UI Font Size",
-        "results-font-label": "Results Font Family",
-        "results-font-size-label": "Results Font Size",
-        "language-setting-label": "App Language",
-    },
-    ar: {
-        // Top Bar & Sidebar
-        "go-premium-link": "✨ الترقية إلى بريميوم",
-        "buy-credits-link": "💰 شراء أرصدة",
-        "home-link": "مولد الأسماء",
-        "custom-refine-link": "صقل اسم مخصص",
-        "availability-check-link": "التحقق من توفر الاسم",
-        "name-analyzer-link": "محلل الأسماء",
-        "summarizer-link": "ملخص النصوص",
-        "word-combiner-link": "دمج الكلمات",
-        "settings-link": "الإعدادات",
-        "full-history-li-a": "السجل الكامل",
-        "contact-link": "اتصل بنا",
-        "about-link": "حول التطبيق",
-        // Main Generator
-        "generator-description": "قم بتسمية أي شيء — منتج، علامة تجارية، مكان، شركة، فيديو، أو حتى كلمة جديدة. ثم قم بصقله على الفور.",
-        "prompt-label": "ماذا تريد أن تسمي؟",
-        "prompt-placeholder": "أدخل وصفًا!",
-        "keywords-label": "الكلمات المفتاحية",
-        "keywords-placeholder": "مثال: فضاء، أنيق، مستقبلي، قوي",
-        "relevancy-label": "صلة الكلمات المفتاحية",
-        "amount-label": "عدد الأسماء",
-        "category-label": "الفئة",
-        "style-label": "النمط",
-        "language-label": "اللغة",
-        "pattern-label": "النسق",
-        "generate-btn": "🎯 إنشاء أسماء",
-        "surprise-btn": "🎲 فاجئني",
-        "more-like-this-label": "المزيد مثل هذا",
-        "refine-label": "صقل الاقتراحات",
-        "refine-placeholder": "مثال: اجعل الأسماء أقصر وأكثر مرحًا",
-        "refine-btn-text": "🛠️ صقل الاقتراحات",
-        // Settings
-        "settings-title": "الإعدادات",
-        "settings-description": "خصص تجربتك وقم بإدارة حسابك.",
-        "appearance-header": "المظهر",
-        "theme-label": "سمة اللون",
-        "background-label": "نمط الخلفية",
-        "ui-font-label": "خط واجهة المستخدم",
-        "ui-font-size-label": "حجم خط واجهة المستخدم",
-        "results-font-label": "خط النتائج",
-        "results-font-size-label": "حجم خط النتائج",
-        "language-setting-label": "لغة التطبيق",
-    }
-    // Add other languages like 'es', 'fr', 'de', 'ja' here following the same structure.
-};
-
-// Add these new functions to main.js
-// --- LANGUAGE FUNCTIONS (NEW) ---
-function setLanguage(lang) {
-    const langPack = translations[lang] || translations.en;
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-    // Elements with text content
-    document.querySelector('#home-link').textContent = langPack["home-link"];
-    document.querySelector('#custom-refine-link').textContent = langPack["custom-refine-link"];
-    document.querySelector('#availability-check-link').textContent = langPack["availability-check-link"];
-    document.querySelector('#name-analyzer-link').textContent = langPack["name-analyzer-link"];
-    document.querySelector('#summarizer-link').textContent = langPack["summarizer-link"];
-    document.querySelector('#word-combiner-link').textContent = langPack["word-combiner-link"];
-    document.querySelector('#settings-link').textContent = langPack["settings-link"];
-    document.querySelector('#contact-link').textContent = langPack["contact-link"];
-    document.querySelector('#about-link').textContent = langPack["about-link"];
-    document.querySelector('#go-premium-link').textContent = langPack["go-premium-link"];
-    document.querySelector('#buy-credits-link').textContent = langPack["buy-credits-link"];
-    
-    // Main Generator View
-    if(document.querySelector('#main-generator-view .description')) document.querySelector('#main-generator-view .description').textContent = langPack["generator-description"];
-    if(document.querySelector('label[for="prompt"]')) document.querySelector('label[for="prompt"]').textContent = langPack["prompt-label"];
-    if(document.querySelector('label[for="keywords"]')) document.querySelector('label[for="keywords"]').textContent = langPack["keywords-label"];
-    if(document.querySelector('.relevancy-display label')) document.querySelector('.relevancy-display label').textContent = langPack["relevancy-label"];
-    if(document.querySelector('.amount-display label')) document.querySelector('.amount-display label').textContent = langPack["amount-label"];
-    if(document.querySelector('label[for="category"]')) document.querySelector('label[for="category"]').textContent = langPack["category-label"];
-    if(document.querySelector('label[for="style"]')) document.querySelector('label[for="style"]').textContent = langPack["style-label"];
-    if(document.querySelector('label[for="language"]')) document.querySelector('label[for="language"]').textContent = langPack["language-label"];
-    if(document.querySelector('label[for="pattern"]')) document.querySelector('label[for="pattern"]').textContent = langPack["pattern-label"];
-    if(generateBtn) generateBtn.textContent = langPack["generate-btn"];
-    if(surpriseBtn) surpriseBtn.textContent = langPack["surprise-btn"];
-    if(document.querySelector('#more-like-this-section label')) document.querySelector('#more-like-this-section label').textContent = langPack["more-like-this-label"];
-    if(document.querySelector('label[for="edit_box"]')) document.querySelector('label[for="edit_box"]').textContent = langPack["refine-label"];
-    if(refineBtn) refineBtn.textContent = langPack["refine-btn-text"];
-
-    // Placeholders
-    if(promptInput) promptInput.placeholder = langPack["prompt-placeholder"];
-    if(document.getElementById("keywords")) document.getElementById("keywords").placeholder = langPack["keywords-placeholder"];
-    if(editBox) editBox.placeholder = langPack["refine-placeholder"];
-    
-    // Settings Page
-    if(document.querySelector('#settings-view h1')) document.querySelector('#settings-view h1').textContent = langPack["settings-title"];
-    if(document.querySelector('#settings-view .description')) document.querySelector('#settings-view .description').textContent = langPack["settings-description"];
-    if(document.querySelector('.setting-section h2 i.fa-paint-brush')) document.querySelector('.setting-section h2 i.fa-paint-brush').parentElement.childNodes[1].textContent = ` ${langPack["appearance-header"]}`;
-    if(document.querySelector('label[for="theme-select"]')) document.querySelector('label[for="theme-select"]').textContent = langPack["theme-label"];
-    if(document.querySelector('label[for="background-select"]')) document.querySelector('label[for="background-select"]').textContent = langPack["background-label"];
-    if(document.querySelector('label[for="font-select"]')) document.querySelector('label[for="font-select"]').textContent = langPack["ui-font-label"];
-    if(document.querySelector('label[for="font-size-slider"]')) document.querySelector('label[for="font-size-slider"]').textContent = langPack["ui-font-size-label"];
-    if(document.querySelector('label[for="results-font-select"]')) document.querySelector('label[for="results-font-select"]').textContent = langPack["results-font-label"];
-    if(document.querySelector('label[for="results-font-size-slider"]')) document.querySelector('label[for="results-font-size-slider"]').textContent = langPack["results-font-size-label"];
-    if(document.querySelector('label[for="language-select"]')) document.querySelector('label[for="language-select"]').textContent = langPack["language-setting-label"];
-}
-
-function applyLanguage(lang, save = true) {
-    if (save) localStorage.setItem('nameit-language', lang);
-    setLanguage(lang);
-}
 
 
 let customRefineHistoryLog = [];
@@ -332,20 +181,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 5000);
 });
 
-function updateFeatureLocks() {
-    const tier = window.currentUserTier || "Anonymous";
-    
-    const wordCombinerLock = document.getElementById('word-combiner-lock');
-    const summarizerLock = document.getElementById('summarizer-lock');
-    
-    // Word Combiner: Unlocked for Starter, Pro, Business
-    const hasCombinerAccess = ['Starter Pack', 'Pro Pack', 'Business Pack'].includes(tier);
-    if (wordCombinerLock) wordCombinerLock.classList.toggle('hidden', hasCombinerAccess);
 
-    // Text Summarizer: Unlocked for Pro, Business
-    const hasSummarizerAccess = ['Pro Pack', 'Business Pack'].includes(tier);
-    if (summarizerLock) summarizerLock.classList.toggle('hidden', hasSummarizerAccess);
-}
 
 async function loadComponent(placeholderId, componentUrl) {
     try {
@@ -458,8 +294,6 @@ function setupEventListeners() {
     if (resultsFontSizeSlider) resultsFontSizeSlider.addEventListener('input', (e) => applyResultsFontSize(e.target.value));
     if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (backgroundSelect) backgroundSelect.addEventListener('change', (e) => applyBackground(e.target.value));
-    const languageSelect = document.getElementById('language-select'); // ADDED
-    if (languageSelect) languageSelect.addEventListener('change', (e) => applyLanguage(e.target.value)); // ADDED
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
@@ -1829,19 +1663,11 @@ function showProfessionalLoadingPlaceholder(targetElement, minHeight = '150px') 
     `;
     targetElement.innerHTML = loadingHtml;
 }
-// --- TIER-LOCKED TOOL FUNCTIONS (UPDATED) ---
 async function summarizeText() {
-    // TIER CHECK
-    const hasAccess = ['Pro Pack', 'Business Pack'].includes(window.currentUserTier);
-    if (!hasAccess) {
-        showView('premium');
-        return;
-    }
-
     if (summarizeBtn.disabled) return;
     const textInput = document.getElementById('text-to-summarize');
     const lengthSelect = document.getElementById('summary-length');
-    const toneSelect = document.getElementById('summary-tone');
+    const toneSelect = document.getElementById('summary-tone'); // New: Get tone dropdown
     const text = textInput.value.trim();
     if (!text) {
         showTemporaryPlaceholderError(textInput, "Please enter some text to summarize.");
@@ -1862,6 +1688,7 @@ async function summarizeText() {
         const response = await fetch(`${BACKEND_URL}/summarize`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...(token && { "Authorization": `Bearer ${token}` }) },
+            // New: Pass both length and tone to the backend
             body: JSON.stringify({ text: text, length: lengthSelect.value, tone: toneSelect.value })
         });
         if (!response.ok) throw new Error((await response.json()).detail || `A server error occurred.`);
@@ -1901,14 +1728,9 @@ async function summarizeText() {
     }
 }
 
-async function combineWords() {
-    // TIER CHECK
-    const hasAccess = ['Starter Pack', 'Pro Pack', 'Business Pack'].includes(window.currentUserTier);
-    if (!hasAccess) {
-        showView('premium');
-        return;
-    }
 
+
+async function combineWords() {
     if (combineWordsBtn.disabled) return;
     const wordsInput = document.getElementById('words-to-combine');
     const lengthSelect = document.getElementById('combiner-length');
@@ -1939,14 +1761,16 @@ async function combineWords() {
             window.updateGenerationCountUI(data.credits);
         }
 
+        // Updated to handle both the word and the explanation
         if(combinerOutput && combinerExplanation) {
             combinerResultsContainer.classList.remove("hidden");
             combinerOutput.textContent = data.combined_word;
-            combinerExplanation.textContent = data.explanation;
+            combinerExplanation.textContent = data.explanation; // Set the explanation text
             combinerOutput.classList.add("fade-in-content");
-            combinerExplanation.classList.add("fade-in-content");
+            combinerExplanation.classList.add("fade-in-content"); // Animate the explanation
         }
 
+        // Add the explanation to the history log
         combinerHistoryLog.unshift({ words: words, result: data.combined_word, explanation: data.explanation });
         combinerHistoryLog = combinerHistoryLog.slice(0, 50);
         renderCombinerHistory();
@@ -1971,8 +1795,6 @@ async function combineWords() {
         }, 1000);
     }
 }
-
-
 
 function renderSummaryHistory() {
     if (!summaryHistoryDiv) return;
@@ -2026,8 +1848,7 @@ function initializeSettings() {
         resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
         resultsFontSize: localStorage.getItem('nameit-results-fontSize') || '100',
         animations: localStorage.getItem('nameit-animations') !== 'false',
-        background: localStorage.getItem('nameit-background') || 'pattern1',
-        language: localStorage.getItem('nameit-language') || 'en' // ADDED
+        background: localStorage.getItem('nameit-background') || 'pattern1'
     };
     if (themeSelect) themeSelect.value = settings.theme;
     if (fontSelect) fontSelect.value = settings.font;
@@ -2036,8 +1857,6 @@ function initializeSettings() {
     if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
     if (animationsToggle) animationsToggle.checked = settings.animations;
     if (backgroundSelect) backgroundSelect.value = settings.background;
-    const languageSelect = document.getElementById('language-select'); // ADDED
-    if (languageSelect) languageSelect.value = settings.language; // ADDED
 
     applyTheme(settings.theme, false);
     applyFont(settings.font, false);
@@ -2046,7 +1865,6 @@ function initializeSettings() {
     applyResultsFontSize(settings.resultsFontSize, false);
     applyBackground(settings.background, false);
     applyAnimationSetting(settings.animations, false);
-    applyLanguage(settings.language, false); // ADDED
 }
 
 function handleHashChange() {
