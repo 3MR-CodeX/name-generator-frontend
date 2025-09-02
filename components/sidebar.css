@@ -30,6 +30,8 @@
     margin-bottom: 15px;
     color: #ffffff;
     text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .sidebar-content ul {
