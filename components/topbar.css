@@ -423,62 +423,45 @@
     font-size: 0.95em;
 }
 
+
 /* --- TIER-BASED DESIGNS --- */
 
 /* Pro Tier (Gold) */
 body[data-tier="pro"] #top-bar {
-    background-color: #1a1a1a;
+    background-color: #2a2a2a;
     border-bottom: 2px solid #D4AF37;
 }
 
 body[data-tier="pro"] .topbar-title {
-    animation: badge-shine 3s infinite;
+    animation: liquid-glass-pro 4s infinite;
 }
 
 body[data-tier="pro"] #user-status-container .tier-badge {
     background: white;
     color: black;
     font-weight: bold;
-    animation: badge-shine 3s infinite;
+    animation: liquid-glass-pro 4s infinite;
 }
 
 
-/* Business Tier (Chroma Shift) */
+/* Business Tier (Theme-based Chroma) */
 body[data-tier="business"] #top-bar {
-    background: #111;
-    animation: theme-color-cycle-main-only 20s infinite linear;
-    --border-color: var(--current-theme-color);
-    box-shadow: 0 2px 0 0 var(--border-color);
-    border-bottom: none;
-    transition: box-shadow 0.5s linear;
+    background-color: #111;
+    border-bottom: 2px solid var(--current-theme-color);
+    transition: border-color 1.5s linear;
 }
 
 body[data-tier="business"] .topbar-title {
-    animation: business-chroma-shine 20s infinite linear;
+    animation: liquid-glass-business 4s infinite;
 }
 
 body[data-tier="business"] #user-status-container .tier-badge {
     background: #000;
     color: white;
     font-weight: bold;
-    border: 1px solid white;
+    border: none;
     position: relative;
     overflow: hidden;
-}
-
-body[data-tier="business"] #user-status-container .tier-badge::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 300%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, var(--current-theme-color), transparent);
-    animation: business-badge-shine 3s infinite linear, theme-color-cycle-main-only 20s infinite linear;
-}
-
-@keyframes business-badge-shine {
-    0% { left: -100%; }
-    100% { left: 100%; }
+    animation: liquid-glass-business 4s infinite;
 }
 
