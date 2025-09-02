@@ -2475,28 +2475,6 @@ body.light-theme {
     background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
 }
 
-/* --- TIER-BASED STYLING (NEW) --- */
-@keyframes theme-based-color-cycle {
-    0%, 100% {
-        --current-theme-color: var(--primary-accent);
-    }
-    50% {
-        --current-theme-color: var(--secondary-accent);
-    }
-}
-
-@keyframes liquid-glass-pro {
-    0% { background-position: -150% center; }
-    25% { background-position: 150% center; }
-    100% { background-position: 150% center; }
-}
-
-@keyframes liquid-glass-business {
-    0% { background-position: -150% center; }
-    25% { background-position: 150% center; }
-    100% { background-position: 150% center; }
-}
-
 /* --- Credit Cost Display Styling --- */
 .credit-cost {
     float: right;
@@ -2508,3 +2486,4 @@ body.light-theme {
     border-radius: 10px;
     border: 1px solid #4a4a4a;
 }
+
