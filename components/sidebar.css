@@ -142,15 +142,18 @@ body[data-tier="business"] #sidebar {
 }
 
 body[data-tier="business"] .sidebar-content h2::after {
-    content: '';
+    content: attr(data-text); /* Use a data attribute for the reflection */
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, transparent 20%, var(--current-theme-color) 50%, transparent 80%);
+    color: transparent;
+    background: linear-gradient(90deg, transparent, var(--current-theme-color), transparent);
     background-size: 200% 100%;
-    animation: liquid-glass-business 4s infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: liquid-glass-business 4s infinite 3s;
     transition: background 1.5s linear;
 }
 
