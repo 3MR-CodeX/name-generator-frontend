@@ -19,7 +19,7 @@
     width: 100%;
     height: 100%;
     padding: 0 20px;
-    position: relative; /* Needed for z-index to work */
+    position: relative;
     z-index: 1;
 }
 
@@ -431,47 +431,13 @@ body[data-tier="pro"] #top-bar {
     border-bottom: 2px solid #D4AF37;
 }
 
-body[data-tier="pro"] #user-status-container .tier-badge {
-    background-color: #D4AF37;
-    color: black;
-    font-weight: bold;
-}
-
 /* Business Tier (Chroma Shift) */
 body[data-tier="business"] #top-bar {
     background: #111;
     border-bottom: none;
-    position: relative; /* Required for pseudo-elements */
-}
-
-body[data-tier="business"] #top-bar::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #111;
-    clip-path: polygon(0 0, calc(100% - 60px) 0, 100% 100%, 0% 100%);
-    z-index: 0;
-}
-
-body[data-tier="business"] #top-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--current-theme-color);
-    clip-path: polygon(
-        calc(100% - 60px), 0, /* Top-right start of line */
-        calc(100% - 62px), 0, /* Top-right inner start of line */
-        calc(100% - 2px), calc(100% - 2px), /* Bottom-right inner end of line */
-        100%, 100%, /* Bottom-right outer corner */
-        calc(100% - 60px), 0 /* Back to start to close path */
-    );
-    z-index: 0;
-    transition: background-color 0.5s linear;
+    position: relative;
+    animation: theme-color-cycle 30s infinite linear;
+    --border-color: var(--current-theme-color);
+    box-shadow: 0 2px 0 0 var(--border-color);
 }
 
