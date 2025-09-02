@@ -427,14 +427,14 @@
 
 
 /* --- TIER-BASED DESIGNS --- */
+
 /* Pro Tier (Gold) */
 body[data-tier="pro"] #top-bar {
     background-color: #2a2a2a;
     border-bottom: 2px solid #D4AF37;
 }
 
-body[data-tier="pro"] .topbar-title::after,
-body[data-tier="pro"] #user-status-container .tier-badge::after {
+body[data-tier="pro"] .topbar-title::after {
     content: '';
     position: absolute;
     top: 0;
