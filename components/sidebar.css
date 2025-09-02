@@ -140,20 +140,3 @@ body[data-tier="business"] #sidebar {
     border-right: 2px solid var(--current-theme-color);
     transition: border-color 1.5s linear;
 }
-
-body[data-tier="business"] .sidebar-content h2::after {
-    content: attr(data-text); /* Use a data attribute for the reflection */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: transparent;
-    background: linear-gradient(90deg, transparent, var(--current-theme-color), transparent);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation: liquid-glass-business 4s infinite 3s;
-    transition: background 1.5s linear;
-}
-
