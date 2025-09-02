@@ -2491,6 +2491,15 @@ body.light-theme {
     100% { --current-theme-color: #a500ff; } /* Return to start */
 }
 
+@keyframes business-title-pulse {
+    0%, 100% {
+        text-shadow: 0 0 5px var(--current-theme-color), 0 0 10px var(--current-theme-color);
+    }
+    50% {
+        text-shadow: 0 0 10px var(--current-theme-color), 0 0 20px var(--current-theme-color);
+    }
+}
+
 
 /* --- Pro Tier: "Regal Gold" Theme --- */
 body[data-tier="pro"] h1,
@@ -2519,7 +2528,6 @@ body[data-tier="pro"] .outer-input-box {
     background-color: #2a2a2a; /* Reverted */
 }
 
-
 body[data-tier="pro"] .generate-btn,
 body[data-tier="pro"] .refine-btn,
 body[data-tier="pro"] .cta-button,
@@ -2534,15 +2542,6 @@ body[data-tier="pro"] .refine-btn:hover {
     background: #D4AF37;
     color: black;
 }
-
-body[data-tier="pro"] #user-status-container .tier-badge {
-    background: linear-gradient(to right, #D4AF37 45%, #FFD700 50%, #D4AF37 55%);
-    background-size: 200% auto;
-    color: black;
-    font-weight: bold;
-    animation: badge-shine 4s linear infinite;
-}
-
 
 /* --- Business Tier: "Chroma Shift" Theme --- */
 body[data-tier="business"] {
@@ -2564,11 +2563,22 @@ body[data-tier="business"] .outer-input-box {
 body[data-tier="business"] .generate-btn,
 body[data-tier="business"] .refine-btn,
 body[data-tier="business"] .cta-button {
-    background-color: var(--current-theme-color);
-    border-color: var(--current-theme-color);
-    transition: background-color 0.5s linear;
+    background-color: transparent;
+    border: 2px solid var(--current-theme-color);
+    transition: background-color 0.5s linear, border-color 0.5s linear;
 }
 
+body[data-tier="business"] .generate-btn:hover,
+body[data-tier="business"] .refine-btn:hover {
+    background-color: var(--current-theme-color);
+    color: white;
+}
+
+body[data-tier="business"] h1,
+body[data-tier="business"] h2 {
+    color: white;
+    animation: business-title-pulse 30s infinite linear;
+}
 
 /* --- Credit Cost Display Styling --- */
 .credit-cost {
