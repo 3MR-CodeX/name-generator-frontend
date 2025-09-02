@@ -427,15 +427,24 @@
 
 
 /* --- TIER-BASED DESIGNS --- */
-
 /* Pro Tier (Gold) */
 body[data-tier="pro"] #top-bar {
     background-color: #2a2a2a;
     border-bottom: 2px solid #D4AF37;
 }
 
-body[data-tier="pro"] .topbar-title {
-    animation: liquid-glass-pro 3s infinite;
+body[data-tier="pro"] .topbar-title::after,
+body[data-tier="pro"] #user-status-container .tier-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent 20%, #FFD700 50%, transparent 80%);
+    background-size: 200% 100%;
+    animation: liquid-glass-pro 4s infinite;
+    animation-delay: 1s; /* Stagger animation */
 }
 
 body[data-tier="pro"] #user-status-container .tier-badge {
@@ -452,8 +461,18 @@ body[data-tier="business"] #top-bar {
     transition: border-color 1.5s linear;
 }
 
-body[data-tier="business"] .topbar-title {
-    animation: liquid-glass-business 3s infinite;
+body[data-tier="business"] .topbar-title::after,
+body[data-tier="business"] #user-status-container .tier-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent 20%, var(--current-theme-color) 50%, transparent 80%);
+    background-size: 200% 100%;
+    animation: liquid-glass-business 4s infinite;
+    transition: background 1.5s linear;
 }
 
 body[data-tier="business"] #user-status-container .tier-badge {
@@ -461,6 +480,5 @@ body[data-tier="business"] #user-status-container .tier-badge {
     color: white;
     font-weight: bold;
     border: none;
-    animation: liquid-glass-business 3s infinite;
 }
 
