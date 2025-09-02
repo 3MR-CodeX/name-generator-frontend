@@ -2493,39 +2493,24 @@ body.light-theme {
 
 @keyframes business-title-pulse {
     0%, 100% {
-        text-shadow: 0 0 5px var(--current-theme-color), 0 0 10px var(--current-theme-color);
+        text-shadow: 0 0 4px var(--current-theme-color), 0 0 8px var(--current-theme-color);
     }
     50% {
-        text-shadow: 0 0 10px var(--current-theme-color), 0 0 20px var(--current-theme-color);
+        text-shadow: 0 0 8px var(--current-theme-color), 0 0 16px var(--current-theme-color);
     }
 }
 
 
 /* --- Pro Tier: "Regal Gold" Theme --- */
-body[data-tier="pro"] h1,
-body[data-tier="pro"] h2 {
-    color: white;
-    background: linear-gradient(to right, white 45%, #FFD700 50%, white 55%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: badge-shine 4s linear infinite;
-}
-
 body[data-tier="pro"] .input-box,
 body[data-tier="pro"] .output-box,
 body[data-tier="pro"] .refine-section,
 body[data-tier="pro"] .history-section,
 body[data-tier="pro"] .setting-section,
 body[data-tier="pro"] .about-section,
-body[data-tier="pro"] .contact-container {
-    border: 1px solid #D4AF37;
-}
-
+body[data-tier="pro"] .contact-container,
 body[data-tier="pro"] .outer-input-box {
     border: 1px solid #D4AF37;
-    background-color: #2a2a2a; /* Reverted */
 }
 
 body[data-tier="pro"] .generate-btn,
@@ -2577,7 +2562,10 @@ body[data-tier="business"] .refine-btn:hover {
 body[data-tier="business"] h1,
 body[data-tier="business"] h2 {
     color: white;
-    animation: business-title-pulse 30s infinite linear;
+    position: relative;
+    -webkit-text-stroke: 1px var(--current-theme-color);
+    text-shadow: 0 0 5px var(--current-theme-color);
+    transition: -webkit-text-stroke 0.5s linear, text-shadow 0.5s linear;
 }
 
 /* --- Credit Cost Display Styling --- */
