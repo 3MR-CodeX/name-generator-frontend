@@ -6,7 +6,7 @@
     width: 100%;
     height: var(--top-bar-height);
     z-index: 1000;
-    display: flex;
+    display: flex; 
     align-items: center;
     background-color: rgba(51, 51, 51, 0.75);
     border-bottom: 2px solid #2a2a2a;
@@ -19,6 +19,8 @@
     width: 100%;
     height: 100%;
     padding: 0 20px;
+    position: relative; /* Needed for z-index to work */
+    z-index: 1;
 }
 
 /* Hexagon Button Styling */
@@ -437,24 +439,24 @@ body[data-tier="pro"] #user-status-container .tier-badge {
 
 /* Business Tier (Chroma Shift) */
 body[data-tier="business"] #top-bar {
-    background: transparent;
+    background: #111;
     border-bottom: none;
+    position: relative; /* Required for pseudo-elements */
 }
 
-.topbar-business-design {
-    display: none; /* Hidden by default, enabled by JS for business tier */
-}
-
-body[data-tier="business"] .topbar-business-design {
-    display: block;
+body[data-tier="business"] #top-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    position: relative;
-    background-color: #111;
-    clip-path: polygon(0 0, calc(100% - 60px) 0, 100% 100%, 0 100%);
+    background: #111;
+    clip-path: polygon(0 0, calc(100% - 60px) 0, 100% 100%, 0% 100%);
+    z-index: 0;
 }
 
-body[data-tier="business"] .topbar-business-design::after {
+body[data-tier="business"] #top-bar::after {
     content: '';
     position: absolute;
     top: 0;
@@ -462,13 +464,14 @@ body[data-tier="business"] .topbar-business-design::after {
     width: 100%;
     height: 100%;
     background: var(--current-theme-color);
-    z-index: -1;
-    clip-path: polygon(calc(100% - 60px) 0, calc(100% - 62px) 0, calc(100% - 2px) calc(100% - 2px), calc(100% - 0px) 100%, calc(100% - 60px) 0px);
+    clip-path: polygon(
+        calc(100% - 60px), 0, /* Top-right start of line */
+        calc(100% - 62px), 0, /* Top-right inner start of line */
+        calc(100% - 2px), calc(100% - 2px), /* Bottom-right inner end of line */
+        100%, 100%, /* Bottom-right outer corner */
+        calc(100% - 60px), 0 /* Back to start to close path */
+    );
+    z-index: 0;
     transition: background-color 0.5s linear;
-}
-
-body[data-tier="business"] .topbar-content-wrapper {
-    position: relative;
-    z-index: 1;
 }
 
