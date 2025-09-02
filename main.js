@@ -60,7 +60,11 @@ const BACKGROUND_ANIMATIONS = {
     'pattern9': 'color-shift',
     'pattern10': 'color-shifting-bar',
     'pattern11': 'random-flicker',
-    'pattern12': 'vertical-crossing-bars'
+    'pattern12': 'vertical-crossing-bars',
+    'pattern13': 'grid-pulse', // NEW
+    'pattern14': 'grid-pulse', // NEW
+    'pattern15': 'abstract-shapes', // NEW
+    'pattern16': 'abstract-shapes' // NEW
 };
 
 
@@ -1974,14 +1978,13 @@ function applyBackground(patternName, save = true) {
     
     // Clear previous animations AND any running timers
     animationLayer.innerHTML = '';
-    if (animationLayer.timerId) {
-        clearTimeout(animationLayer.timerId); // Use clearTimeout for our new recursive timer
-        animationLayer.timerId = null;
-    }
-     if (animationLayer.circleTimerId) { // Also clear the circle timer if it exists
-        clearInterval(animationLayer.circleTimerId);
-        animationLayer.circleTimerId = null;
-    }
+    // Clear all potential timers by checking for their existence
+    if (animationLayer.timerId) clearTimeout(animationLayer.timerId);
+    if (animationLayer.circleTimerId) clearInterval(animationLayer.circleTimerId);
+    if (animationLayer.shapeTimerId) clearInterval(animationLayer.shapeTimerId);
+    animationLayer.timerId = null;
+    animationLayer.circleTimerId = null;
+    animationLayer.shapeTimerId = null;
 
     // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
@@ -1990,13 +1993,24 @@ function applyBackground(patternName, save = true) {
 
     // Helper for Drifting Circle
     const createRandomCircle = () => {
-        animationLayer.innerHTML = '';
+        if (animationLayer.innerHTML !== '' && !animationLayer.querySelector('.drifting-circle')) return; // Prevent creating circles if another animation is running
+        animationLayer.innerHTML = ''; // Clear previous circle
         const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const size = Math.random() * 300 + 400; 
+        const size = Math.random() * 300 + 400;
+        const xStart = `${Math.random() * 100}vw`;
+        const yStart = `${Math.random() * 100}vh`;
+        const xEnd = `${Math.random() * 100}vw`;
+        const yEnd = `${Math.random() * 100}vh`;
+
         const circle = document.createElement('div');
         circle.className = 'drifting-circle';
-        circle.style.cssText = `...`; // Style definition omitted for brevity as it's unchanged
+        circle.style.cssText = `
+            width: ${size}px; height: ${size}px;
+            background-color: ${randomColor};
+            --x-start: ${xStart}; --y-start: ${yStart};
+            --x-end: ${xEnd}; --y-end: ${yEnd};
+        `;
         animationLayer.appendChild(circle);
     };
 
@@ -2029,6 +2043,23 @@ function applyBackground(patternName, save = true) {
         animationLayer.timerId = setTimeout(createRandomFlicker, nextFlickerDelay);
     };
 
+    // NEW Helper for abstract shapes
+    const createAbstractShape = () => {
+        const shape = document.createElement('div');
+        shape.className = 'abstract-shape';
+        shape.style.setProperty('--start-x', `${Math.random() * 100}vw`);
+        shape.style.setProperty('--start-y', `${Math.random() * 100}vh`);
+        shape.style.setProperty('--end-x', `${Math.random() * 100}vw`);
+        shape.style.setProperty('--end-y', `${Math.random() * 100}vh`);
+        shape.style.setProperty('--size', `${Math.random() * 150 + 50}px`);
+        shape.style.setProperty('--rotation', `${Math.random() * 360}deg`);
+        shape.style.setProperty('--duration', `${Math.random() * 10 + 10}s`);
+        shape.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
+        animationLayer.appendChild(shape);
+        setTimeout(() => shape.remove(), 20000);
+    };
+
+
     switch (animationType) {
         case 'default':
             htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
@@ -2052,10 +2083,17 @@ function applyBackground(patternName, save = true) {
         case 'vertical-crossing-bars':
             htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
             break;
+        case 'grid-pulse': // NEW
+            htmlToSet = `<div class="grid-pulse-bg"></div>`;
+            break;
+        case 'abstract-shapes': // NEW
+            for (let i = 0; i < 5; i++) createAbstractShape();
+            animationLayer.shapeTimerId = setInterval(createAbstractShape, 4000);
+            break;
     }
     
     // Set HTML for non-timer-based animations
-    if (animationType !== 'circles' && animationType !== 'random-flicker') {
+    if (htmlToSet) {
         animationLayer.innerHTML = htmlToSet;
     }
 }
@@ -2096,8 +2134,8 @@ function applyTheme(theme, save = true) {
         void bodyEl.offsetHeight; // Trigger reflow
         bodyEl.style.animation = ''; 
 
-        // Also restart the animation on all h1 elements
-        const titles = document.querySelectorAll('h1');
+        // Also restart the animation on all h1 elements and the topbar title
+        const titles = document.querySelectorAll('h1, .topbar-title');
         titles.forEach(title => {
             title.style.animation = 'none';
             void title.offsetHeight;
@@ -2241,5 +2279,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
-
 
