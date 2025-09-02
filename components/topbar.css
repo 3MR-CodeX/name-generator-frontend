@@ -344,6 +344,8 @@
     font-weight: 800;
     color: #ffffff;
     letter-spacing: 1.5px;
+    position: relative;
+    overflow: hidden;
 }
 
 .showcase-container {
@@ -433,14 +435,13 @@ body[data-tier="pro"] #top-bar {
 }
 
 body[data-tier="pro"] .topbar-title {
-    animation: liquid-glass-pro 4s infinite;
+    animation: liquid-glass-pro 3s infinite;
 }
 
 body[data-tier="pro"] #user-status-container .tier-badge {
     background: white;
     color: black;
     font-weight: bold;
-    animation: liquid-glass-pro 4s infinite;
 }
 
 
@@ -452,7 +453,7 @@ body[data-tier="business"] #top-bar {
 }
 
 body[data-tier="business"] .topbar-title {
-    animation: liquid-glass-business 4s infinite;
+    animation: liquid-glass-business 3s infinite;
 }
 
 body[data-tier="business"] #user-status-container .tier-badge {
@@ -460,8 +461,6 @@ body[data-tier="business"] #user-status-container .tier-badge {
     color: white;
     font-weight: bold;
     border: none;
-    position: relative;
-    overflow: hidden;
-    animation: liquid-glass-business 4s infinite;
+    animation: liquid-glass-business 3s infinite;
 }
 
