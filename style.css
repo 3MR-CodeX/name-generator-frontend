@@ -4,6 +4,12 @@
     --sidebar-width: 280px;
     --hexagon-button-size: 80px;
 
+    /* NEW: Variables for dark theme colors */
+    --bg-color-1: #1a1a1a; /* Main background */
+    --bg-color-2: #2a2a2a; /* Card/Box backgrounds */
+    --bg-color-3: #3a3a3a; /* Input/Dropdown backgrounds */
+
+
     /* Default Theme: Synthwave */
     --primary-accent: #a500ff;
     --secondary-accent: #b733ff;
@@ -49,13 +55,13 @@ body[data-theme="oceanic-citrus"] {
     --progress-bar-color: var(--primary-accent);
 }
 
-/* Classic Noir Theme */
+/* UPDATED: Classic Noir Theme */
 body[data-theme="classic-noir"] {
-    --primary-accent: #333333;
-    --secondary-accent: #ffffff;
-    --line-accent-default: #ffffff;
-    --line-accent-glow: #e0e0e0;
-    --tag-background: #444444;
+    --primary-accent: #FFFFFF;
+    --secondary-accent: #CCCCCC;
+    --line-accent-default: #FFFFFF;
+    --line-accent-glow: #CCCCCC;
+    --tag-background: #111111;
     --disabled-accent: #222222;
     --button-text-color: black;
     --animated-bar-color-1: rgba(255, 255, 255, 0.2);
@@ -175,33 +181,34 @@ body[data-theme="arctic-night"] {
     --progress-bar-color: var(--line-accent-default);
 }
 
-/* Scarlet & Ivory Theme */
-body[data-theme="scarlet-ivory"] {
-    --primary-accent: #FF2400; /* Scarlet */
-    --secondary-accent: #F5F5DC; /* Beige/Ivory */
-    --line-accent-default: #F5F5DC; /* Beige/Ivory */
-    --line-accent-glow: #FF2400;   /* Main Scarlet */
-    --tag-background: #FF2400;
-    --disabled-accent: #b31a00;
-    --button-text-color: black;
-    --animated-bar-color-1: rgba(255, 36, 0, 0.5);
-    --animated-bar-color-2: rgba(245, 245, 220, 0.5);
+/* NEW: Corporate Blue Theme */
+body[data-theme="corporate-blue"] {
+    --primary-accent: #005A9C;
+    --secondary-accent: #6C757D;
+    --line-accent-default: #007BFF;
+    --line-accent-glow: #005A9C;
+    --tag-background: #005A9C;
+    --disabled-accent: #00375e;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(0, 90, 156, 0.5);
+    --animated-bar-color-2: rgba(108, 117, 125, 0.5);
     --progress-bar-color: var(--primary-accent);
 }
 
-/* Cobalt & Ivory Theme */
-body[data-theme="cobalt-ivory"] {
-    --primary-accent: #0047AB; /* Cobalt Blue */
-    --secondary-accent: #F5F5DC; /* Beige/Ivory */
-    --line-accent-default: #F5F5DC; /* Beige/Ivory */
-    --line-accent-glow: #0047AB;   /* Main Cobalt */
-    --tag-background: #0047AB;
-    --disabled-accent: #002e6e;
-    --button-text-color: black;
-    --animated-bar-color-1: rgba(0, 71, 171, 0.5);
-    --animated-bar-color-2: rgba(245, 245, 220, 0.5);
-    --progress-bar-color: var(--primary-accent);
+/* NEW: Graphite & Gold Theme */
+body[data-theme="graphite-gold"] {
+    --primary-accent: #343A40;
+    --secondary-accent: #D4AF37;
+    --line-accent-default: #D4AF37;
+    --line-accent-glow: #FFD700;
+    --tag-background: #D4AF37;
+    --disabled-accent: #1d2124;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(52, 58, 64, 0.5);
+    --animated-bar-color-2: rgba(212, 175, 55, 0.5);
+    --progress-bar-color: var(--secondary-accent);
 }
+
 
 * {
     margin: 0;
@@ -212,7 +219,7 @@ body[data-theme="cobalt-ivory"] {
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    background: #1a1a1a;
+    background: var(--bg-color-1);
     color: #e0e0e0;
     padding-top: var(--top-bar-height);
     padding-left: 0;
@@ -234,7 +241,7 @@ body {
     height: 100%;
     z-index: -1;
     overflow: hidden;
-    background-color: #1a1a1a;
+    background-color: var(--bg-color-1);
 }
 
 .background-pattern {
@@ -456,7 +463,7 @@ label {
 }
 
 textarea, select, input[type="text"] {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -522,7 +529,7 @@ button:disabled {
 
 .surprise-btn {
     flex: 1;
-    background-color: #1a1a1a;
+    background-color: var(--bg-color-1);
     border: 2px solid var(--line-accent-default);
     padding: 15px;
 }
@@ -741,7 +748,7 @@ pre#names {
 }
 
 pre {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -825,7 +832,7 @@ pre {
 }
 
 ::-webkit-scrollbar-track {
-    background: #1a1a1a;
+    background: var(--bg-color-1);
     border-radius: 4px;
 }
 
@@ -985,7 +992,7 @@ pre {
 }
 
 .history-inner {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -995,7 +1002,7 @@ pre {
 }
 
 .history-item {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     color: #e0e0e0;
     border: none;
     padding: 8px 12px;
@@ -1027,7 +1034,7 @@ pre {
 }
 
 #details-content pre {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     color: #e0e0e0;
     border-radius: 8px;
     padding: 10px;
@@ -1194,7 +1201,7 @@ pre {
     background: var(--line-accent-default);
     cursor: pointer;
     border-radius: 50%;
-    border: 2px solid #1a1a1a;
+    border: 2px solid var(--bg-color-1);
 }
 
 .relevancy-slider::-moz-range-thumb {
@@ -1203,7 +1210,7 @@ pre {
     background: var(--line-accent-default);
     cursor: pointer;
     border-radius: 50%;
-    border: 2px solid #1a1a1a;
+    border: 2px solid var(--bg-color-1);
 }
 
 .slider-ticks {
@@ -1217,7 +1224,7 @@ pre {
     pointer-events: none;
     z-index: 1;
     height: 6px;
-    background: #3a3a3a;
+    background: var(--bg-color-3);
     border-radius: 3px;
     padding: 0 9px;
 }
@@ -1326,7 +1333,7 @@ pre {
 .dropdown-btn {
     width: 100%;
     height: 45px;
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -1361,7 +1368,7 @@ pre {
     top: 110%;
     left: 0;
     width: 100%;
-    background-color: #3a3a3a;
+    background-color: var(--bg-color-3);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     z-index: 100;
@@ -1474,8 +1481,8 @@ pre {
     margin-left: 15px;
     font-weight: 500;
 }
-.risk-clear { background-color: #50fa7b; color: #1a1a1a; }
-.risk-medium { background-color: #f1fa8c; color: #1a1a1a; }
+.risk-clear { background-color: #50fa7b; color: var(--bg-color-1); }
+.risk-medium { background-color: #f1fa8c; color: var(--bg-color-1); }
 .risk-high { background-color: #ff5555; color: white; }
 
 .analysis-section {
@@ -1505,7 +1512,7 @@ pre {
 }
 
 .outer-input-box {
-    background-color: #2a2a2a;
+    background-color: var(--bg-color-2);
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
@@ -1582,7 +1589,7 @@ pre {
 
 .settings-select {
     flex-basis: 50%;
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     color: #e0e0e0;
     border: 1px solid #4a4a4a;
     border-radius: 8px;
@@ -1689,7 +1696,7 @@ body.light-theme {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #1a1a1a;
+    background-color: var(--bg-color-1);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1824,7 +1831,7 @@ body.light-theme {
 }
 
 .persona-metric-card {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     padding: 15px;
@@ -1962,7 +1969,7 @@ body.light-theme {
 }
 
 .pricing-card {
-    background-color: rgba(42, 42, 42, 0.85);
+    background-color: var(--bg-color-2);
     border: 1px solid #4a4a4a;
     border-radius: 12px;
     padding: 25px;
@@ -2177,7 +2184,7 @@ body.light-theme {
 
 /* --- Payment Modal --- */
 .payment-details {
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     padding: 15px;
@@ -2210,11 +2217,11 @@ body.light-theme {
 .dropdown-content.disabled {
     opacity: 0.5;
     pointer-events: none;
-    background-color: #2a2a2a;
+    background-color: var(--bg-color-2);
 }
 
 .dropdown-btn:disabled {
-    background-color: #2a2a2a;
+    background-color: var(--bg-color-2);
     color: #777;
     cursor: not-allowed;
     border-color: #4a4a4a;
@@ -2237,7 +2244,7 @@ body.light-theme {
 }
 
 #generate-available-alt-btn:disabled {
-    background-color: #2a2a2a;
+    background-color: var(--bg-color-2);
     border-color: #4a4a4a;
     color: #777;
     cursor: not-allowed;
@@ -2439,7 +2446,7 @@ body.light-theme {
     margin-bottom: 40px;
 }
 .feature-catalog-card {
-    background-color: #2a2a2a;
+    background-color: var(--bg-color-2);
     border: 1px solid #4a4a4a;
     border-radius: 8px;
     padding: 20px;
@@ -2506,8 +2513,36 @@ body.light-theme {
     100% { background-position: 150% center; }
 }
 
+/* NEW: Apply title animation to all H1s for premium tiers */
+body[data-tier="pro"] h1 {
+    background-image: linear-gradient(90deg, #ffffff 40%, #FFD700 50%, #ffffff 60%);
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: text-reflection 4s infinite linear;
+}
+
+body[data-tier="business"] h1 {
+    background-image: linear-gradient(90deg, #ffffff 40%, var(--current-theme-color) 50%, #ffffff 60%);
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: text-reflection 4s infinite linear;
+    transition: background-image 1.5s linear;
+}
+
 
 /* --- Pro Tier: "Regal Gold" Theme --- */
+body[data-tier="pro"] {
+    --bg-color-1: #151515;
+    --bg-color-2: #202020;
+    --bg-color-3: #303030;
+}
+
 body[data-tier="pro"] .input-box,
 body[data-tier="pro"] .output-box,
 body[data-tier="pro"] .refine-section,
@@ -2544,7 +2579,16 @@ body[data-tier="pro"] .surprise-btn:hover {
 
 /* Business Tier (Theme-based Chroma) */
 body[data-tier="business"] {
+    --bg-color-1: #101010;
+    --bg-color-2: #151515;
+    --bg-color-3: #252525;
     animation: theme-based-color-cycle 8s infinite linear;
+}
+
+/* NEW: Disable banner animation for business tier and apply static glow */
+body[data-tier="business"] #banner-background-effect {
+    animation: none;
+    filter: blur(2px) drop-shadow(0 0 20px var(--secondary-accent));
 }
 
 body[data-tier="business"] .input-box,
@@ -2581,7 +2625,7 @@ body[data-tier="business"] .surprise-btn:hover {
     font-size: 0.8em;
     font-weight: 400;
     color: #aaa;
-    background-color: rgba(58, 58, 58, 0.75);
+    background-color: var(--bg-color-3);
     padding: 2px 8px;
     border-radius: 10px;
     border: 1px solid #4a4a4a;
