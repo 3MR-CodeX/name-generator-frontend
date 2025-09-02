@@ -2477,7 +2477,7 @@ body.light-theme {
     100% { background-position: 150% center; }
 }
 
-@keyframes theme-color-cycle {
+@keyframes theme-color-cycle-main-only {
     0%   { --current-theme-color: #a500ff; } /* Synthwave */
     10%  { --current-theme-color: #d62828; } /* Sunset Blaze */
     20%  { --current-theme-color: #0077b6; } /* Oceanic Citrus */
@@ -2489,15 +2489,6 @@ body.light-theme {
     80%  { --current-theme-color: #FF2400; } /* Scarlet */
     90%  { --current-theme-color: #0047AB; } /* Cobalt */
     100% { --current-theme-color: #a500ff; } /* Return to start */
-}
-
-@keyframes business-title-pulse {
-    0%, 100% {
-        text-shadow: 0 0 4px var(--current-theme-color), 0 0 8px var(--current-theme-color);
-    }
-    50% {
-        text-shadow: 0 0 8px var(--current-theme-color), 0 0 16px var(--current-theme-color);
-    }
 }
 
 
@@ -2530,7 +2521,7 @@ body[data-tier="pro"] .refine-btn:hover {
 
 /* --- Business Tier: "Chroma Shift" Theme --- */
 body[data-tier="business"] {
-    animation: theme-color-cycle 30s infinite linear;
+    animation: theme-color-cycle-main-only 30s infinite linear;
 }
 
 body[data-tier="business"] .input-box,
@@ -2560,7 +2551,8 @@ body[data-tier="business"] .refine-btn:hover {
 }
 
 body[data-tier="business"] h1,
-body[data-tier="business"] h2 {
+body[data-tier="business"] h2,
+body[data-tier="business"] .topbar-title {
     color: white;
     position: relative;
     -webkit-text-stroke: 1px var(--current-theme-color);
