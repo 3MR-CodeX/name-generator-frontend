@@ -435,16 +435,18 @@ body[data-tier="pro"] #top-bar {
 }
 
 body[data-tier="pro"] .topbar-title::after {
-    content: '';
+    content: attr(data-text); /* Use a data attribute for the reflection */
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, transparent 20%, #FFD700 50%, transparent 80%);
+    color: transparent;
+    background: linear-gradient(90deg, transparent, #FFD700, transparent);
     background-size: 200% 100%;
-    animation: liquid-glass-pro 4s infinite;
-    animation-delay: 1s; /* Stagger animation */
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: liquid-glass-pro 4s infinite 3s;
 }
 
 body[data-tier="pro"] #user-status-container .tier-badge {
@@ -461,7 +463,28 @@ body[data-tier="business"] #top-bar {
     transition: border-color 1.5s linear;
 }
 
-body[data-tier="business"] .topbar-title::after,
+body[data-tier="business"] .topbar-title::after {
+    content: attr(data-text); /* Use a data attribute for the reflection */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: transparent;
+    background: linear-gradient(90deg, transparent, var(--current-theme-color), transparent);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: liquid-glass-business 4s infinite 3s;
+    transition: background 1.5s linear;
+}
+
+body[data-tier="business"] #user-status-container .tier-badge {
+    background: #000;
+    color: white;
+    font-weight: bold;
+    border: none;
+}
 body[data-tier="business"] #user-status-container .tier-badge::after {
     content: '';
     position: absolute;
@@ -473,12 +496,5 @@ body[data-tier="business"] #user-status-container .tier-badge::after {
     background-size: 200% 100%;
     animation: liquid-glass-business 4s infinite;
     transition: background 1.5s linear;
-}
-
-body[data-tier="business"] #user-status-container .tier-badge {
-    background: #000;
-    color: white;
-    font-weight: bold;
-    border: none;
 }
 
