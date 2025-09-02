@@ -423,7 +423,7 @@
     font-size: 0.95em;
 }
 
-/* --- Tier Specific Designs --- */
+/* --- TIER-BASED DESIGNS --- */
 
 /* Pro Tier (Gold) */
 body[data-tier="pro"] #top-bar {
@@ -432,26 +432,21 @@ body[data-tier="pro"] #top-bar {
 }
 
 body[data-tier="pro"] .topbar-title {
-    color: white;
-    background: linear-gradient(to right, white 45%, #FFD700 50%, white 55%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: badge-shine 4s linear infinite;
+    animation: badge-shine 3s infinite;
 }
 
 body[data-tier="pro"] #user-status-container .tier-badge {
     background: white;
     color: black;
     font-weight: bold;
+    animation: badge-shine 3s infinite;
 }
 
 
 /* Business Tier (Chroma Shift) */
 body[data-tier="business"] #top-bar {
     background: #111;
-    animation: theme-color-cycle-main-only 30s infinite linear;
+    animation: theme-color-cycle-main-only 20s infinite linear;
     --border-color: var(--current-theme-color);
     box-shadow: 0 2px 0 0 var(--border-color);
     border-bottom: none;
@@ -459,14 +454,7 @@ body[data-tier="business"] #top-bar {
 }
 
 body[data-tier="business"] .topbar-title {
-    color: white;
-    background: linear-gradient(to right, white 45%, var(--current-theme-color) 50%, white 55%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: badge-shine 4s linear infinite, theme-color-cycle-main-only 30s infinite linear;
-
+    animation: business-chroma-shine 20s infinite linear;
 }
 
 body[data-tier="business"] #user-status-container .tier-badge {
@@ -482,12 +470,15 @@ body[data-tier="business"] #user-status-container .tier-badge::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: -100%;
+    width: 300%;
     height: 100%;
-    background: linear-gradient(to right, transparent 45%, var(--current-theme-color) 50%, transparent 55%);
-    background-size: 200% auto;
-    animation: badge-shine 4s linear infinite, theme-color-cycle-main-only 30s infinite linear;
-    mix-blend-mode: screen;
+    background: linear-gradient(90deg, transparent, var(--current-theme-color), transparent);
+    animation: business-badge-shine 3s infinite linear, theme-color-cycle-main-only 20s infinite linear;
+}
+
+@keyframes business-badge-shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
 }
 
