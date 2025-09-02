@@ -2475,6 +2475,97 @@ body.light-theme {
     background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default));
 }
 
+/* --- TIER-BASED STYLING (NEW) --- */
+@keyframes theme-based-color-cycle {
+    0%, 100% {
+        --current-theme-color: var(--primary-accent);
+    }
+    50% {
+        --current-theme-color: var(--secondary-accent);
+    }
+}
+
+@keyframes liquid-glass-pro {
+    0% { background-position: -150% center; }
+    25% { background-position: 150% center; }
+    100% { background-position: 150% center; }
+}
+
+@keyframes liquid-glass-business {
+    0% { background-position: -150% center; }
+    25% { background-position: 150% center; }
+    100% { background-position: 150% center; }
+}
+
+
+/* --- Pro Tier: "Regal Gold" Theme --- */
+body[data-tier="pro"] .input-box,
+body[data-tier="pro"] .output-box,
+body[data-tier="pro"] .refine-section,
+body[data-tier="pro"] .history-section,
+body[data-tier="pro"] .setting-section,
+body[data-tier="pro"] .about-section,
+body[data-tier="pro"] .contact-container,
+body[data-tier="pro"] .outer-input-box {
+    border: 1px solid #D4AF37;
+}
+
+body[data-tier="pro"] .generate-btn,
+body[data-tier="pro"] .refine-btn,
+body[data-tier="pro"] .cta-button,
+body[data-tier="pro"] .submit-btn {
+    background: #D4AF37;
+    color: black;
+    border: 2px solid #D4AF37;
+}
+
+body[data-tier="pro"] .generate-btn:hover,
+body[data-tier="pro"] .refine-btn:hover {
+    background: #FFD700;
+    border-color: #FFD700;
+}
+
+body[data-tier="pro"] .surprise-btn {
+    border-color: #D4AF37;
+}
+body[data-tier="pro"] .surprise-btn:hover {
+    background-color: #D4AF37;
+    color: black;
+}
+
+/* Business Tier (Theme-based Chroma) */
+body[data-tier="business"] {
+    animation: theme-based-color-cycle 8s infinite linear;
+}
+
+body[data-tier="business"] .input-box,
+body[data-tier="business"] .output-box,
+body[data-tier="business"] .refine-section,
+body[data-tier="business"] .history-section,
+body[data-tier="business"] .setting-section,
+body[data-tier="business"] .about-section,
+body[data-tier="business"] .contact-container,
+body[data-tier="business"] .outer-input-box {
+    border: 1px solid var(--current-theme-color);
+    transition: border-color 1.5s linear;
+}
+
+body[data-tier="business"] .generate-btn,
+body[data-tier="business"] .refine-btn,
+body[data-tier="business"] .cta-button {
+    background-color: var(--current-theme-color);
+    border: 2px solid var(--current-theme-color);
+    transition: background-color 1.5s linear, border-color 1.5s linear;
+}
+
+body[data-tier="business"] .surprise-btn {
+    border-color: var(--current-theme-color);
+    transition: border-color 1.5s linear;
+}
+body[data-tier="business"] .surprise-btn:hover {
+    background-color: var(--current-theme-color);
+}
+
 /* --- Credit Cost Display Styling --- */
 .credit-cost {
     float: right;
@@ -2486,4 +2577,3 @@ body.light-theme {
     border-radius: 10px;
     border: 1px solid #4a4a4a;
 }
-
