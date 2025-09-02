@@ -61,10 +61,14 @@ const BACKGROUND_ANIMATIONS = {
     'pattern10': 'color-shifting-bar',
     'pattern11': 'random-flicker',
     'pattern12': 'vertical-crossing-bars',
-    'pattern13': 'grid-pulse', // NEW
-    'pattern14': 'grid-pulse', // NEW
-    'pattern15': 'abstract-shapes', // NEW
-    'pattern16': 'abstract-shapes' // NEW
+    'pattern13': 'grid-pulse',
+    'pattern14': 'grid-pulse',
+    'pattern15': 'abstract-shapes',
+    'pattern16': 'abstract-shapes',
+    'pattern17': 'subtle-waves',
+    'pattern18': 'subtle-waves',
+    'pattern19': 'floating-dust',
+    'pattern20': 'floating-dust'
 };
 
 
@@ -152,6 +156,10 @@ const changePasswordBtn = document.getElementById('change-password-btn');
 const manageSubscriptionBtn = document.getElementById('manage-subscription-btn');
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
+// NEW: Premium setting toggles
+const proDetailsToggle = document.getElementById('pro-details-toggle');
+const businessShiftingToggle = document.getElementById('business-shifting-toggle');
+
 
 // --- NEW: Credit Cost Data ---
 // --- NEW: Credit Cost Data ---
@@ -267,6 +275,18 @@ window.updateFeatureLocks = function(tier) {
         if (li) {
             li.classList.toggle('locked', sidebarLinks[id].locked);
         }
+    }
+
+    // --- NEW: Premium Settings Visibility ---
+    const premiumSettingsSection = document.getElementById('premium-settings-section');
+    const proSettings = document.getElementById('pro-settings');
+    const businessSettings = document.getElementById('business-settings');
+
+    if (premiumSettingsSection && proSettings && businessSettings) {
+        const showPremiumSettings = isProOrHigher;
+        premiumSettingsSection.classList.toggle('hidden', !showPremiumSettings);
+        proSettings.classList.toggle('hidden', !isProOrHigher); // Show for Pro and Business
+        businessSettings.classList.toggle('hidden', !isBusiness); // Show only for Business
     }
 }
 
@@ -385,6 +405,9 @@ function setupEventListeners() {
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
+    // NEW: Premium settings listeners
+    if (proDetailsToggle) proDetailsToggle.addEventListener('change', (e) => applyProDetailsSetting(e.target.checked));
+    if (businessShiftingToggle) businessShiftingToggle.addEventListener('change', (e) => applyBusinessShiftingSetting(e.target.checked));
 
     const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
     const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
@@ -1936,7 +1959,9 @@ function initializeSettings() {
         resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
         resultsFontSize: localStorage.getItem('nameit-results-fontSize') || '100',
         animations: localStorage.getItem('nameit-animations') !== 'false',
-        background: localStorage.getItem('nameit-background') || 'pattern1'
+        background: localStorage.getItem('nameit-background') || 'pattern1',
+        proDetails: localStorage.getItem('nameit-pro-details') !== 'false', // NEW
+        businessShifting: localStorage.getItem('nameit-business-shifting') !== 'false' // NEW
     };
     if (themeSelect) themeSelect.value = settings.theme;
     if (fontSelect) fontSelect.value = settings.font;
@@ -1945,6 +1970,9 @@ function initializeSettings() {
     if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
     if (animationsToggle) animationsToggle.checked = settings.animations;
     if (backgroundSelect) backgroundSelect.value = settings.background;
+    if (proDetailsToggle) proDetailsToggle.checked = settings.proDetails; // NEW
+    if (businessShiftingToggle) businessShiftingToggle.checked = settings.businessShifting; // NEW
+
 
     applyTheme(settings.theme, false);
     applyFont(settings.font, false);
@@ -1953,6 +1981,8 @@ function initializeSettings() {
     applyResultsFontSize(settings.resultsFontSize, false);
     applyBackground(settings.background, false);
     applyAnimationSetting(settings.animations, false);
+    applyProDetailsSetting(settings.proDetails, false); // NEW
+    applyBusinessShiftingSetting(settings.businessShifting, false); // NEW
 }
 
 function handleHashChange() {
@@ -1982,9 +2012,12 @@ function applyBackground(patternName, save = true) {
     if (animationLayer.timerId) clearTimeout(animationLayer.timerId);
     if (animationLayer.circleTimerId) clearInterval(animationLayer.circleTimerId);
     if (animationLayer.shapeTimerId) clearInterval(animationLayer.shapeTimerId);
+    if (animationLayer.dustTimerId) clearInterval(animationLayer.dustTimerId);
     animationLayer.timerId = null;
     animationLayer.circleTimerId = null;
     animationLayer.shapeTimerId = null;
+    animationLayer.dustTimerId = null;
+
 
     // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
@@ -2043,7 +2076,7 @@ function applyBackground(patternName, save = true) {
         animationLayer.timerId = setTimeout(createRandomFlicker, nextFlickerDelay);
     };
 
-    // NEW Helper for abstract shapes
+    // Helper for abstract shapes
     const createAbstractShape = () => {
         const shape = document.createElement('div');
         shape.className = 'abstract-shape';
@@ -2057,6 +2090,20 @@ function applyBackground(patternName, save = true) {
         shape.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
         animationLayer.appendChild(shape);
         setTimeout(() => shape.remove(), 20000);
+    };
+    
+    // NEW Helper for floating dust
+    const createFloatingDust = () => {
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'floating-dust-particle';
+            particle.style.setProperty('--size', `${Math.random() * 3 + 1}px`);
+            particle.style.setProperty('--x-pos', `${Math.random() * 100}vw`);
+            particle.style.setProperty('--delay', `-${Math.random() * 20}s`);
+            particle.style.setProperty('--duration', `${Math.random() * 10 + 10}s`);
+            particle.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
+            animationLayer.appendChild(particle);
+        }
     };
 
 
@@ -2083,12 +2130,18 @@ function applyBackground(patternName, save = true) {
         case 'vertical-crossing-bars':
             htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
             break;
-        case 'grid-pulse': // NEW
+        case 'grid-pulse':
             htmlToSet = `<div class="grid-pulse-bg"></div>`;
             break;
-        case 'abstract-shapes': // NEW
+        case 'abstract-shapes':
             for (let i = 0; i < 5; i++) createAbstractShape();
             animationLayer.shapeTimerId = setInterval(createAbstractShape, 4000);
+            break;
+        case 'subtle-waves':
+            htmlToSet = `<div class="subtle-waves-bg"></div>`;
+            break;
+        case 'floating-dust':
+            createFloatingDust();
             break;
     }
     
@@ -2102,18 +2155,15 @@ function applyBackground(patternName, save = true) {
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animations', enabled);
     
-    const showcaseContainer = document.querySelector('.showcase-container');
-    const animationLayer = document.getElementById('animation-layer');
+    const body = document.body;
+    body.classList.toggle('animations-disabled', !enabled);
+    body.classList.toggle('title-animations-disabled', !enabled);
 
-    if (enabled) {
-        document.body.classList.remove('animations-disabled');
-        if (showcaseContainer) showcaseContainer.style.display = 'flex';
-        if (animationLayer) animationLayer.style.display = 'block';
-    } else {
-        document.body.classList.add('animations-disabled');
-        if (showcaseContainer) showcaseContainer.style.display = 'none';
-        if (animationLayer) animationLayer.style.display = 'none';
-    }
+    // Also update the state of the background and showcase based on the master switch
+    const showcaseContainer = document.querySelector('.showcase-container');
+    const backgroundContainer = document.getElementById('background-container');
+    if (showcaseContainer) showcaseContainer.style.display = enabled ? 'flex' : 'none';
+    if (backgroundContainer) backgroundContainer.style.display = enabled ? 'block' : 'none';
 }
 
 
@@ -2164,22 +2214,16 @@ function applyResultsFontSize(size, save = true) {
     document.documentElement.style.setProperty('--results-font-size', `${size}%`);
 }
 
-function applyAnimationSetting(enabled, save = true) {
-    if (save) localStorage.setItem('nameit-animations', enabled);
-    
-    const showcaseContainer = document.querySelector('.showcase-container');
-    const backgroundContainer = document.getElementById('background-container');
-
-    if (enabled) {
-        document.body.classList.remove('animations-disabled');
-        if (showcaseContainer) showcaseContainer.style.display = 'flex';
-        if (backgroundContainer) backgroundContainer.style.display = 'block';
-    } else {
-        document.body.classList.add('animations-disabled');
-        if (showcaseContainer) showcaseContainer.style.display = 'none';
-        if (backgroundContainer) backgroundContainer.style.display = 'none';
-    }
+function applyProDetailsSetting(enabled, save = true) {
+    if (save) localStorage.setItem('nameit-pro-details', enabled);
+    document.body.classList.toggle('pro-details-enabled', enabled);
 }
+
+function applyBusinessShiftingSetting(enabled, save = true) {
+    if (save) localStorage.setItem('nameit-business-shifting', enabled);
+    document.body.classList.toggle('business-shifting-disabled', !enabled);
+}
+
 
 async function exportHistory() {
     const token = await getUserToken();
