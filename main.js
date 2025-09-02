@@ -2095,6 +2095,14 @@ function applyTheme(theme, save = true) {
         bodyEl.style.animation = 'none';
         void bodyEl.offsetHeight; // Trigger reflow
         bodyEl.style.animation = ''; 
+
+        // Also restart the animation on all h1 elements
+        const titles = document.querySelectorAll('h1');
+        titles.forEach(title => {
+            title.style.animation = 'none';
+            void title.offsetHeight;
+            title.style.animation = '';
+        });
     }
 }
 
@@ -2233,4 +2241,5 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
 
