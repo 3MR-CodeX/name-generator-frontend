@@ -2473,10 +2473,19 @@ body.light-theme {
 /* --- TIER-BASED STYLING (NEW) --- */
 
 /* --- Pro Tier: "Regal Gold" Theme --- */
-@keyframes gold-border-glow {
-    0% { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
-    50% { border-color: #FFD700; box-shadow: 0 0 25px rgba(255, 215, 0, 0.7); }
-    100% { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+@keyframes gold-shine {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+body[data-tier="pro"] h1,
+body[data-tier="pro"] h2 {
+    color: #FFD700;
+    background: linear-gradient(90deg, #D4AF37, #FFD700, #D4AF37, #FFD700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    animation: gold-shine 5s linear infinite;
 }
 
 body[data-tier="pro"] .input-box,
@@ -2491,34 +2500,18 @@ body[data-tier="pro"] .outer-input-box {
     background-color: rgba(20, 16, 5, 0.4); /* Faint gold bg */
 }
 
-body[data-tier="pro"] textarea:focus,
-body[data-tier="pro"] input:focus {
-     animation: gold-border-glow 2s infinite;
-}
-
-body[data-tier="pro"] h1,
-body[data-tier="pro"] h2 {
-    color: #FFD700; /* Gold */
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-}
-
 body[data-tier="pro"] .generate-btn,
 body[data-tier="pro"] .refine-btn,
 body[data-tier="pro"] .cta-button,
 body[data-tier="pro"] .submit-btn {
-    background: #D4AF37;
-    color: black;
-    font-weight: bold;
-    border: 1px solid #FFD700;
+    background: transparent;
+    color: #D4AF37;
+    border: 2px solid #D4AF37;
 }
 body[data-tier="pro"] .generate-btn:hover,
 body[data-tier="pro"] .refine-btn:hover {
-    background: #FFD700;
-}
-
-body[data-tier="pro"] .topbar-title {
-    color: #FFD700;
-    text-shadow: 0 0 8px #D4AF37;
+    background: #D4AF37;
+    color: black;
 }
 
 /* --- Business Tier: "Chroma Shift" Theme --- */
