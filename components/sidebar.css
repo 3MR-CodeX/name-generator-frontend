@@ -135,7 +135,7 @@ body[data-tier="pro"] #sidebar {
 /* Business Tier (Chroma Shift) */
 body[data-tier="business"] #sidebar {
     background: #111;
-    animation: theme-color-cycle-main-only 30s infinite linear;
+    animation: theme-color-cycle-main-only 20s infinite linear;
     --border-color: var(--current-theme-color);
     box-shadow: 2px 0 0 0 var(--border-color);
     border-right: none;
