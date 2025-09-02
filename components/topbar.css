@@ -217,8 +217,6 @@
 }
 
 .tier-badge.free-tier { background-color: var(--line-accent-default); }
-.tier-badge.premium-tier { background-color: var(--line-accent-glow); }
-.tier-badge.business-tier { background-color: var(--primary-accent); }
 
 .generations-info {
     display: flex;
@@ -449,6 +447,7 @@ body[data-tier="pro"] #user-status-container .tier-badge {
     font-weight: bold;
 }
 
+
 /* Business Tier (Chroma Shift) */
 body[data-tier="business"] #top-bar {
     background: #111;
@@ -461,10 +460,13 @@ body[data-tier="business"] #top-bar {
 
 body[data-tier="business"] .topbar-title {
     color: white;
-    position: relative;
-    -webkit-text-stroke: 1px var(--current-theme-color);
-    text-shadow: 0 0 5px var(--current-theme-color);
-    transition: -webkit-text-stroke 0.5s linear, text-shadow 0.5s linear;
+    background: linear-gradient(to right, white 45%, var(--current-theme-color) 50%, white 55%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: badge-shine 4s linear infinite, theme-color-cycle-main-only 30s infinite linear;
+
 }
 
 body[data-tier="business"] #user-status-container .tier-badge {
