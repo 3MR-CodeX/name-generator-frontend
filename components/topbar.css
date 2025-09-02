@@ -427,17 +427,26 @@
 
 /* Pro Tier (Gold) */
 body[data-tier="pro"] #top-bar {
-    background-color: rgba(20, 16, 5, 0.85);
+    background-color: #1a1a1a;
     border-bottom: 2px solid #D4AF37;
+}
+
+body[data-tier="pro"] .topbar-title {
+    color: white;
+    background: linear-gradient(to right, white 45%, #FFD700 50%, white 55%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: badge-shine 4s linear infinite;
 }
 
 /* Business Tier (Chroma Shift) */
 body[data-tier="business"] #top-bar {
     background: #111;
-    border-bottom: none;
-    position: relative;
     animation: theme-color-cycle 30s infinite linear;
     --border-color: var(--current-theme-color);
     box-shadow: 0 2px 0 0 var(--border-color);
+    border-bottom: none;
 }
 
