@@ -444,28 +444,34 @@ body[data-tier="pro"] .topbar-title {
 }
 
 body[data-tier="pro"] #user-status-container .tier-badge {
-    background: linear-gradient(to right, #D4AF37 45%, #FFD700 50%, #D4AF37 55%);
-    background-size: 200% auto;
+    background: white;
     color: black;
     font-weight: bold;
-    animation: badge-shine 4s linear infinite;
 }
-
 
 /* Business Tier (Chroma Shift) */
 body[data-tier="business"] #top-bar {
     background: #111;
-    animation: theme-color-cycle 30s infinite linear;
+    animation: theme-color-cycle-main-only 30s infinite linear;
     --border-color: var(--current-theme-color);
     box-shadow: 0 2px 0 0 var(--border-color);
     border-bottom: none;
     transition: box-shadow 0.5s linear;
 }
 
+body[data-tier="business"] .topbar-title {
+    color: white;
+    position: relative;
+    -webkit-text-stroke: 1px var(--current-theme-color);
+    text-shadow: 0 0 5px var(--current-theme-color);
+    transition: -webkit-text-stroke 0.5s linear, text-shadow 0.5s linear;
+}
+
 body[data-tier="business"] #user-status-container .tier-badge {
-    background: white;
-    color: black;
+    background: #000;
+    color: white;
     font-weight: bold;
+    border: 1px solid white;
     position: relative;
     overflow: hidden;
 }
@@ -479,7 +485,7 @@ body[data-tier="business"] #user-status-container .tier-badge::before {
     height: 100%;
     background: linear-gradient(to right, transparent 45%, var(--current-theme-color) 50%, transparent 55%);
     background-size: 200% auto;
-    animation: badge-shine 4s linear infinite, theme-color-cycle 30s infinite linear;
+    animation: badge-shine 4s linear infinite, theme-color-cycle-main-only 30s infinite linear;
     mix-blend-mode: screen;
 }
 
