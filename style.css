@@ -2476,6 +2476,7 @@ body.light-theme {
 }
 
 /* --- TIER-BASED STYLING (NEW) --- */
+/* This animation will now dynamically use the theme's colors */
 @keyframes theme-based-color-cycle {
     0%, 100% {
         --current-theme-color: var(--primary-accent);
@@ -2483,18 +2484,6 @@ body.light-theme {
     50% {
         --current-theme-color: var(--secondary-accent);
     }
-}
-
-@keyframes liquid-glass-pro {
-    0% { background-position: -150% center; }
-    25% { background-position: 150% center; }
-    100% { background-position: 150% center; }
-}
-
-@keyframes liquid-glass-business {
-    0% { background-position: -150% center; }
-    25% { background-position: 150% center; }
-    100% { background-position: 150% center; }
 }
 
 
