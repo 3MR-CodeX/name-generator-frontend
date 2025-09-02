@@ -128,7 +128,7 @@
 
 /* Pro Tier (Gold) */
 body[data-tier="pro"] #sidebar {
-    background-color: rgba(20, 16, 5, 0.9);
+    background-color: #1a1a1a;
     border-right: 2px solid #D4AF37;
 }
 
