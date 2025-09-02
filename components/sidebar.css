@@ -9,10 +9,8 @@
     z-index: 999;
     transition: left 0.5s ease-in-out;
     border-right: 2px solid #2a2a2a;
-    padding: 20px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 }
 
 #sidebar.sidebar-open {
@@ -23,6 +21,8 @@
     color: #e0e0e0;
     height: 100%;
     width: 100%;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 .sidebar-content h2 {
@@ -135,7 +135,7 @@ body[data-tier="pro"] #sidebar {
 /* Business Tier (Chroma Shift) */
 body[data-tier="business"] #sidebar {
     background: #111;
-    animation: theme-color-cycle 30s infinite linear;
+    animation: theme-color-cycle-main-only 30s infinite linear;
     --border-color: var(--current-theme-color);
     box-shadow: 2px 0 0 0 var(--border-color);
     border-right: none;
