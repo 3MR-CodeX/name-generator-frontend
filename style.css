@@ -24,7 +24,7 @@
 /* Sunset Blaze Theme */
 body[data-theme="sunset-blaze"] {
     --primary-accent: #d62828;
-    --secondary-accent: #e05252;
+    --secondary-accent: #f77f00; /* Orange */
     --line-accent-default: #f77f00; /* Orange */
     --line-accent-glow: #d62828;    /* Red */
     --tag-background: #d62828;
@@ -38,7 +38,7 @@ body[data-theme="sunset-blaze"] {
 /* Oceanic Citrus Theme */
 body[data-theme="oceanic-citrus"] {
     --primary-accent: #0077b6;
-    --secondary-accent: #0096c7;
+    --secondary-accent: #ffaa00; /* Orange */
     --line-accent-default: #ffaa00; /* Orange */
     --line-accent-glow: #0077b6;   /* Blue */
     --tag-background: #0077b6;
@@ -52,7 +52,7 @@ body[data-theme="oceanic-citrus"] {
 /* Classic Noir Theme */
 body[data-theme="classic-noir"] {
     --primary-accent: #333333;
-    --secondary-accent: #555555;
+    --secondary-accent: #ffffff;
     --line-accent-default: #ffffff;
     --line-accent-glow: #e0e0e0;
     --tag-background: #444444;
@@ -66,7 +66,7 @@ body[data-theme="classic-noir"] {
 /* Crimson Tide Theme */
 body[data-theme="crimson-tide"] {
     --primary-accent: #FF0090;
-    --secondary-accent: #ff33a6;
+    --secondary-accent: #00aaff;   /* Cyan */
     --line-accent-default: #00aaff;   /* Cyan */
     --line-accent-glow: #FF0090; /* Crimson */
     --tag-background: #FF0090;
@@ -80,7 +80,7 @@ body[data-theme="crimson-tide"] {
 /* Azure Sky Theme */
 body[data-theme="azure-sky"] {
     --primary-accent: #005fcc;
-    --secondary-accent: #007bff;
+    --secondary-accent: #00aaff;
     --line-accent-default: #00aaff;
     --line-accent-glow: #007bff;
     --tag-background: #005fcc;
@@ -94,7 +94,7 @@ body[data-theme="azure-sky"] {
 /* Emerald Forest Theme */
 body[data-theme="emerald-forest"] {
     --primary-accent: #008080;
-    --secondary-accent: #20B2AA;
+    --secondary-accent: #32CD32; /* Lime Green */
     --line-accent-default: #32CD32; /* Lime Green */
     --line-accent-glow: #00CED1;   /* Dark Turquoise */
     --tag-background: #008080;
@@ -108,7 +108,7 @@ body[data-theme="emerald-forest"] {
 /* Royal Gold Theme */
 body[data-theme="royal-gold"] {
     --primary-accent: #D4AF37;
-    --secondary-accent: #FFD700;
+    --secondary-accent: #FFFFFF;   /* White */
     --line-accent-default: #FFFFFF;   /* White */
     --line-accent-glow: #FFD700; /* Gold */
     --tag-background: #D4AF37;
@@ -122,7 +122,7 @@ body[data-theme="royal-gold"] {
 /* Sakura Dream Theme */
 body[data-theme="sakura-dream"] {
     --primary-accent: #FFC0CB;
-    --secondary-accent: #FFB6C1;
+    --secondary-accent: #FF69B4; /* Hot Pink */
     --line-accent-default: #FF69B4; /* Hot Pink */
     --line-accent-glow: #FFC0CB;   /* Main Pink */
     --tag-background: #FFC0CB;
@@ -136,7 +136,7 @@ body[data-theme="sakura-dream"] {
 /* Cosmic Lilac Theme */
 body[data-theme="cosmic-lilac"] {
     --primary-accent: #9b59b6;
-    --secondary-accent: #8e44ad;
+    --secondary-accent: #e67e22;   /* Orange */
     --line-accent-default: #e67e22;   /* Orange */
     --line-accent-glow: #9b59b6;     /* Main Lilac */
     --tag-background: #9b59b6;
@@ -150,7 +150,7 @@ body[data-theme="cosmic-lilac"] {
 /* Solar Flare Theme */
 body[data-theme="solar-flare"] {
     --primary-accent: #e74c3c;
-    --secondary-accent: #c0392b;
+    --secondary-accent: #f39c12; /* Yellow-Orange */
     --line-accent-default: #f39c12; /* Yellow-Orange */
     --line-accent-glow: #e74c3c;   /* Main Red */
     --tag-background: #e74c3c;
@@ -164,7 +164,7 @@ body[data-theme="solar-flare"] {
 /* Arctic Night Theme */
 body[data-theme="arctic-night"] {
     --primary-accent: #2c3e50;
-    --secondary-accent: #34495e;
+    --secondary-accent: #1abc9c; /* Turquoise */
     --line-accent-default: #1abc9c; /* Turquoise */
     --line-accent-glow: #2c3e50;   /* Main Dark Blue */
     --tag-background: #2c3e50;
@@ -178,7 +178,7 @@ body[data-theme="arctic-night"] {
 /* Scarlet & Ivory Theme */
 body[data-theme="scarlet-ivory"] {
     --primary-accent: #FF2400; /* Scarlet */
-    --secondary-accent: #ff4d2e;
+    --secondary-accent: #F5F5DC; /* Beige/Ivory */
     --line-accent-default: #F5F5DC; /* Beige/Ivory */
     --line-accent-glow: #FF2400;   /* Main Scarlet */
     --tag-background: #FF2400;
@@ -192,7 +192,7 @@ body[data-theme="scarlet-ivory"] {
 /* Cobalt & Ivory Theme */
 body[data-theme="cobalt-ivory"] {
     --primary-accent: #0047AB; /* Cobalt Blue */
-    --secondary-accent: #2a65c7;
+    --secondary-accent: #F5F5DC; /* Beige/Ivory */
     --line-accent-default: #F5F5DC; /* Beige/Ivory */
     --line-accent-glow: #0047AB;   /* Main Cobalt */
     --tag-background: #0047AB;
@@ -353,7 +353,7 @@ body[data-theme="classic-noir"] #banner-background-effect {
     filter: blur(2px) drop-shadow(0 0 20px white);
 }
 
-h1 {
+h1, .sidebar-content h2 {
     font-size: 3em;
     color: #ffffff;
     text-align: center;
@@ -361,6 +361,9 @@ h1 {
     position: relative;
     overflow: hidden;
 }
+
+.sidebar-content h2 { font-size: 1.8em; }
+
 
 .description {
     font-size: 1.2em;
@@ -2561,11 +2564,6 @@ body[data-tier="business"] .surprise-btn {
 }
 body[data-tier="business"] .surprise-btn:hover {
     background-color: var(--current-theme-color);
-}
-
-body[data-tier="business"] h1,
-body[data-tier="business"] h2 {
-    animation: liquid-glass-business 4s infinite;
 }
 
 /* --- Credit Cost Display Styling --- */
