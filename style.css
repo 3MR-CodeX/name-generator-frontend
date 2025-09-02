@@ -2486,6 +2486,26 @@ body.light-theme {
     }
 }
 
+/* NEW & FIXED Keyframes */
+@keyframes text-reflection {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes liquid-glass-pro {
+    0% { background-position: -150% center; }
+    100% { background-position: 150% center; }
+}
+
+@keyframes liquid-glass-business {
+    0% { background-position: -150% center; }
+    100% { background-position: 150% center; }
+}
+
 
 /* --- Pro Tier: "Regal Gold" Theme --- */
 body[data-tier="pro"] .input-box,
@@ -2566,3 +2586,4 @@ body[data-tier="business"] .surprise-btn:hover {
     border-radius: 10px;
     border: 1px solid #4a4a4a;
 }
+
