@@ -139,5 +139,6 @@ body[data-tier="business"] #sidebar {
     --border-color: var(--current-theme-color);
     box-shadow: 2px 0 0 0 var(--border-color);
     border-right: none;
+    transition: box-shadow 0.5s linear;
 }
 
