@@ -2087,6 +2087,15 @@ function applyTheme(theme, save = true) {
     } else {
         document.body.classList.remove('light-theme');
     }
+
+    // NEW: Force Business tier animation to restart with new theme colors
+    const bodyEl = document.body;
+    if (bodyEl.dataset.tier === 'business') {
+        // This trick forces a reflow, making the browser re-evaluate the CSS animation with the new variable values.
+        bodyEl.style.animation = 'none';
+        void bodyEl.offsetHeight; // Trigger reflow
+        bodyEl.style.animation = ''; 
+    }
 }
 
 function applyFont(font, save = true) {
@@ -2224,3 +2233,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
