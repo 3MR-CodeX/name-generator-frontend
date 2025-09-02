@@ -58,7 +58,7 @@ body[data-theme="oceanic-citrus"] {
 /* UPDATED: Classic Noir Theme */
 body[data-theme="classic-noir"] {
     --primary-accent: #FFFFFF;
-    --secondary-accent: #CCCCCC;
+    --secondary-accent: #000000;
     --line-accent-default: #FFFFFF;
     --line-accent-glow: #CCCCCC;
     --tag-background: #111111;
@@ -68,6 +68,14 @@ body[data-theme="classic-noir"] {
     --animated-bar-color-2: rgba(224, 224, 224, 0.2);
     --progress-bar-color: #ffffff;
 }
+/* NEW: Ensure text on light buttons is black for Classic Noir */
+body[data-theme="classic-noir"] .generate-btn,
+body[data-theme="classic-noir"] .refine-btn,
+body[data-theme="classic-noir"] .cta-button,
+body[data-theme="classic-noir"] .submit-btn {
+    color: black !important;
+}
+
 
 /* Crimson Tide Theme */
 body[data-theme="crimson-tide"] {
@@ -209,6 +217,34 @@ body[data-theme="graphite-gold"] {
     --progress-bar-color: var(--secondary-accent);
 }
 
+/* NEW: Midnight Ruby Theme */
+body[data-theme="midnight-ruby"] {
+    --primary-accent: #4B0082; /* Indigo */
+    --secondary-accent: #E0115F; /* Ruby */
+    --line-accent-default: #E0115F;
+    --line-accent-glow: #9400D3; /* Dark Violet */
+    --tag-background: #E0115F;
+    --disabled-accent: #2a004a;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(75, 0, 130, 0.5);
+    --animated-bar-color-2: rgba(224, 17, 95, 0.5);
+    --progress-bar-color: var(--secondary-accent);
+}
+
+/* NEW: Evergreen Jade Theme */
+body[data-theme="evergreen-jade"] {
+    --primary-accent: #00A86B; /* Jade */
+    --secondary-accent: #2F4F4F; /* Dark Slate Gray */
+    --line-accent-default: #50C878; /* Emerald */
+    --line-accent-glow: #00A86B;
+    --tag-background: #00A86B;
+    --disabled-accent: #006442;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(0, 168, 107, 0.5);
+    --animated-bar-color-2: rgba(47, 79, 79, 0.5);
+    --progress-bar-color: var(--primary-accent);
+}
+
 
 * {
     margin: 0;
@@ -250,7 +286,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('patternV3.png');
+    background-image: url('background-patterns/pattern1.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -529,7 +565,7 @@ button:disabled {
 
 .surprise-btn {
     flex: 1;
-    background-color: var(--bg-color-1);
+    background-color: transparent;
     border: 2px solid var(--line-accent-default);
     padding: 15px;
 }
@@ -2493,45 +2529,41 @@ body.light-theme {
     }
 }
 
-/* NEW & FIXED Keyframes */
+/* UPDATED: Faster animation with longer delay */
 @keyframes text-reflection {
     0% {
         background-position: -200% center;
     }
-    100% {
+    40% { /* Faster reflection */
+        background-position: 200% center;
+    }
+    100% { /* Long pause */
         background-position: 200% center;
     }
 }
 
-@keyframes liquid-glass-pro {
-    0% { background-position: -150% center; }
-    100% { background-position: 150% center; }
-}
 
-@keyframes liquid-glass-business {
-    0% { background-position: -150% center; }
-    100% { background-position: 150% center; }
-}
-
-/* NEW: Apply title animation to all H1s for premium tiers */
-body[data-tier="pro"] h1 {
+/* NEW: Apply title animation to all H1s AND the topbar title for premium tiers */
+body[data-tier="pro"] h1,
+body[data-tier="pro"] .topbar-title {
     background-image: linear-gradient(90deg, #ffffff 40%, #FFD700 50%, #ffffff 60%);
     background-size: 200% auto;
     color: #fff;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: text-reflection 4s infinite linear;
+    animation: text-reflection 6s infinite linear;
 }
 
-body[data-tier="business"] h1 {
+body[data-tier="business"] h1,
+body[data-tier="business"] .topbar-title {
     background-image: linear-gradient(90deg, #ffffff 40%, var(--current-theme-color) 50%, #ffffff 60%);
     background-size: 200% auto;
     color: #fff;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: text-reflection 4s infinite linear;
+    animation: text-reflection 6s infinite linear;
     transition: background-image 1.5s linear;
 }
 
@@ -2585,10 +2617,10 @@ body[data-tier="business"] {
     animation: theme-based-color-cycle 8s infinite linear;
 }
 
-/* NEW: Disable banner animation for business tier and apply static glow */
+/* UPDATED: Business tier banner now has color shift but no blur */
 body[data-tier="business"] #banner-background-effect {
-    animation: none;
-    filter: blur(2px) drop-shadow(0 0 20px var(--secondary-accent));
+    animation: color-shift-glow 6s infinite alternate ease-in-out;
+    filter: drop-shadow(0 0 15px var(--secondary-accent));
 }
 
 body[data-tier="business"] .input-box,
@@ -2600,7 +2632,7 @@ body[data-tier="business"] .about-section,
 body[data-tier="business"] .contact-container,
 body[data-tier="business"] .outer-input-box {
     border: 1px solid var(--current-theme-color);
-    transition: border-color 1.5s linear;
+    transition: border-color 1.5s ease-in-out;
 }
 
 body[data-tier="business"] .generate-btn,
@@ -2608,12 +2640,12 @@ body[data-tier="business"] .refine-btn,
 body[data-tier="business"] .cta-button {
     background-color: var(--current-theme-color);
     border: 2px solid var(--current-theme-color);
-    transition: background-color 1.5s linear, border-color 1.5s linear;
+    transition: background-color 1.5s ease-in-out, border-color 1.5s ease-in-out;
 }
 
 body[data-tier="business"] .surprise-btn {
     border-color: var(--current-theme-color);
-    transition: border-color 1.5s linear;
+    transition: border-color 1.5s ease-in-out;
 }
 body[data-tier="business"] .surprise-btn:hover {
     background-color: var(--current-theme-color);
