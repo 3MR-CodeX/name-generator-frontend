@@ -447,10 +447,23 @@
 }
 
 
-/* Pro Tier (Theme-Adaptive) */
-body[data-tier="pro"].pro-details-enabled #top-bar {
+/* Pro Tier */
+body[data-tier="pro"] #top-bar {
     background-color: var(--bg-color-2);
     border-bottom: 2px solid var(--primary-accent);
+}
+
+body[data-tier="pro"] #user-status-container .tier-badge::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+    animation: liquid-glass-reflection 6s infinite linear;
+    animation-delay: 1s;
+    z-index: 1;
 }
 
 body[data-tier="pro"] #user-status-container .tier-badge {
@@ -459,32 +472,15 @@ body[data-tier="pro"] #user-status-container .tier-badge {
     font-weight: bold;
 }
 
-/* MODIFIED: Tier badge animation now uses ::before to render UNDER text */
-body[data-tier="pro"] #user-status-container .tier-badge::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: 0;
-    width: 40%;
-    height: 200%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
-    animation: liquid-glass-reflection 6s infinite linear;
-    animation-delay: 1s; /* Stagger animation */
-    z-index: 1;
-}
-
-
 
 /* Business Tier (Theme-based Chroma) */
 body[data-tier="business"] #top-bar {
     background-color: var(--bg-color-1);
     border-bottom: 2px solid var(--current-theme-color);
-    transition: border-color 1.5s ease-in-out;
+    transition: border-color 1.5s linear;
 }
 
-
-/* MODIFIED: Tier badge animation now uses ::before to render UNDER text */
-body[data-tier="business"]:not(.business-shifting-disabled) #user-status-container .tier-badge::before {
+body[data-tier="business"] #user-status-container .tier-badge::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -493,15 +489,13 @@ body[data-tier="business"]:not(.business-shifting-disabled) #user-status-contain
     height: 200%;
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, var(--current-theme-color) 50%, rgba(255, 255, 255, 0) 100%);
     animation: liquid-glass-reflection 6s infinite linear;
-    transition: background 1.5s ease-in-out;
+    transition: background 1.5s linear;
     z-index: 1;
 }
 
 body[data-tier="business"] #user-status-container .tier-badge {
-    background: var(--current-theme-color);
-    color: var(--button-text-color);
+    background: #000;
+    color: white;
     font-weight: bold;
     border: none;
-    transition: background-color 1.5s ease-in-out;
 }
-
