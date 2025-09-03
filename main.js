@@ -172,12 +172,12 @@ const TIER_COSTS = {
 window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
     
-    const setCost = (id, costValue, perName = false) => {
+    const setCost = (id, costValue, perName = false, actionText = 'Action') => {
         const el = document.getElementById(id);
         if (el) {
             let text = `${costValue} Credits`;
             if (perName) {
-                text = `${costValue} Credit${costValue > 1 ? 's' : ''} per name`;
+                text = `${costValue} Credit per name`;
             }
             el.textContent = text;
         }
@@ -191,6 +191,12 @@ window.updateCreditCostsUI = (tier) => {
     setCost("analyze-name-cost", costs.analyze_name);
     setCost("generate-alternatives-cost", costs.generate_alternatives);
     setCost("generate-available-alt-cost", costs.generate_available_alternatives);
+    
+    // Update simple refine cost separately
+    const simpleRefineCostEl = document.getElementById('simple-refine-cost');
+    if (simpleRefineCostEl) {
+        simpleRefineCostEl.textContent = '5 Credits';
+    }
 };
 
 
@@ -2277,4 +2283,3 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
-
