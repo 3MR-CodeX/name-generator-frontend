@@ -20,7 +20,9 @@
         
         <div id="auth-section">
             <div id="user-status-container" class="hidden">
-                <div id="tier-badge" class="tier-badge"></div>
+                <div id="tier-badge" class="tier-badge">
+                    <span><!-- Tier Name Goes Here --></span>
+                </div>
                 <div class="generations-info">
                      <p id="generation-counter" class="generation-counter"></p>
                     <div class="progress-bar-outer">
@@ -30,13 +32,34 @@
                 <button id="buy-credits-shortcut-btn" class="buy-credits-shortcut" title="Buy More Credits">+</button>
                 
                 <div id="tier-dropdown" class="dropdown-menu">
-                    <div class="tier-item">
-                        <div class="tier-badge free-tier">Free Tier</div>
-                        <p>Core access to the Name Generator and Custom Refiner.</p>
-                     </div>
-                    <div class="tier-item">
-                        <button id="go-premium-from-dropdown-btn" class="tier-badge premium-tier">✨ Go Premium</button>
-                        <p>Unlock the full potential of NameIT with advanced tools, analysis, and higher credit limits.</p>
+                    <!-- Default view for Anonymous/Free users -->
+                    <div id="free-tier-dropdown-view">
+                        <div class="tier-item">
+                            <div class="tier-badge free-tier"><span>Free Tier</span></div>
+                            <p>Core access to the Name Generator and Custom Refiner.</p>
+                        </div>
+                        <div class="tier-item">
+                            <button id="go-premium-from-dropdown-btn" class="tier-badge premium-tier">✨ Go Premium</button>
+                            <p>Unlock advanced tools, analysis, and higher credit limits.</p>
+                        </div>
+                    </div>
+                    <!-- View for Pro Tier users -->
+                    <div id="pro-tier-dropdown-view" class="hidden">
+                        <div class="tier-item">
+                            <div class="tier-badge pro-tier"><span>Pro Tier</span></div>
+                            <p>You have unlocked advanced tools and features.</p>
+                        </div>
+                        <div class="tier-item">
+                            <button id="go-business-from-dropdown-btn" class="tier-badge business-tier">🚀 Go Business</button>
+                            <p>Unlock elite features like Audience Persona Analysis.</p>
+                        </div>
+                    </div>
+                    <!-- View for Business Tier users -->
+                    <div id="business-tier-dropdown-view" class="hidden">
+                        <div class="tier-item">
+                            <div class="tier-badge business-tier"><span>Business Tier</span></div>
+                            <p>You have unlocked all available features!</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,5 +91,3 @@
         </div>
     </div>
 </div>
-
-
