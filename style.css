@@ -21,6 +21,7 @@
     --animated-bar-color-1: rgba(255, 0, 255, 0.5);
     --animated-bar-color-2: rgba(165, 0, 255, 0.5);
     --progress-bar-color: var(--line-accent-glow);
+    --slider-track-color: var(--bg-color-3);
 
     /* Font variables for results */
     --results-font-family: 'Roboto', sans-serif;
@@ -270,6 +271,46 @@ body[data-theme="sunrise-specter"] {
     --button-text-color: white;
     --animated-bar-color-1: rgba(255, 81, 47, 0.5);
     --animated-bar-color-2: rgba(221, 36, 118, 0.5);
+    --progress-bar-color: var(--primary-accent);
+}
+
+/* NEW Professional Themes */
+body[data-theme="onyx-ivory"] {
+    --primary-accent: #343a40; /* Onyx */
+    --secondary-accent: #f8f9fa; /* Ivory */
+    --line-accent-default: #f8f9fa;
+    --line-accent-glow: #e9ecef;
+    --tag-background: #343a40;
+    --disabled-accent: #1d2124;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(52, 58, 64, 0.5);
+    --animated-bar-color-2: rgba(248, 249, 250, 0.4);
+    --progress-bar-color: var(--secondary-accent);
+}
+
+body[data-theme="sapphire-slate"] {
+    --primary-accent: #0f52ba; /* Sapphire */
+    --secondary-accent: #708090; /* Slate Gray */
+    --line-accent-default: #708090;
+    --line-accent-glow: #0f52ba;
+    --tag-background: #0f52ba;
+    --disabled-accent: #082c6c;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(15, 82, 186, 0.5);
+    --animated-bar-color-2: rgba(112, 128, 144, 0.5);
+    --progress-bar-color: var(--primary-accent);
+}
+
+body[data-theme="regal-plum"] {
+    --primary-accent: #5d3d7e; /* Regal Plum */
+    --secondary-accent: #c0c0c0; /* Silver */
+    --line-accent-default: #c0c0c0;
+    --line-accent-glow: #5d3d7e;
+    --tag-background: #5d3d7e;
+    --disabled-accent: #3a254f;
+    --button-text-color: white;
+    --animated-bar-color-1: rgba(93, 61, 126, 0.5);
+    --animated-bar-color-2: rgba(192, 192, 192, 0.4);
     --progress-bar-color: var(--primary-accent);
 }
 
@@ -1288,9 +1329,10 @@ pre {
     pointer-events: none;
     z-index: 1;
     height: 6px;
-    background: var(--bg-color-3);
+    background: var(--slider-track-color);
     border-radius: 3px;
     padding: 0 9px;
+    transition: background-color 0.3s ease;
 }
 
 .slider-ticks span {
@@ -2417,16 +2459,17 @@ body.light-theme {
 }
 @keyframes slide-across-v2 { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
-/* REWORKED: This is now the master animation layer for Business tier */
+@keyframes vibrant-color-shift {
+    0%, 100% { background-color: var(--primary-accent); }
+    50% { background-color: var(--secondary-accent); }
+}
 #animation-layer .color-shift-bg {
     position: absolute;
     width: 100%;
     height: 100%;
     opacity: 0.35;
-    background-color: var(--current-theme-color); /* It now gets its color from the master variable */
-    animation: none; /* The body's animation controls the color change */
+    animation: vibrant-color-shift 8s infinite ease-in-out;
 }
-
 
 @keyframes slide-across-full {
     0% { transform: translateX(100vw); }
@@ -2596,7 +2639,7 @@ body.light-theme {
 }
 
 /* --- TIER-BASED STYLING (NEW) --- */
-/* REWORKED: This is now the MASTER animation for Business Tier */
+/* This animation will now dynamically use the theme's colors */
 @keyframes theme-based-color-cycle {
     0%, 100% {
         --current-theme-color: var(--primary-accent);
@@ -2641,6 +2684,7 @@ body[data-tier="business"]:not(.business-shifting-disabled) .topbar-title {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: text-reflection 6s infinite linear;
+    transition: background-image 1.5s ease-in-out;
 }
 /* NEW: Control for title animation */
 body.title-animations-disabled h1,
@@ -2657,6 +2701,7 @@ body[data-tier="pro"] {
     --bg-color-1: #151515;
     --bg-color-2: #202020;
     --bg-color-3: #303030;
+    --slider-track-color: #444;
 }
 
 /* Pro tier borders and buttons now use theme colors */
@@ -2699,21 +2744,18 @@ body[data-tier="business"] {
     --bg-color-1: #101010;
     --bg-color-2: #151515;
     --bg-color-3: #252525;
+    --slider-track-color: #555;
 }
-/* REWORKED: Apply master animation to body */
 body[data-tier="business"]:not(.business-shifting-disabled) {
     animation: theme-based-color-cycle 8s infinite linear;
 }
 
 /* UPDATED: Business tier banner now has color shift but no blur */
 body[data-tier="business"] #banner-background-effect {
-    /* The filter now uses the master color variable */
-    filter: drop-shadow(0 0 15px var(--current-theme-color));
-    /* Remove the separate animation */
-    animation: none;
+    animation: color-shift-glow 8s infinite alternate ease-in-out;
+    filter: drop-shadow(0 0 15px var(--secondary-accent));
 }
 
-/* REWORKED: All elements now use the master color variable and have NO transition */
 body[data-tier="business"] .input-box,
 body[data-tier="business"] .output-box,
 body[data-tier="business"] .refine-section,
@@ -2723,7 +2765,7 @@ body[data-tier="business"] .about-section,
 body[data-tier="business"] .contact-container,
 body[data-tier="business"] .outer-input-box {
     border: 1px solid var(--current-theme-color);
-    transition: none;
+    transition: border-color 1.5s ease-in-out;
 }
 
 body[data-tier="business"] .generate-btn,
@@ -2731,28 +2773,15 @@ body[data-tier="business"] .refine-btn,
 body[data-tier="business"] .cta-button {
     background-color: var(--current-theme-color);
     border: 2px solid var(--current-theme-color);
-    transition: none;
+    transition: background-color 1.5s ease-in-out, border-color 1.5s ease-in-out;
 }
 
 body[data-tier="business"] .surprise-btn {
     border-color: var(--current-theme-color);
-    transition: none;
+    transition: border-color 1.5s ease-in-out;
 }
 body[data-tier="business"] .surprise-btn:hover {
     background-color: var(--current-theme-color);
-}
-
-/* NEW: Brighter slider TRACKS for Business tier */
-body[data-tier="business"] .slider-ticks {
-    background-color: var(--line-accent-default);
-}
-body[data-tier="business"] .relevancy-slider::-webkit-slider-thumb {
-    background: var(--line-accent-glow);
-    box-shadow: 0 0 8px var(--line-accent-glow);
-}
-body[data-tier="business"] .relevancy-slider::-moz-range-thumb {
-    background: var(--line-accent-glow);
-    box-shadow: 0 0 8px var(--line-accent-glow);
 }
 
 /* --- Credit Cost Display Styling --- */
@@ -2766,4 +2795,3 @@ body[data-tier="business"] .relevancy-slider::-moz-range-thumb {
     border-radius: 10px;
     border: 1px solid #4a4a4a;
 }
-
