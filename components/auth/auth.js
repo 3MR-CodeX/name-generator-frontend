@@ -82,14 +82,54 @@ function initializeAuth() {
         if (tierBadge) {
             tierBadge.textContent = data.tier;
             tierBadge.className = 'tier-badge';
-            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Starter Tier": 'premium-tier', "Pro Tier": 'premium-tier', "Business Tier": 'business-tier' };
+            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Starter Tier": 'premium-tier', "Pro Tier": 'pro-tier', "Business Tier": 'business-tier' };
             if (tiers[data.tier]) {
                 tierBadge.classList.add(tiers[data.tier]);
             }
         }
+        updateTierDropdown(data.tier);
         window.updateGenerationCountUI(data.credits);
     }
     
+    function updateTierDropdown(tier) {
+        if (!tierDropdown) return;
+    
+        let content = '';
+    
+        if (tier === 'Pro Tier') {
+            content = `
+                <div class="tier-item">
+                    <div class="tier-badge pro-tier">Pro Tier</div>
+                    <p>Core access to the Name Generator and Custom Refiner, plus Pro tools.</p>
+                </div>
+                <div class="tier-item">
+                    <button id="go-business-from-dropdown-btn" class="tier-badge business-tier">✨ Go Business</button>
+                    <p>Unlock the ultimate potential of NameIT with exclusive tools and analysis.</p>
+                </div>
+            `;
+        } else if (tier === 'Business Tier') {
+            content = `
+                <div class="tier-item">
+                    <div class="tier-badge business-tier">Business Tier</div>
+                    <p>You have unlocked all features, including exclusive tools and top-priority support.</p>
+                </div>
+            `;
+        } else { // Free, Anonymous, Starter
+            content = `
+                <div class="tier-item">
+                    <div class="tier-badge free-tier">Free Tier</div>
+                    <p>Core access to the Name Generator and Custom Refiner.</p>
+                </div>
+                <div class="tier-item">
+                    <button id="go-premium-from-dropdown-btn" class="tier-badge pro-tier">✨ Go Pro</button>
+                    <p>Unlock advanced tools like the Availability Checker and Name Analyzer.</p>
+                </div>
+            `;
+        }
+    
+        tierDropdown.innerHTML = content;
+    }
+
     window.updateUserStatusUI = (user) => {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
