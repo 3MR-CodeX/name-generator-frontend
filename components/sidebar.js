@@ -1,4 +1,3 @@
-
 // sidebar.js
 
 // Make isSidebarOpen globally accessible
@@ -44,6 +43,7 @@ function openSidebar() {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("overlay");
     const hexagonButton = document.getElementById("hexagon-button");
+    const body = document.body;
 
     if (!sidebar || !overlay || !hexagonButton) return;
 
@@ -51,14 +51,22 @@ function openSidebar() {
     sidebar.classList.add('sidebar-open');
     hexagonButton.classList.add('button-rotated');
     overlay.classList.add('overlay-active');
-    const sidebarWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width');
-    document.body.style.paddingLeft = sidebarWidth;
+    
+    // Apply paddingLeft based on tier for smooth animation
+    const tier = body.dataset.tier || 'free';
+    if (tier === 'business' && !body.classList.contains('business-shifting-disabled')) {
+        // For business tier, we let the CSS transition handle it.
+    } else {
+        const sidebarWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width');
+        body.style.paddingLeft = sidebarWidth;
+    }
 }
 
 function closeSidebar() {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("overlay");
     const hexagonButton = document.getElementById("hexagon-button");
+    const body = document.body;
 
     if (!sidebar || !overlay || !hexagonButton) return;
     
@@ -66,7 +74,14 @@ function closeSidebar() {
     sidebar.classList.remove('sidebar-open');
     hexagonButton.classList.remove('button-rotated');
     overlay.classList.remove('overlay-active');
-    document.body.style.paddingLeft = '0';
+    
+    // Reset paddingLeft based on tier
+    const tier = body.dataset.tier || 'free';
+     if (tier === 'business' && !body.classList.contains('business-shifting-disabled')) {
+        // For business tier, we let the CSS transition handle it.
+    } else {
+        body.style.paddingLeft = '0';
+    }
 }
 
 
