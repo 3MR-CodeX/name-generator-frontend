@@ -82,7 +82,7 @@ function initializeAuth() {
         if (tierBadge) {
             tierBadge.textContent = data.tier;
             tierBadge.className = 'tier-badge';
-            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Starter Tier": 'premium-tier', "Pro Tier": 'pro-tier', "Business Tier": 'business-tier' };
+            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Pro Tier": 'pro-tier', "Business Tier": 'business-tier' };
             if (tiers[data.tier]) {
                 tierBadge.classList.add(tiers[data.tier]);
             }
@@ -206,34 +206,21 @@ function initializeAuth() {
     auth.onAuthStateChanged(user => {
         window.updateUserStatusUI(user);
 
+        let currentTier = 'Anonymous';
         if (user && user.emailVerified) {
-            // Fetch the custom claims to get the user's tier
             user.getIdTokenResult(true).then((idTokenResult) => {
-                // The backend now stores tier in a custom claim called 'tier'
-                const tier = idTokenResult.claims.tier || 'Free Tier';
+                currentTier = idTokenResult.claims.tier || 'Free Tier';
+                document.body.dataset.tier = currentTier.toLowerCase().replace(' tier', '').replace(' ', '-');
                 
-                // Set the data-tier attribute on the body for dynamic CSS styling
-                document.body.dataset.tier = tier.toLowerCase().replace(' tier', '').replace(' ', '-');
-                
-                // Update which features are locked/unlocked based on the tier
-                if (typeof window.updateFeatureLocks === 'function') {
-                    window.updateFeatureLocks(tier);
-                }
-                
-                // Update the credit costs displayed in the UI
-                if (typeof window.updateCreditCostsUI === 'function') {
-                    window.updateCreditCostsUI(tier);
-                }
+                if (typeof window.updateFeatureLocks === 'function') window.updateFeatureLocks(currentTier);
+                if (typeof window.updateCreditCostsUI === 'function') window.updateCreditCostsUI(currentTier);
+                if (typeof window.updatePremiumPage === 'function') window.updatePremiumPage(currentTier);
             });
         } else {
-            // Logic for logged-out or unverified users
             delete document.body.dataset.tier;
-            if (typeof window.updateFeatureLocks === 'function') {
-                window.updateFeatureLocks('Anonymous');
-            }
-            if (typeof window.updateCreditCostsUI === 'function') {
-                window.updateCreditCostsUI('Anonymous');
-            }
+            if (typeof window.updateFeatureLocks === 'function') window.updateFeatureLocks(currentTier);
+            if (typeof window.updateCreditCostsUI === 'function') window.updateCreditCostsUI(currentTier);
+            if (typeof window.updatePremiumPage === 'function') window.updatePremiumPage(currentTier);
         }
     
         if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
@@ -339,3 +326,4 @@ function initializeAuth() {
         }
     }
 }
+
