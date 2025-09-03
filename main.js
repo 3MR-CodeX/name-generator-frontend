@@ -65,10 +65,10 @@ const BACKGROUND_ANIMATIONS = {
     'pattern14': 'grid-pulse',
     'pattern15': 'abstract-shapes',
     'pattern16': 'abstract-shapes',
-    'pattern17': 'subtle-waves',
-    'pattern18': 'subtle-waves',
-    'pattern19': 'floating-dust',
-    'pattern20': 'floating-dust'
+    'pattern17': 'subtle-waves', // NEW
+    'pattern18': 'subtle-waves', // NEW
+    'pattern19': 'floating-dust', // NEW
+    'pattern20': 'floating-dust'  // NEW
 };
 
 
@@ -152,17 +152,14 @@ const fontSizeSlider = document.getElementById('font-size-slider');
 const resultsFontSelect = document.getElementById('results-font-select');
 const resultsFontSizeSlider = document.getElementById('results-font-size-slider');
 const animationsToggle = document.getElementById('animations-toggle');
+const proDetailsToggle = document.getElementById('pro-details-toggle');
+const businessShiftingToggle = document.getElementById('business-shifting-toggle');
 const changePasswordBtn = document.getElementById('change-password-btn');
 const manageSubscriptionBtn = document.getElementById('manage-subscription-btn');
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
-// NEW: Premium setting toggles
-const proDetailsToggle = document.getElementById('pro-details-toggle');
-const businessShiftingToggle = document.getElementById('business-shifting-toggle');
 
-
-// --- NEW: Credit Cost Data ---
-// --- NEW: Credit Cost Data ---
+// --- Credit Cost Data ---
 const TIER_COSTS = {
     "Anonymous": { "generate": 5, "custom_refine": 5 },
     "Free Tier": { "generate": 5, "custom_refine": 5 },
@@ -171,27 +168,29 @@ const TIER_COSTS = {
     "Business Tier": { "generate": 1, "custom_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
 };
 
-// --- NEW: Function to update UI with credit costs ---
+// REWORKED: Function to update UI with credit costs in the new format
 window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
     
-    // A helper to safely update the text content of a cost display span
-    const setCost = (id, cost, unit) => {
+    const setCost = (id, costValue, perName = false) => {
         const el = document.getElementById(id);
         if (el) {
-            el.textContent = `${cost} ${unit}`;
+            let text = `${costValue} Credits`;
+            if (perName) {
+                text = `${costValue} Credit${costValue > 1 ? 's' : ''} per name`;
+            }
+            el.textContent = text;
         }
     };
-    
-    // UPDATED Credit cost display logic
-    setCost("generator-cost", costs.generate, "Credit Per Name");
-    setCost("refiner-cost", costs.custom_refine, "Credit Per Name");
-    setCost("summarize-cost", costs.summarize, "Credits");
-    setCost("combine-words-cost", costs.combine_words, "Credits");
-    setCost("check-availability-cost", costs.check_availability, "Credit");
-    setCost("analyze-name-cost", costs.analyze_name, "Credits");
-    setCost("generate-alternatives-cost", costs.generate_alternatives, "Credits");
-    setCost("generate-available-alt-cost", costs.generate_available_alternatives, "Credits");
+
+    setCost("generator-cost", costs.generate, true);
+    setCost("refiner-cost", costs.custom_refine, true);
+    setCost("summarize-cost", costs.summarize);
+    setCost("combine-words-cost", costs.combine_words);
+    setCost("check-availability-cost", costs.check_availability);
+    setCost("analyze-name-cost", costs.analyze_name);
+    setCost("generate-alternatives-cost", costs.generate_alternatives);
+    setCost("generate-available-alt-cost", costs.generate_available_alternatives);
 };
 
 
@@ -205,7 +204,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof initializePaymentSystem === 'function') initializePaymentSystem();
     
     initializeUI();
-    handleHashChange(); // This line is added to handle direct linking
+    handleHashChange(); 
     initializeSettings();
     populateDropdown("category", CATEGORY_OPTIONS);
     populateDropdown("style", STYLE_OPTIONS);
@@ -243,21 +242,17 @@ window.updateFeatureLocks = function(tier) {
         if (banner && view) {
             const isLocked = toolLocks[tool].locked;
             banner.classList.toggle('hidden', !isLocked);
-            // This class will disable all inputs/buttons within the view
             view.classList.toggle('premium-locked', isLocked);
         }
     }
     
-    // Specific lock for Persona Analysis within the Name Analyzer
     const personaBanner = document.getElementById('persona-analysis-lock');
     const personaSection = document.querySelector('.persona-section');
     if (personaBanner && personaSection) {
         const isLocked = !isBusiness;
-        // Show banner if they are Pro but not Business
         personaBanner.classList.toggle('hidden', tier !== 'Pro Tier');
         personaSection.classList.toggle('premium-locked', isLocked);
     }
-
 
     // --- Sidebar Link Locks ---
     const sidebarLinks = {
@@ -274,17 +269,14 @@ window.updateFeatureLocks = function(tier) {
         }
     }
 
-    // --- NEW: Premium Settings Visibility ---
-    const premiumSettingsSection = document.getElementById('premium-settings-section');
+    // --- Settings Section Visibility ---
+    const premiumSettings = document.getElementById('premium-settings-section');
     const proSettings = document.getElementById('pro-settings');
     const businessSettings = document.getElementById('business-settings');
 
-    if (premiumSettingsSection && proSettings && businessSettings) {
-        const showPremiumSettings = isProOrHigher;
-        premiumSettingsSection.classList.toggle('hidden', !showPremiumSettings);
-        proSettings.classList.toggle('hidden', !isProOrHigher); // Show for Pro and Business
-        businessSettings.classList.toggle('hidden', !isBusiness); // Show only for Business
-    }
+    if (premiumSettings) premiumSettings.classList.toggle('hidden', !isProOrHigher);
+    if (proSettings) proSettings.classList.toggle('hidden', tier !== 'Pro Tier');
+    if (businessSettings) businessSettings.classList.toggle('hidden', !isBusiness);
 }
 
 
@@ -310,22 +302,18 @@ async function handleContactFormSubmit(event) {
     const submitButton = document.getElementById('contact-submit-btn');
     const submissionMessage = document.getElementById('form-submission-message');
     
-    // New: Verify user is logged in at the moment of submission
     const user = window.auth.currentUser;
     if (!user || !user.email) {
         submissionMessage.style.display = 'block';
         submissionMessage.textContent = 'You must be logged in to send a message.';
         submissionMessage.className = 'error';
-        return; // Stop the submission
+        return;
     }
 
     submitButton.disabled = true;
     submitButton.textContent = 'Sending...';
 
     const data = new FormData(form);
-    
-    // New: Manually set the email in the form data just before sending
-    // This is the crucial fix.
     data.set('email', user.email);
 
     try {
@@ -342,7 +330,7 @@ async function handleContactFormSubmit(event) {
         if (response.ok) {
             submissionMessage.textContent = 'Thank you! Your message has been sent successfully.';
             submissionMessage.className = 'success';
-            form.style.display = 'none'; // Hide the form after success
+            form.style.display = 'none';
         } else {
             const responseData = await response.json();
             const errorMessage = responseData.errors ? responseData.errors.map(error => error.message).join(', ') : 'Oops! There was a problem submitting your form.';
@@ -358,9 +346,8 @@ async function handleContactFormSubmit(event) {
 
 
 
-// --- Full Updated setupEventListeners Function (Replace your existing function) ---
-
 function setupEventListeners() {
+    // Modal listeners
     if (historyModal && closeButtonHistoryModal) {
         closeButtonHistoryModal.addEventListener('click', closeHistoryModal);
         window.addEventListener('click', (event) => { if (event.target == historyModal) closeHistoryModal(); });
@@ -373,6 +360,8 @@ function setupEventListeners() {
         closeButtonImportModal.addEventListener('click', closeHistoryImportModal);
         window.addEventListener('click', (event) => { if (event.target == historyImportModal) closeHistoryImportModal(); });
     }
+
+    // Main action buttons
     if(refineBtn) {
         refineBtn.onclick = () => {
             const instruction = editBox.value.trim();
@@ -397,34 +386,45 @@ function setupEventListeners() {
     if (fontSizeSlider) fontSizeSlider.addEventListener('input', (e) => applyFontSize(e.target.value));
     if (resultsFontSelect) resultsFontSelect.addEventListener('change', (e) => applyResultsFont(e.target.value));
     if (resultsFontSizeSlider) resultsFontSizeSlider.addEventListener('input', (e) => applyResultsFontSize(e.target.value));
-    if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (backgroundSelect) backgroundSelect.addEventListener('change', (e) => applyBackground(e.target.value));
     if (exportHistoryBtn) exportHistoryBtn.addEventListener('click', exportHistory);
     if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
     if (changePasswordBtn) changePasswordBtn.addEventListener('click', sendPasswordReset);
-    // NEW: Premium settings listeners
+
+    // Premium settings listeners
+    if (animationsToggle) animationsToggle.addEventListener('change', (e) => applyAnimationSetting(e.target.checked));
     if (proDetailsToggle) proDetailsToggle.addEventListener('change', (e) => applyProDetailsSetting(e.target.checked));
     if (businessShiftingToggle) businessShiftingToggle.addEventListener('change', (e) => applyBusinessShiftingSetting(e.target.checked));
 
-    const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
-    const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
-    const tierDropdown = document.getElementById("tier-dropdown");
 
-    if (buyCreditsShortcutBtn) {
-        buyCreditsShortcutBtn.addEventListener('click', () => { 
-            showView('credits'); 
-            if(tierDropdown) tierDropdown.classList.remove('visible');
-        });
-    }
+    // Dropdown and shortcut buttons
+    setTimeout(() => { // Use timeout to ensure components are loaded
+        const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
+        const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
+        const goBusinessFromDropdownBtn = document.getElementById('go-business-from-dropdown-btn'); // New
+        const tierDropdown = document.getElementById("tier-dropdown");
 
-    if (goPremiumFromDropdownBtn) {
-        goPremiumFromDropdownBtn.addEventListener('click', () => { 
-            showView('premium'); 
-            if(tierDropdown) tierDropdown.classList.remove('visible');
-        });
-    }
+        if (buyCreditsShortcutBtn) {
+            buyCreditsShortcutBtn.addEventListener('click', () => { 
+                showView('credits'); 
+                if(tierDropdown) tierDropdown.classList.remove('visible');
+            });
+        }
 
-    setTimeout(() => {
+        if (goPremiumFromDropdownBtn) {
+            goPremiumFromDropdownBtn.addEventListener('click', () => { 
+                showView('premium'); 
+                if(tierDropdown) tierDropdown.classList.remove('visible');
+            });
+        }
+        if (goBusinessFromDropdownBtn) { // New
+            goBusinessFromDropdownBtn.addEventListener('click', () => {
+                showView('premium');
+                if(tierDropdown) tierDropdown.classList.remove('visible');
+            });
+        }
+
+        // Navigation links
         const homeLink = document.getElementById('home-link');
         const customRefineLink = document.getElementById('custom-refine-link');
         const availabilityCheckLink = document.getElementById('availability-check-link');
@@ -517,7 +517,6 @@ function showView(viewName) {
     } else if (viewName === 'contact') {
         if(contactView) contactView.classList.remove('hidden');
         
-        // ** NEW LOGIC STARTS HERE **
         const user = window.auth.currentUser;
         const contactFormElement = document.getElementById('contact-form');
         const loginPromptElement = document.getElementById('contact-login-prompt');
@@ -525,17 +524,14 @@ function showView(viewName) {
         const hiddenEmailInputElement = document.getElementById('contact-email');
 
         if (user) {
-            // User is logged in, show the form and populate their email
             loginPromptElement.classList.add('hidden');
             contactFormElement.classList.remove('hidden');
             emailDisplayElement.textContent = user.email;
             hiddenEmailInputElement.value = user.email;
         } else {
-            // User is not logged in, show the prompt and hide the form
             loginPromptElement.classList.remove('hidden');
             contactFormElement.classList.add('hidden');
         }
-        // ** NEW LOGIC ENDS HERE **
     }
 }
 
@@ -1948,39 +1944,49 @@ function renderCombinerHistory() {
     });
 }
 
+// REWORKED Settings initialization
 function initializeSettings() {
     const settings = {
         theme: localStorage.getItem('nameit-theme') || 'synthwave',
+        background: localStorage.getItem('nameit-background') || 'pattern1',
         font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
         fontSize: localStorage.getItem('nameit-fontSize') || '100',
         resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
         resultsFontSize: localStorage.getItem('nameit-results-fontSize') || '100',
-        animations: localStorage.getItem('nameit-animations') !== 'false',
-        background: localStorage.getItem('nameit-background') || 'pattern1',
-        proDetails: localStorage.getItem('nameit-pro-details') !== 'false', // NEW
-        businessShifting: localStorage.getItem('nameit-business-shifting') !== 'false' // NEW
+        animationsEnabled: localStorage.getItem('nameit-animationsEnabled') !== 'false',
+        proDetailsEnabled: localStorage.getItem('nameit-proDetailsEnabled') !== 'false',
+        businessShiftingEnabled: localStorage.getItem('nameit-businessShiftingEnabled') !== 'false',
     };
+
+    // Apply settings on load
     if (themeSelect) themeSelect.value = settings.theme;
-    if (fontSelect) fontSelect.value = settings.font;
-    if (fontSizeSlider) fontSizeSlider.value = settings.fontSize;
-    if (resultsFontSelect) resultsFontSelect.value = settings.resultsFont;
-    if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
-    if (animationsToggle) animationsToggle.checked = settings.animations;
-    if (backgroundSelect) backgroundSelect.value = settings.background;
-    if (proDetailsToggle) proDetailsToggle.checked = settings.proDetails; // NEW
-    if (businessShiftingToggle) businessShiftingToggle.checked = settings.businessShifting; // NEW
-
-
     applyTheme(settings.theme, false);
-    applyFont(settings.font, false);
-    applyFontSize(settings.fontSize, false);
-    applyResultsFont(settings.resultsFont, false);
-    applyResultsFontSize(settings.resultsFontSize, false);
+
+    if (backgroundSelect) backgroundSelect.value = settings.background;
     applyBackground(settings.background, false);
-    applyAnimationSetting(settings.animations, false);
-    applyProDetailsSetting(settings.proDetails, false); // NEW
-    applyBusinessShiftingSetting(settings.businessShifting, false); // NEW
+
+    if (fontSelect) fontSelect.value = settings.font;
+    applyFont(settings.font, false);
+
+    if (fontSizeSlider) fontSizeSlider.value = settings.fontSize;
+    applyFontSize(settings.fontSize, false);
+    
+    if (resultsFontSelect) resultsFontSelect.value = settings.resultsFont;
+    applyResultsFont(settings.resultsFont, false);
+
+    if (resultsFontSizeSlider) resultsFontSizeSlider.value = settings.resultsFontSize;
+    applyResultsFontSize(settings.resultsFontSize, false);
+
+    if (animationsToggle) animationsToggle.checked = settings.animationsEnabled;
+    applyAnimationSetting(settings.animationsEnabled, false);
+
+    if (proDetailsToggle) proDetailsToggle.checked = settings.proDetailsEnabled;
+    applyProDetailsSetting(settings.proDetailsEnabled, false);
+    
+    if (businessShiftingToggle) businessShiftingToggle.checked = settings.businessShiftingEnabled;
+    applyBusinessShiftingSetting(settings.businessShiftingEnabled, false);
 }
+
 
 function handleHashChange() {
     const hash = window.location.hash;
@@ -2000,12 +2006,10 @@ function applyBackground(patternName, save = true) {
     const animationLayer = document.getElementById('animation-layer');
     if (!patternElement || !animationLayer) return;
 
-    // Set the static background image
     patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
     
-    // Clear previous animations AND any running timers
+    // Clear previous animations and timers
     animationLayer.innerHTML = '';
-    // Clear all potential timers by checking for their existence
     if (animationLayer.timerId) clearTimeout(animationLayer.timerId);
     if (animationLayer.circleTimerId) clearInterval(animationLayer.circleTimerId);
     if (animationLayer.shapeTimerId) clearInterval(animationLayer.shapeTimerId);
@@ -2015,65 +2019,38 @@ function applyBackground(patternName, save = true) {
     animationLayer.shapeTimerId = null;
     animationLayer.dustTimerId = null;
 
-
-    // Generate new animation layer based on selection
     const animationType = BACKGROUND_ANIMATIONS[patternName];
-
     let htmlToSet = '';
 
-    // Helper for Drifting Circle
     const createRandomCircle = () => {
-        if (animationLayer.innerHTML !== '' && !animationLayer.querySelector('.drifting-circle')) return; // Prevent creating circles if another animation is running
-        animationLayer.innerHTML = ''; // Clear previous circle
+        if (animationLayer.innerHTML !== '' && !animationLayer.querySelector('.drifting-circle')) return;
+        animationLayer.innerHTML = ''; 
         const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         const size = Math.random() * 300 + 400;
-        const xStart = `${Math.random() * 100}vw`;
-        const yStart = `${Math.random() * 100}vh`;
-        const xEnd = `${Math.random() * 100}vw`;
-        const yEnd = `${Math.random() * 100}vh`;
+        const xStart = `${Math.random() * 100}vw`, yStart = `${Math.random() * 100}vh`;
+        const xEnd = `${Math.random() * 100}vw`, yEnd = `${Math.random() * 100}vh`;
 
         const circle = document.createElement('div');
         circle.className = 'drifting-circle';
-        circle.style.cssText = `
-            width: ${size}px; height: ${size}px;
-            background-color: ${randomColor};
-            --x-start: ${xStart}; --y-start: ${yStart};
-            --x-end: ${xEnd}; --y-end: ${yEnd};
-        `;
+        circle.style.cssText = `width: ${size}px; height: ${size}px; background-color: ${randomColor}; --x-start: ${xStart}; --y-start: ${yStart}; --x-end: ${xEnd}; --y-end: ${yEnd};`;
         animationLayer.appendChild(circle);
     };
 
-    // Helper for Random Flicker
     const createRandomFlicker = () => {
         const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)', '#ffffff'];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const baseSize = 400; // Average size of the balls
-        const flickerSize = baseSize * 1.5 + Math.random() * 200; // 1.5x bigger + some variance
+        const size = 400 * 1.5 + Math.random() * 200;
         
         const spot = document.createElement('div');
         spot.className = 'flicker-spot';
-        spot.style.cssText = `
-            width: ${flickerSize}px; height: ${flickerSize}px;
-            top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
-            background-color: ${randomColor};
-        `;
-        
+        spot.style.cssText = `width: ${size}px; height: ${size}px; top: ${Math.random() * 100}%; left: ${Math.random() * 100}%; background-color: ${randomColor};`;
         animationLayer.appendChild(spot);
 
-        // Remove the spot after its animation finishes
-        setTimeout(() => {
-            if (spot.parentElement) {
-                spot.remove();
-            }
-        }, 500); // 500ms matches the animation duration
-
-        // Set up the next flicker
-        const nextFlickerDelay = Math.random() * 2500 + 500; // Random delay from 0.5s to 3s
-        animationLayer.timerId = setTimeout(createRandomFlicker, nextFlickerDelay);
+        setTimeout(() => spot.remove(), 500);
+        animationLayer.timerId = setTimeout(createRandomFlicker, Math.random() * 2500 + 500);
     };
 
-    // Helper for abstract shapes
     const createAbstractShape = () => {
         const shape = document.createElement('div');
         shape.className = 'abstract-shape';
@@ -2088,21 +2065,17 @@ function applyBackground(patternName, save = true) {
         animationLayer.appendChild(shape);
         setTimeout(() => shape.remove(), 20000);
     };
-    
-    // NEW Helper for floating dust
-    const createFloatingDust = () => {
-        for (let i = 0; i < 20; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'floating-dust-particle';
-            particle.style.setProperty('--size', `${Math.random() * 3 + 1}px`);
-            particle.style.setProperty('--x-pos', `${Math.random() * 100}vw`);
-            particle.style.setProperty('--delay', `-${Math.random() * 20}s`);
-            particle.style.setProperty('--duration', `${Math.random() * 10 + 10}s`);
-            particle.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
-            animationLayer.appendChild(particle);
-        }
-    };
 
+    const createDustParticle = () => {
+        const particle = document.createElement('div');
+        particle.className = 'floating-dust-particle';
+        particle.style.setProperty('--x-pos', `${Math.random() * 100}vw`);
+        particle.style.setProperty('--size', `${Math.random() * 3 + 1}px`);
+        particle.style.setProperty('--duration', `${Math.random() * 20 + 15}s`);
+        particle.style.setProperty('--delay', `-${Math.random() * 35}s`);
+        particle.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
+        animationLayer.appendChild(particle);
+    };
 
     switch (animationType) {
         case 'default':
@@ -2122,7 +2095,7 @@ function applyBackground(patternName, save = true) {
             htmlToSet = `<div class="color-shifting-bar"></div>`;
             break;
         case 'random-flicker':
-            createRandomFlicker(); // Start the flicker loop
+            createRandomFlicker();
             break;
         case 'vertical-crossing-bars':
             htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
@@ -2135,35 +2108,20 @@ function applyBackground(patternName, save = true) {
             animationLayer.shapeTimerId = setInterval(createAbstractShape, 4000);
             break;
         case 'subtle-waves':
-            htmlToSet = `<div class="subtle-waves-bg"></div>`;
+             htmlToSet = `<div class="subtle-waves-bg"></div>`;
             break;
         case 'floating-dust':
-            createFloatingDust();
+            for (let i = 0; i < 50; i++) createDustParticle();
             break;
     }
     
-    // Set HTML for non-timer-based animations
     if (htmlToSet) {
         animationLayer.innerHTML = htmlToSet;
     }
 }
 
 
-function applyAnimationSetting(enabled, save = true) {
-    if (save) localStorage.setItem('nameit-animations', enabled);
-    
-    const body = document.body;
-    body.classList.toggle('animations-disabled', !enabled);
-    body.classList.toggle('title-animations-disabled', !enabled);
-
-    // Also update the state of the background and showcase based on the master switch
-    const showcaseContainer = document.querySelector('.showcase-container');
-    const backgroundContainer = document.getElementById('background-container');
-    if (showcaseContainer) showcaseContainer.style.display = enabled ? 'flex' : 'none';
-    if (backgroundContainer) backgroundContainer.style.display = enabled ? 'block' : 'none';
-}
-
-
+// REWORKED: Theme function now triggers animation restart for Business Tier
 function applyTheme(theme, save = true) {
     if (save) localStorage.setItem('nameit-theme', theme);
     document.body.dataset.theme = theme;
@@ -2173,21 +2131,12 @@ function applyTheme(theme, save = true) {
         document.body.classList.remove('light-theme');
     }
 
-    // NEW: Force Business tier animation to restart with new theme colors
     const bodyEl = document.body;
-    if (bodyEl.dataset.tier === 'business') {
+    if (bodyEl.dataset.tier === 'business' && !bodyEl.classList.contains('business-shifting-disabled')) {
         // This trick forces a reflow, making the browser re-evaluate the CSS animation with the new variable values.
         bodyEl.style.animation = 'none';
         void bodyEl.offsetHeight; // Trigger reflow
         bodyEl.style.animation = ''; 
-
-        // Also restart the animation on all h1 elements and the topbar title
-        const titles = document.querySelectorAll('h1, .topbar-title');
-        titles.forEach(title => {
-            title.style.animation = 'none';
-            void title.offsetHeight;
-            title.style.animation = '';
-        });
     }
 }
 
@@ -2211,16 +2160,24 @@ function applyResultsFontSize(size, save = true) {
     document.documentElement.style.setProperty('--results-font-size', `${size}%`);
 }
 
+// REWORKED: Main animation setting
+function applyAnimationSetting(enabled, save = true) {
+    if (save) localStorage.setItem('nameit-animationsEnabled', enabled);
+    document.body.classList.toggle('animations-disabled', !enabled);
+    document.body.classList.toggle('title-animations-disabled', !enabled); // Also disable title animations
+}
+
+// NEW: Pro details setting
 function applyProDetailsSetting(enabled, save = true) {
-    if (save) localStorage.setItem('nameit-pro-details', enabled);
+    if (save) localStorage.setItem('nameit-proDetailsEnabled', enabled);
     document.body.classList.toggle('pro-details-enabled', enabled);
 }
 
+// NEW: Business shifting setting
 function applyBusinessShiftingSetting(enabled, save = true) {
-    if (save) localStorage.setItem('nameit-business-shifting', enabled);
+    if (save) localStorage.setItem('nameit-businessShiftingEnabled', enabled);
     document.body.classList.toggle('business-shifting-disabled', !enabled);
 }
-
 
 async function exportHistory() {
     const token = await getUserToken();
