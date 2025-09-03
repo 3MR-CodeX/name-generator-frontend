@@ -372,6 +372,8 @@
                             <option value="onyx-ivory">Onyx & Ivory</option>
                             <option value="sapphire-slate">Sapphire & Slate</option>
                             <option value="regal-plum">Regal Plum</option>
+                            <option value="crimson-night">Crimson Night</option>
+                            <option value="abyssal-blue">Abyssal Blue</option>
                         </select>
                     </div>
                     <div class="setting-row">
@@ -389,14 +391,9 @@
                             <option value="pattern10">Pattern 10</option>
                             <option value="pattern11">Pattern 11</option>
                             <option value="pattern12">Pattern 12</option>
-                            <option value="pattern13">Pattern 13</option>
-                            <option value="pattern14">Pattern 14</option>
-                            <option value="pattern15">Pattern 15</option>
-                            <option value="pattern16">Pattern 16</option>
-                            <option value="pattern17">Pattern 17</option>
-                            <option value="pattern18">Pattern 18</option>
-                            <option value="pattern19">Pattern 19</option>
-                            <option value="pattern20">Pattern 20</option>
+                            <option value="night-stars">Night Stars</option>
+                            <option value="smoke">Smoke</option>
+                            <option value="rain">Rain</option>
                         </select>
                     </div>
                     <div class="setting-row">
@@ -518,134 +515,152 @@
         </div>
         
         <div id="premium-view" class="hidden">
-            <h1><i class="fas fa-crown"></i> Unlock Your Creative Potential</h1>
-            <p class="description">NameIT's premium tools are designed to give you a competitive edge. Find the perfect plan below.</p>
             
-            <div class="premium-container">
-                <h2 class="pricing-title">Choose Your Plan</h2>
-                <div class="pricing-grid">
-                    <div class="pricing-card">
-                        <div class="plan-header">
-                            <h2>Starter</h2>
-                            <p class="plan-subtitle">For personal projects</p>
+            <!-- Default View for Free/Anon Users -->
+            <div id="premium-view-default">
+                <h1><i class="fas fa-crown"></i> Unlock Your Creative Potential</h1>
+                <p class="description">NameIT's premium tools are designed to give you a competitive edge. Find the perfect plan below.</p>
+                
+                <div class="premium-container">
+                    <h2 class="pricing-title">Choose Your Plan</h2>
+                    <div class="pricing-grid">
+                        <div class="pricing-card popular">
+                            <div class="plan-header">
+                                <h2>Pro</h2>
+                                <p class="plan-subtitle">For professionals & startups</p>
+                                <div class="most-popular-badge">Most Popular</div>
+                            </div>
+                            <div class="plan-price">$9.99</div>
+                            <p class="price-description">One-Time Payment</p>
+                            <div class="credit-amount">
+                                <i class="fas fa-coins"></i> 2,500 Credits
+                            </div>
+                            <ul class="features-list">
+                                <li class="feature-item included"><i class="fas fa-check"></i> Even Smarter AI Model</li>
+                                <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
+                                <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
+                                <li class="feature-item included"><i class="fas fa-check"></i> Availability Checker</li>
+                                <li class="feature-item included"><i class="fas fa-check"></i> Basic Name Analyzer</li>
+                                <li class="feature-item included"><i class="fas fa-check"></i> Priority Support</li>
+                            </ul>
+                            <button class="cta-button" onclick="purchasePlan('pro', 9.99, 2500)">Go Pro</button>
                         </div>
-                        <div class="plan-price">$4.99</div>
-                        <p class="price-description">One-Time Payment</p>
-                        <div class="credit-amount">
-                            <i class="fas fa-coins"></i> 1,000 Credits
-                        </div>
-                        <ul class="features-list">
-                            <li class="feature-item included"><i class="fas fa-check"></i> Smarter AI Model</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
-                            <li class="feature-item excluded"><i class="fas fa-times"></i> Availability Checker</li>
-                            <li class="feature-item excluded"><i class="fas fa-times"></i> Basic Name Analyzer</li>
-                            <li class="feature-item excluded"><i class="fas fa-times"></i> Priority Support</li>
-                        </ul>
-                        <button class="cta-button" onclick="purchasePlan('starter', 4.99, 1000)">Get Started</button>
-                    </div>
 
-                    <div class="pricing-card popular">
-                        <div class="plan-header">
-                            <h2>Pro</h2>
-                            <p class="plan-subtitle">For professionals & startups</p>
-                            <div class="most-popular-badge">Most Popular</div>
+                        <div class="pricing-card business-highlight">
+                            <div class="plan-header">
+                                <h2>Business</h2>
+                                <p class="plan-subtitle">For agencies & power users</p>
+                                <div class="best-value-badge">Best Value</div>
+                            </div>
+                            <div class="plan-price">$19.99</div>
+                            <p class="price-description">One-Time Payment</p>
+                            <div class="credit-amount">
+                                <i class="fas fa-coins"></i> 6,000 Credits
+                            </div>
+                            <ul class="features-list">
+                                <li class="feature-item included"><i class="fas fa-check"></i> Everything in Pro, plus:</li>
+                                <li class="feature-item included"><i class="fas fa-star"></i> Ultra Smart AI Model</li>
+                                <li class="feature-item included"><i class="fas fa-star"></i> Exclusive Customization</li>
+                                <li class="feature-item included"><i class="fas fa-star"></i> Audience Persona Analysis</li>
+                                <li class="feature-item included"><i class="fas fa-star"></i> Logo Generator (Soon)</li>
+                                <li class="feature-item included"><i class="fas fa-star"></i> Top Priority Support</li>
+                            </ul>
+                            <button class="cta-button" onclick="purchasePlan('business', 19.99, 6000)">Go Business</button>
                         </div>
-                        <div class="plan-price">$9.99</div>
-                        <p class="price-description">One-Time Payment</p>
-                        <div class="credit-amount">
-                            <i class="fas fa-coins"></i> 2,500 Credits
-                        </div>
-                        <ul class="features-list">
-                            <li class="feature-item included"><i class="fas fa-check"></i> Even Smarter AI Model</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> More Styles & Options</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Continuous Refining</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Availability Checker</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Basic Name Analyzer</li>
-                            <li class="feature-item included"><i class="fas fa-check"></i> Priority Support</li>
-                        </ul>
-                        <button class="cta-button" onclick="purchasePlan('pro', 9.99, 2500)">Go Pro</button>
-                    </div>
-
-                    <div class="pricing-card business-highlight">
-                        <div class="plan-header">
-                            <h2>Business</h2>
-                            <p class="plan-subtitle">For agencies & power users</p>
-                            <div class="best-value-badge">Best Value</div>
-                        </div>
-                        <div class="plan-price">$19.99</div>
-                        <p class="price-description">One-Time Payment</p>
-                        <div class="credit-amount">
-                            <i class="fas fa-coins"></i> 6,000 Credits
-                        </div>
-                        <ul class="features-list">
-                            <li class="feature-item included"><i class="fas fa-check"></i> Everything in Pro, plus:</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Ultra Smart AI Model</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Exclusive Customization</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Audience Persona Analysis</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Logo Generator (Soon)</li>
-                            <li class="feature-item included"><i class="fas fa-star"></i> Top Priority Support</li>
-                        </ul>
-                        <button class="cta-button" onclick="purchasePlan('business', 19.99, 6000)">Go Business</button>
-                    </div>
-                </div>
-
-                <!-- Feature Catalog Section -->
-                <div class="feature-catalog">
-                    <div class="feature-catalog-card">
-                        <i class="fas fa-search-dollar"></i>
-                        <h3>Availability Checker</h3>
-                        <p>Instantly check if your name is available across dozens of social media platforms and domain extensions (.com, .io, .ai, etc.). Save hours of manual searching.</p>
-                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
-                    </div>
-                    <div class="feature-catalog-card">
-                        <i class="fas fa-microscope"></i>
-                        <h3>Name Analyzer</h3>
-                        <p>Get a basic AI-powered brandability analysis. The AI checks for potential conflicts, memorability, and pronunciation issues to ensure your name is solid.</p>
-                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
-                    </div>
-                    <div class="feature-catalog-card">
-                        <i class="fas fa-users"></i>
-                        <h3>Audience Persona Analysis</h3>
-                        <p>Go deeper with an advanced analysis tailored to a specific audience. The AI scores your name on cultural resonance, market fitness, and emotional connection for your target demographic.</p>
-                        <span class="tier-tag business-tier-tag">Business Tier</span>
-                    </div>
-                    <div class="feature-catalog-card">
-                        <i class="fas fa-cut"></i>
-                        <h3>Text Summarizer</h3>
-                        <p>Distill long-form text into concise summaries. Perfect for creating taglines, headlines, or understanding the core message of any document instantly.</p>
-                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
-                    </div>
-                    <div class="feature-catalog-card">
-                        <i class="fas fa-magic"></i>
-                        <h3>Word Combiner</h3>
-                        <p>Merge multiple ideas or keywords into a single, unique, and brandable new word. The AI intelligently blends phonetics and meaning to create memorable portmanteaus.</p>
-                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
-                    </div>
-                    <div class="feature-catalog-card">
-                        <i class="fas fa-lightbulb"></i>
-                        <h3>Available Alternatives</h3>
-                        <p>If your name is taken, the AI will generate a list of similar, high-quality alternatives and automatically check their availability for you, finding a name that works.</p>
-                        <span class="tier-tag pro-tier-tag">Pro Tier</span>
-                    </div>
-                </div>
-
-                <div class="faq-section">
-                    <h3>Frequently Asked Questions</h3>
-                    <div class="faq-item">
-                        <h4>Are these one-time payments?</h4>
-                        <p>Yes. This is not a subscription. You buy a credit pack once and use the credits at your own pace. They never expire.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>What can I use credits on?</h4>
-                        <p>Credits are used for all AI actions. A basic name generation costs 1 credit per name, while advanced tools like the Name Analyzer cost a few more. Your credit balance is always visible at the top of the page.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>What happens when I run out of credits?</h4>
-                        <p>You can purchase another top-up pack from the "Buy Credits" page at any time. All your unlocked Pro features will remain active, and you'll also receive 250 free credits every month.</p>
                     </div>
                 </div>
             </div>
+
+            <!-- View for Pro Tier Users -->
+            <div id="premium-view-pro" class="hidden">
+                 <h1><i class="fas fa-chess-king"></i> Pro Tier Status</h1>
+                <p class="description">You have unlocked the Pro toolkit. Upgrade to Business to access the ultimate features.</p>
+
+                <div class="premium-container pro-view-container">
+                    <div class="current-plan-card">
+                        <div class="plan-header">
+                            <h2>Pro</h2>
+                            <div class="owned-badge">Owned</div>
+                        </div>
+                        <p class="plan-subtitle">Your current active plan</p>
+                        <ul class="features-list">
+                            <li class="feature-item included"><i class="fas fa-check"></i> Availability Checker</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Name Analyzer</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Text Summarizer</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Word Combiner</li>
+                            <li class="feature-item included"><i class="fas fa-check"></i> Available Alternatives</li>
+                             <li class="feature-item included"><i class="fas fa-check"></i> Pro Tier Styling</li>
+                        </ul>
+                         <button class="cta-button" disabled>Current Plan</button>
+                    </div>
+
+                    <div class="upgrade-plan-card business-highlight">
+                        <div class="plan-header">
+                            <h2>Business</h2>
+                             <p class="plan-subtitle">Upgrade for the ultimate toolkit</p>
+                            <div class="best-value-badge">Upgrade</div>
+                        </div>
+                         <div class="plan-price">$19.99</div>
+                        <p class="price-description">One-Time Payment</p>
+                        <div class="credit-amount"><i class="fas fa-coins"></i> 6,000 Credits</div>
+                        <ul class="features-list">
+                             <li class="feature-item included"><i class="fas fa-star"></i> <strong>Unlock:</strong> Ultra Smart AI</li>
+                             <li class="feature-item included"><i class="fas fa-star"></i> <strong>Unlock:</strong> Persona Analysis</li>
+                             <li class="feature-item included"><i class="fas fa-star"></i> <strong>Unlock:</strong> Better Alternatives</li>
+                             <li class="feature-item included"><i class="fas fa-star"></i> <strong>Unlock:</strong> Business Styling</li>
+                             <li class="feature-item included"><i class="fas fa-star"></i> <strong>Unlock:</strong> Top Priority Support</li>
+                        </ul>
+                        <button class="cta-button" onclick="purchasePlan('business', 19.99, 6000)">Upgrade to Business</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View for Business Tier Users -->
+            <div id="premium-view-business" class="hidden">
+                <div class="business-header">
+                    <i class="fas fa-briefcase"></i>
+                    <h1>Business Tier Activated</h1>
+                    <p class="description">Welcome to the top tier. You have unlimited access to all of NameIT's most powerful tools and features.</p>
+                </div>
+
+                <div class="business-container">
+                    <div class="business-plan-card">
+                        <div class="plan-header">
+                            <h2>Business</h2>
+                            <div class="owned-badge">Owned</div>
+                        </div>
+                        <p class="plan-subtitle">Your current active plan</p>
+                        <div class="credit-amount">
+                             <i class="fas fa-infinity"></i> All Features Unlocked
+                        </div>
+                        <button class="cta-button" disabled>Maximum Tier</button>
+                    </div>
+
+                    <div class="business-features-catalog">
+                        <div class="feature-catalog-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Audience Persona Analysis</h3>
+                            <p>Advanced analysis scoring your name on cultural resonance, market fitness, and emotional connection for your target demographic.</p>
+                        </div>
+                        <div class="feature-catalog-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Better Alternatives</h3>
+                            <p>Generate superior, AI-scored alternatives to any name, tailored to your context and target audience.</p>
+                        </div>
+                         <div class="feature-catalog-card">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h3>Ultra Smart AI</h3>
+                            <p>Access our most powerful and creative AI model for unparalleled name generation quality and lower credit costs.</p>
+                        </div>
+                         <div class="feature-catalog-card">
+                            <i class="fas fa-paint-brush"></i>
+                            <h3>Exclusive Styling</h3>
+                            <p>Unlock dynamic, color-shifting themes and UI details that reflect the power of the Business tier.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
 
         <div id="credits-view" class="hidden">
@@ -950,3 +965,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+
