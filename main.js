@@ -176,25 +176,22 @@ window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
     
     // A helper to safely update the text content of a cost display span
-    const setCost = (id, costValue, perName = false) => {
+    const setCost = (id, cost, unit) => {
         const el = document.getElementById(id);
         if (el) {
-            let text = `(${costValue} Credits`;
-            if (perName) text += "/name";
-            text += ")";
-            el.textContent = text;
+            el.textContent = `${cost} ${unit}`;
         }
     };
-
-    // Update all cost displays
-    setCost("generator-cost", costs.generate, true);
-    setCost("refiner-cost", costs.custom_refine, true);
-    setCost("summarize-cost", costs.summarize);
-    setCost("combine-words-cost", costs.combine_words);
-    setCost("check-availability-cost", costs.check_availability);
-    setCost("analyze-name-cost", costs.analyze_name);
-    setCost("generate-alternatives-cost", costs.generate_alternatives);
-    setCost("generate-available-alt-cost", costs.generate_available_alternatives);
+    
+    // UPDATED Credit cost display logic
+    setCost("generator-cost", costs.generate, "Credit Per Name");
+    setCost("refiner-cost", costs.custom_refine, "Credit Per Name");
+    setCost("summarize-cost", costs.summarize, "Credits");
+    setCost("combine-words-cost", costs.combine_words, "Credits");
+    setCost("check-availability-cost", costs.check_availability, "Credit");
+    setCost("analyze-name-cost", costs.analyze_name, "Credits");
+    setCost("generate-alternatives-cost", costs.generate_alternatives, "Credits");
+    setCost("generate-available-alt-cost", costs.generate_available_alternatives, "Credits");
 };
 
 
