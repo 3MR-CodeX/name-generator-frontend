@@ -61,17 +61,10 @@ const BACKGROUND_ANIMATIONS = {
     'pattern10': 'color-shifting-bar',
     'pattern11': 'random-flicker',
     'pattern12': 'vertical-crossing-bars',
-    'pattern13': 'grid-pulse',
-    'pattern14': 'grid-pulse',
-    'pattern15': 'abstract-shapes',
-    'pattern16': 'abstract-shapes',
-    'pattern17': 'subtle-waves', // NEW
-    'pattern18': 'subtle-waves', // NEW
-    'pattern19': 'floating-dust', // NEW
-    'pattern20': 'floating-dust'  // NEW
+    'night-stars': 'stars',
+    'smoke': 'smoke',
+    'rain': 'rain'
 };
-
-
 
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
@@ -159,11 +152,10 @@ const manageSubscriptionBtn = document.getElementById('manage-subscription-btn')
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-// --- Credit Cost Data ---
+// --- Credit Cost Data (Starter Tier Removed) ---
 const TIER_COSTS = {
     "Anonymous": { "generate": 5, "custom_refine": 5 },
     "Free Tier": { "generate": 5, "custom_refine": 5 },
-    "Starter Tier": { "generate": 2, "custom_refine": 2 },
     "Pro Tier": { "generate": 1, "custom_refine": 1, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 25 },
     "Business Tier": { "generate": 1, "custom_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
 };
@@ -172,12 +164,12 @@ const TIER_COSTS = {
 window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
     
-    const setCost = (id, costValue, perName = false, actionText = 'Action') => {
+    const setCost = (id, costValue, perName = false) => {
         const el = document.getElementById(id);
         if (el) {
             let text = `${costValue} Credits`;
             if (perName) {
-                text = `${costValue} Credit per name`;
+                text = `1 Credit per name`;
             }
             el.textContent = text;
         }
@@ -284,6 +276,28 @@ window.updateFeatureLocks = function(tier) {
     if (proSettings) proSettings.classList.toggle('hidden', tier !== 'Pro Tier');
     if (businessSettings) businessSettings.classList.toggle('hidden', !isBusiness);
 }
+
+// NEW GLOBAL FUNCTION: updatePremiumPage
+window.updatePremiumPage = function(tier) {
+    const defaultView = document.getElementById('premium-view-default');
+    const proView = document.getElementById('premium-view-pro');
+    const businessView = document.getElementById('premium-view-business');
+
+    if (!defaultView || !proView || !businessView) return;
+
+    // Hide all views first
+    defaultView.classList.add('hidden');
+    proView.classList.add('hidden');
+    businessView.classList.add('hidden');
+
+    if (tier === 'Pro Tier') {
+        proView.classList.remove('hidden');
+    } else if (tier === 'Business Tier') {
+        businessView.classList.remove('hidden');
+    } else {
+        defaultView.classList.remove('hidden');
+    }
+};
 
 
 async function loadComponent(placeholderId, componentUrl) {
@@ -406,8 +420,6 @@ function setupEventListeners() {
     // Dropdown and shortcut buttons
     setTimeout(() => { // Use timeout to ensure components are loaded
         const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
-        const goPremiumFromDropdownBtn = document.getElementById('go-premium-from-dropdown-btn');
-        const goBusinessFromDropdownBtn = document.getElementById('go-business-from-dropdown-btn'); // New
         const tierDropdown = document.getElementById("tier-dropdown");
 
         if (buyCreditsShortcutBtn) {
@@ -416,19 +428,18 @@ function setupEventListeners() {
                 if(tierDropdown) tierDropdown.classList.remove('visible');
             });
         }
-
-        if (goPremiumFromDropdownBtn) {
-            goPremiumFromDropdownBtn.addEventListener('click', () => { 
+        
+        // These buttons are now created dynamically, so we need to add listeners differently
+        document.body.addEventListener('click', function(event) {
+            if (event.target.id === 'go-premium-from-dropdown-btn') {
                 showView('premium'); 
                 if(tierDropdown) tierDropdown.classList.remove('visible');
-            });
-        }
-        if (goBusinessFromDropdownBtn) { // New
-            goBusinessFromDropdownBtn.addEventListener('click', () => {
+            }
+            if (event.target.id === 'go-business-from-dropdown-btn') {
                 showView('premium');
                 if(tierDropdown) tierDropdown.classList.remove('visible');
-            });
-        }
+            }
+        });
 
         // Navigation links
         const homeLink = document.getElementById('home-link');
@@ -2012,18 +2023,14 @@ function applyBackground(patternName, save = true) {
     const animationLayer = document.getElementById('animation-layer');
     if (!patternElement || !animationLayer) return;
 
-    patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
+    // Hide pattern for dynamic backgrounds
+    const isDynamic = ['stars', 'smoke', 'rain'].includes(BACKGROUND_ANIMATIONS[patternName]);
+    patternElement.style.display = isDynamic ? 'none' : 'block';
     
     // Clear previous animations and timers
     animationLayer.innerHTML = '';
     if (animationLayer.timerId) clearTimeout(animationLayer.timerId);
     if (animationLayer.circleTimerId) clearInterval(animationLayer.circleTimerId);
-    if (animationLayer.shapeTimerId) clearInterval(animationLayer.shapeTimerId);
-    if (animationLayer.dustTimerId) clearInterval(animationLayer.dustTimerId);
-    animationLayer.timerId = null;
-    animationLayer.circleTimerId = null;
-    animationLayer.shapeTimerId = null;
-    animationLayer.dustTimerId = null;
 
     const animationType = BACKGROUND_ANIMATIONS[patternName];
     let htmlToSet = '';
@@ -2057,67 +2064,54 @@ function applyBackground(patternName, save = true) {
         animationLayer.timerId = setTimeout(createRandomFlicker, Math.random() * 2500 + 500);
     };
 
-    const createAbstractShape = () => {
-        const shape = document.createElement('div');
-        shape.className = 'abstract-shape';
-        shape.style.setProperty('--start-x', `${Math.random() * 100}vw`);
-        shape.style.setProperty('--start-y', `${Math.random() * 100}vh`);
-        shape.style.setProperty('--end-x', `${Math.random() * 100}vw`);
-        shape.style.setProperty('--end-y', `${Math.random() * 100}vh`);
-        shape.style.setProperty('--size', `${Math.random() * 150 + 50}px`);
-        shape.style.setProperty('--rotation', `${Math.random() * 360}deg`);
-        shape.style.setProperty('--duration', `${Math.random() * 10 + 10}s`);
-        shape.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
-        animationLayer.appendChild(shape);
-        setTimeout(() => shape.remove(), 20000);
-    };
-
-    const createDustParticle = () => {
-        const particle = document.createElement('div');
-        particle.className = 'floating-dust-particle';
-        particle.style.setProperty('--x-pos', `${Math.random() * 100}vw`);
-        particle.style.setProperty('--size', `${Math.random() * 3 + 1}px`);
-        particle.style.setProperty('--duration', `${Math.random() * 20 + 15}s`);
-        particle.style.setProperty('--delay', `-${Math.random() * 35}s`);
-        particle.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
-        animationLayer.appendChild(particle);
-    };
-
     switch (animationType) {
-        case 'default':
-            htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
+        case 'default': htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`; break;
+        case 'circles': createRandomCircle(); animationLayer.circleTimerId = setInterval(createRandomCircle, 10000); break;
+        case 'sliding-bar': htmlToSet = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`; break;
+        case 'color-shift': htmlToSet = `<div class="color-shift-bg"></div>`; break;
+        case 'color-shifting-bar': htmlToSet = `<div class="color-shifting-bar"></div>`; break;
+        case 'random-flicker': createRandomFlicker(); break;
+        case 'vertical-crossing-bars': htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`; break;
+        case 'stars':
+            const starsContainer = document.createElement('div');
+            starsContainer.className = 'stars-bg';
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.style.setProperty('--star-size', `${Math.random() * 2 + 1}px`);
+                starsContainer.appendChild(star);
+            }
+            animationLayer.appendChild(starsContainer);
             break;
-        case 'circles':
-            createRandomCircle();
-            animationLayer.circleTimerId = setInterval(createRandomCircle, 10000);
+        case 'smoke':
+            const smokeContainer = document.createElement('div');
+            smokeContainer.className = 'smoke-bg';
+            for (let i = 0; i < 15; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = 'smoke-cloud';
+                cloud.style.setProperty('--x-start', `${Math.random() * 100}vw`);
+                cloud.style.setProperty('--y-start', `${100 + Math.random() * 50}vh`);
+                cloud.style.setProperty('--duration', `${Math.random() * 30 + 20}s`);
+                cloud.style.setProperty('--delay', `-${Math.random() * 50}s`);
+                smokeContainer.appendChild(cloud);
+            }
+            animationLayer.appendChild(smokeContainer);
             break;
-        case 'sliding-bar':
-            htmlToSet = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
-            break;
-        case 'color-shift':
-            htmlToSet = `<div class="color-shift-bg"></div>`;
-            break;
-        case 'color-shifting-bar':
-            htmlToSet = `<div class="color-shifting-bar"></div>`;
-            break;
-        case 'random-flicker':
-            createRandomFlicker();
-            break;
-        case 'vertical-crossing-bars':
-            htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
-            break;
-        case 'grid-pulse':
-            htmlToSet = `<div class="grid-pulse-bg"></div>`;
-            break;
-        case 'abstract-shapes':
-            for (let i = 0; i < 5; i++) createAbstractShape();
-            animationLayer.shapeTimerId = setInterval(createAbstractShape, 4000);
-            break;
-        case 'subtle-waves':
-             htmlToSet = `<div class="subtle-waves-bg"></div>`;
-            break;
-        case 'floating-dust':
-            for (let i = 0; i < 50; i++) createDustParticle();
+        case 'rain':
+            const rainContainer = document.createElement('div');
+            rainContainer.className = 'rain-bg';
+            for (let i = 0; i < 100; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                drop.style.left = `${Math.random() * 100}vw`;
+                drop.style.animationDuration = `${0.5 + Math.random() * 0.5}s`;
+                drop.style.animationDelay = `${Math.random() * 5}s`;
+                rainContainer.appendChild(drop);
+            }
+            animationLayer.appendChild(rainContainer);
             break;
     }
     
@@ -2283,3 +2277,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
