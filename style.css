@@ -2740,6 +2740,16 @@ body[data-tier="business"] .surprise-btn:hover {
     background-color: var(--current-theme-color);
 }
 
+/* NEW: Brighter sliders for Business tier */
+body[data-tier="business"] .relevancy-slider::-webkit-slider-thumb {
+    background: var(--line-accent-glow);
+    box-shadow: 0 0 8px var(--line-accent-glow);
+}
+body[data-tier="business"] .relevancy-slider::-moz-range-thumb {
+    background: var(--line-accent-glow);
+    box-shadow: 0 0 8px var(--line-accent-glow);
+}
+
 /* --- Credit Cost Display Styling --- */
 .credit-cost {
     float: right;
