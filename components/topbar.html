@@ -20,9 +20,7 @@
         
         <div id="auth-section">
             <div id="user-status-container" class="hidden">
-                <div id="tier-badge" class="tier-badge">
-                    <span id="tier-badge-text"></span>
-                </div>
+                <div id="tier-badge" class="tier-badge"></div>
                 <div class="generations-info">
                      <p id="generation-counter" class="generation-counter"></p>
                     <div class="progress-bar-outer">
@@ -32,35 +30,7 @@
                 <button id="buy-credits-shortcut-btn" class="buy-credits-shortcut" title="Buy More Credits">+</button>
                 
                 <div id="tier-dropdown" class="dropdown-menu">
-                    <!-- Content for Free/Anon users -->
-                    <div id="tier-dropdown-free">
-                        <div class="tier-item">
-                            <div class="tier-badge free-tier"><span>Free Tier</span></div>
-                            <p>Core access to the Name Generator and Custom Refiner.</p>
-                        </div>
-                        <div class="tier-item">
-                            <button id="go-premium-from-dropdown-btn" class="tier-badge premium-tier"><span>✨ Go Premium</span></button>
-                            <p>Unlock the full potential of NameIT with advanced tools, analysis, and higher credit limits.</p>
-                        </div>
-                    </div>
-                    <!-- Content for Pro users -->
-                    <div id="tier-dropdown-pro" class="hidden">
-                        <div class="tier-item">
-                            <div class="tier-badge pro-tier"><span>Pro Tier</span></div>
-                            <p>Advanced tools, analysis, and theme-adaptive details.</p>
-                        </div>
-                        <div class="tier-item">
-                            <button id="go-business-from-dropdown-btn" class="tier-badge business-tier"><span>🚀 Go Business</span></button>
-                            <p>Unlock ultimate power with persona analysis and synchronized color shifting.</p>
-                        </div>
-                    </div>
-                     <!-- Content for Business users -->
-                    <div id="tier-dropdown-business" class="hidden">
-                        <div class="tier-item">
-                            <div class="tier-badge business-tier"><span>Business Tier</span></div>
-                            <p>Ultimate power with persona analysis and synchronized color shifting.</p>
-                        </div>
-                    </div>
+                    <!-- This content will be dynamically updated by auth.js -->
                 </div>
             </div>
     
