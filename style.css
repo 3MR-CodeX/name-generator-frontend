@@ -2597,7 +2597,7 @@ body.light-theme {
 }
 
 /* --- TIER-BASED STYLING (NEW) --- */
-/* This animation will now dynamically use the theme's colors */
+/* REWORKED: This is now the MASTER animation for Business Tier */
 @keyframes theme-based-color-cycle {
     0%, 100% {
         --current-theme-color: var(--primary-accent);
@@ -2702,16 +2702,22 @@ body[data-tier="business"] {
     --bg-color-2: #151515;
     --bg-color-3: #252525;
 }
+/* REWORKED: Apply master animation to body */
 body[data-tier="business"]:not(.business-shifting-disabled) {
     animation: theme-based-color-cycle 8s infinite linear;
 }
 
 /* UPDATED: Business tier banner now has color shift but no blur */
 body[data-tier="business"] #banner-background-effect {
-    animation: color-shift-glow 8s infinite alternate ease-in-out;
-    filter: drop-shadow(0 0 15px var(--secondary-accent));
+    /* The filter now uses the master color variable */
+    filter: drop-shadow(0 0 15px var(--current-theme-color));
+    /* Remove the separate animation */
+    animation: none;
+    /* Add a smooth transition */
+    transition: filter 1.5s ease-in-out;
 }
 
+/* REWORKED: All elements now use the master color variable */
 body[data-tier="business"] .input-box,
 body[data-tier="business"] .output-box,
 body[data-tier="business"] .refine-section,
