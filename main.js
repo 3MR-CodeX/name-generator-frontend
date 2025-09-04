@@ -171,6 +171,10 @@ window.updateCreditCostsUI = (tier) => {
     setCost("generator-cost", costs.generate, "1 Credit per name");
     setCost("refiner-cost", costs.custom_refine, "1 Credit per name");
     setCost("simple-refine-cost", costs.simple_refine, `${costs.simple_refine} Credits`);
+    setCost("check-availability-cost", costs.check_availability);
+    setCost("analyze-name-cost", costs.analyze_name);
+    setCost("summarize-cost", costs.summarize);
+    setCost("combine-words-cost", costs.combine_words);
     setCost("generate-alternatives-cost", costs.generate_alternatives);
     setCost("generate-available-alt-cost", costs.generate_available_alternatives);
 };
@@ -2117,13 +2121,15 @@ function applyResultsFontSize(size, save = true) {
     document.documentElement.style.setProperty('--results-font-size', `${size}%`);
 }
 
-// **FIXED** Animation setting now adds a global class and dispatches an event
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animationsEnabled', enabled);
     document.body.classList.toggle('animations-disabled', !enabled);
     
-    // Dispatch event to notify JS-controlled animations (like the topbar)
     window.dispatchEvent(new CustomEvent('animationSettingsChanged', { detail: { enabled } }));
+    
+    // Re-apply background to respect the new animation setting
+    const currentBg = localStorage.getItem('nameit-background') || 'pattern1';
+    applyBackground(currentBg, false);
 }
 
 function applyProDetailsSetting(enabled, save = true) {
