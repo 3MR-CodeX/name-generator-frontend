@@ -69,6 +69,7 @@ let summaryHistoryLog = [];
 let combinerHistoryLog = [];
 
 // --- DOM Element Selectors ---
+const mainPageView = document.getElementById("main-page-view");
 const mainGeneratorView = document.getElementById("main-generator-view");
 const customRefinerView = document.getElementById("custom-refiner-view");
 const availabilityCheckerView = document.getElementById("availability-checker-view");
@@ -259,7 +260,7 @@ window.updateFeatureLocks = function(tier) {
     const businessSettings = document.getElementById('business-settings');
 
     if (premiumSettings) premiumSettings.classList.toggle('hidden', !isProOrHigher);
-    if (proSettings) proSettings.classList.toggle('hidden', !isProOrHigher);
+    if (proSettings) proSettings.classList.toggle('hidden', !isProOrHigher); // Show for Pro and Business
     if (businessSettings) businessSettings.classList.toggle('hidden', !isBusiness);
 };
 
@@ -296,7 +297,7 @@ async function loadComponent(placeholderId, componentUrl) {
 }
 
 function initializeUI() {
-    showView('generator');
+    showView('main-page'); // Default to the new main page
     if (promptInput && !promptInput.dataset.originalPlaceholder) promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     if (editBox && !editBox.dataset.originalPlaceholder) editBox.dataset.originalPlaceholder = editBox.placeholder;
 }
@@ -426,7 +427,9 @@ function setupEventListeners() {
         });
 
         // Navigation links
+        const mainPageLink = document.getElementById('main-page-link');
         const homeLink = document.getElementById('home-link');
+        const goToGeneratorBtn = document.getElementById('go-to-generator-btn');
         const customRefineLink = document.getElementById('custom-refine-link');
         const availabilityCheckLink = document.getElementById('availability-check-link');
         const nameAnalyzerLink = document.getElementById('name-analyzer-link');
@@ -441,8 +444,9 @@ function setupEventListeners() {
         const privacyLink = document.getElementById('privacy-link');
         const contactSignInLink = document.getElementById('contact-signin-link');
 
-
+        if (mainPageLink) mainPageLink.addEventListener('click', (e) => { e.preventDefault(); showView('main-page'); if (window.isSidebarOpen) toggleSidebar(); });
         if (homeLink) homeLink.addEventListener('click', (e) => { e.preventDefault(); window.location.hash = ''; showView('generator'); if (window.isSidebarOpen) toggleSidebar(); });
+        if (goToGeneratorBtn) goToGeneratorBtn.addEventListener('click', (e) => { e.preventDefault(); showView('generator'); });
         if (customRefineLink) customRefineLink.addEventListener('click', (e) => { e.preventDefault(); showView('refiner'); if (window.isSidebarOpen) toggleSidebar(); });
         if (availabilityCheckLink) availabilityCheckLink.addEventListener('click', (e) => { e.preventDefault(); showView('availability-checker'); if (window.isSidebarOpen) toggleSidebar(); });
         if (nameAnalyzerLink) nameAnalyzerLink.addEventListener('click', (e) => { e.preventDefault(); showView('name-analyzer'); if (window.isSidebarOpen) toggleSidebar(); });
@@ -469,18 +473,17 @@ function setupEventListeners() {
 }
 
 function showView(viewName) {
-    const allViews = [mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView];
+    const allViews = [mainPageView, mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView];
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
+
+    // Logic to hide generator-specific elements when not on the generator page
+    const generatorSpecificElements = [outputContainer, refineSection, refineButtonSection, refinedOutputs, recentHistorySection];
     if (viewName !== 'generator') {
-        if (outputContainer) outputContainer.classList.add('hidden');
-        if (refineSection) refineSection.classList.add('hidden');
-        if (refineButtonSection) refineButtonSection.classList.add('hidden');
-        if (refinedOutputs) refinedOutputs.classList.add('hidden');
-        if (recentHistorySection) recentHistorySection.classList.add('hidden');
-    } 
-    else {
+        generatorSpecificElements.forEach(el => { if (el) el.classList.add('hidden'); });
+    } else {
+        // Only show generator results if they exist
         if (namesPre && namesPre.innerHTML.trim() !== "") {
             if (outputContainer) outputContainer.classList.remove('hidden');
             if (recentHistorySection) recentHistorySection.classList.remove('hidden');
@@ -491,33 +494,30 @@ function showView(viewName) {
         }
     }
 
-    if (viewName === 'generator') {
-        if(mainGeneratorView) mainGeneratorView.classList.remove('hidden');
-    } else if (viewName === 'refiner') {
-        if(customRefinerView) customRefinerView.classList.remove('hidden');
-    } else if (viewName === 'availability-checker') {
-        if(availabilityCheckerView) availabilityCheckerView.classList.remove('hidden');
-    } else if (viewName === 'name-analyzer') {
-        if(nameAnalyzerView) nameAnalyzerView.classList.remove('hidden');
-    } else if (viewName === 'settings') {
-        if(settingsView) settingsView.classList.remove('hidden');
-    } else if (viewName === 'about') {
-        if(aboutView) aboutView.classList.remove('hidden');
-    } else if (viewName === 'premium') {
-        if(premiumView) premiumView.classList.remove('hidden');
-    } else if (viewName === 'credits') {
-        if(creditsView) creditsView.classList.remove('hidden');
-    } else if (viewName === 'summarizer') {
-        if(summarizerView) summarizerView.classList.remove('hidden');
-    } else if (viewName === 'word-combiner') {
-        if(wordCombinerView) wordCombinerView.classList.remove('hidden');
-    } else if (viewName === 'terms') {
-        if(termsView) termsView.classList.remove('hidden');
-    } else if (viewName === 'privacy') {
-        if(privacyView) privacyView.classList.remove('hidden');
-    } else if (viewName === 'contact') {
-        if(contactView) contactView.classList.remove('hidden');
-        
+    // Show the selected view
+    const viewMap = {
+        'main-page': mainPageView,
+        'generator': mainGeneratorView,
+        'refiner': customRefinerView,
+        'availability-checker': availabilityCheckerView,
+        'name-analyzer': nameAnalyzerView,
+        'settings': settingsView,
+        'about': aboutView,
+        'premium': premiumView,
+        'credits': creditsView,
+        'summarizer': summarizerView,
+        'word-combiner': wordCombinerView,
+        'terms': termsView,
+        'privacy': privacyView,
+        'contact': contactView
+    };
+
+    if (viewMap[viewName]) {
+        viewMap[viewName].classList.remove('hidden');
+    }
+
+    // Special logic for the contact page
+    if (viewName === 'contact') {
         const user = window.auth.currentUser;
         const contactFormElement = document.getElementById('contact-form');
         const loginPromptElement = document.getElementById('contact-login-prompt');
