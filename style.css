@@ -2080,7 +2080,7 @@ body[data-tier="business"].pro-details-enabled .persona-section {
 }
 
 #credits-view .pricing-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     justify-content: center;
     max-width: 900px;
     margin-left: auto;
@@ -2625,12 +2625,12 @@ body[data-tier="pro"] {
     --bg-color-3: #303030;
 }
 
-/* **FIXED** Pro Details Switch */
-body.pro-details-enabled[data-tier="pro"] #top-bar {
-    border-bottom: 2px solid var(--primary-accent);
+/* **FIXED** Pro Details Switch - More specific selector */
+body[data-tier="pro"].pro-details-enabled #top-bar {
+    border-bottom: 2px solid var(--primary-accent) !important;
 }
-body.pro-details-enabled[data-tier="pro"] #sidebar {
-    border-right: 2px solid var(--primary-accent);
+body[data-tier="pro"].pro-details-enabled #sidebar {
+    border-right: 2px solid var(--primary-accent) !important;
 }
 
 body[data-tier="pro"].pro-details-enabled .input-box,
@@ -2716,26 +2716,30 @@ body[data-tier="business"]:not(.business-shifting-disabled) .surprise-btn:hover 
 }
 
 /* Static styles for business when shifting is off */
-body[data-tier="business"].business-shifting-disabled.pro-details-enabled .input-box,
-body[data-tier="business"].business-shifting-disabled.pro-details-enabled .output-box,
-body[data-tier="business"].business-shifting-disabled.pro-details-enabled .refine-section,
-body[data-tier="business"].business-shifting-disabled.pro-details-enabled .history-section,
-body[data-tier="business"].business-shifting-disabled.pro-details-enabled .setting-section,
-body[data-tier="business"].business-shifting-disabled.pro-details-enabled .about-section,
-body[data-tier="business"].business-shifting-disabled.pro-details-enabled .contact-container,
-body[data-tier="business"].business-shifting-disabled.pro-details-enabled .outer-input-box {
+body[data-tier="business"].pro-details-enabled #top-bar,
+body[data-tier="business"].pro-details-enabled #sidebar {
+    border-color: var(--primary-accent);
+}
+body[data-tier="business"].pro-details-enabled .input-box,
+body[data-tier="business"].pro-details-enabled .output-box,
+body[data-tier="business"].pro-details-enabled .refine-section,
+body[data-tier="business"].pro-details-enabled .history-section,
+body[data-tier="business"].pro-details-enabled .setting-section,
+body[data-tier="business"].pro-details-enabled .about-section,
+body[data-tier="business"].pro-details-enabled .contact-container,
+body[data-tier="business"].pro-details-enabled .outer-input-box {
     border: 1px solid var(--primary-accent);
 }
-body[data-tier="business"].business-shifting-disabled .generate-btn,
-body[data-tier="business"].business-shifting-disabled .refine-btn,
-body[data-tier="business"].business-shifting-disabled .cta-button {
+body[data-tier="business"] .generate-btn,
+body[data-tier="business"] .refine-btn,
+body[data-tier="business"] .cta-button {
     background-color: var(--primary-accent);
     border-color: var(--primary-accent);
 }
-body[data-tier="business"].business-shifting-disabled .surprise-btn {
+body[data-tier="business"] .surprise-btn {
     border-color: var(--primary-accent);
 }
-body[data-tier="business"].business-shifting-disabled .surprise-btn:hover {
+body[data-tier="business"] .surprise-btn:hover {
     background-color: var(--primary-accent);
 }
 
@@ -2750,10 +2754,134 @@ body[data-tier="business"].business-shifting-disabled .surprise-btn:hover {
     border-radius: 10px;
     border: 1px solid #4a4a4a;
     margin-left: 10px;
+    display: inline-block; /* ensures it sits nicely next to the label text */
 }
 
-#main-generator-view .credit-cost {
+#main-generator-view .credit-cost, #refine_section .credit-cost {
     float: right;
     margin-left: 0;
+}
+
+/* --- NEW MAIN PAGE STYLING --- */
+.main-page-hero {
+    text-align: center;
+    padding: 60px 20px;
+    margin-bottom: 40px;
+}
+
+.main-page-hero h1 {
+    font-size: 3.5em;
+    margin-bottom: 15px;
+}
+
+.main-page-cta {
+    margin-top: 30px;
+    padding: 18px 35px;
+    font-size: 1.2em;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.main-page-section {
+    margin-bottom: 60px;
+}
+
+.main-page-section h2 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-accent);
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.feature-highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.feature-highlight-card {
+    background-color: var(--bg-color-2);
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #4a4a4a;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-highlight-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+.feature-highlight-card i {
+    font-size: 2.5em;
+    color: var(--line-accent-default);
+    margin-bottom: 20px;
+}
+
+.feature-highlight-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.how-it-works-diagram {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.diagram-step-main {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    position: relative;
+    padding: 20px;
+}
+
+.step-icon-main {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    background-color: var(--bg-color-3);
+    border: 2px solid var(--primary-accent);
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0 auto 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.diagram-step-main:hover .step-icon-main {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--primary-accent);
+}
+
+.diagram-step-main h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.diagram-arrow-main {
+    font-size: 2.5em;
+    color: var(--primary-accent);
+    align-self: center;
+}
+
+@media (max-width: 768px) {
+    .how-it-works-diagram {
+        flex-direction: column;
+    }
+    .diagram-arrow-main {
+        transform: rotate(90deg);
+    }
 }
 
