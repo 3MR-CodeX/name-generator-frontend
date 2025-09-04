@@ -63,6 +63,7 @@ const BACKGROUND_ANIMATIONS = {
     'pattern12': 'vertical-crossing-bars'
 };
 
+
 let customRefineHistoryLog = [];
 let summaryHistoryLog = [];
 let combinerHistoryLog = [];
@@ -151,41 +152,32 @@ const clearHistoryBtn = document.getElementById('clear-history-btn');
 
 // --- Credit Cost Data (Starter Tier Removed) ---
 const TIER_COSTS = {
-    "Anonymous": { "generate": 5, "custom_refine": 5 },
-    "Free Tier": { "generate": 5, "custom_refine": 5 },
-    "Pro Tier": { "generate": 1, "custom_refine": 1, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 25 },
-    "Business Tier": { "generate": 1, "custom_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
+    "Anonymous": { "generate": 5, "custom_refine": 5, "simple_refine": 5 },
+    "Free Tier": { "generate": 5, "custom_refine": 5, "simple_refine": 5 },
+    "Pro Tier": { "generate": 1, "custom_refine": 1, "simple_refine": 2, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 25 },
+    "Business Tier": { "generate": 1, "custom_refine": 1, "simple_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
 };
 
 // REWORKED: Function to update UI with credit costs in the new format
 window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
     
-    const setCost = (id, costValue, perName = false) => {
+    const setCost = (id, costValue, textOverride = null) => {
         const el = document.getElementById(id);
         if (el) {
-            let text = `${costValue} Credits`;
-            if (perName) {
-                text = `1 Credit per name`;
-            }
-            el.textContent = text;
+            el.textContent = textOverride ? textOverride : `${costValue} Credits`;
         }
     };
 
-    setCost("generator-cost", costs.generate, true);
-    setCost("refiner-cost", costs.custom_refine, true);
+    setCost("generator-cost", costs.generate, "1 Credit per name");
+    setCost("refiner-cost", costs.custom_refine, "1 Credit per name");
+    setCost("simple-refine-cost", costs.simple_refine);
     setCost("summarize-cost", costs.summarize);
     setCost("combine-words-cost", costs.combine_words);
     setCost("check-availability-cost", costs.check_availability);
     setCost("analyze-name-cost", costs.analyze_name);
     setCost("generate-alternatives-cost", costs.generate_alternatives);
     setCost("generate-available-alt-cost", costs.generate_available_alternatives);
-    
-    // Update simple refine cost separately
-    const simpleRefineCostEl = document.getElementById('simple-refine-cost');
-    if (simpleRefineCostEl) {
-        simpleRefineCostEl.textContent = '5 Credits';
-    }
 };
 
 
@@ -270,9 +262,9 @@ window.updateFeatureLocks = function(tier) {
     const businessSettings = document.getElementById('business-settings');
 
     if (premiumSettings) premiumSettings.classList.toggle('hidden', !isProOrHigher);
-    if (proSettings) proSettings.classList.toggle('hidden', tier !== 'Pro Tier');
-    if (businessSettings) businessSettings.classList.toggle('hidden', !isBusiness);
-}
+    if (proSettings) proSettings.classList.toggle('hidden', !isProOrHigher); // Show for Pro and Business
+    if (businessSettings) businessSettings.classList.toggle('hidden', !isBusiness); // Show only for Business
+};
 
 // NEW GLOBAL FUNCTION: updatePremiumPage
 window.updatePremiumPage = function(tier) {
@@ -426,7 +418,6 @@ function setupEventListeners() {
             });
         }
         
-        // These buttons are now created dynamically, so we need to add listeners differently
         document.body.addEventListener('click', function(event) {
             if (event.target.id === 'go-premium-from-dropdown-btn') {
                 showView('premium'); 
@@ -2021,18 +2012,11 @@ function applyBackground(patternName, save = true) {
     if (!patternElement || !animationLayer) return;
 
     patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
-    patternElement.style.display = 'block'; // Ensure static patterns are always visible
     
     // Clear previous animations and timers
     animationLayer.innerHTML = '';
     if (animationLayer.timerId) clearTimeout(animationLayer.timerId);
     if (animationLayer.circleTimerId) clearInterval(animationLayer.circleTimerId);
-    if (animationLayer.shapeTimerId) clearInterval(animationLayer.shapeTimerId);
-    if (animationLayer.dustTimerId) clearInterval(animationLayer.dustTimerId);
-    animationLayer.timerId = null;
-    animationLayer.circleTimerId = null;
-    animationLayer.shapeTimerId = null;
-    animationLayer.dustTimerId = null;
 
     const animationType = BACKGROUND_ANIMATIONS[patternName];
     let htmlToSet = '';
@@ -2065,33 +2049,7 @@ function applyBackground(patternName, save = true) {
         setTimeout(() => spot.remove(), 500);
         animationLayer.timerId = setTimeout(createRandomFlicker, Math.random() * 2500 + 500);
     };
-
-    const createAbstractShape = () => {
-        const shape = document.createElement('div');
-        shape.className = 'abstract-shape';
-        shape.style.setProperty('--start-x', `${Math.random() * 100}vw`);
-        shape.style.setProperty('--start-y', `${Math.random() * 100}vh`);
-        shape.style.setProperty('--end-x', `${Math.random() * 100}vw`);
-        shape.style.setProperty('--end-y', `${Math.random() * 100}vh`);
-        shape.style.setProperty('--size', `${Math.random() * 150 + 50}px`);
-        shape.style.setProperty('--rotation', `${Math.random() * 360}deg`);
-        shape.style.setProperty('--duration', `${Math.random() * 10 + 10}s`);
-        shape.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
-        animationLayer.appendChild(shape);
-        setTimeout(() => shape.remove(), 20000);
-    };
-
-    const createDustParticle = () => {
-        const particle = document.createElement('div');
-        particle.className = 'floating-dust-particle';
-        particle.style.setProperty('--x-pos', `${Math.random() * 100}vw`);
-        particle.style.setProperty('--size', `${Math.random() * 3 + 1}px`);
-        particle.style.setProperty('--duration', `${Math.random() * 20 + 15}s`);
-        particle.style.setProperty('--delay', `-${Math.random() * 35}s`);
-        particle.style.setProperty('--color', `var(--${['primary-accent', 'secondary-accent', 'line-accent-default'][Math.floor(Math.random() * 3)]})`);
-        animationLayer.appendChild(particle);
-    };
-
+    
     switch (animationType) {
         case 'default':
             htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
@@ -2114,19 +2072,6 @@ function applyBackground(patternName, save = true) {
             break;
         case 'vertical-crossing-bars':
             htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
-            break;
-        case 'grid-pulse':
-            htmlToSet = `<div class="grid-pulse-bg"></div>`;
-            break;
-        case 'abstract-shapes':
-            for (let i = 0; i < 5; i++) createAbstractShape();
-            animationLayer.shapeTimerId = setInterval(createAbstractShape, 4000);
-            break;
-        case 'subtle-waves':
-             htmlToSet = `<div class="subtle-waves-bg"></div>`;
-            break;
-        case 'floating-dust':
-            for (let i = 0; i < 50; i++) createDustParticle();
             break;
     }
     
