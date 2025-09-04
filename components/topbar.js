@@ -1,4 +1,3 @@
-
 // topbar.js
 
 function initializeTopbar() {
@@ -11,6 +10,9 @@ function initializeTopbar() {
     const nameSpan = document.getElementById("showcase-name");
 
     if (promptSpan && nameSpan) {
+        // This flag controls the execution of the animation loop.
+        let animationCanRun = true;
+
         const showcaseData = [
             { prompt: "A cyberpunk detective agency", names: ["Chrono-Noir", "Nexus Point", "Synth-Shadow"] },
             { prompt: "A mystical underwater research facility", names: ["Aqua-Core", "Abyssal Labs", "Project Triton"] },
@@ -21,22 +23,7 @@ function initializeTopbar() {
             { prompt: "A heavy metal-themed barbecue restaurant", names: ["The Meat Hook", "Sizzle & Shred", "Grill 'Em All"] },
             { prompt: "A subscription box for rare teas", names: ["The Tea Crate", "Steep Society", "Global Infusions"] },
             { prompt: "A mobile game about building gardens in space", names: ["Cosmic Bloom", "Stardust Gardens", "Galaxy Flora"] },
-            { prompt: "A vintage clothing store for rockstars", names: ["Retro Riffs", "The Velvet Fret", "Stage Worn"] },
-            { prompt: "A company that makes smart home devices for pets", names: ["Paw Tech", "Critter Comfort", "Home Pet"] },
-            { prompt: "A podcast about unsolved historical mysteries", names: ["Echoes of Time", "The History Vault", "Veiled Past"] },
-            { prompt: "A line of hot sauce made with ghost peppers", names: ["Phantom Fire", "Specter Spice", "Reaper's Kiss"] },
-            { prompt: "A VR experience that simulates flying", names: ["Aether Wings", "Skybound VR", "Project Icarus"] },
-            { prompt: "A luxury brand of silk pajamas", names: ["Somnia Silk", "The Midnight Weave", "Luna Lair"] },
-            { prompt: "A food truck that only sells gourmet grilled cheese", names: ["The Meltdown", "Golden Crust", "Cheese & Co."] },
-            { prompt: "An AI tool that writes poetry", names: ["Verse Weaver", "The Digital Quill", "Sonnet AI"] },
-            { prompt: "A brand of rugged, all-weather camping gear", names: ["Summit Bound", "Ridge Line", "Terra Firma Gear"] },
-            { prompt: "A bakery specializing in magical-themed desserts", names: ["The Enchanted Oven", "Wizard's Whisk", "Fey Fare"] },
-            { prompt: "A streaming service for indie horror films", names: ["ScreamBox", "The Midnight Hour", "Dread Central"] },
-            { prompt: "A company that leads Northern Lights tours", names: ["Aurora Chasers", "Polaris Expeditions", "Sky Fire Tours"] },
-            { prompt: "A high-tech, minimalist watch brand", names: ["Chronoform", "The Time Piece", "Momentum"] },
-            { prompt: "A line of organic dog treats", names: ["Pawsitive Eats", "The Good Hound", "Bark Naturals"] },
-            { prompt: "A journal app for lucid dreaming", names: ["Dream Weave", "The Oneironaut", "Lucid Log"] },
-            { prompt: "A speakeasy-style cocktail bar", names: ["The Gilded Lily", "Whisper & Rye", "The Alchemist's Folly"] }
+            { prompt: "A vintage clothing store for rockstars", names: ["Retro Riffs", "The Velvet Fret", "Stage Worn"] }
         ];
         
         let dataIndex = 0;
@@ -46,6 +33,7 @@ function initializeTopbar() {
         const type = async (element, text) => {
             element.classList.add('typing');
             for (let i = 0; i < text.length; i++) {
+                if (!animationCanRun) break; 
                 element.textContent += text.charAt(i);
                 await sleep(50);
             }
@@ -55,6 +43,7 @@ function initializeTopbar() {
         const erase = async (element) => {
             element.classList.add('typing');
             while (element.textContent.length > 0) {
+                if (!animationCanRun) break;
                 element.textContent = element.textContent.slice(0, -1);
                 await sleep(25);
             }
@@ -63,28 +52,54 @@ function initializeTopbar() {
 
         const cycleNames = async (names) => {
             for (const name of names) {
+                if (!animationCanRun) break; 
                 nameSpan.textContent = name;
                 nameSpan.classList.add('visible');
-                await sleep(2000); // How long name is visible
+                await sleep(2000); 
                 nameSpan.classList.remove('visible');
-                await sleep(400); // Wait for fade-out transition
+                await sleep(400); 
             }
         };
 
         const runAnimationCycle = async () => {
+            // Main check at the start of each cycle
+            if (document.body.classList.contains('animations-disabled')) {
+                animationCanRun = false;
+                // Set a default static text when animation is off and exit
+                promptSpan.textContent = "A fantasy-themed bookstore";
+                nameSpan.textContent = "The Story Forge";
+                nameSpan.classList.add('visible');
+                promptSpan.classList.remove('typing');
+                return;
+            }
+            animationCanRun = true;
+            
             const data = showcaseData[dataIndex];
             dataIndex = (dataIndex + 1) % showcaseData.length;
 
-            await type(promptSpan, data.prompt);
-            await sleep(2000);
-            await cycleNames(data.names);
-            await sleep(1500);
-            await erase(promptSpan);
-            await sleep(2000);
+            if (animationCanRun) await type(promptSpan, data.prompt);
+            if (animationCanRun) await sleep(2000);
+            if (animationCanRun) await cycleNames(data.names);
+            if (animationCanRun) await sleep(1500);
+            if (animationCanRun) await erase(promptSpan);
+            if (animationCanRun) await sleep(2000);
             
-            runAnimationCycle();
+            // Loop only if the flag is still true
+            if(animationCanRun) {
+               runAnimationCycle();
+            }
         };
 
+        // Listen for the global animation setting change from main.js
+        window.addEventListener('animationSettingsChanged', () => {
+            // If animations were just disabled, the loop will stop on its own.
+            // If they were just enabled, we need to kickstart the loop again.
+            if (!document.body.classList.contains('animations-disabled') && !animationCanRun) {
+                runAnimationCycle();
+            }
+        });
+
+        // Initial run
         runAnimationCycle();
     }
 }
