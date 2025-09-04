@@ -78,58 +78,57 @@ function initializeAuth() {
         }
     };
     
+    // UPDATED to handle new dropdown content
     function updateSubscriptionDisplay(data) {
         if (tierBadge) {
-            tierBadge.textContent = data.tier;
-            tierBadge.className = 'tier-badge';
-            const tiers = { "Anonymous": 'free-tier', "Free Tier": 'free-tier', "Pro Tier": 'pro-tier', "Business Tier": 'business-tier' };
-            if (tiers[data.tier]) {
-                tierBadge.classList.add(tiers[data.tier]);
+            tierBadge.innerHTML = `<span>${data.tier}</span>`;
+            tierBadge.className = 'tier-badge'; // Reset classes
+            const tierClassMap = { 
+                "Anonymous": 'free-tier', 
+                "Free Tier": 'free-tier', 
+                "Pro Tier": 'pro-tier-badge', 
+                "Business Tier": 'business-tier-badge' 
+            };
+            if (tierClassMap[data.tier]) {
+                tierBadge.classList.add(tierClassMap[data.tier]);
             }
         }
-        updateTierDropdown(data.tier);
+        
+        if (tierDropdown) {
+             let dropdownHTML = '';
+             if (data.tier === 'Pro Tier') {
+                dropdownHTML = `
+                    <div class="tier-item">
+                        <div class="tier-badge free-tier">Free Tier</div>
+                        <p>Core access to the Name Generator and Custom Refiner.</p>
+                    </div>
+                    <div class="tier-item">
+                        <button id="go-business-from-dropdown-btn" class="tier-badge business-tier-badge">💼 Go Business</button>
+                        <p>Upgrade to unlock Persona Analysis, Exclusive Styling, and our Ultra Smart AI model.</p>
+                    </div>`;
+            } else if (data.tier === 'Business Tier') {
+                dropdownHTML = `
+                    <div class="tier-item">
+                        <div class="tier-badge business-tier-badge">Business Tier</div>
+                        <p>All features unlocked. Thank you for being a power user!</p>
+                    </div>`;
+            } else { // Free or Anonymous
+                dropdownHTML = `
+                    <div class="tier-item">
+                        <div class="tier-badge free-tier">Free Tier</div>
+                        <p>Core access to the Name Generator and Custom Refiner.</p>
+                    </div>
+                    <div class="tier-item">
+                        <button id="go-premium-from-dropdown-btn" class="tier-badge pro-tier-badge animated-glow">✨ Go Pro</button>
+                        <p>Unlock advanced tools, analysis, and higher credit limits.</p>
+                    </div>`;
+            }
+            tierDropdown.innerHTML = dropdownHTML;
+        }
+
         window.updateGenerationCountUI(data.credits);
     }
     
-    function updateTierDropdown(tier) {
-        if (!tierDropdown) return;
-    
-        let content = '';
-    
-        if (tier === 'Pro Tier') {
-            content = `
-                <div class="tier-item">
-                    <div class="tier-badge pro-tier">Pro Tier</div>
-                    <p>Core access to the Name Generator and Custom Refiner, plus Pro tools.</p>
-                </div>
-                <div class="tier-item">
-                    <button id="go-business-from-dropdown-btn" class="tier-badge business-tier">✨ Go Business</button>
-                    <p>Unlock the ultimate potential of NameIT with exclusive tools and analysis.</p>
-                </div>
-            `;
-        } else if (tier === 'Business Tier') {
-            content = `
-                <div class="tier-item">
-                    <div class="tier-badge business-tier">Business Tier</div>
-                    <p>You have unlocked all features, including exclusive tools and top-priority support.</p>
-                </div>
-            `;
-        } else { // Free, Anonymous, Starter
-            content = `
-                <div class="tier-item">
-                    <div class="tier-badge free-tier">Free Tier</div>
-                    <p>Core access to the Name Generator and Custom Refiner.</p>
-                </div>
-                <div class="tier-item">
-                    <button id="go-premium-from-dropdown-btn" class="tier-badge pro-tier">✨ Go Pro</button>
-                    <p>Unlock advanced tools like the Availability Checker and Name Analyzer.</p>
-                </div>
-            `;
-        }
-    
-        tierDropdown.innerHTML = content;
-    }
-
     window.updateUserStatusUI = (user) => {
         const generateBtn = document.querySelector(".generate-btn");
         const surpriseBtn = document.querySelector(".surprise-btn");
@@ -170,12 +169,10 @@ function initializeAuth() {
                                 tier: status.tier,
                                 credits: status.credits
                             });
-                             // Set the data-tier for CSS styling
-                            if (status.tier && status.tier !== 'Free Tier' && status.tier !== 'Anonymous') {
-                                document.body.dataset.tier = status.tier.toLowerCase().replace(' tier', '');
-                            } else {
-                                delete document.body.dataset.tier;
-                            }
+                            document.body.dataset.tier = status.tier.toLowerCase().replace(' tier', '').replace(' ', '-');
+                            if (typeof window.updateFeatureLocks === 'function') window.updateFeatureLocks(status.tier);
+                            if (typeof window.updatePremiumPage === 'function') window.updatePremiumPage(status.tier);
+                            if (typeof window.updateCreditCostsUI === 'function') window.updateCreditCostsUI(status.tier);
                         });
                     });
                 } else {
@@ -198,31 +195,16 @@ function initializeAuth() {
                 tier: "Anonymous",
                 credits: Math.max(0, 25 - anonGenerations)
             });
-            delete document.body.dataset.tier; // Ensure no premium styles for anon users
+            delete document.body.dataset.tier; 
+            if (typeof window.updateFeatureLocks === 'function') window.updateFeatureLocks('Anonymous');
+            if (typeof window.updatePremiumPage === 'function') window.updatePremiumPage('Anonymous');
+            if (typeof window.updateCreditCostsUI === 'function') window.updateCreditCostsUI('Anonymous');
         }
     };
 
     // --- Core Auth State Management ---
     auth.onAuthStateChanged(user => {
         window.updateUserStatusUI(user);
-
-        let currentTier = 'Anonymous';
-        if (user && user.emailVerified) {
-            user.getIdTokenResult(true).then((idTokenResult) => {
-                currentTier = idTokenResult.claims.tier || 'Free Tier';
-                document.body.dataset.tier = currentTier.toLowerCase().replace(' tier', '').replace(' ', '-');
-                
-                if (typeof window.updateFeatureLocks === 'function') window.updateFeatureLocks(currentTier);
-                if (typeof window.updateCreditCostsUI === 'function') window.updateCreditCostsUI(currentTier);
-                if (typeof window.updatePremiumPage === 'function') window.updatePremiumPage(currentTier);
-            });
-        } else {
-            delete document.body.dataset.tier;
-            if (typeof window.updateFeatureLocks === 'function') window.updateFeatureLocks(currentTier);
-            if (typeof window.updateCreditCostsUI === 'function') window.updateCreditCostsUI(currentTier);
-            if (typeof window.updatePremiumPage === 'function') window.updatePremiumPage(currentTier);
-        }
-    
         if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
     });
 
