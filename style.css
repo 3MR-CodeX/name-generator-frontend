@@ -2080,8 +2080,11 @@ body[data-tier="business"].pro-details-enabled .persona-section {
 }
 
 #credits-view .pricing-grid {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     justify-content: center;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
@@ -2259,7 +2262,57 @@ body[data-tier="business"].pro-details-enabled .persona-section {
     margin-bottom: 30px;
 }
 
-/* --- Payment Modal --- */
+.feature-catalog {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.feature-catalog-card {
+    background-color: var(--bg-color-3);
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feature-catalog-card i {
+    font-size: 2.2em;
+    margin-bottom: 15px;
+    color: var(--line-accent-default);
+    line-height: 1;
+}
+
+.feature-catalog-card h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.feature-catalog-card p {
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #cccccc;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.tier-tag {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+    margin-top: auto;
+}
+
+.pro-tier-tag { background-color: var(--primary-accent); }
+.business-tier-tag { background: linear-gradient(45deg, var(--line-accent-glow), var(--line-accent-default)); }
+
+/* Payment Modal */
 .payment-details {
     background-color: var(--bg-color-3);
     border: 1px solid #4a4a4a;
@@ -2290,7 +2343,7 @@ body[data-tier="business"].pro-details-enabled .persona-section {
     color: #aaa;
 }
 
-/* --- Styles for Disabled Dropdowns --- */
+/* Styles for Disabled Dropdowns */
 .dropdown-content.disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -2308,7 +2361,7 @@ body[data-tier="business"].pro-details-enabled .persona-section {
     border-top-color: #777;
 }
 
-/* --- Styles for View Link and Disabled Generate Button --- */
+/* Styles for View Link and Disabled Generate Button */
 .view-link {
     color: #8be9fd;
     text-decoration: none;
@@ -2327,7 +2380,7 @@ body[data-tier="business"].pro-details-enabled .persona-section {
     cursor: not-allowed;
 }
 
-/* --- Styles for Alternative Name Loading Placeholder --- */
+/* Styles for Alternative Name Loading Placeholder */
 .alternative-result-card.loading-placeholder {
     min-height: 220px; /* Adjust height to match your final cards */
     display: flex;
@@ -2573,12 +2626,10 @@ body[data-tier="pro"] {
 }
 
 /* **FIXED** Pro Details Switch */
-body[data-tier="pro"].pro-details-enabled #top-bar,
-body[data-tier="business"].pro-details-enabled #top-bar {
+body.pro-details-enabled[data-tier="pro"] #top-bar {
     border-bottom: 2px solid var(--primary-accent);
 }
-body[data-tier="pro"].pro-details-enabled #sidebar,
-body[data-tier="business"].pro-details-enabled #sidebar {
+body.pro-details-enabled[data-tier="pro"] #sidebar {
     border-right: 2px solid var(--primary-accent);
 }
 
