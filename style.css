@@ -1424,7 +1424,6 @@ body[data-tier="business"] .slider-ticks {
     flex-direction: column;
 }
 
-/* NEW: Grid for dropdowns */
 .availability-dropdowns-grid {
     flex: 3;
     display: grid;
@@ -1929,9 +1928,19 @@ body.light-theme {
 
 /* --- Persona Analyzer Styles --- */
 .persona-section {
-    position: relative;
-    border-color: #4a4a4a !important;
+    border: 1px solid transparent; /* Start transparent */
+    transition: border-color 0.3s ease-in-out;
 }
+body.pro-details-enabled .persona-section {
+    border-color: #4a4a4a; /* Default border when details enabled */
+}
+body[data-tier="pro"].pro-details-enabled .persona-section {
+    border-color: var(--primary-accent);
+}
+body[data-tier="business"].pro-details-enabled .persona-section {
+    border-color: var(--current-theme-color);
+}
+
 
 .persona-analysis-report {
     display: grid;
@@ -2069,6 +2078,12 @@ body.light-theme {
     gap: 25px;
     margin-bottom: 50px;
 }
+
+#credits-view .pricing-grid {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    justify-content: center;
+}
+
 
 .pricing-title {
     text-align: center;
@@ -2231,6 +2246,18 @@ body.light-theme {
     color: #cccccc;
 }
 
+.feature-catalog-container {
+    background-color: var(--bg-color-2);
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 40px;
+    border: 1px solid #4a4a4a;
+}
+.feature-catalog-container h2 {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 30px;
+}
 
 /* --- Payment Modal --- */
 .payment-details {
@@ -2484,7 +2511,7 @@ body.light-theme {
     opacity: 0.5;
 }
 
-/* --- TIER-BASED STYLING (NEW) --- */
+/* --- TIER-BASED STYLING (NEW & FIXED) --- */
 @keyframes theme-based-color-cycle {
     0%, 100% {
         --current-theme-color: var(--primary-accent);
@@ -2505,7 +2532,6 @@ body.light-theme {
         background-position: 200% center;
     }
 }
-
 
 /* Apply title animation to all H1s AND the topbar title for premium tiers */
 body[data-tier="pro"] h1,
@@ -2539,7 +2565,6 @@ body[data-tier="business"]:not(.business-shifting-disabled) .topbar-title {
     animation: none !important;
 }
 
-
 /* --- Pro Tier: Theme-Adaptive Styling --- */
 body[data-tier="pro"] {
     --bg-color-1: #151515;
@@ -2547,17 +2572,16 @@ body[data-tier="pro"] {
     --bg-color-3: #303030;
 }
 
-body.pro-details-enabled[data-tier="pro"] #top-bar,
-body.pro-details-enabled[data-tier="business"] #top-bar {
+/* **FIXED** Pro Details Switch */
+body[data-tier="pro"].pro-details-enabled #top-bar,
+body[data-tier="business"].pro-details-enabled #top-bar {
     border-bottom: 2px solid var(--primary-accent);
 }
-body.pro-details-enabled[data-tier="pro"] #sidebar,
-body.pro-details-enabled[data-tier="business"] #sidebar {
+body[data-tier="pro"].pro-details-enabled #sidebar,
+body[data-tier="business"].pro-details-enabled #sidebar {
     border-right: 2px solid var(--primary-accent);
 }
 
-
-/* Pro tier borders and buttons now use theme colors */
 body[data-tier="pro"].pro-details-enabled .input-box,
 body[data-tier="pro"].pro-details-enabled .output-box,
 body[data-tier="pro"].pro-details-enabled .refine-section,
@@ -2592,43 +2616,28 @@ body[data-tier="pro"].pro-details-enabled .surprise-btn:hover {
     color: var(--button-text-color);
 }
 
-/* Business Tier (Theme-based Chroma) */
+/* --- Business Tier (FIXED) --- */
 body[data-tier="business"] {
     --bg-color-1: #101010;
     --bg-color-2: #151515;
     --bg-color-3: #252525;
 }
+
+/* **FIXED** Business Color Shift Switch */
 body[data-tier="business"]:not(.business-shifting-disabled) {
     animation: theme-based-color-cycle 8s infinite linear;
 }
-body.animations-disabled[data-tier="business"] {
+.animations-disabled[data-tier="business"] {
     animation: none;
 }
-
-/* UPDATED: Business tier banner now has color shift but no blur */
-body[data-tier="business"] #banner-background-effect {
+body[data-tier="business"]:not(.business-shifting-disabled) #banner-background-effect {
     animation: color-shift-glow 8s infinite alternate ease-in-out;
     filter: drop-shadow(0 0 15px var(--secondary-accent));
 }
-
 body[data-tier="business"]:not(.business-shifting-disabled).pro-details-enabled #top-bar,
 body[data-tier="business"]:not(.business-shifting-disabled).pro-details-enabled #sidebar {
     border-color: var(--current-theme-color);
-    transition: border-color 1.5s linear;
 }
-
-
-body[data-tier="business"].pro-details-enabled .input-box,
-body[data-tier="business"].pro-details-enabled .output-box,
-body[data-tier="business"].pro-details-enabled .refine-section,
-body[data-tier="business"].pro-details-enabled .history-section,
-body[data-tier="business"].pro-details-enabled .setting-section,
-body[data-tier="business"].pro-details-enabled .about-section,
-body[data-tier="business"].pro-details-enabled .contact-container,
-body[data-tier="business"].pro-details-enabled .outer-input-box {
-    border: 1px solid var(--primary-accent);
-}
-
 body[data-tier="business"]:not(.business-shifting-disabled).pro-details-enabled .input-box,
 body[data-tier="business"]:not(.business-shifting-disabled).pro-details-enabled .output-box,
 body[data-tier="business"]:not(.business-shifting-disabled).pro-details-enabled .refine-section,
@@ -2640,14 +2649,6 @@ body[data-tier="business"]:not(.business-shifting-disabled).pro-details-enabled 
     border-color: var(--current-theme-color);
     transition: border-color 1.5s ease-in-out;
 }
-
-body[data-tier="business"] .generate-btn,
-body[data-tier="business"] .refine-btn,
-body[data-tier="business"] .cta-button {
-    background-color: var(--primary-accent);
-    border: 2px solid var(--primary-accent);
-}
-
 body[data-tier="business"]:not(.business-shifting-disabled) .generate-btn,
 body[data-tier="business"]:not(.business-shifting-disabled) .refine-btn,
 body[data-tier="business"]:not(.business-shifting-disabled) .cta-button {
@@ -2655,26 +2656,41 @@ body[data-tier="business"]:not(.business-shifting-disabled) .cta-button {
     border-color: var(--current-theme-color);
     transition: background-color 1.5s ease-in-out, border-color 1.5s ease-in-out;
 }
-
-
-body[data-tier="business"] .surprise-btn {
-    border-color: var(--primary-accent);
-}
 body[data-tier="business"]:not(.business-shifting-disabled) .surprise-btn {
     border-color: var(--current-theme-color);
     transition: border-color 1.5s ease-in-out;
-}
-
-body[data-tier="business"] .surprise-btn:hover {
-    background-color: var(--primary-accent);
 }
 body[data-tier="business"]:not(.business-shifting-disabled) .surprise-btn:hover {
     background-color: var(--current-theme-color);
 }
 
-/* --- Credit Cost Display Styling --- */
+/* Static styles for business when shifting is off */
+body[data-tier="business"].business-shifting-disabled.pro-details-enabled .input-box,
+body[data-tier="business"].business-shifting-disabled.pro-details-enabled .output-box,
+body[data-tier="business"].business-shifting-disabled.pro-details-enabled .refine-section,
+body[data-tier="business"].business-shifting-disabled.pro-details-enabled .history-section,
+body[data-tier="business"].business-shifting-disabled.pro-details-enabled .setting-section,
+body[data-tier="business"].business-shifting-disabled.pro-details-enabled .about-section,
+body[data-tier="business"].business-shifting-disabled.pro-details-enabled .contact-container,
+body[data-tier="business"].business-shifting-disabled.pro-details-enabled .outer-input-box {
+    border: 1px solid var(--primary-accent);
+}
+body[data-tier="business"].business-shifting-disabled .generate-btn,
+body[data-tier="business"].business-shifting-disabled .refine-btn,
+body[data-tier="business"].business-shifting-disabled .cta-button {
+    background-color: var(--primary-accent);
+    border-color: var(--primary-accent);
+}
+body[data-tier="business"].business-shifting-disabled .surprise-btn {
+    border-color: var(--primary-accent);
+}
+body[data-tier="business"].business-shifting-disabled .surprise-btn:hover {
+    background-color: var(--primary-accent);
+}
+
+
+/* --- Credit Cost Display Styling (FIXED for tools) --- */
 .credit-cost {
-    float: right;
     font-size: 0.8em;
     font-weight: 400;
     color: #aaa;
@@ -2682,5 +2698,11 @@ body[data-tier="business"]:not(.business-shifting-disabled) .surprise-btn:hover 
     padding: 2px 8px;
     border-radius: 10px;
     border: 1px solid #4a4a4a;
+    margin-left: 10px;
+}
+
+#main-generator-view .credit-cost {
+    float: right;
+    margin-left: 0;
 }
 
