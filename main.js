@@ -150,13 +150,14 @@ const manageSubscriptionBtn = document.getElementById('manage-subscription-btn')
 const exportHistoryBtn = document.getElementById('export-history-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-// --- Credit Cost Data (Starter Tier Removed) ---
+// --- Credit Cost Data (UPDATED) ---
 const TIER_COSTS = {
     "Anonymous": { "generate": 5, "custom_refine": 5, "simple_refine": 5 },
     "Free Tier": { "generate": 5, "custom_refine": 5, "simple_refine": 5 },
-    "Pro Tier": { "generate": 1, "custom_refine": 1, "simple_refine": 2, "summarize": 10, "combine_words": 5, "check_availability": 1, "analyze_name": 10, "generate_available_alternatives": 25 },
-    "Business Tier": { "generate": 1, "custom_refine": 1, "simple_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
+    "Pro Tier": { "generate": 1, "custom_refine": 1, "simple_refine": 2, "summarize": 5, "combine_words": 3, "check_availability": 5, "analyze_name": 10, "generate_available_alternatives": 25 },
+    "Business Tier": { "generate": 1, "custom_refine": 1, "simple_refine": 1, "summarize": 5, "combine_words": 3, "check_availability": 5, "analyze_name": 10, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
 };
+
 
 window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
@@ -209,14 +210,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 5000);
 });
 
+// **UPDATED** Feature Lock Logic
 window.updateFeatureLocks = function(tier) {
     const isProOrHigher = tier === 'Pro Tier' || tier === 'Business Tier';
     const isBusiness = tier === 'Business Tier';
 
-    // --- Tool Page Locks ---
     const toolLocks = {
         'availability-checker': { locked: !isProOrHigher },
-        'name-analyzer': { locked: !isProOrHigher },
+        'name-analyzer': { locked: !isBusiness }, // Now Business only
         'summarizer': { locked: !isProOrHigher },
         'word-combiner': { locked: !isProOrHigher }
     };
@@ -239,10 +240,9 @@ window.updateFeatureLocks = function(tier) {
         personaSection.classList.toggle('premium-locked', isLocked);
     }
 
-    // --- Sidebar Link Locks ---
     const sidebarLinks = {
         'nav-checker': { locked: !isProOrHigher },
-        'nav-analyzer': { locked: !isProOrHigher },
+        'nav-analyzer': { locked: !isBusiness }, // Now Business only
         'nav-summarizer': { locked: !isProOrHigher },
         'nav-combiner': { locked: !isProOrHigher },
     };
@@ -254,15 +254,15 @@ window.updateFeatureLocks = function(tier) {
         }
     }
 
-    // --- Settings Section Visibility ---
     const premiumSettings = document.getElementById('premium-settings-section');
     const proSettings = document.getElementById('pro-settings');
     const businessSettings = document.getElementById('business-settings');
 
     if (premiumSettings) premiumSettings.classList.toggle('hidden', !isProOrHigher);
-    if (proSettings) proSettings.classList.toggle('hidden', !isProOrHigher); // Show for Pro and Business
-    if (businessSettings) businessSettings.classList.toggle('hidden', !isBusiness); // Show only for Business
+    if (proSettings) proSettings.classList.toggle('hidden', !isProOrHigher);
+    if (businessSettings) businessSettings.classList.toggle('hidden', !isBusiness);
 };
+
 
 window.updatePremiumPage = function(tier) {
     const defaultView = document.getElementById('premium-view-default');
@@ -271,7 +271,6 @@ window.updatePremiumPage = function(tier) {
 
     if (!defaultView || !proView || !businessView) return;
 
-    // Hide all views first
     defaultView.classList.add('hidden');
     proView.classList.add('hidden');
     businessView.classList.add('hidden');
