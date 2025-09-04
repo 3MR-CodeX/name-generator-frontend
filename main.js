@@ -158,7 +158,6 @@ const TIER_COSTS = {
     "Business Tier": { "generate": 1, "custom_refine": 1, "simple_refine": 1, "summarize": 5, "combine_words": 2, "check_availability": 1, "analyze_name": 5, "generate_available_alternatives": 25, "analyze_persona": 25, "generate_alternatives": 15 }
 };
 
-// REWORKED: Function to update UI with credit costs in the new format
 window.updateCreditCostsUI = (tier) => {
     const costs = TIER_COSTS[tier] || TIER_COSTS["Anonymous"];
     
@@ -171,11 +170,7 @@ window.updateCreditCostsUI = (tier) => {
 
     setCost("generator-cost", costs.generate, "1 Credit per name");
     setCost("refiner-cost", costs.custom_refine, "1 Credit per name");
-    setCost("simple-refine-cost", costs.simple_refine);
-    setCost("summarize-cost", costs.summarize);
-    setCost("combine-words-cost", costs.combine_words);
-    setCost("check-availability-cost", costs.check_availability);
-    setCost("analyze-name-cost", costs.analyze_name);
+    setCost("simple-refine-cost", costs.simple_refine, `${costs.simple_refine} Credits`);
     setCost("generate-alternatives-cost", costs.generate_alternatives);
     setCost("generate-available-alt-cost", costs.generate_available_alternatives);
 };
@@ -210,7 +205,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 5000);
 });
 
-// NEW GLOBAL FUNCTION: updateFeatureLocks
 window.updateFeatureLocks = function(tier) {
     const isProOrHigher = tier === 'Pro Tier' || tier === 'Business Tier';
     const isBusiness = tier === 'Business Tier';
@@ -266,7 +260,6 @@ window.updateFeatureLocks = function(tier) {
     if (businessSettings) businessSettings.classList.toggle('hidden', !isBusiness); // Show only for Business
 };
 
-// NEW GLOBAL FUNCTION: updatePremiumPage
 window.updatePremiumPage = function(tier) {
     const defaultView = document.getElementById('premium-view-default');
     const proView = document.getElementById('premium-view-pro');
@@ -1949,7 +1942,6 @@ function renderCombinerHistory() {
     });
 }
 
-// REWORKED Settings initialization
 function initializeSettings() {
     const settings = {
         theme: localStorage.getItem('nameit-theme') || 'synthwave',
@@ -2011,12 +2003,20 @@ function applyBackground(patternName, save = true) {
     const animationLayer = document.getElementById('animation-layer');
     if (!patternElement || !animationLayer) return;
 
-    patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
-    
-    // Clear previous animations and timers
-    animationLayer.innerHTML = '';
+    // Clear previous timers regardless
     if (animationLayer.timerId) clearTimeout(animationLayer.timerId);
     if (animationLayer.circleTimerId) clearInterval(animationLayer.circleTimerId);
+
+    // If animations are disabled, clear the layer and exit
+    if (document.body.classList.contains('animations-disabled')) {
+        animationLayer.innerHTML = '';
+        patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
+        return;
+    }
+
+    patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
+    
+    animationLayer.innerHTML = ''; // Clear old animation elements
 
     const animationType = BACKGROUND_ANIMATIONS[patternName];
     let htmlToSet = '';
@@ -2080,8 +2080,6 @@ function applyBackground(patternName, save = true) {
     }
 }
 
-
-// REWORKED: Theme function now triggers animation restart for Business Tier
 function applyTheme(theme, save = true) {
     if (save) localStorage.setItem('nameit-theme', theme);
     document.body.dataset.theme = theme;
@@ -2093,7 +2091,6 @@ function applyTheme(theme, save = true) {
 
     const bodyEl = document.body;
     if (bodyEl.dataset.tier === 'business' && !bodyEl.classList.contains('business-shifting-disabled')) {
-        // This trick forces a reflow, making the browser re-evaluate the CSS animation with the new variable values.
         bodyEl.style.animation = 'none';
         void bodyEl.offsetHeight; // Trigger reflow
         bodyEl.style.animation = ''; 
@@ -2120,20 +2117,20 @@ function applyResultsFontSize(size, save = true) {
     document.documentElement.style.setProperty('--results-font-size', `${size}%`);
 }
 
-// REWORKED: Main animation setting
+// **FIXED** Animation setting now adds a global class and dispatches an event
 function applyAnimationSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-animationsEnabled', enabled);
     document.body.classList.toggle('animations-disabled', !enabled);
-    document.body.classList.toggle('title-animations-disabled', !enabled); // Also disable title animations
+    
+    // Dispatch event to notify JS-controlled animations (like the topbar)
+    window.dispatchEvent(new CustomEvent('animationSettingsChanged', { detail: { enabled } }));
 }
 
-// NEW: Pro details setting
 function applyProDetailsSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-proDetailsEnabled', enabled);
     document.body.classList.toggle('pro-details-enabled', enabled);
 }
 
-// NEW: Business shifting setting
 function applyBusinessShiftingSetting(enabled, save = true) {
     if (save) localStorage.setItem('nameit-businessShiftingEnabled', enabled);
     document.body.classList.toggle('business-shifting-disabled', !enabled);
