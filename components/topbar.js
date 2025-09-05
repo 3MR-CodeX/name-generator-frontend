@@ -23,7 +23,22 @@ function initializeTopbar() {
             { prompt: "A heavy metal-themed barbecue restaurant", names: ["The Meat Hook", "Sizzle & Shred", "Grill 'Em All"] },
             { prompt: "A subscription box for rare teas", names: ["The Tea Crate", "Steep Society", "Global Infusions"] },
             { prompt: "A mobile game about building gardens in space", names: ["Cosmic Bloom", "Stardust Gardens", "Galaxy Flora"] },
-            { prompt: "A vintage clothing store for rockstars", names: ["Retro Riffs", "The Velvet Fret", "Stage Worn"] }
+            { prompt: "A vintage clothing store for rockstars", names: ["Retro Riffs", "The Velvet Fret", "Stage Worn"] },
+            { prompt: "A company that makes smart home devices for pets", names: ["Paw Tech", "Critter Comfort", "Home Pet"] },
+            { prompt: "A podcast about unsolved historical mysteries", names: ["Echoes of Time", "The History Vault", "Veiled Past"] },
+            { prompt: "A line of hot sauce made with ghost peppers", names: ["Phantom Fire", "Specter Spice", "Reaper's Kiss"] },
+            { prompt: "A VR experience that simulates flying", names: ["Aether Wings", "Skybound VR", "Project Icarus"] },
+            { prompt: "A luxury brand of silk pajamas", names: ["Somnia Silk", "The Midnight Weave", "Luna Lair"] },
+            { prompt: "A food truck that only sells gourmet grilled cheese", names: ["The Meltdown", "Golden Crust", "Cheese & Co."] },
+            { prompt: "An AI tool that writes poetry", names: ["Verse Weaver", "The Digital Quill", "Sonnet AI"] },
+            { prompt: "A brand of rugged, all-weather camping gear", names: ["Summit Bound", "Ridge Line", "Terra Firma Gear"] },
+            { prompt: "A bakery specializing in magical-themed desserts", names: ["The Enchanted Oven", "Wizard's Whisk", "Fey Fare"] },
+            { prompt: "A streaming service for indie horror films", names: ["ScreamBox", "The Midnight Hour", "Dread Central"] },
+            { prompt: "A company that leads Northern Lights tours", names: ["Aurora Chasers", "Polaris Expeditions", "Sky Fire Tours"] },
+            { prompt: "A high-tech, minimalist watch brand", names: ["Chronoform", "The Time Piece", "Momentum"] },
+            { prompt: "A line of organic dog treats", names: ["Pawsitive Eats", "The Good Hound", "Bark Naturals"] },
+            { prompt: "A journal app for lucid dreaming", names: ["Dream Weave", "The Oneironaut", "Lucid Log"] },
+            { prompt: "A speakeasy-style cocktail bar", names: ["The Gilded Lily", "Whisper & Rye", "The Alchemist's Folly"] }
         ];
         
         let dataIndex = 0;
