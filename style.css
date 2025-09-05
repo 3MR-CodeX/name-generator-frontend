@@ -355,9 +355,12 @@ body {
 body.animations-disabled #animation-layer,
 body.animations-disabled .animated-bar,
 body.animations-disabled #banner-background-effect,
-body.animations-disabled #name-stream-background {
+body.animations-disabled #name-stream-background,
+body.animations-disabled .tool-anim-svg * {
     animation: none !important;
-    display: none !important;
+}
+body.animations-disabled .tool-showcase-visual {
+    opacity: 0.5;
 }
 
 body.animations-disabled #banner-background-effect {
@@ -3012,6 +3015,11 @@ body[data-tier="business"] .surprise-btn:hover {
 .tool-anim-svg {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
+}
+/* Disabling browser-native SVG animation for CSS control */
+.tool-showcase-visual svg animate, 
+.tool-showcase-visual svg animateTransform {
+    display: none;
 }
 
 /* Why a Great Name Matters SVG */
