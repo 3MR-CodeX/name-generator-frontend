@@ -21,6 +21,21 @@
     </div>
 
     <div id="background-container">
+         <!-- NEW: Animated Background for Main Page -->
+        <div id="name-stream-background">
+            <div class="name-stream-row" style="--duration: 40s;">
+                <span>Brand</span><span>Podcast</span><span>NovaCore</span><span>A coffee shop on Mars</span><span>EmberTech</span><span>Game</span><span>Starlight</span><span>An AI that writes poetry</span><span>QuantumLeap</span>
+            </div>
+            <div class="name-stream-row reverse" style="--duration: 50s;">
+                <span>A mystical underwater facility</span><span>Aqua-Core</span><span>Project Triton</span><span>Website</span><span>Zenith</span><span>A cyberpunk detective agency</span><span>Synth-Shadow</span><span>Product</span>
+            </div>
+            <div class="name-stream-row" style="--duration: 35s;">
+                <span>Course</span><span>Ignite</span><span>A brand of eco-friendly sneakers</span><span>TerraTread</span><span>Startup</span><span>Momentum</span><span>A heavy metal-themed BBQ</span><span>Sizzle & Shred</span>
+            </div>
+             <div class="name-stream-row reverse" style="--duration: 45s;">
+                <span>A vintage clothing store</span><span>Retro Riffs</span><span>Service</span><span>Aether</span><span>A bakery with magical desserts</span><span>The Enchanted Oven</span><span>App</span><span>Pixelate</span>
+            </div>
+        </div>
         <div id="animation-layer"></div>
         <div class="background-pattern"></div>
     </div>
@@ -119,7 +134,7 @@
             </div>
         </div>
         
-        <!-- NEW Main Page View -->
+        <!-- UPDATED Main Page View -->
         <div id="main-page-view" class="hidden">
             <div class="main-page-hero">
                 <h1>The Future of Naming, Powered by AI</h1>
@@ -130,51 +145,115 @@
             </div>
 
             <div class="main-page-section">
-                <h2>A Tool for Every Creator</h2>
-                <div class="feature-highlight-grid">
-                    <div class="feature-highlight-card">
-                        <i class="fas fa-rocket"></i>
-                        <h3>For Entrepreneurs</h3>
-                        <p>Find unforgettable names for your startup, product, or service that resonate with your target market.</p>
+                <h2>Why a Great Name Matters</h2>
+                <div class="branding-explanation-container">
+                    <div class="branding-text">
+                        <h3>Your Name is Your First Impression</h3>
+                        <p>In a crowded digital world, a name is more than just a label—it's your story, your identity, and your promise to the customer, all distilled into a single word or phrase. A powerful name is memorable, easy to pronounce, and evokes the right emotions. It sets the foundation for your entire brand, influencing logos, marketing, and how people connect with your creation.</p>
+                        <h3>From Idea to Identity</h3>
+                        <p>Choosing the right name is a critical step that can significantly impact your success. A weak name can be forgettable or confusing, while a strong name can open doors and build instant credibility. NameIT is designed to bridge that gap, transforming your vision into a brand identity that stands out and resonates.</p>
                     </div>
-                    <div class="feature-highlight-card">
-                        <i class="fas fa-pencil-alt"></i>
-                        <h3>For Creatives</h3>
-                        <p>Discover unique names for your book, podcast, game, or art project that capture its true essence.</p>
-                    </div>
-                    <div class="feature-highlight-card">
-                        <i class="fas fa-code"></i>
-                        <h3>For Developers</h3>
-                        <p>Generate clever and available names for your app, website, or platform instantly.</p>
+                    <div class="branding-visual">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+                            <path d="M50 5C25.1 5 5 25.1 5 50s20.1 45 45 45 45-20.1 45-45S74.9 5 50 5z" stroke="url(#g1)" stroke-width="2"/>
+                            <path d="M50 12v12m-27 26h12m30 0h12M50 76v12M29.5 29.5l8.5 8.5M62 62l8.5 8.5M29.5 70.5l8.5-8.5M62 38l8.5-8.5" stroke="url(#g2)" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="50" cy="50" r="15" fill="url(#g3)"/>
+                            <defs>
+                                <radialGradient id="g3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 -15 15 0 50 50)">
+                                    <stop stop-color="var(--line-accent-glow)"/>
+                                    <stop offset="1" stop-color="var(--primary-accent)"/>
+                                </radialGradient>
+                                <linearGradient id="g1" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="var(--primary-accent)"/>
+                                    <stop offset="1" stop-color="var(--line-accent-default)"/>
+                                </linearGradient>
+                                <linearGradient id="g2" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="var(--secondary-accent)"/>
+                                    <stop offset="1" stop-color="var(--line-accent-default)"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
                     </div>
                 </div>
             </div>
 
-            <div class="main-page-section how-it-works-main">
-                <h2>How It Works</h2>
-                <div class="how-it-works-diagram">
-                    <div class="diagram-step-main">
-                        <div class="step-icon-main">1</div>
-                        <h3>Describe</h3>
-                        <p>Provide a description, keywords, and style.</p>
+            <div class="main-page-section">
+                <h2>Our Suite of AI Tools</h2>
+                <div class="tool-grid">
+                    <!-- Tool Card: Name Generator -->
+                    <div class="tool-card">
+                        <div class="tool-card-icon"><i class="fas fa-robot"></i></div>
+                        <h3>Name Generator</h3>
+                        <p>The core of our platform. Describe your idea, and our AI will generate a list of creative, context-aware names with explanations.</p>
+                        <div class="tool-card-diagram">
+                           <svg viewBox="0 0 100 50" class="tool-diagram-svg">
+                                <path d="M20 25h60" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
+                                <circle cx="15" cy="25" r="8" fill="var(--primary-accent)"/>
+                                <text x="15" y="28" text-anchor="middle" fill="white" font-size="8">💡</text>
+                                <rect x="75" y="10" width="15" height="5" rx="1" fill="var(--secondary-accent)"/>
+                                <rect x="75" y="22.5" width="15" height="5" rx="1" fill="var(--secondary-accent)"/>
+                                <rect x="75" y="35" width="15" height="5" rx="1" fill="var(--secondary-accent)"/>
+                           </svg>
+                        </div>
+                        <button class="tool-card-btn" data-view="generator">Go to Generator</button>
                     </div>
-                    <div class="diagram-arrow-main">&rarr;</div>
-                    <div class="diagram-step-main">
-                        <div class="step-icon-main">2</div>
-                        <h3>Generate</h3>
-                        <p>Our AI generates a list of creative, context-aware names.</p>
+                    <!-- Tool Card: Custom Refiner -->
+                    <div class="tool-card">
+                        <div class="tool-card-icon"><i class="fas fa-drafting-compass"></i></div>
+                        <h3>Custom Refiner</h3>
+                        <p>Already have a name? Provide it along with instructions to have our AI generate targeted variations and improvements.</p>
+                         <div class="tool-card-diagram">
+                           <svg viewBox="0 0 100 50" class="tool-diagram-svg">
+                                <path d="M40 25h20" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
+                                <rect x="10" y="20" width="30" height="10" rx="2" fill="var(--primary-accent)"/>
+                                <text x="25" y="27" text-anchor="middle" fill="white" font-size="5">Name</text>
+                                <rect x="60" y="10" width="30" height="10" rx="2" fill="var(--secondary-accent)"/>
+                                <rect x="60" y="30" width="30" height="10" rx="2" fill="var(--secondary-accent)"/>
+                           </svg>
+                        </div>
+                        <button class="tool-card-btn" data-view="refiner">Go to Refiner</button>
                     </div>
-                    <div class="diagram-arrow-main">&rarr;</div>
-                    <div class="diagram-step-main">
-                        <div class="step-icon-main">3</div>
-                        <h3>Refine & Analyze</h3>
-                        <p>Use premium tools to perfect your name and check availability.</p>
+                    <!-- Tool Card: Availability Checker -->
+                    <div class="tool-card">
+                        <div class="tool-card-icon"><i class="fas fa-search-dollar"></i></div>
+                        <h3>Availability Checker</h3>
+                        <p>Check if your name is available across dozens of social media platforms and domain extensions instantly.</p>
+                         <div class="tool-card-diagram">
+                           <svg viewBox="0 0 100 50" class="tool-diagram-svg">
+                                <rect x="10" y="20" width="30" height="10" rx="2" fill="var(--primary-accent)"/>
+                                <text x="25" y="27" text-anchor="middle" fill="white" font-size="5">Name</text>
+                                <path d="M40 25 l15 -10" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
+                                <path d="M40 25 l15 10" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
+                                <text x="65" y="15" text-anchor="middle" fill="#50fa7b" font-size="8">.com ✅</text>
+                                <text x="70" y="40" text-anchor="middle" fill="#ff5555" font-size="8">Social ❌</text>
+                           </svg>
+                        </div>
+                        <button class="tool-card-btn" data-view="availability-checker">Go to Checker</button>
+                    </div>
+                     <!-- Tool Card: Name Analyzer -->
+                    <div class="tool-card">
+                        <div class="tool-card-icon"><i class="fas fa-microscope"></i></div>
+                        <h3>Name Analyzer</h3>
+                        <p>Get an AI-powered brandability check, audience persona analysis, and see how your name resonates with target markets.</p>
+                         <div class="tool-card-diagram">
+                           <svg viewBox="0 0 100 50" class="tool-diagram-svg">
+                                <path d="M20 25h60" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
+                                <circle cx="15" cy="25" r="8" fill="var(--primary-accent)"/>
+                                <text x="15" y="28" text-anchor="middle" fill="white" font-size="8">A+</text>
+                                <path d="M80 15 v20" stroke-width="3" stroke="var(--secondary-accent)" stroke-linecap="round"/>
+                                <path d="M85 25 v10" stroke-width="3" stroke="#aaa" stroke-linecap="round"/>
+                                <path d="M90 20 v15" stroke-width="3" stroke="#aaa" stroke-linecap="round"/>
+                           </svg>
+                        </div>
+                        <button class="tool-card-btn" data-view="name-analyzer">Go to Analyzer</button>
                     </div>
                 </div>
             </div>
         </div>
 
+
         <div id="main-generator-view" class="hidden">
+            <h1>Name Generating</h1>
             <p class="description">Name anything — a product, brand, place, company, video, or even a new word. Then refine it instantly.</p>
             <div id="verification-notice" class="hidden"></div>
             
@@ -1080,4 +1159,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
