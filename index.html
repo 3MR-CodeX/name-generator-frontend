@@ -168,12 +168,23 @@
                         <p>Choosing the right name is a critical step that can significantly impact your success. A weak name can be forgettable or confusing, while a strong name can open doors and build instant credibility. NameIT is designed to bridge that gap, transforming your vision into a brand identity that stands out and resonates.</p>
                     </div>
                     <div class="branding-visual">
-                         <svg class="branding-svg" width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <circle class="branding-circle" cx="100" cy="100" r="80" fill="none" stroke-width="2" stroke-dasharray="5,5"/>
-                            <path class="branding-brain" d="M80 80 Q100 60 120 80 Q140 100 120 120 Q100 140 80 120 Q60 100 80 80" fill="none" stroke-width="4"/>
-                            <text class="branding-name" x="100" y="100" font-size="12" text-anchor="middle">Innovate</text>
-                            <text class="branding-name" x="100" y="100" font-size="12" text-anchor="middle">Connect</text>
-                            <text class="branding-name" x="100" y="100" font-size="12" text-anchor="middle">Inspire</text>
+                         <svg class="branding-svg-redesigned" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <path class="branding-path" d="M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100" fill="none" stroke-width="2"/>
+                            <circle class="branding-spark" cx="50" cy="100" r="4"/>
+                            <g class="branding-text-group">
+                                <text x="100" y="95" text-anchor="middle">Brand</text>
+                                <text x="100" y="95" text-anchor="middle">Spark</text>
+                                <text x="100" y="95" text-anchor="middle">Connect</text>
+                            </g>
                         </svg>
                     </div>
                 </div>
@@ -191,32 +202,33 @@
                             <button class="tool-card-btn" data-view="generator">Launch Generator</button>
                         </div>
                         <div class="tool-showcase-visual">
-                           <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <clipPath id="gen-clip">
-                                        <rect class="gen-anim-rect" y="20" width="250" height="20" />
-                                    </clipPath>
-                                </defs>
-                                <text class="gen-anim-desc" x="5" y="35" font-size="16" clip-path="url(#gen-clip)">A coffee shop on Mars...</text>
-                                <text class="gen-anim-name" x="10" y="60" font-size="14">Red Planet Roast</text>
-                                <text class="gen-anim-name" x="10" y="80" font-size="14">Olympus Grind</text>
+                            <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <rect class="prompt-box" x="20" y="20" width="260" height="30" rx="4"/>
+                                <text class="prompt-text" x="30" y="40">
+                                    <tspan class="prompt-tspan">A coffee shop on Mars...</tspan>
+                                    <tspan class="prompt-tspan">An app for lucid dreaming...</tspan>
+                                    <tspan class="prompt-tspan">A brand of eco-sneakers...</tspan>
+                                </text>
+                                <g class="output-group">
+                                    <text class="output-text" y="80">Red Planet Roast</text>
+                                    <text class="output-text" y="105">Dream Weave</text>
+                                    <text class="output-text" y="130">TerraTread</text>
+                                </g>
                             </svg>
                         </div>
                     </div>
 
                     <!-- Tool Showcase: Custom Refiner -->
                     <div class="tool-showcase-item">
-                         <div class="tool-showcase-visual">
-                            <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <clipPath id="refine-clip">
-                                        <rect class="refiner-context-rect" x="100" y="20" width="150" height="20" />
-                                    </clipPath>
-                                </defs>
-                                <text class="refiner-base" x="10" y="35" font-size="16">AquaTech</text>
-                                <text class="refiner-context-text" x="105" y="35" font-size="16" clip-path="url(#refine-clip)">Make it more elegant...</text>
-                                <text class="refiner-refined" x="10" y="60" font-size="14">Aquantis</text>
-                                <text class="refiner-refined" x="10" y="80" font-size="14">AquaLuxe</text>
+                        <div class="tool-showcase-visual">
+                             <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <text class="refiner-base-text" x="150" y="40" text-anchor="middle">AquaTech</text>
+                                <g class="refiner-arrow-group">
+                                    <path d="M 150,60 L 150,80"/>
+                                    <path d="M 145,75 L 150,80 L 155,75"/>
+                                </g>
+                                <text class="refiner-instruction" x="150" y="100" text-anchor="middle">"Make it more elegant"</text>
+                                <text class="refiner-result-text" x="150" y="130" text-anchor="middle">Aquantis</text>
                             </svg>
                         </div>
                         <div class="tool-showcase-text">
@@ -234,21 +246,35 @@
                             <button class="tool-card-btn" data-view="availability-checker">Launch Checker</button>
                         </div>
                         <div class="tool-showcase-visual">
-                            <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
-                                <text class="checker-name" x="10" y="35" font-size="16">PixelVibe.com</text>
-                                <text class="checker-status checker-avail" x="10" y="60" font-size="14">✓ Available</text>
-                                <text class="checker-status checker-taken" x="10" y="80" font-size="14">✗ Taken</text>
+                             <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <text class="checker-text-input" x="150" y="40" text-anchor="middle">PixelVibe</text>
+                                <g class="checker-item" transform="translate(60, 80)">
+                                    <circle cx="10" cy="10" r="10"/>
+                                    <path class="checker-check" d="M 6,10 L 9,13 L 14,8"/>
+                                </g>
+                                <g class="checker-item" transform="translate(130, 80)">
+                                    <circle cx="10" cy="10" r="10"/>
+                                    <path class="checker-cross" d="M 6,6 L 14,14 M 14,6 L 6,14"/>
+                                </g>
+                                <g class="checker-item" transform="translate(200, 80)">
+                                    <circle cx="10" cy="10" r="10"/>
+                                    <path class="checker-check" d="M 6,10 L 9,13 L 14,8"/>
+                                </g>
                             </svg>
                         </div>
                     </div>
 
                     <!-- Tool Showcase: Name Analyzer -->
                     <div class="tool-showcase-item">
-                         <div class="tool-showcase-visual">
-                             <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
-                                <text class="analyzer-name" x="10" y="35" font-size="16">Zenith</text>
-                                <text class="analyzer-rating" x="10" y="60" font-size="14">Memorability: 9/10</text>
-                                <text class="analyzer-rating" x="10" y="80" font-size="14">Uniqueness: 10/10</text>
+                        <div class="tool-showcase-visual">
+                             <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <path class="analyzer-glass" d="M110,60 A40,40 0 1,1 190,60 A40,40 0 1,1 110,60 Z M175,90 L220,135"/>
+                                <text class="analyzer-name-text" x="70" y="65">Zenith</text>
+                                <g class="analyzer-bars">
+                                    <rect x="50" y="100" width="20" height="0"/>
+                                    <rect x="80" y="100" width="20" height="0"/>
+                                    <rect x="110" y="100" width="20" height="0"/>
+                                </g>
                             </svg>
                         </div>
                         <div class="tool-showcase-text">
@@ -266,17 +292,16 @@
                             <button class="tool-card-btn" data-view="summarizer">Launch Summarizer</button>
                         </div>
                         <div class="tool-showcase-visual">
-                            <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="tool-anim-svg" viewBox="0 0 300 150">
                                 <defs>
-                                    <clipPath id="summary-clip">
-                                        <rect class="summarizer-rect" y="20" width="250" height="60" />
+                                    <clipPath id="summarizer-clip">
+                                        <rect class="summarizer-clip-rect" x="30" y="20" width="240" height="80"/>
                                     </clipPath>
                                 </defs>
-                                <text clip-path="url(#summary-clip)">
-                                    <tspan class="summarizer-text" x="0" y="35" font-size="14">An intelligent suite of tools designed to</tspan>
-                                    <tspan class="summarizer-text" x="0" y="55" font-size="14">streamline your creative process...</tspan>
-                                </text>
-                                <text class="summarizer-result" x="10" y="100" font-size="16">Creative AI Naming</text>
+                                <g clip-path="url(#summarizer-clip)">
+                                    <path class="summarizer-lines" d="M30 30 h240 M30 50 h240 M30 70 h240 M30 90 h240"/>
+                                </g>
+                                <text class="summarizer-result-text" x="150" y="125" text-anchor="middle">Creative AI Naming</text>
                             </svg>
                         </div>
                     </div>
@@ -284,11 +309,11 @@
                     <!-- Tool Showcase: Combiner -->
                     <div class="tool-showcase-item">
                         <div class="tool-showcase-visual">
-                            <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
-                              <text class="combiner-word combiner-word-1" x="10" y="35" font-size="14">Photo</text>
-                              <text class="combiner-word combiner-word-2" x="60" y="35" font-size="14">Synth</text>
-                              <text class="combiner-word combiner-word-3" x="110" y="35" font-size="14">Vision</text>
-                              <text class="combiner-result" x="10" y="70" font-size="20">Photosynth</text>
+                            <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <text class="combiner-word-anim" x="60" y="50">Photo</text>
+                                <text class="combiner-word-anim" x="150" y="50">+</text>
+                                <text class="combiner-word-anim" x="240" y="50">Synth</text>
+                                <text class="combiner-result-anim" x="150" y="110" text-anchor="middle">Photosynth</text>
                             </svg>
                         </div>
                         <div class="tool-showcase-text">
