@@ -385,6 +385,17 @@ function setupEventListeners() {
     if (contactForm) {
         contactForm.addEventListener('submit', handleContactFormSubmit);
     }
+    
+    // Listen for clicks on the main page tool buttons
+    document.querySelectorAll('.tool-card-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const viewName = button.dataset.view;
+            if (viewName) {
+                showView(viewName);
+            }
+        });
+    });
+
 
     // Settings event listeners
     if (themeSelect) themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
@@ -407,6 +418,15 @@ function setupEventListeners() {
     setTimeout(() => { // Use timeout to ensure components are loaded
         const buyCreditsShortcutBtn = document.getElementById('buy-credits-shortcut-btn');
         const tierDropdown = document.getElementById("tier-dropdown");
+        
+        // **NEW**: Make topbar title clickable to go home
+        const topbarTitleLink = document.getElementById('topbar-title-link');
+        if (topbarTitleLink) {
+            topbarTitleLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showView('main-page');
+            });
+        }
 
         if (buyCreditsShortcutBtn) {
             buyCreditsShortcutBtn.addEventListener('click', () => { 
@@ -477,6 +497,17 @@ function showView(viewName) {
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
     });
+    
+    // **NEW**: Control visibility of the name-stream background
+    const nameStreamBg = document.getElementById('name-stream-background');
+    if (nameStreamBg) {
+        if (viewName === 'main-page') {
+            nameStreamBg.classList.add('visible');
+        } else {
+            nameStreamBg.classList.remove('visible');
+        }
+    }
+
 
     // Logic to hide generator-specific elements when not on the generator page
     const generatorSpecificElements = [outputContainer, refineSection, refineButtonSection, refinedOutputs, recentHistorySection];
@@ -1599,7 +1630,6 @@ function renderAnalysisResults(data) {
                 <h4>Alternative Suggestions</h4>
                 <ul>
                     ${data.alternative_names.map(item => `<li><strong>${item.name}:</strong> ${item.reason}</li>`).join('')}
-                </ul>
    
              </div>
         `;
@@ -2239,4 +2269,3 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
-
