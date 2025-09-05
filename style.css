@@ -2985,8 +2985,9 @@ body[data-tier="business"] .surprise-btn:hover {
 .name-stream-row:nth-child(2) { top: 25%; font-size: 1.5em; }
 .name-stream-row:nth-child(3) { top: 45%; font-size: 2em; }
 .name-stream-row:nth-child(4) { top: 65%; font-size: 1.6em; }
-.name-stream-row:nth-child(5) { top: 85%; font-size: 1.9em; animation-direction: reverse; --duration: 55s; }
-.name-stream-row:nth-child(6) { top: 15%; font-size: 1.4em; --duration: 60s; }
+.name-stream-row:nth-child(5) { top: 85%; font-size: 1.9em; }
+.name-stream-row:nth-child(6) { top: 15%; font-size: 1.4em; }
+.name-stream-row:nth-child(7) { top: 75%; font-size: 1.7em; }
 
 
 .name-stream-row span {
@@ -3064,7 +3065,6 @@ body[data-tier="business"] .surprise-btn:hover {
 .analyzer-name { fill: var(--primary-accent); animation: analyzer-flicker 8s linear infinite; }
 .analyzer-rating { fill: var(--secondary-accent); opacity: 0; animation: rating-appear 8s linear infinite 2s; }
 .analyzer-rating:nth-of-type(2) { animation-delay: 2.5s; }
-.analyzer-rating:nth-of-type(3) { animation-delay: 3s; }
 
 @keyframes analyzer-flicker {
     0%, 25%, 100% { opacity: 1; }
