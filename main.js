@@ -54,6 +54,7 @@ const DOMAIN_OPTIONS = {
 };
 
 const BACKGROUND_ANIMATIONS = {
+    'default': 'name-stream', // NEW
     'pattern1': 'default', 'pattern2': 'default', 'pattern3': 'default',
     'pattern4': 'circles', 'pattern5': 'circles', 'pattern6': 'circles',
     'pattern7': 'sliding-bar', 'pattern8': 'sliding-bar',
@@ -498,16 +499,13 @@ function showView(viewName) {
         if (view) view.classList.add('hidden');
     });
     
-    // **NEW**: Control visibility of the name-stream background
-    const nameStreamBg = document.getElementById('name-stream-background');
-    if (nameStreamBg) {
-        if (viewName === 'main-page') {
-            nameStreamBg.classList.add('visible');
-        } else {
-            nameStreamBg.classList.remove('visible');
-        }
-    }
+    // Hide all main page content by default
+    const backgroundContainer = document.getElementById('background-container');
+    if(backgroundContainer) backgroundContainer.classList.remove('main-page-mode');
 
+    if (viewName === 'main-page') {
+        if(backgroundContainer) backgroundContainer.classList.add('main-page-mode');
+    }
 
     // Logic to hide generator-specific elements when not on the generator page
     const generatorSpecificElements = [outputContainer, refineSection, refineButtonSection, refinedOutputs, recentHistorySection];
@@ -1978,7 +1976,7 @@ function renderCombinerHistory() {
 function initializeSettings() {
     const settings = {
         theme: localStorage.getItem('nameit-theme') || 'synthwave',
-        background: localStorage.getItem('nameit-background') || 'pattern1',
+        background: localStorage.getItem('nameit-background') || 'default', // Set new default
         font: localStorage.getItem('nameit-font') || "'Roboto', sans-serif",
         fontSize: localStorage.getItem('nameit-fontSize') || '100',
         resultsFont: localStorage.getItem('nameit-results-font') || "'Roboto', sans-serif",
@@ -2032,84 +2030,94 @@ window.addEventListener('hashchange', handleHashChange);
 function applyBackground(patternName, save = true) {
     if (save) localStorage.setItem('nameit-background', patternName);
 
+    const nameStreamBg = document.getElementById('name-stream-background');
     const patternElement = document.querySelector('.background-pattern');
     const animationLayer = document.getElementById('animation-layer');
-    if (!patternElement || !animationLayer) return;
+    if (!patternElement || !animationLayer || !nameStreamBg) return;
 
     // Clear previous timers regardless
     if (animationLayer.timerId) clearTimeout(animationLayer.timerId);
     if (animationLayer.circleTimerId) clearInterval(animationLayer.circleTimerId);
-
-    // If animations are disabled, clear the layer and exit
+    
+    // Hide all background elements initially to prevent flicker
+    nameStreamBg.style.display = 'none';
+    patternElement.style.backgroundImage = 'none';
+    animationLayer.innerHTML = ''; 
+    
+    // If animations are disabled, just show the static pattern (or nothing for default)
     if (document.body.classList.contains('animations-disabled')) {
-        animationLayer.innerHTML = '';
-        patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
+        if (patternName !== 'default') {
+            patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
+        }
         return;
     }
-
-    patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
     
-    animationLayer.innerHTML = ''; // Clear old animation elements
-
-    const animationType = BACKGROUND_ANIMATIONS[patternName];
-    let htmlToSet = '';
-
-    const createRandomCircle = () => {
-        if (animationLayer.innerHTML !== '' && !animationLayer.querySelector('.drifting-circle')) return;
-        animationLayer.innerHTML = ''; 
-        const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const size = Math.random() * 300 + 400;
-        const xStart = `${Math.random() * 100}vw`, yStart = `${Math.random() * 100}vh`;
-        const xEnd = `${Math.random() * 100}vw`, yEnd = `${Math.random() * 100}vh`;
-
-        const circle = document.createElement('div');
-        circle.className = 'drifting-circle';
-        circle.style.cssText = `width: ${size}px; height: ${size}px; background-color: ${randomColor}; --x-start: ${xStart}; --y-start: ${yStart}; --x-end: ${xEnd}; --y-end: ${yEnd};`;
-        animationLayer.appendChild(circle);
-    };
-
-    const createRandomFlicker = () => {
-        const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)', '#ffffff'];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const size = 400 * 1.5 + Math.random() * 200;
+    // Logic for which background to show
+    if (patternName === 'default') {
+        nameStreamBg.style.display = 'block';
+    } else {
+        patternElement.style.backgroundImage = `url('background-patterns/${patternName}.png')`;
         
-        const spot = document.createElement('div');
-        spot.className = 'flicker-spot';
-        spot.style.cssText = `width: ${size}px; height: ${size}px; top: ${Math.random() * 100}%; left: ${Math.random() * 100}%; background-color: ${randomColor};`;
-        animationLayer.appendChild(spot);
+        const animationType = BACKGROUND_ANIMATIONS[patternName];
+        let htmlToSet = '';
 
-        setTimeout(() => spot.remove(), 500);
-        animationLayer.timerId = setTimeout(createRandomFlicker, Math.random() * 2500 + 500);
-    };
-    
-    switch (animationType) {
-        case 'default':
-            htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
-            break;
-        case 'circles':
-            createRandomCircle();
-            animationLayer.circleTimerId = setInterval(createRandomCircle, 10000);
-            break;
-        case 'sliding-bar':
-            htmlToSet = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
-            break;
-        case 'color-shift':
-            htmlToSet = `<div class="color-shift-bg"></div>`;
-            break;
-        case 'color-shifting-bar':
-            htmlToSet = `<div class="color-shifting-bar"></div>`;
-            break;
-        case 'random-flicker':
-            createRandomFlicker();
-            break;
-        case 'vertical-crossing-bars':
-            htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
-            break;
-    }
-    
-    if (htmlToSet) {
-        animationLayer.innerHTML = htmlToSet;
+        const createRandomCircle = () => {
+            if (animationLayer.innerHTML !== '' && !animationLayer.querySelector('.drifting-circle')) return;
+            animationLayer.innerHTML = ''; 
+            const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 300 + 400;
+            const xStart = `${Math.random() * 100}vw`, yStart = `${Math.random() * 100}vh`;
+            const xEnd = `${Math.random() * 100}vw`, yEnd = `${Math.random() * 100}vh`;
+
+            const circle = document.createElement('div');
+            circle.className = 'drifting-circle';
+            circle.style.cssText = `width: ${size}px; height: ${size}px; background-color: ${randomColor}; --x-start: ${xStart}; --y-start: ${yStart}; --x-end: ${xEnd}; --y-end: ${yEnd};`;
+            animationLayer.appendChild(circle);
+        };
+
+        const createRandomFlicker = () => {
+            const colors = ['var(--line-accent-glow)', 'var(--primary-accent)', 'var(--line-accent-default)', '#ffffff'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const size = 400 * 1.5 + Math.random() * 200;
+            
+            const spot = document.createElement('div');
+            spot.className = 'flicker-spot';
+            spot.style.cssText = `width: ${size}px; height: ${size}px; top: ${Math.random() * 100}%; left: ${Math.random() * 100}%; background-color: ${randomColor};`;
+            animationLayer.appendChild(spot);
+
+            setTimeout(() => spot.remove(), 500);
+            animationLayer.timerId = setTimeout(createRandomFlicker, Math.random() * 2500 + 500);
+        };
+        
+        switch (animationType) {
+            case 'default':
+                htmlToSet = `<div class="sweep-bar left"></div><div class="sweep-bar right"></div>`;
+                break;
+            case 'circles':
+                createRandomCircle();
+                animationLayer.circleTimerId = setInterval(createRandomCircle, 10000);
+                break;
+            case 'sliding-bar':
+                htmlToSet = `<div class="sliding-bar" style="animation-delay: -${Math.random() * 12}s;"></div>`;
+                break;
+            case 'color-shift':
+                htmlToSet = `<div class="color-shift-bg"></div>`;
+                break;
+            case 'color-shifting-bar':
+                htmlToSet = `<div class="color-shifting-bar"></div>`;
+                break;
+            case 'random-flicker':
+                createRandomFlicker();
+                break;
+            case 'vertical-crossing-bars':
+                htmlToSet = `<div class="vertical-crossing-bar top"></div><div class="vertical-crossing-bar bottom"></div>`;
+                break;
+        }
+        
+        if (htmlToSet) {
+            animationLayer.innerHTML = htmlToSet;
+        }
     }
 }
 
@@ -2157,7 +2165,7 @@ function applyAnimationSetting(enabled, save = true) {
     window.dispatchEvent(new CustomEvent('animationSettingsChanged', { detail: { enabled } }));
     
     // Re-apply background to respect the new animation setting
-    const currentBg = localStorage.getItem('nameit-background') || 'pattern1';
+    const currentBg = localStorage.getItem('nameit-background') || 'default';
     applyBackground(currentBg, false);
 }
 
@@ -2269,3 +2277,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
