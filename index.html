@@ -21,19 +21,18 @@
     </div>
 
     <div id="background-container">
-         <!-- NEW: Animated Background for Main Page -->
         <div id="name-stream-background">
             <div class="name-stream-row" style="--duration: 40s;">
-                <span>Brand</span><span>Podcast</span><span>NovaCore</span><span>A coffee shop on Mars</span><span>EmberTech</span><span>Game</span><span>Starlight</span><span>An AI that writes poetry</span><span>QuantumLeap</span>
+                <span class="name-highlight">Brand</span><span class="name-highlight">Podcast</span><span class="name-highlight">NovaCore</span><span>A coffee shop on Mars</span><span class="name-highlight">EmberTech</span><span class="name-highlight">Game</span><span class="name-highlight">Starlight</span><span>An AI that writes poetry</span><span class="name-highlight">QuantumLeap</span>
             </div>
             <div class="name-stream-row reverse" style="--duration: 50s;">
-                <span>A mystical underwater facility</span><span>Aqua-Core</span><span>Project Triton</span><span>Website</span><span>Zenith</span><span>A cyberpunk detective agency</span><span>Synth-Shadow</span><span>Product</span>
+                <span>A mystical underwater facility</span><span class="name-highlight">Aqua-Core</span><span class="name-highlight">Project Triton</span><span class="name-highlight">Website</span><span class="name-highlight">Zenith</span><span>A cyberpunk detective agency</span><span class="name-highlight">Synth-Shadow</span><span class="name-highlight">Product</span>
             </div>
             <div class="name-stream-row" style="--duration: 35s;">
-                <span>Course</span><span>Ignite</span><span>A brand of eco-friendly sneakers</span><span>TerraTread</span><span>Startup</span><span>Momentum</span><span>A heavy metal-themed BBQ</span><span>Sizzle & Shred</span>
+                <span class="name-highlight">Course</span><span class="name-highlight">Ignite</span><span>A brand of eco-friendly sneakers</span><span class="name-highlight">TerraTread</span><span class="name-highlight">Startup</span><span class="name-highlight">Momentum</span><span>A heavy metal-themed BBQ</span><span class="name-highlight">Sizzle & Shred</span>
             </div>
              <div class="name-stream-row reverse" style="--duration: 45s;">
-                <span>A vintage clothing store</span><span>Retro Riffs</span><span>Service</span><span>Aether</span><span>A bakery with magical desserts</span><span>The Enchanted Oven</span><span>App</span><span>Pixelate</span>
+                <span>A vintage clothing store</span><span class="name-highlight">Retro Riffs</span><span class="name-highlight">Service</span><span class="name-highlight">Aether</span><span>A bakery with magical desserts</span><span class="name-highlight">The Enchanted Oven</span><span class="name-highlight">App</span><span class="name-highlight">Pixelate</span>
             </div>
         </div>
         <div id="animation-layer"></div>
@@ -137,11 +136,16 @@
         <!-- UPDATED Main Page View -->
         <div id="main-page-view" class="hidden">
             <div class="main-page-hero">
-                <h1>The Future of Naming, Powered by AI</h1>
+                <h1>The Future of <span class="highlight-word">Naming</span>, Powered by AI</h1>
                 <p class="description">Go from a spark of an idea to the perfect, brandable name in seconds. NameIT is your creative partner for naming anything and everything.</p>
                 <button id="go-to-generator-btn" class="generate-btn main-page-cta">
                     <i class="fas fa-play-circle"></i> Start Generating
                 </button>
+            </div>
+
+             <div class="main-page-section">
+                <h2>What is NameIT?</h2>
+                <p class="section-intro-text">NameIT is an intelligent suite of tools designed to streamline your creative process. It's more than just a generator; it's a comprehensive naming and branding assistant. By leveraging advanced AI, we help you brainstorm unique ideas, refine them to perfection, analyze their market potential, and check their availability across the digital landscape—all in one seamless workflow.</p>
             </div>
 
             <div class="main-page-section">
@@ -154,24 +158,18 @@
                         <p>Choosing the right name is a critical step that can significantly impact your success. A weak name can be forgettable or confusing, while a strong name can open doors and build instant credibility. NameIT is designed to bridge that gap, transforming your vision into a brand identity that stands out and resonates.</p>
                     </div>
                     <div class="branding-visual">
-                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-                            <path d="M50 5C25.1 5 5 25.1 5 50s20.1 45 45 45 45-20.1 45-45S74.9 5 50 5z" stroke="url(#g1)" stroke-width="2"/>
-                            <path d="M50 12v12m-27 26h12m30 0h12M50 76v12M29.5 29.5l8.5 8.5M62 62l8.5 8.5M29.5 70.5l8.5-8.5M62 38l8.5-8.5" stroke="url(#g2)" stroke-width="2" stroke-linecap="round"/>
-                            <circle cx="50" cy="50" r="15" fill="url(#g3)"/>
+                         <svg class="branding-svg" viewBox="0 0 100 100">
                             <defs>
-                                <radialGradient id="g3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 -15 15 0 50 50)">
-                                    <stop stop-color="var(--line-accent-glow)"/>
-                                    <stop offset="1" stop-color="var(--primary-accent)"/>
-                                </radialGradient>
-                                <linearGradient id="g1" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="var(--primary-accent)"/>
-                                    <stop offset="1" stop-color="var(--line-accent-default)"/>
-                                </linearGradient>
-                                <linearGradient id="g2" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="var(--secondary-accent)"/>
-                                    <stop offset="1" stop-color="var(--line-accent-default)"/>
+                                <linearGradient id="brand-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="var(--primary-accent)" />
+                                    <stop offset="100%" stop-color="var(--line-accent-default)" />
                                 </linearGradient>
                             </defs>
+                            <path class="brain-path" d="M49.3,21.5c-6.8,0-10.4,2.5-13.8,5.4c-4.3,3.7-6.5,8.8-5.3,14.3c0.8,3.7,3.1,6.5,3.1,6.5c-2.3,1.8-3.1,4.8-2,7.3 c1.1,2.5,3.7,4,6.5,4c2.8,0,5.4-1.5,6.5-4c0.8-1.8,0.7-3.9-0.2-5.7c-0.1-0.2-0.2-0.3-0.2-0.5c0-0.9,0.7-1.6,1.6-1.6h2.6 c0.9,0,1.6,0.7,1.6,1.6c0,0.1-0.1,0.3-0.2,0.5c-0.9,1.8-1,3.9-0.2,5.7c1.1,2.5,3.7,4,6.5,4c2.8,0,5.4-1.5,6.5-4 c1.1-2.5,0.3-5.5-2-7.3c0,0,2.3-2.8,3.1-6.5c1.2-5.5-1-10.6-5.3-14.3C59.7,24,56.1,21.5,49.3,21.5z" />
+                            <path class="idea-path" d="M75,25 L80,30 L85,25" stroke="url(#brand-gradient)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <path class="idea-path" d="M25,25 L20,30 L15,25" stroke="url(#brand-gradient)" stroke-width="2" fill="none" stroke-linecap="round" />
+                            <circle class="logo-circle" cx="80" cy="65" r="10" stroke="url(#brand-gradient)" stroke-width="2" fill="none"/>
+                            <text class="logo-text" x="80" y="68" text-anchor="middle" fill="url(#brand-gradient)">N</text>
                         </svg>
                     </div>
                 </div>
@@ -179,78 +177,117 @@
 
             <div class="main-page-section">
                 <h2>Our Suite of AI Tools</h2>
-                <div class="tool-grid">
-                    <!-- Tool Card: Name Generator -->
-                    <div class="tool-card">
-                        <div class="tool-card-icon"><i class="fas fa-robot"></i></div>
-                        <h3>Name Generator</h3>
-                        <p>The core of our platform. Describe your idea, and our AI will generate a list of creative, context-aware names with explanations.</p>
-                        <div class="tool-card-diagram">
-                           <svg viewBox="0 0 100 50" class="tool-diagram-svg">
-                                <path d="M20 25h60" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
-                                <circle cx="15" cy="25" r="8" fill="var(--primary-accent)"/>
-                                <text x="15" y="28" text-anchor="middle" fill="white" font-size="8">💡</text>
-                                <rect x="75" y="10" width="15" height="5" rx="1" fill="var(--secondary-accent)"/>
-                                <rect x="75" y="22.5" width="15" height="5" rx="1" fill="var(--secondary-accent)"/>
-                                <rect x="75" y="35" width="15" height="5" rx="1" fill="var(--secondary-accent)"/>
-                           </svg>
+                <div class="tool-showcase-container">
+                    
+                    <!-- Tool Showcase: Generator -->
+                    <div class="tool-showcase-item">
+                        <div class="tool-showcase-text">
+                            <h3><i class="fas fa-robot"></i> Name Generator</h3>
+                            <p>The core of NameIT. Simply provide a description of your idea, add optional keywords, and select a style. Our AI delves into the context to produce a curated list of creative, relevant names, each with a detailed explanation of its meaning and potential.</p>
+                            <button class="tool-card-btn" data-view="generator">Launch Generator</button>
                         </div>
-                        <button class="tool-card-btn" data-view="generator">Go to Generator</button>
-                    </div>
-                    <!-- Tool Card: Custom Refiner -->
-                    <div class="tool-card">
-                        <div class="tool-card-icon"><i class="fas fa-drafting-compass"></i></div>
-                        <h3>Custom Refiner</h3>
-                        <p>Already have a name? Provide it along with instructions to have our AI generate targeted variations and improvements.</p>
-                         <div class="tool-card-diagram">
-                           <svg viewBox="0 0 100 50" class="tool-diagram-svg">
-                                <path d="M40 25h20" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
-                                <rect x="10" y="20" width="30" height="10" rx="2" fill="var(--primary-accent)"/>
-                                <text x="25" y="27" text-anchor="middle" fill="white" font-size="5">Name</text>
-                                <rect x="60" y="10" width="30" height="10" rx="2" fill="var(--secondary-accent)"/>
-                                <rect x="60" y="30" width="30" height="10" rx="2" fill="var(--secondary-accent)"/>
-                           </svg>
+                        <div class="tool-showcase-visual">
+                            <svg class="tool-anim-svg" viewBox="0 0 100 100">
+                                <path class="gen-path-1" d="M50 20 C 40 20, 35 30, 35 35 S 40 50, 50 50 S 65 40, 65 35 S 60 20, 50 20 Z" fill="none" stroke="#aaa" stroke-width="1"/>
+                                <path class="gen-path-2" d="M50 50 L 50 60" stroke="#aaa" stroke-width="1"/>
+                                <rect class="gen-base" x="40" y="60" width="20" height="5" rx="2" fill="#aaa"/>
+                                <line class="gen-ray" x1="50" y1="15" x2="50" y2="5" />
+                                <line class="gen-ray" x1="35" y1="22" x2="25" y2="15" />
+                                <line class="gen-ray" x1="65" y1="22" x2="75" y2="15" />
+                                <text class="gen-name" x="50" y="80" text-anchor="middle">Nova</text>
+                                <text class="gen-name" x="50" y="90" text-anchor="middle">Aether</text>
+                            </svg>
                         </div>
-                        <button class="tool-card-btn" data-view="refiner">Go to Refiner</button>
                     </div>
-                    <!-- Tool Card: Availability Checker -->
-                    <div class="tool-card">
-                        <div class="tool-card-icon"><i class="fas fa-search-dollar"></i></div>
-                        <h3>Availability Checker</h3>
-                        <p>Check if your name is available across dozens of social media platforms and domain extensions instantly.</p>
-                         <div class="tool-card-diagram">
-                           <svg viewBox="0 0 100 50" class="tool-diagram-svg">
-                                <rect x="10" y="20" width="30" height="10" rx="2" fill="var(--primary-accent)"/>
-                                <text x="25" y="27" text-anchor="middle" fill="white" font-size="5">Name</text>
-                                <path d="M40 25 l15 -10" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
-                                <path d="M40 25 l15 10" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
-                                <text x="65" y="15" text-anchor="middle" fill="#50fa7b" font-size="8">.com ✅</text>
-                                <text x="70" y="40" text-anchor="middle" fill="#ff5555" font-size="8">Social ❌</text>
-                           </svg>
+
+                    <!-- Tool Showcase: Custom Refiner -->
+                    <div class="tool-showcase-item">
+                         <div class="tool-showcase-visual">
+                             <svg class="tool-anim-svg" viewBox="0 0 100 100">
+                                <polygon class="ref-gem-before" points="50 15, 20 40, 30 85, 70 85, 80 40" />
+                                <polygon class="ref-gem-after" points="50 15, 20 40, 30 85, 70 85, 80 40" />
+                                <path class="ref-sparkle" d="M80 20 L 90 25 L 80 30 L 75 20 Z" />
+                                <path class="ref-sparkle" d="M15 50 L 25 55 L 15 60 L 10 50 Z" />
+                            </svg>
                         </div>
-                        <button class="tool-card-btn" data-view="availability-checker">Go to Checker</button>
-                    </div>
-                     <!-- Tool Card: Name Analyzer -->
-                    <div class="tool-card">
-                        <div class="tool-card-icon"><i class="fas fa-microscope"></i></div>
-                        <h3>Name Analyzer</h3>
-                        <p>Get an AI-powered brandability check, audience persona analysis, and see how your name resonates with target markets.</p>
-                         <div class="tool-card-diagram">
-                           <svg viewBox="0 0 100 50" class="tool-diagram-svg">
-                                <path d="M20 25h60" stroke="#555" stroke-width="2" stroke-dasharray="4 4" class="arrow-path"/>
-                                <circle cx="15" cy="25" r="8" fill="var(--primary-accent)"/>
-                                <text x="15" y="28" text-anchor="middle" fill="white" font-size="8">A+</text>
-                                <path d="M80 15 v20" stroke-width="3" stroke="var(--secondary-accent)" stroke-linecap="round"/>
-                                <path d="M85 25 v10" stroke-width="3" stroke="#aaa" stroke-linecap="round"/>
-                                <path d="M90 20 v15" stroke-width="3" stroke="#aaa" stroke-linecap="round"/>
-                           </svg>
+                        <div class="tool-showcase-text">
+                            <h3><i class="fas fa-drafting-compass"></i> Custom Refiner</h3>
+                            <p>Have a name idea but it's not quite right? Input your existing name and provide instructions. The AI will intelligently generate targeted variations—making it shorter, more professional, adding a mythical twist, or anything else you can imagine.</p>
+                            <button class="tool-card-btn" data-view="refiner">Launch Refiner</button>
                         </div>
-                        <button class="tool-card-btn" data-view="name-analyzer">Go to Analyzer</button>
                     </div>
+
+                    <!-- Tool Showcase: Availability Checker -->
+                    <div class="tool-showcase-item">
+                        <div class="tool-showcase-text">
+                            <h3><i class="fas fa-search-dollar"></i> Availability Checker</h3>
+                            <p>A great name is only useful if it's available. Instantly check your top choices across dozens of social media platforms and popular domain extensions (.com, .io, .ai, etc.) to ensure your brand has a unique digital footprint from day one.</p>
+                            <button class="tool-card-btn" data-view="availability-checker">Launch Checker</button>
+                        </div>
+                        <div class="tool-showcase-visual">
+                             <svg class="tool-anim-svg" viewBox="0 0 100 100">
+                                <circle class="chk-glass" cx="45" cy="45" r="25" />
+                                <line class="chk-handle" x1="65" y1="65" x2="85" y2="85" />
+                                <text class="chk-text chk-success" x="45" y="40">.com ✅</text>
+                                <text class="chk-text chk-fail" x="45" y="55">Social ❌</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Tool Showcase: Name Analyzer -->
+                    <div class="tool-showcase-item">
+                         <div class="tool-showcase-visual">
+                             <svg class="tool-anim-svg" viewBox="0 0 100 100">
+                                <rect class="ana-bar" x="30" y="70" width="10" height="0" />
+                                <rect class="ana-bar" x="45" y="70" width="10" height="0" />
+                                <rect class="ana-bar" x="60" y="70" width="10" height="0" />
+                                <line x1="25" y1="70" x2="75" y2="70" stroke="#ccc" stroke-width="1"/>
+                                <circle class="ana-head" cx="50" cy="30" r="10"/>
+                                <path class="ana-body" d="M40 40 C 40 50, 60 50, 60 40 Z"/>
+                            </svg>
+                        </div>
+                        <div class="tool-showcase-text">
+                            <h3><i class="fas fa-microscope"></i> Name Analyzer</h3>
+                            <p>Go beyond availability with a deep-dive analysis. Our AI provides a brandability score, checks for potential conflicts, and, with our Business Tier, performs an in-depth Audience Persona Analysis to see how your name will resonate with specific demographics and markets.</p>
+                            <button class="tool-card-btn" data-view="name-analyzer">Launch Analyzer</button>
+                        </div>
+                    </div>
+
+                    <!-- Tool Showcase: Summarizer -->
+                    <div class="tool-showcase-item">
+                        <div class="tool-showcase-text">
+                            <h3><i class="fas fa-cut"></i> Text Summarizer</h3>
+                            <p>Distill long-form text, product descriptions, or mission statements into their core essence. Generate concise summaries, powerful taglines, or even single keywords to help you focus your naming efforts and marketing message.</p>
+                            <button class="tool-card-btn" data-view="summarizer">Launch Summarizer</button>
+                        </div>
+                        <div class="tool-showcase-visual">
+                            <svg class="tool-anim-svg" viewBox="0 0 100 100">
+                                <rect class="sum-text-long" x="20" y="20" width="60" height="60" rx="3"/>
+                                <rect class="sum-text-short" x="30" y="45" width="40" height="10" rx="2"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Tool Showcase: Combiner -->
+                    <div class="tool-showcase-item">
+                        <div class="tool-showcase-visual">
+                            <svg class="tool-anim-svg" viewBox="0 0 100 100">
+                                <text class="com-word" id="com-word1" x="-20" y="50">Tech</text>
+                                <text class="com-word" id="com-word2" x="120" y="50">Nova</text>
+                                <text class="com-word com-result" id="com-result" x="50" y="50">Technova</text>
+                            </svg>
+                        </div>
+                        <div class="tool-showcase-text">
+                            <h3><i class="fas fa-magic"></i> Word Combiner</h3>
+                            <p>Stuck between a few different ideas? Merge multiple keywords or concepts into a single, unique, and brandable new word. Our AI expertly blends phonetics and meaning to create memorable and innovative portmanteaus.</p>
+                            <button class="tool-card-btn" data-view="word-combiner">Launch Combiner</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
 
+        </div>
 
         <div id="main-generator-view" class="hidden">
             <h1>Name Generating</h1>
@@ -510,6 +547,7 @@
                     <div class="setting-row">
                         <label for="background-select">Background Pattern</label>
                         <select id="background-select" class="settings-select">
+                            <option value="default">Default</option>
                             <option value="pattern1">Pattern 1</option>
                             <option value="pattern2">Pattern 2</option>
                             <option value="pattern3">Pattern 3</option>
@@ -1159,3 +1197,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+
