@@ -336,12 +336,6 @@ body {
     background-color: var(--bg-color-1);
 }
 
-#background-container.main-page-mode .background-pattern,
-#background-container.main-page-mode #animation-layer {
-    opacity: 0;
-    pointer-events: none;
-}
-
 .background-pattern {
     position: absolute;
     top: 0;
@@ -360,7 +354,8 @@ body {
 /* Animations Disabled */
 body.animations-disabled #animation-layer,
 body.animations-disabled .animated-bar,
-body.animations-disabled #banner-background-effect {
+body.animations-disabled #banner-background-effect,
+body.animations-disabled #name-stream-background {
     animation: none !important;
     display: none !important;
 }
@@ -2860,22 +2855,6 @@ body[data-tier="business"] .surprise-btn:hover {
     justify-content: center;
     align-items: center;
 }
-.branding-svg {
-    width: 100%;
-    max-width: 250px;
-    margin: 0 auto;
-    display: block;
-}
-.branding-svg .brain-path { fill: none; stroke: url(#brand-gradient); stroke-width: 2; opacity: 0.5; animation: brain-pulse 4s ease-in-out infinite; }
-.branding-svg .idea-path { opacity: 0; animation: idea-flicker 4s ease-in-out infinite 1s; }
-.branding-svg .logo-circle { stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw-in 2s ease-out forwards 1s; }
-.branding-svg .logo-text { font-size: 12px; font-weight: bold; opacity: 0; animation: fade-in 1s ease-out forwards 2s; }
-
-@keyframes brain-pulse { 50% { opacity: 1; filter: drop-shadow(0 0 10px var(--primary-accent)); } }
-@keyframes idea-flicker { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-@keyframes draw-in { to { stroke-dashoffset: 0; } }
-@keyframes fade-in { to { opacity: 1; } }
-
 
 /* Tool Showcase Section */
 .tool-showcase-container {
@@ -2936,53 +2915,11 @@ body[data-tier="business"] .surprise-btn:hover {
     align-items: center;
     border: 1px solid #333;
 }
-.tool-anim-svg { width: 80%; height: 80%; overflow: visible; }
-
-/* Tool Animations */
-.gen-path-1, .gen-path-2, .gen-base { animation: gen-float 3s ease-in-out infinite; }
-.gen-ray { stroke: var(--primary-accent); stroke-width: 2; opacity: 0; animation: gen-radiate 3s ease-in-out infinite 0.5s; transform-origin: 50px 50px; }
-.gen-name { fill: var(--line-accent-default); font-size: 10px; opacity: 0; animation: gen-appear 3s ease-in-out infinite 1s; }
-.gen-name:nth-of-type(2) { animation-delay: 1.5s; }
-@keyframes gen-float { 50% { transform: translateY(-5px); } }
-@keyframes gen-radiate { 40% { opacity: 1; } 80% { opacity: 0; } }
-@keyframes gen-appear { 40% { opacity: 1; } 80% { opacity: 0; } }
-
-.ref-gem-before { fill: var(--secondary-accent); opacity: 1; animation: gem-fade-out 4s ease-in-out infinite; }
-.ref-gem-after { fill: var(--primary-accent); opacity: 0; stroke: white; stroke-width: 0.5; filter: drop-shadow(0 0 10px white); animation: gem-fade-in 4s ease-in-out infinite; }
-.ref-sparkle { fill: white; opacity: 0; animation: sparkle-pop 4s ease-in-out infinite 2s; }
-.ref-sparkle:nth-of-type(2) { animation-delay: 2.2s; }
-@keyframes gem-fade-out { 40% { opacity: 1; } 60%, 100% { opacity: 0; } }
-@keyframes gem-fade-in { 40% { opacity: 0; } 60%, 100% { opacity: 1; } }
-@keyframes sparkle-pop { 50% { opacity: 1; transform: scale(1.2); } 70%, 100% { opacity: 0; transform: scale(0.8); } }
-
-.chk-glass { fill: none; stroke: var(--primary-accent); stroke-width: 3; }
-.chk-handle { stroke: var(--primary-accent); stroke-width: 4; stroke-linecap: round; }
-.chk-text { font-size: 12px; animation: chk-fade 3s linear infinite; }
-.chk-success { fill: #50fa7b; }
-.chk-fail { fill: #ff5555; animation-delay: 1.5s; }
-@keyframes chk-fade { 0%, 100% { opacity: 0; } 25%, 75% { opacity: 1; } }
-
-.ana-bar { fill: var(--secondary-accent); transform-origin: bottom center; animation: ana-grow 3s ease-in-out infinite alternate; }
-.ana-bar:nth-child(2) { animation-delay: 0.2s; }
-.ana-bar:nth-child(3) { animation-delay: 0.4s; }
-.ana-head { fill: var(--primary-accent); }
-.ana-body { fill: var(--primary-accent); }
-@keyframes ana-grow { to { transform: scaleY(0.4); } }
-
-.sum-text-long { fill: #555; }
-.sum-text-short { fill: var(--primary-accent); animation: sum-shrink 3s ease-in-out infinite; }
-@keyframes sum-shrink {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(0.1, 0.5) translateY(30px); opacity: 0; }
+.tool-showcase-visual svg {
+    width: 100%;
+    height: 100%;
 }
 
-.com-word { font-size: 20px; text-anchor: middle; fill: var(--primary-accent); }
-#com-word1 { animation: com-slide-in 4s ease-in-out infinite; }
-#com-word2 { animation: com-slide-out 4s ease-in-out infinite; }
-.com-result { opacity: 0; animation: com-fade-in 4s ease-in-out infinite; }
-@keyframes com-slide-in { 20% { transform: translateX(45px); } 60%, 100% { transform: translateX(45px); } }
-@keyframes com-slide-out { 20% { transform: translateX(-45px); } 60%, 100% { transform: translateX(-45px); } }
-@keyframes com-fade-in { 40% { opacity: 0; } 60% { opacity: 1; } 100% { opacity: 1; } }
 
 @media (max-width: 900px) {
     .branding-explanation-container, .tool-showcase-item {
@@ -3000,7 +2937,7 @@ body[data-tier="business"] .surprise-btn:hover {
     .main-page-section h2 { font-size: 2em; }
 }
 
-/* NAME STREAM BACKGROUND */
+/* ENHANCED NAME STREAM BACKGROUND */
 #name-stream-background {
     position: absolute;
     top: 0;
@@ -3012,27 +2949,47 @@ body[data-tier="business"] .surprise-btn:hover {
     display: none; /* Initially hidden, controlled by JS */
     opacity: 0.15;
 }
-#name-stream-background.visible { /* This class is now obsolete but kept for safety */
+#name-stream-background.visible {
     display: block;
+}
+
+#name-stream-background::before, #name-stream-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 20%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+#name-stream-background::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-color-1) 20%, transparent 100%);
+}
+#name-stream-background::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-color-1) 20%, transparent 100%);
 }
 
 .name-stream-row {
     display: flex;
     white-space: nowrap;
     position: absolute;
-    width: 200%; /* Double width to ensure seamless loop */
+    width: 200%; 
     animation: slide var(--duration) linear infinite;
 }
 .name-stream-row.reverse {
     animation-direction: reverse;
 }
-.name-stream-row:nth-child(1) { top: 10%; }
-.name-stream-row:nth-child(2) { top: 35%; }
-.name-stream-row:nth-child(3) { top: 60%; }
-.name-stream-row:nth-child(4) { top: 85%; }
+.name-stream-row:nth-child(1) { top: 5%; font-size: 1.8em; }
+.name-stream-row:nth-child(2) { top: 25%; font-size: 1.5em; }
+.name-stream-row:nth-child(3) { top: 45%; font-size: 2em; }
+.name-stream-row:nth-child(4) { top: 65%; font-size: 1.6em; }
+.name-stream-row:nth-child(5) { top: 85%; font-size: 1.9em; animation-direction: reverse; --duration: 55s; }
+.name-stream-row:nth-child(6) { top: 15%; font-size: 1.4em; --duration: 60s; }
+
 
 .name-stream-row span {
-    font-size: 1.5em;
     color: #fff;
     margin: 0 25px;
     text-shadow: 0 0 5px rgba(255,255,255,0.5);
@@ -3047,5 +3004,118 @@ body[data-tier="business"] .surprise-btn:hover {
 @keyframes slide {
     from { transform: translateX(0%); }
     to { transform: translateX(-50%); }
+}
+
+
+/* --- CORRECTED SVG ANIMATIONS (CSS-powered) --- */
+/* Disabling browser-native SVG animation for CSS control */
+.tool-showcase-visual svg animate, 
+.tool-showcase-visual svg animateTransform {
+    display: none;
+}
+
+/* Why a Great Name Matters SVG */
+.branding-svg { overflow: visible; }
+.branding-circle { stroke: var(--primary-accent); animation: rotate 20s linear infinite; transform-origin: center; }
+.branding-brain { stroke: var(--primary-accent); stroke-width: 2; animation: brain-pulse 4s ease-in-out infinite; transform-origin: center; }
+.branding-name { font-family: 'Poppins', sans-serif; font-weight: 600; fill: var(--primary-accent); animation: name-flicker 9s linear infinite; }
+.branding-name:nth-of-type(2) { animation-delay: -6s; }
+.branding-name:nth-of-type(3) { animation-delay: -3s; }
+
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes brain-pulse { 50% { transform: scale(1.05); filter: drop-shadow(0 0 8px var(--primary-accent)); } }
+@keyframes name-flicker { 0%, 33.3%, 100% { opacity: 0; } 16.6% { opacity: 1; } }
+
+/* Name Generator SVG */
+.gen-anim-rect { animation: type-wipe 9s steps(30, end) infinite; }
+.gen-anim-desc { fill: #ccc; }
+.gen-anim-name { fill: var(--primary-accent); animation: name-flicker 9s linear infinite; }
+.gen-anim-name:nth-of-type(2) { animation-delay: -4.5s; }
+
+@keyframes type-wipe {
+  0%, 100% { width: 0; }
+  30%, 80% { width: 100%; }
+  90% { width: 0; }
+}
+
+/* Custom Refiner SVG */
+.refiner-base, .refiner-refined { fill: var(--primary-accent); animation: name-flicker 10s linear infinite; }
+.refiner-refined { animation-delay: -5s; }
+.refiner-context-rect { animation: type-wipe 10s steps(20, end) infinite 1.5s; }
+.refiner-context-text { fill: #ccc; }
+
+/* Availability Checker SVG */
+.checker-name { fill: var(--primary-accent); animation: check-flicker 6s linear infinite; }
+.checker-avail { fill: #50fa7b; }
+.checker-taken { fill: #ff5555; }
+.checker-status { opacity: 0; animation: status-appear 6s linear infinite 1.5s; }
+.checker-taken { animation-delay: 2s; }
+
+@keyframes check-flicker {
+    0%, 25%, 100% { opacity: 1; }
+    85% { opacity: 0; }
+}
+@keyframes status-appear {
+    0%, 80% { opacity: 0; }
+    20%, 70% { opacity: 1; }
+}
+
+/* Name Analyzer SVG */
+.analyzer-name { fill: var(--primary-accent); animation: analyzer-flicker 8s linear infinite; }
+.analyzer-rating { fill: var(--secondary-accent); opacity: 0; animation: rating-appear 8s linear infinite 2s; }
+.analyzer-rating:nth-of-type(2) { animation-delay: 2.5s; }
+.analyzer-rating:nth-of-type(3) { animation-delay: 3s; }
+
+@keyframes analyzer-flicker {
+    0%, 25%, 100% { opacity: 1; }
+    90% { opacity: 0; }
+}
+@keyframes rating-appear {
+    0%, 90% { opacity: 0; }
+    20%, 80% { opacity: 1; }
+}
+
+/* Text Summarizer SVG */
+.summarizer-rect { animation: rect-wipe 8s linear infinite; }
+.summarizer-text { fill: #ccc; }
+.summarizer-result {
+    fill: var(--primary-accent);
+    font-weight: 600;
+    opacity: 0;
+    animation: result-fade 8s ease-in-out infinite;
+}
+@keyframes rect-wipe {
+    0%, 100% { width: 100%; }
+    40%, 60% { width: 0; }
+}
+@keyframes result-fade {
+    0%, 50% { opacity: 0; }
+    60%, 100% { opacity: 1; }
+}
+
+/* Word Combiner SVG */
+.combiner-word {
+    font-size: 14px;
+    font-weight: 500;
+    fill: var(--primary-accent);
+    animation: combine-move 6s ease-in-out infinite;
+}
+.combiner-word-2 { animation-delay: 0.1s; fill: var(--secondary-accent); }
+.combiner-word-3 { animation-delay: 0.2s; fill: var(--line-accent-default); }
+.combiner-result {
+    font-size: 20px;
+    font-weight: 700;
+    fill: var(--line-accent-glow);
+    opacity: 0;
+    animation: combine-result-fade 6s ease-in-out infinite;
+}
+@keyframes combine-move {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    40% { transform: translateY(20px); opacity: 1; }
+    60%, 100% { transform: translateY(20px); opacity: 0; }
+}
+@keyframes combine-result-fade {
+    0%, 50% { opacity: 0; transform: scale(0.8); }
+    70%, 100% { opacity: 1; transform: scale(1); }
 }
 
