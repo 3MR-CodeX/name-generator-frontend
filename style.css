@@ -3023,61 +3023,56 @@ body[data-tier="business"] .surprise-btn:hover {
 }
 
 /* Why a Great Name Matters SVG */
-.wgnm-bg-pulse {
-    fill: var(--bg-color-3);
-    animation: wgnm-pulse 6s ease-in-out infinite;
-}
-.wgnm-path {
+.branding-svg-redesigned .branding-path {
     stroke: var(--secondary-accent);
-    stroke-dasharray: 315;
-    stroke-dashoffset: 315;
-    animation: wgnm-draw 6s ease-in-out infinite;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: branding-draw-in 12s ease-in-out infinite;
 }
-.wgnm-spark {
+.branding-svg-redesigned .branding-spark {
     fill: var(--line-accent-default);
     filter: url(#glow-filter);
-    animation: wgnm-spark-move 6s ease-in-out infinite;
+    animation: branding-spark-move 12s ease-in-out infinite;
 }
-.wgnm-text {
+.branding-svg-redesigned .branding-text-group text {
     fill: var(--primary-accent);
-    font-size: 20px;
     opacity: 0;
-    animation: wgnm-text-fade 6s ease-in-out infinite;
+    animation: branding-text-fade 4s ease-in-out infinite;
 }
+.branding-svg-redesigned .branding-text-group text:nth-child(2) { animation-delay: 4s; }
+.branding-svg-redesigned .branding-text-group text:nth-child(3) { animation-delay: 8s; }
 
-@keyframes wgnm-pulse {
-    0%, 100% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1); opacity: 1; }
+@keyframes branding-draw-in {
+    0%, 100% { stroke-dashoffset: 1000; }
+    20%, 80% { stroke-dashoffset: 0; }
 }
-@keyframes wgnm-draw {
-    0%, 15%, 100% { stroke-dashoffset: 315; }
-    50%, 85% { stroke-dashoffset: 0; }
+@keyframes branding-spark-move {
+    0% { offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100"); motion-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100"); offset-distance: 0%; }
+    100% { offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100"); motion-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100"); offset-distance: 100%; }
 }
-@keyframes wgnm-spark-move {
-    0%, 100% { motion-offset: 0%; offset-distance: 0%; opacity: 0;}
-    15% { opacity: 1; }
-    85% { motion-offset: 100%; offset-distance: 100%; opacity: 1; }
-    90% { opacity: 0;}
-}
-.wgnm-spark {
-    offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100");
-}
-@keyframes wgnm-text-fade {
-    0%, 40%, 100% { opacity: 0; }
-    60%, 90% { opacity: 1; }
+@keyframes branding-text-fade {
+    0%, 100% { opacity: 0; }
+    25%, 75% { opacity: 1; }
 }
 
 /* Name Generator SVG */
-.gen-prompt-box { fill: var(--bg-color-3); }
-.gen-prompt-text { fill: #ccc; font-size: 16px; }
-.gen-output-group { opacity: 0; animation: gen-output-fade 12s infinite; }
-.gen-output-text { fill: var(--primary-accent); font-size: 18px; }
+.prompt-box { fill: var(--bg-color-3); }
+.prompt-text { fill: #ccc; font-size: 16px; }
+.prompt-tspan { opacity: 0; animation: cycle-text 12s linear infinite; }
+.prompt-tspan:nth-child(2) { animation-delay: 4s; }
+.prompt-tspan:nth-child(3) { animation-delay: 8s; }
 
-@keyframes gen-output-fade {
-    0%, 30%, 100% { opacity: 0; transform: translateY(10px); }
-    40%, 90% { opacity: 1; transform: translateY(0); }
+.output-group { animation: output-group-fade 12s linear infinite; }
+.output-text { fill: var(--primary-accent); font-size: 18px; }
+
+@keyframes cycle-text {
+    0%, 33.3%, 100% { opacity: 0; }
+    8%, 25% { opacity: 1; }
 }
-
+@keyframes output-group-fade {
+    0%, 25%, 100% { opacity: 0; transform: translateY(10px); }
+    33.3%, 90% { opacity: 1; transform: translateY(0); }
+}
 
 /* Custom Refiner SVG */
 .cr-base-text, .cr-result-text { fill: var(--primary-accent); font-size: 22px; }
