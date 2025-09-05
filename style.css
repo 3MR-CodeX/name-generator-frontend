@@ -3093,13 +3093,13 @@ body[data-tier="business"] .surprise-btn:hover {
 /* Name Analyzer SVG */
 .analyzer-glass { stroke: var(--primary-accent); stroke-width: 3; fill: none; transform-origin: center; animation: glass-rotate 8s infinite; }
 .analyzer-name-text { fill: var(--primary-accent); font-size: 24px; animation: analyzer-name-fade 8s infinite; }
-.analyzer-bars rect { fill: var(--secondary-accent); transform-origin: bottom; animation: bar-grow 8s infinite; }
+.analyzer-bars rect { fill: var(--secondary-accent); transform-origin: bottom; animation: bar-grow-anim 8s infinite; }
 .analyzer-bars rect:nth-child(2) { animation-delay: 0.2s; }
 .analyzer-bars rect:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes glass-rotate { 0% { transform: rotate(0deg); } 20% { transform: rotate(20deg); } 40% { transform: rotate(-10deg); } 60%, 100% { transform: rotate(0deg); } }
 @keyframes analyzer-name-fade { 0%, 100% { opacity: 0; } 10%, 80% { opacity: 1; } }
-@keyframes bar-grow { 0%, 30%, 100% { height: 0; } 50% { height: 40; } 60% { height: 25; } 70% { height: 35; } 80% { height: 20; } }
+@keyframes bar-grow-anim { 0%, 30%, 100% { height: 0; } 50% { height: 40; } 60% { height: 25; } 70% { height: 35; } 80% { height: 20; } }
 
 /* Text Summarizer SVG */
 .summarizer-lines { stroke: #555; stroke-width: 4; stroke-linecap: round; transform-origin: left; animation: line-shrink 8s infinite; }
