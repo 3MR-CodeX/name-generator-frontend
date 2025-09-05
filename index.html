@@ -168,30 +168,21 @@
                         <p>Choosing the right name is a critical step that can significantly impact your success. A weak name can be forgettable or confusing, while a strong name can open doors and build instant credibility. NameIT is designed to bridge that gap, transforming your vision into a brand identity that stands out and resonates.</p>
                     </div>
                     <div class="branding-visual">
-                         <svg width="200" height="200" viewBox="0 0 200 200">
-                           <defs>
-                             <radialGradient id="techNetGradient" cx="50%" cy="50%" r="50%">
-                               <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:0.8"/>
-                               <stop offset="100%" style="stop-color:#1F3A93;stop-opacity:0.3"/>
-                             </radialGradient>
-                           </defs>
-                           <circle cx="100" cy="100" r="90" fill="url(#techNetGradient)" stroke="#FFFFFF" stroke-width="2">
-                             <animate attributeName="r" values="90;95;90" dur="3s" repeatCount="indefinite"/>
-                           </circle>
-                           <path d="M80 90 C90 70, 110 70, 120 90 C130 110, 110 130, 90 130 C70 130, 70 110, 80 90" fill="#FFD700">
-                             <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
-                           </path>
-                           <text x="100" y="100" text-anchor="middle" fill="#FFFFFF" font-size="14" font-family="Arial">
-                             <tspan id="name1">Brand</tspan>
-                             <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite"/>
-                             <animate attributeName="y" values="100;90;100" dur="4s" repeatCount="indefinite"/>
-                           </text>
-                           <text x="100" y="110" text-anchor="middle" fill="#FFFFFF" font-size="14" font-family="Arial">
-                             <tspan id="name2">Spark</tspan>
-                             <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1s"/>
-                             <animate attributeName="y" values="110;100;110" dur="4s" repeatCount="indefinite" begin="1s"/>
-                           </text>
-                         </svg>
+                        <svg class="tool-anim-svg" viewBox="0 0 200 200">
+                            <defs>
+                                <filter id="glow-filter">
+                                    <feGaussianBlur stdDeviation="3.5" result="coloredBlur"></feGaussianBlur>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"></feMergeNode>
+                                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <circle class="wgnm-bg-pulse" cx="100" cy="100" r="80" />
+                            <path class="wgnm-path" d="M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100" />
+                            <circle class="wgnm-spark" cx="50" cy="100" r="5" />
+                            <text class="wgnm-text" x="100" y="105" text-anchor="middle">Brand</text>
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -208,45 +199,30 @@
                             <button class="tool-card-btn" data-view="generator">Launch Generator</button>
                         </div>
                         <div class="tool-showcase-visual">
-                           <svg width="200" height="100" viewBox="0 0 200 100">
-                             <rect x="10" y="20" width="180" height="20" fill="#E6E6E6" stroke="#333" stroke-width="1"/>
-                             <text x="15" y="35" font-size="14" font-family="Arial" fill="#333">
-                               <tspan id="typing-line">Description...</tspan>
-                               <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
-                             </text>
-                             <text x="15" y="60" font-size="12" font-family="Arial" fill="#4A90E2">
-                               <tspan id="name-gen1">Nexlify</tspan>
-                               <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                             </text>
-                             <text x="15" y="80" font-size="12" font-family="Arial" fill="#E74C3C">
-                               <tspan id="name-gen2">Sparkora</tspan>
-                               <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" begin="1s"/>
-                             </text>
-                           </svg>
+                            <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <rect class="gen-prompt-box" x="20" y="20" width="260" height="30" rx="4"/>
+                                <text class="gen-prompt-text" x="30" y="40">
+                                    <tspan>A coffee shop on Mars...</tspan>
+                                </text>
+                                <g class="gen-output-group">
+                                    <text class="gen-output-text" x="30" y="85">Red Planet Roast</text>
+                                    <text class="gen-output-text" x="30" y="115">Olympus Grind</text>
+                                </g>
+                            </svg>
                         </div>
                     </div>
 
                     <!-- Tool Showcase: Custom Refiner -->
                     <div class="tool-showcase-item">
                         <div class="tool-showcase-visual">
-                             <svg width="200" height="100" viewBox="0 0 200 100">
-                               <text x="15" y="20" font-size="14" font-family="Arial" fill="#2ECC71">
-                                 <tspan id="refine-name">Origin</tspan>
-                                 <animate attributeName="opacity" values="1;1;0" dur="4s" repeatCount="indefinite"/>
-                               </text>
-                               <text x="15" y="40" font-size="12" font-family="Arial" fill="#333">
-                                 <tspan id="refine-context">Make it bold...</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="0.5s"/>
-                               </text>
-                               <text x="15" y="60" font-size="12" font-family="Arial" fill="#4A90E2">
-                                 <tspan id="refine-result1">Boldify</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1s"/>
-                               </text>
-                               <text x="15" y="80" font-size="12" font-family="Arial" fill="#E74C3C">
-                                 <tspan id="refine-result2">PrimeBold</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1.5s"/>
-                               </text>
-                             </svg>
+                             <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <text class="cr-base-text" x="150" y="40" text-anchor="middle">AquaTech</text>
+                                <g class="cr-icon-group">
+                                    <path d="M135 75 h30 l-5 5 h-20 l-5 -5z M150 75 v-10"/>
+                                    <circle cx="150" cy="60" r="8" />
+                                </g>
+                                <text class="cr-result-text" x="150" y="120" text-anchor="middle">Aquantis</text>
+                            </svg>
                         </div>
                         <div class="tool-showcase-text">
                             <h3><i class="fas fa-drafting-compass"></i> Custom Refiner</h3>
@@ -263,19 +239,20 @@
                             <button class="tool-card-btn" data-view="availability-checker">Launch Checker</button>
                         </div>
                         <div class="tool-showcase-visual">
-                            <svg width="200" height="100" viewBox="0 0 200 100">
-                               <text x="15" y="20" font-size="14" font-family="Arial" fill="#333">
-                                 <tspan id="avail-name">BrandZap</tspan>
-                                 <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite"/>
-                               </text>
-                               <text x="15" y="50" font-size="12" font-family="Arial" fill="#2ECC71">
-                                 <tspan id="avail-social">X ✔</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1s"/>
-                               </text>
-                               <text x="60" y="50" font-size="12" font-family="Arial" fill="#E74C3C">
-                                 <tspan id="avail-domain">.com ✘</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1.5s"/>
-                               </text>
+                            <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <text class="ac-input-text" x="150" y="45" text-anchor="middle">PixelVibe</text>
+                                <g class="ac-result" transform="translate(50 80)">
+                                    <path class="ac-icon-bg" d="M0 10 C0 0, 10 0, 20 0 H80 C90 0, 100 0, 100 10 V30 C100 40, 90 40, 80 40 H20 C10 40, 0 40, 0 30 Z" />
+                                    <text x="50" y="25" text-anchor="middle" class="ac-text">.com</text>
+                                    <circle class="ac-status-icon" cx="85" cy="10" r="8" />
+                                    <path class="ac-check" d="M82 10 l3 3 l6 -6" />
+                                </g>
+                                <g class="ac-result" transform="translate(150 80)">
+                                    <path class="ac-icon-bg" d="M0 10 C0 0, 10 0, 20 0 H80 C90 0, 100 0, 100 10 V30 C100 40, 90 40, 80 40 H20 C10 40, 0 40, 0 30 Z" />
+                                    <text x="50" y="25" text-anchor="middle" class="ac-text">Social</text>
+                                    <circle class="ac-status-icon" cx="85" cy="10" r="8" />
+                                    <path class="ac-cross" d="M80 5 l10 10 M90 5 l-10 10" />
+                                </g>
                             </svg>
                         </div>
                     </div>
@@ -283,24 +260,17 @@
                     <!-- Tool Showcase: Name Analyzer -->
                     <div class="tool-showcase-item">
                         <div class="tool-showcase-visual">
-                             <svg width="200" height="100" viewBox="0 0 200 100">
-                               <text x="15" y="20" font-size="14" font-family="Arial" fill="#4A90E2">
-                                 <tspan id="analyze-name">VividPeak</tspan>
-                                 <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite"/>
-                               </text>
-                               <text x="15" y="40" font-size="12" font-family="Arial" fill="#333">
-                                 <tspan id="analyze-context">Tech Startup</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="0.5s"/>
-                               </text>
-                               <text x="15" y="60" font-size="12" font-family="Arial" fill="#2ECC71">
-                                 <tspan id="rating1">Memorability: 8/10</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1s"/>
-                               </text>
-                               <text x="15" y="80" font-size="12" font-family="Arial" fill="#2ECC71">
-                                 <tspan id="rating2">Uniqueness: 9/10</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1.5s"/>
-                               </text>
-                             </svg>
+                             <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <g class="na-bars">
+                                    <rect x="50" y="120" width="40" height="0" rx="3" />
+                                    <rect x="130" y="120" width="40" height="0" rx="3" />
+                                    <rect x="210" y="120" width="40" height="0" rx="3" />
+                                </g>
+                                <g class="na-scanner">
+                                    <path d="M20 30 H280" />
+                                    <circle cx="20" cy="30" r="5" />
+                                </g>
+                            </svg>
                         </div>
                         <div class="tool-showcase-text">
                             <h3><i class="fas fa-microscope"></i> Name Analyzer</h3>
@@ -317,48 +287,30 @@
                             <button class="tool-card-btn" data-view="summarizer">Launch Summarizer</button>
                         </div>
                         <div class="tool-showcase-visual">
-                            <svg width="200" height="100" viewBox="0 0 200 100">
-                               <text x="15" y="20" font-size="12" font-family="Arial" fill="#333">
-                                 <tspan id="summary-text1">A new innovative...</tspan>
-                                 <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite"/>
-                               </text>
-                               <text x="15" y="35" font-size="12" font-family="Arial" fill="#333">
-                                 <tspan id="summary-text2">product description...</tspan>
-                                 <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite" begin="0.3s"/>
-                               </text>
-                               <text x="15" y="50" font-size="12" font-family="Arial" fill="#333">
-                                 <tspan id="summary-text3">for your brand...</tspan>
-                                 <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite" begin="0.6s"/>
-                               </text>
-                               <text x="15" y="80" font-size="12" font-family="Arial" fill="#4A90E2">
-                                 <tspan id="summary-result">InnovateNow</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1s"/>
-                               </text>
-                             </svg>
+                           <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <g class="ts-lines">
+                                    <path d="M50 30 H250"/>
+                                    <path d="M50 45 H250"/>
+                                    <path d="M50 60 H250"/>
+                                    <path d="M50 75 H250"/>
+                                    <path d="M50 90 H250"/>
+                                </g>
+                                <path class="ts-funnel" d="M40 20 L260 20 L160 120 L140 120 Z" />
+                                <text class="ts-result" x="150" y="135" text-anchor="middle">Core Idea</text>
+                            </svg>
                         </div>
                     </div>
 
                     <!-- Tool Showcase: Combiner -->
                     <div class="tool-showcase-item">
                         <div class="tool-showcase-visual">
-                            <svg width="200" height="100" viewBox="0 0 200 100">
-                               <text x="15" y="20" font-size="12" font-family="Arial" fill="#4A90E2">
-                                 <tspan id="word1">Nova</tspan>
-                                 <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite"/>
-                               </text>
-                               <text x="15" y="40" font-size="12" font-family="Arial" fill="#E74C3C">
-                                 <tspan id="word2">Spark</tspan>
-                                 <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite" begin="0.3s"/>
-                               </text>
-                               <text x="15" y="60" font-size="12" font-family="Arial" fill="#2ECC71">
-                                 <tspan id="word3">Vibe</tspan>
-                                 <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite" begin="0.6s"/>
-                               </text>
-                               <text x="15" y="85" font-size="14" font-family="Arial" fill="#FFD700">
-                                 <tspan id="combined-word">NovaSparkVibe</tspan>
-                                 <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1s"/>
-                               </text>
-                             </svg>
+                            <svg class="tool-anim-svg" viewBox="0 0 300 150">
+                                <circle class="wc-circle" cx="80" cy="75" r="30" />
+                                <text class="wc-text" x="80" y="80" text-anchor="middle">Pixel</text>
+                                <circle class="wc-circle" cx="220" cy="75" r="30" />
+                                <text class="wc-text" x="220" y="80" text-anchor="middle">Vibe</text>
+                                <text class="wc-result" x="150" y="80" text-anchor="middle">PixelVibe</text>
+                            </svg>
                         </div>
                         <div class="tool-showcase-text">
                             <h3><i class="fas fa-magic"></i> Word Combiner</h3>
