@@ -356,7 +356,8 @@ body.animations-disabled #animation-layer,
 body.animations-disabled .animated-bar,
 body.animations-disabled #banner-background-effect,
 body.animations-disabled #name-stream-background,
-body.animations-disabled .tool-anim-svg * {
+body.animations-disabled .tool-anim-svg *,
+body.animations-disabled .wgnm-svg * {
     animation: none !important;
 }
 body.animations-disabled .tool-showcase-visual {
@@ -3023,134 +3024,63 @@ body[data-tier="business"] .surprise-btn:hover {
 }
 
 /* Why a Great Name Matters SVG */
-.branding-svg-redesigned .branding-path {
+.wgnm-svg { overflow: visible; }
+.wgnm-bg-pulse {
+    fill: var(--bg-color-3);
+    animation: wgnm-pulse 6s ease-in-out infinite;
+}
+.wgnm-path {
     stroke: var(--secondary-accent);
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: branding-draw-in 12s ease-in-out infinite;
+    stroke-dasharray: 315;
+    stroke-dashoffset: 315;
+    animation: wgnm-draw 6s ease-in-out infinite;
 }
-.branding-svg-redesigned .branding-spark {
+.wgnm-spark {
     fill: var(--line-accent-default);
-    filter: url(#glow-filter);
-    animation: branding-spark-move 12s ease-in-out infinite;
+    filter: url(#wgnm-glow);
+    animation: wgnm-spark-move 6s ease-in-out infinite;
 }
-.branding-svg-redesigned .branding-text-group text {
+.wgnm-text {
     fill: var(--primary-accent);
+    font-size: 20px;
     opacity: 0;
-    animation: branding-text-fade 4s ease-in-out infinite;
-}
-.branding-svg-redesigned .branding-text-group text:nth-child(2) { animation-delay: 4s; }
-.branding-svg-redesigned .branding-text-group text:nth-child(3) { animation-delay: 8s; }
-
-@keyframes branding-draw-in {
-    0%, 100% { stroke-dashoffset: 1000; }
-    20%, 80% { stroke-dashoffset: 0; }
-}
-@keyframes branding-spark-move {
-    0% { offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100"); motion-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100"); offset-distance: 0%; }
-    100% { offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100"); motion-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100"); offset-distance: 100%; }
-}
-@keyframes branding-text-fade {
-    0%, 100% { opacity: 0; }
-    25%, 75% { opacity: 1; }
+    animation: wgnm-text-fade 6s ease-in-out infinite;
 }
 
-/* Name Generator SVG */
-.prompt-box { fill: var(--bg-color-3); }
-.prompt-text { fill: #ccc; font-size: 16px; }
-.prompt-tspan { opacity: 0; animation: cycle-text 12s linear infinite; }
-.prompt-tspan:nth-child(2) { animation-delay: 4s; }
-.prompt-tspan:nth-child(3) { animation-delay: 8s; }
-
-.output-group { animation: output-group-fade 12s linear infinite; }
-.output-text { fill: var(--primary-accent); font-size: 18px; }
-
-@keyframes cycle-text {
-    0%, 33.3%, 100% { opacity: 0; }
-    8%, 25% { opacity: 1; }
+@keyframes wgnm-pulse {
+    0%, 100% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1); opacity: 1; }
 }
-@keyframes output-group-fade {
-    0%, 25%, 100% { opacity: 0; transform: translateY(10px); }
-    33.3%, 90% { opacity: 1; transform: translateY(0); }
+@keyframes wgnm-draw {
+    0%, 15%, 100% { stroke-dashoffset: 315; }
+    50%, 85% { stroke-dashoffset: 0; }
 }
-
-/* Custom Refiner SVG */
-.cr-base-text, .cr-result-text { fill: var(--primary-accent); font-size: 22px; }
-.cr-icon-group { stroke: var(--secondary-accent); stroke-width: 2; fill: var(--secondary-accent); }
-.cr-base-text { animation: cr-fade-out 8s infinite; }
-.cr-icon-group { animation: cr-icon-pop 8s infinite; }
-.cr-result-text { opacity: 0; animation: cr-fade-in 8s infinite; }
-
-@keyframes cr-fade-out { 0%, 40% { opacity: 1; } 50%, 100% { opacity: 0; } }
-@keyframes cr-icon-pop { 0%, 40% { opacity: 0; transform: scale(0.5); } 50%, 80% { opacity: 1; transform: scale(1); } 90%, 100% { opacity: 0; } }
-@keyframes cr-fade-in { 0%, 80% { opacity: 0; } 90%, 100% { opacity: 1; } }
-
-/* Availability Checker SVG */
-.ac-input-text { fill: var(--primary-accent); font-size: 24px; animation: ac-text-in 8s infinite; }
-.ac-result { opacity: 0; animation: ac-result-pop 4s infinite; }
-.ac-result:nth-of-type(2) { animation-delay: 4s; }
-.ac-icon-bg { fill: var(--bg-color-3); }
-.ac-text { fill: #ccc; font-size: 16px; }
-.ac-status-icon { fill: none; stroke-width: 2; }
-.ac-check { stroke: #50fa7b; }
-.ac-cross { stroke: #ff5555; }
-
-@keyframes ac-text-in { 0%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
-@keyframes ac-result-pop {
-    0%, 100% { opacity: 0; transform: translateY(10px); }
-    25%, 75% { opacity: 1; transform: translateY(0px); }
+@keyframes wgnm-spark-move {
+    0%, 100% { motion-offset: 0%; offset-distance: 0%; opacity: 0;}
+    15% { opacity: 1; }
+    85% { motion-offset: 100%; offset-distance: 100%; opacity: 1; }
+    90% { opacity: 0;}
+}
+.wgnm-spark {
+    offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100");
+}
+@keyframes wgnm-text-fade {
+    0%, 40%, 100% { opacity: 0; }
+    60%, 90% { opacity: 1; }
 }
 
-/* Name Analyzer SVG */
-.na-scanner path { stroke: var(--primary-accent); stroke-width: 3; }
-.na-scanner circle { fill: var(--line-accent-glow); filter: url(#glow-filter); }
-.na-scanner { animation: na-scan 6s ease-in-out infinite; }
-.na-bars rect { fill: var(--secondary-accent); transform-origin: bottom; }
-.na-bars rect:nth-child(1) { animation: na-bar-1 6s ease-in-out infinite; }
-.na-bars rect:nth-child(2) { animation: na-bar-2 6s ease-in-out infinite; }
-.na-bars rect:nth-child(3) { animation: na-bar-3 6s ease-in-out infinite; }
-
-@keyframes na-scan {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(260px); }
-}
-@keyframes na-bar-1 { 0%, 20% { height: 0; } 50% { height: 60; } 80%, 100% { height: 0; } }
-@keyframes na-bar-2 { 0%, 25% { height: 0; } 55% { height: 80; } 85%, 100% { height: 0; } }
-@keyframes na-bar-3 { 0%, 30% { height: 0; } 60% { height: 50; } 90%, 100% { height: 0; } }
-
-/* Text Summarizer SVG */
-.ts-lines { stroke: #555; stroke-width: 4; stroke-linecap: round; }
-.ts-lines path { animation: ts-line-in 8s ease-in-out infinite; }
-.ts-funnel { fill: var(--bg-color-3); stroke: var(--secondary-accent); stroke-width: 2; }
-.ts-result { fill: var(--primary-accent); font-size: 22px; opacity: 0; animation: ts-result-fade 8s infinite; }
-
-@keyframes ts-line-in {
-    0%, 100% { stroke-dasharray: 200; stroke-dashoffset: 200; }
-    20%, 80% { stroke-dasharray: 200; stroke-dashoffset: 0; }
-}
-@keyframes ts-result-fade {
-    0%, 50% { opacity: 0; }
-    60%, 100% { opacity: 1; }
-}
-
-/* Word Combiner SVG */
-.wc-circle { fill: var(--bg-color-3); stroke: var(--primary-accent); stroke-width: 2; animation: wc-circle-move 6s ease-in-out infinite; }
-.wc-text { fill: #ccc; animation: wc-text-fade 6s ease-in-out infinite; }
-.wc-result { fill: var(--line-accent-glow); font-size: 28px; opacity: 0; animation: wc-result-appear 6s ease-in-out infinite; }
-
-@keyframes wc-circle-move {
-    0%, 100% { transform: translateX(0); }
-    50%, 70% { transform: translateX(70px); }
-}
-#word-combiner-anim .wc-circle:nth-of-type(2) {
-    animation-direction: reverse;
-}
-@keyframes wc-text-fade {
-    0%, 30%, 100% { opacity: 1; }
-    50%, 80% { opacity: 0; }
-}
-@keyframes wc-result-appear {
-    0%, 60% { opacity: 0; transform: scale(0.8); }
-    80%, 100% { opacity: 1; transform: scale(1); }
-}
+/* Tool Diagrams General Styles */
+.tool-diagram-svg .td-line { stroke: #666; stroke-width: 2; }
+.tool-diagram-svg .td-node-start { fill: var(--primary-accent); }
+.tool-diagram-svg .td-node-end { fill: var(--secondary-accent); }
+.tool-diagram-svg .td-node-end-alt { fill: #c0392b; }
+.tool-diagram-svg .td-box { fill: var(--bg-color-3); stroke: var(--secondary-accent); stroke-width: 1.5; }
+.tool-diagram-svg .td-shape { fill: var(--secondary-accent); }
+.tool-diagram-svg .td-check { stroke: #27ae60; stroke-width: 2; fill: none; }
+.tool-diagram-svg .td-cross { stroke: #c0392b; stroke-width: 2; fill: none; }
+.tool-diagram-svg .td-magnify-glass { stroke: var(--primary-accent); stroke-width: 3; fill: none; }
+.tool-diagram-svg .td-magnify-handle { stroke: var(--primary-accent); stroke-width: 3; }
+.tool-diagram-svg .td-bars rect { fill: var(--secondary-accent); }
+.tool-diagram-svg .td-lines-group path { stroke: #666; stroke-width: 3; }
+.tool-diagram-svg .td-funnel { fill: var(--bg-color-3); stroke: var(--primary-accent); stroke-width: 1.5; }
 
