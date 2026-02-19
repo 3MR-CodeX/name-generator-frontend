@@ -3082,38 +3082,50 @@ body[data-tier="business"] .surprise-btn:hover {
     /* No animation properties */
 }
 
-/* Add this class to the container of your PNG patterns in index.html */
-.pattern-container {
-    position: relative;
-    display: inline-block;
-    overflow: visible;
-}
+/* =========================================
+   Image Glow Decoration 
+   ========================================= */
 
-.pattern-container img {
-    position: relative;
-    z-index: 2; /* Keeps the PNG on top */
-}
-
-/* The Animated Glow Layer */
-.pattern-container::after {
-    content: '';
+.image-glow-container {
+    /* Positioning */
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background: linear-gradient(45deg, #ff00ff, #00ffff, #ff0000, #ffff00);
-    background-size: 400% 400%;
-    filter: blur(40px); /* Creates the "glow" effect */
-    z-index: 1; /* Sits behind the PNG */
-    opacity: 0.6;
-    border-radius: 50%;
-    animation: glowShift 8s ease infinite;
+    top: -10%; /* Adjust these to move the pattern around */
+    right: -10%;
+    width: 600px; /* Size of your pattern */
+    max-width: 100vw;
+    
+    /* Crucial: Stops the image from blocking clicks on your buttons/inputs */
+    pointer-events: none; 
+    
+    /* Puts it behind your text but above the deep background */
+    z-index: 0; 
+    
+    /* Optional: helps blend it into dark themes (like Synthwave/Nebula) */
+    mix-blend-mode: screen; 
+    
+    /* Adds a slow, breathing pulse animation */
+    animation: glowPulse 6s infinite alternate ease-in-out;
 }
 
-@keyframes glowShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.image-glow-container img {
+    width: 100%;
+    height: auto;
+    opacity: 0.6; /* Keeps it subtle so text remains readable */
+    
+    /* The actual glow effect (Change the rgba color to match your theme!) */
+    filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.7)); 
+}
+
+/* The Animation Keyframes */
+@keyframes glowPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.4;
+        filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+    }
+    100% {
+        transform: scale(1.05);
+        opacity: 0.8;
+        filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.9));
+    }
 }
