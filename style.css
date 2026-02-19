@@ -3081,3 +3081,39 @@ body[data-tier="business"] .surprise-btn:hover {
 .tool-anim-svg {
     /* No animation properties */
 }
+
+/* Add this class to the container of your PNG patterns in index.html */
+.pattern-container {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+
+.pattern-container img {
+    position: relative;
+    z-index: 2; /* Keeps the PNG on top */
+}
+
+/* The Animated Glow Layer */
+.pattern-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background: linear-gradient(45deg, #ff00ff, #00ffff, #ff0000, #ffff00);
+    background-size: 400% 400%;
+    filter: blur(40px); /* Creates the "glow" effect */
+    z-index: 1; /* Sits behind the PNG */
+    opacity: 0.6;
+    border-radius: 50%;
+    animation: glowShift 8s ease infinite;
+}
+
+@keyframes glowShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
