@@ -2782,15 +2782,22 @@ body[data-tier="business"] .surprise-btn:hover {
 
 /* --- UPDATED MAIN PAGE STYLING --- */
 .main-page-hero {
+    position: relative; /* CRITICAL: Keeps the glow image anchored behind the text */
     text-align: center;
     padding: 60px 20px;
     margin-bottom: 40px;
 }
 
-.main-page-hero h1 {
-    font-size: 3.5em;
-    margin-bottom: 15px;
+.hero-subheadline {
+    font-size: 1.6em; 
+    font-weight: 400;
+    margin-top: -5px;
+    margin-bottom: 25px;
+    color: #cccccc;
+    letter-spacing: 1px;
 }
+
+.main-page-hero h1 {
 
 .main-page-hero h1 .highlight-word {
     color: var(--primary-accent);
@@ -3086,46 +3093,40 @@ body[data-tier="business"] .surprise-btn:hover {
    Image Glow Decoration 
    ========================================= */
 
+/* =========================================
+   Image Glow Decoration 
+   ========================================= */
+
 .image-glow-container {
-    /* Positioning */
     position: absolute;
-    top: -10%; /* Adjust these to move the pattern around */
-    right: -10%;
-    width: 600px; /* Size of your pattern */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centers it perfectly behind the text */
+    width: 700px; /* Size of the pattern */
     max-width: 100vw;
-    
-    /* Crucial: Stops the image from blocking clicks on your buttons/inputs */
+    z-index: -1; /* Pushes it behind your text */
     pointer-events: none; 
-    
-    /* Puts it behind your text but above the deep background */
-    z-index: 0; 
-    
-    /* Optional: helps blend it into dark themes (like Synthwave/Nebula) */
     mix-blend-mode: screen; 
-    
-    /* Adds a slow, breathing pulse animation */
     animation: glowPulse 6s infinite alternate ease-in-out;
 }
 
 .image-glow-container img {
     width: 100%;
     height: auto;
-    opacity: 0.6; /* Keeps it subtle so text remains readable */
-    
-    /* The actual glow effect (Change the rgba color to match your theme!) */
-    filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.7)); 
+    opacity: 0.8; 
+    /* Uses your dynamic theme color! */
+    filter: drop-shadow(0 0 30px var(--primary-accent)); 
 }
 
-/* The Animation Keyframes */
 @keyframes glowPulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.4;
-        filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+    0% { 
+        transform: translate(-50%, -50%) scale(0.95); 
+        opacity: 0.5; 
+        filter: drop-shadow(0 0 15px var(--primary-accent)); 
     }
-    100% {
-        transform: scale(1.05);
-        opacity: 0.8;
-        filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.9));
+    100% { 
+        transform: translate(-50%, -50%) scale(1.05); 
+        opacity: 1; 
+        filter: drop-shadow(0 0 50px var(--primary-accent)); 
     }
 }
