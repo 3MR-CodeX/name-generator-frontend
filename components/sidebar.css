@@ -44,20 +44,30 @@
     margin-bottom: 8px;
 }
 
+/* Modified sidebar.css for "Ghost Button" style */
 .sidebar-content ul li a {
     display: block;
     padding: 8px 12px;
-    background-color: var(--primary-accent);
-    color: white;
+    /* 1. Ghost Effect: Transparent background and a border frame */
+    background-color: transparent; 
+    border: 2px solid var(--primary-accent); 
+    color: var(--primary-accent); /* Text matches the frame */
+    
     text-decoration: none;
     border-radius: 8px;
-    transition: background-color 0.3s, transform 0.2s;
     font-size: 0.95em;
+    font-weight: 600;
+    
+    /* 2. Smooth Transition for the hover fill */
+    transition: all 0.3s ease-in-out; 
 }
 
+/* 3. Hover Effect: Fills the button completely */
 .sidebar-content ul li a:hover {
-    background-color: var(--secondary-accent);
+    background-color: var(--primary-accent);
+    color: white; /* Text turns white for contrast */
     transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 #overlay {
@@ -78,16 +88,16 @@
     visibility: visible;
 }
 
-/* Style for the eye-catching premium link */
+/* 4. Special handling for the Premium Link */
 .sidebar-content ul li a.premium-link {
-    background-color: var(--line-accent-glow);
-    animation: premium-color-shift 3s infinite ease-in-out;
+    background-color: transparent;
+    border-color: var(--line-accent-glow);
+    color: var(--line-accent-glow);
 }
 
 .sidebar-content ul li a.premium-link:hover {
-    transform: translateX(5px) scale(1.02);
-    animation-play-state: paused;
-    background-color: var(--line-accent-default);
+    background-color: var(--line-accent-glow);
+    color: white;
 }
 
 @keyframes premium-color-shift {
