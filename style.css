@@ -3041,21 +3041,20 @@ body[data-tier="business"] .surprise-btn:hover {
 
 .wgnm-bg-pulse {
     fill: var(--bg-color-3);
-    /* Removed pulse animation for a cleaner look */
-    opacity: 1;
+    /* Set to half transparent as requested */
+    opacity: 0.5;
 }
 
 .wgnm-path {
     stroke: var(--secondary-accent);
     stroke-dasharray: 315;
-    /* Static fully drawn path */
     stroke-dashoffset: 0; 
 }
 
 .wgnm-spark {
     fill: var(--line-accent-default);
     filter: url(#wgnm-glow);
-    /* Keep the sparkle moving */
+    /* Synced duration */
     animation: wgnm-spark-move 6s ease-in-out infinite;
 }
 
@@ -3063,28 +3062,31 @@ body[data-tier="business"] .surprise-btn:hover {
     fill: var(--primary-accent);
     font-size: 20px;
     opacity: 0;
-    /* Keep the fading animation for the cycling text */
+    /* Synced duration */
     animation: wgnm-text-fade 6s ease-in-out infinite;
 }
 
-/* Sparkle movement logic */
+/* Synced Sparkle: Fades in/out at the same percentage as text */
 @keyframes wgnm-spark-move {
-    0%, 100% { motion-offset: 0%; offset-distance: 0%; opacity: 0;}
-    15% { opacity: 1; }
-    85% { motion-offset: 100%; offset-distance: 100%; opacity: 1; }
-    90% { opacity: 0;}
+    0% { motion-offset: 0%; offset-distance: 0%; opacity: 0;}
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { motion-offset: 100%; offset-distance: 100%; opacity: 0; }
 }
 
 .wgnm-spark {
     offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100");
 }
 
-/* Text fading logic */
+/* Synced Text: Fades in/out exactly with the sparkle */
 @keyframes wgnm-text-fade {
-    0%, 40%, 100% { opacity: 0; transform: translateY(5px); }
-    60%, 90% { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; transform: translateY(5px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-5px); }
 }
 /* Remove all other tool animations */
 .tool-anim-svg {
     /* No animation properties */
 }
+
