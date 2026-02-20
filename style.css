@@ -2917,50 +2917,62 @@ body[data-tier="business"] .surprise-btn:hover {
 }
 
 /* --- UPDATED Diagram Container Styling --- */
+
+/* --- CSS-GENERATED DIAGRAM BACKGROUNDS --- */
 .diagram-container {
     position: relative;
     width: 100%;
-    max-width: 400px;
-    display: grid;
-    place-items: center;
+    max-width: 320px; /* Adjusted for better fit */
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.diagram-bg,
+/* The custom-made background shape */
+.diagram-bg-shape {
+    position: absolute;
+    /* Exactly 2% larger than the pattern's intended size */
+    width: 102%;
+    height: 102%;
+    /* Creating a soft, brand-aligned shape */
+    background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Organic, fluid shape */
+    opacity: 0.15; /* Subtle background presence */
+    z-index: 1;
+    
+    /* Pure color-shift animation */
+    animation: diagram-css-chroma 10s infinite linear;
+}
+
+/* The foreground pattern images */
 .diagram-image {
-    grid-area: 1 / 1;
+    position: relative;
     width: 100%;
     height: auto;
-    object-fit: contain;
-}
-
-/* Background image: 2% bigger, full-body color shift, no glow */
-.diagram-bg {
-    transform: scale(1.02); 
-    z-index: 1;
-    /* Base brightness and saturation to make colors pop */
-    filter: brightness(1.1) saturate(1.3);
-    /* Pure color-shift animation without glow */
-    animation: diagram-full-chroma 8s infinite linear;
-}
-
-/* Foreground pattern: 100% solid */
-.diagram-image {
     z-index: 2;
-    opacity: 1;
-    filter: none;
+    opacity: 1; /* 100% solid as requested */
+    display: block;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
 
-/* Animation that shifts the actual color of the background image without glow */
-@keyframes diagram-full-chroma {
+/* Full color-shift logic for the CSS shape */
+@keyframes diagram-css-chroma {
     0% {
-        filter: hue-rotate(0deg) brightness(1.1);
+        filter: hue-rotate(0deg);
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        transform: rotate(0deg) scale(1);
     }
-    50% {
-        /* Pulse the brightness for the "shiny" effect while shifting hue */
-        filter: hue-rotate(180deg) brightness(1.4);
+    33% {
+        border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%;
+    }
+    66% {
+        border-radius: 67% 33% 47% 53% / 37% 20% 80% 63%;
     }
     100% {
-        filter: hue-rotate(360deg) brightness(1.1);
+        filter: hue-rotate(360deg);
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        transform: rotate(360deg) scale(1);
     }
 }
 /* End of Diagram Update */
@@ -3110,6 +3122,7 @@ body[data-tier="business"] .surprise-btn:hover {
 .tool-anim-svg {
     /* No animation properties */
 }
+
 
 
 
