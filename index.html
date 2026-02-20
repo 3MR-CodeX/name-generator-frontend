@@ -18,11 +18,16 @@
     <div id="loader-wrapper">
         <img src="Hexagon_starter.png" alt="Loading..." class="loader-hexagon">
     </div>
-        <!-- Page Transition Loader -->
+
+    <!-- NEW PAGE TRANSITION LOADER WITH LOGO & TIPS -->
     <div id="page-transition-loader" class="page-transition-loader">
         <div class="transition-logo">
-            <i class="fas fa-robot"></i> <!-- Replace with your actual app icon -->
+            <img src="Hexagon_starter.png" alt="NameIT Logo" class="loader-logo-img">
             <h1>NameIT</h1>
+        </div>
+        <div class="loading-tip-container">
+            <span class="tip-label">💡 Tip:</span>
+            <span id="loading-tip-text">Loading up something amazing...</span>
         </div>
     </div>
     
@@ -149,8 +154,8 @@
         
         <div id="main-page-view" class="hidden">
             <div class="main-page-hero">
-               <!-- Headline split, Naming uncolored, Powered by AI smaller and fancier -->
-                <h1>The Future Of Naming<br><span class="hero-sub">Powered By AI</span></h1>
+                <!-- UPDATED FUTURISTIC WHITE HERO TITLE -->
+                <h1>The Future Of Naming<br><span class="hero-sub" data-text="Powered By AI">Powered By AI</span></h1>
                 <p class="description">Go from a spark of an idea to the perfect, brandable name in seconds. NameIT is your creative partner for naming anything and everything.</p>
                 <button id="go-to-generator-btn" class="generate-btn main-page-cta">
                     <i class="fas fa-play-circle"></i> Start Generating
@@ -172,19 +177,40 @@
                         <p>Choosing the right name is a critical step that can significantly impact your success. A weak name can be forgettable or confusing, while a strong name can open doors and build instant credibility. NameIT is designed to bridge that gap, transforming your vision into a brand identity that stands out and resonates.</p>
                     </div>
                     <div class="branding-visual">
+                         <!-- NEW AI NEURAL CORE SURPRISE ANIMATION -->
                          <svg class="wgnm-svg" viewBox="0 0 200 200">
                             <defs>
-                                <filter id="wgnm-glow">
-                                    <feGaussianBlur stdDeviation="3.5" result="coloredBlur"></feGaussianBlur>
+                                <filter id="ai-glow">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"></feGaussianBlur>
                                     <feMerge>
                                         <feMergeNode in="coloredBlur"></feMergeNode>
                                         <feMergeNode in="SourceGraphic"></feMergeNode>
                                     </feMerge>
                                 </filter>
+                                <linearGradient id="ai-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="var(--primary-accent)" />
+                                    <stop offset="100%" stop-color="var(--secondary-accent)" />
+                                </linearGradient>
                             </defs>
-                            <circle class="wgnm-bg-pulse" cx="100" cy="100" r="80" />
-                            <path class="wgnm-path" d="M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100" />
-                            <circle class="wgnm-spark" cx="50" cy="100" r="5" />
+
+                            <!-- Orbital rings -->
+                            <circle cx="100" cy="100" r="70" class="orbit-ring orbit-ring-1" />
+                            <circle cx="100" cy="100" r="50" class="orbit-ring orbit-ring-2" />
+                            
+                            <!-- Rotating data nodes -->
+                            <g class="orbit-nodes">
+                                <circle cx="100" cy="30" r="4" fill="var(--secondary-accent)" filter="url(#ai-glow)" />
+                                <circle cx="160" cy="135" r="3" fill="var(--primary-accent)" filter="url(#ai-glow)" />
+                                <circle cx="40" cy="135" r="5" fill="var(--line-accent-default)" filter="url(#ai-glow)" />
+                            </g>
+
+                            <!-- Connecting Neural Lines -->
+                            <path d="M100,30 L160,135 L40,135 Z" class="neural-lines" />
+
+                            <!-- Central Core -->
+                            <polygon points="100,75 122,88 122,112 100,125 78,112 78,88" fill="url(#ai-grad)" class="ai-core-hex" filter="url(#ai-glow)" />
+                            
+                            <!-- Text overlaying the core -->
                             <text class="wgnm-text" x="100" y="105" text-anchor="middle">Brand</text>
                         </svg>
                     </div>
@@ -1196,6 +1222,7 @@
     <script src="main.js"></script>
 </body>
 </html>
+
 
 
 
