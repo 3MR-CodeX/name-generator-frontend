@@ -32,13 +32,17 @@ function initializeSidebar() {
                 event.preventDefault();
                 event.stopImmediatePropagation(); 
 
+                // FIX: Update active visual state for the sidebar buttons
+                document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+                link.classList.add('active');
+
                 if (window.isSidebarOpen) {
                     closeSidebar();
                 }
 
                 // Get the target page
                 let targetView = link.getAttribute('data-view');
-                if (!targetView && link.getAttribute('href')) {
+                if (!targetView && link.getAttribute('href') && link.getAttribute('href') !== '#') {
                     targetView = link.getAttribute('href').replace('#', '');
                 }
 
@@ -82,7 +86,7 @@ function initializeSidebar() {
             if (window.isSidebarOpen && 
                 !sidebar.contains(event.target) && 
                 !hexagonButton.contains(event.target) &&
-                !document.getElementById('top-bar').contains(event.target)) {
+                (!document.getElementById('top-bar') || !document.getElementById('top-bar').contains(event.target))) {
                 window.toggleSidebar();
             }
         });
@@ -106,8 +110,9 @@ function openSidebar() {
     
     const tier = body.dataset.tier || 'free';
     if (tier === 'business' && !body.classList.contains('business-shifting-disabled')) {
+        // Handled visually in CSS
     } else {
-        const sidebarWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width');
+        const sidebarWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width') || '250px';
         body.style.paddingLeft = sidebarWidth;
     }
 }
@@ -127,6 +132,7 @@ function closeSidebar() {
     
     const tier = body.dataset.tier || 'free';
      if (tier === 'business' && !body.classList.contains('business-shifting-disabled')) {
+         // Handled visually in CSS
     } else {
         body.style.paddingLeft = '0';
     }
