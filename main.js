@@ -2033,23 +2033,7 @@ function applyBackground(patternName, save = true) {
     const nameStreamBg = document.getElementById('name-stream-background');
     const patternElement = document.querySelector('.background-pattern');
     const animationLayer = document.getElementById('animation-layer');
-    
-    // NEW: Get the glow layer
-    const glowLayer = document.getElementById('background-glow-layer');
-
     if (!patternElement || !animationLayer || !nameStreamBg) return;
-
-    // NEW: Apply the correct DB image class based on the chosen pattern
-    if (glowLayer) {
-        glowLayer.className = ''; // Clear existing glow classes
-        if (patternName === 'pattern1' || patternName === 'pattern2') {
-            glowLayer.classList.add('glow-db12');
-        } else if (patternName === 'pattern3' || patternName === 'pattern4') {
-            glowLayer.classList.add('glow-db34');
-        } else if (patternName === 'pattern5' || patternName === 'pattern6') {
-            glowLayer.classList.add('glow-db56');
-        }
-    }
 
     // Clear previous timers regardless
     if (animationLayer.timerId) clearTimeout(animationLayer.timerId);
@@ -2293,5 +2277,3 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
-
-
