@@ -3139,6 +3139,53 @@ body[data-tier="business"] .surprise-btn:hover {
     /* No animation properties */
 }
 
+/* --- PAGE TRANSITION LOADER --- */
+.page-transition-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color-1);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.page-transition-loader.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.transition-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    animation: transition-pulse 2s infinite ease-in-out;
+}
+
+.transition-logo i {
+    font-size: 4rem;
+    color: var(--primary-accent);
+}
+
+.transition-logo h1 {
+    font-size: 2.5rem;
+    color: var(--text-color-1);
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+@keyframes transition-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
 
 
 
