@@ -10,57 +10,54 @@ function initializeSidebar() {
     const hexagonButton = document.getElementById("hexagon-button"); // Get button from topbar
     const sidebarLinks = document.querySelector("#sidebar .sidebar-content ul");
 
-
     if (sidebar && overlay && hexagonButton && sidebarLinks) {
         overlay.addEventListener('click', window.toggleSidebar);
 
-        // Close sidebar and trigger loading screen if a link inside is clicked
-        // Close sidebar and trigger loading screen if a link inside is clicked
-        // We use 'true' at the end to trigger the Capture Phase (runs before main.js)
+        // --- NEW DELAYED CLICK PATTERN ---
+        let isRouting = false; // Flag to track if we are simulating the delayed click
+
         sidebarLinks.addEventListener('click', (event) => {
             const link = event.target.closest('a');
             
             if (link) {
-                // STOP main.js from instantly switching the page
-                event.preventDefault();
-                event.stopImmediatePropagation(); 
+                if (!isRouting) {
+                    // 1. First actual click: Intercept it and hide it from main.js
+                    event.preventDefault();
+                    event.stopImmediatePropagation(); 
 
-                // 1. Close the sidebar immediately
-                if (window.isSidebarOpen) {
-                    closeSidebar();
-                }
+                    // 2. Close the sidebar
+                    if (window.isSidebarOpen) {
+                        closeSidebar();
+                    }
 
-                // 2. Figure out which page we are trying to go to
-                let targetView = link.getAttribute('data-view');
-                if (!targetView && link.getAttribute('href')) {
-                    targetView = link.getAttribute('href').replace('#', '');
-                }
-
-                // 3. Trigger the page transition loader
-                const loader = document.getElementById('page-transition-loader');
-                if (loader && targetView) {
-                    loader.classList.add('active');
-                    
-                    // 4. WAIT 500ms for the fade-in to finish, THEN switch the view
-                    setTimeout(() => {
-                        // Switch the view behind the loading screen
-                        if (typeof window.showView === 'function') {
-                            window.showView(targetView);
-                        }
+                    // 3. Trigger the page transition loader
+                    const loader = document.getElementById('page-transition-loader');
+                    if (loader) {
+                        loader.classList.add('active');
                         
-                        // 5. Keep the loader on screen for 1.5 more seconds, then fade out
+                        // 4. WAIT 500ms for the solid loader to cover the screen
                         setTimeout(() => {
-                            loader.classList.remove('active');
-                        }, 1500);
+                            // 5. Briefly allow clicks to pass through, and simulate the click
+                            isRouting = true;
+                            link.click(); // main.js sees THIS click and changes the page invisibly!
+                            isRouting = false;
+                            
+                            // 6. Keep the loader on screen for 1.5 more seconds, then fade out
+                            setTimeout(() => {
+                                loader.classList.remove('active');
+                            }, 1500);
 
-                    }, 500); // 500ms matches the CSS fade transition time
-
-                } else if (typeof window.showView === 'function' && targetView) {
-                     // Fallback just in case
-                     window.showView(targetView);
+                        }, 500); // 500ms matches the CSS fade transition time
+                    } else {
+                        // Safe fallback if loader is missing
+                        isRouting = true;
+                        link.click();
+                        isRouting = false;
+                    }
                 }
+                // If isRouting IS true, we do nothing here and let the click pass through to main.js
             }
-        }, true); // <-- 'true' is crucial here. It forces this to run before main.js
+        }, true); // <-- 'true' triggers the Capture Phase to intercept before main.js
 
 
         // Close sidebar if clicking anywhere outside sidebar and topbar
@@ -122,7 +119,6 @@ function closeSidebar() {
         body.style.paddingLeft = '0';
     }
 }
-
 
 /**
  * Toggles the sidebar open/closed state and animates the hexagon button.
