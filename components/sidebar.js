@@ -14,12 +14,26 @@ function initializeSidebar() {
     if (sidebar && overlay && hexagonButton && sidebarLinks) {
         overlay.addEventListener('click', window.toggleSidebar);
 
-        // Close sidebar if a link inside is clicked
+        // Close sidebar and trigger loading screen if a link inside is clicked
         sidebarLinks.addEventListener('click', (event) => {
-            if (event.target.tagName === 'A' && window.isSidebarOpen) {
-                // We don't call toggleSidebar() directly to avoid race conditions with main.js listeners
-                // Instead, we just ensure it closes.
-                closeSidebar();
+            const link = event.target.closest('a'); // Ensure we target the link element
+            
+            if (link) {
+                // 1. Close the sidebar immediately
+                if (window.isSidebarOpen) {
+                    closeSidebar();
+                }
+
+                // 2. Trigger the page transition loader
+                const loader = document.getElementById('page-transition-loader');
+                if (loader) {
+                    loader.classList.add('active');
+                    
+                    // 3. Keep the loader on screen for 2 seconds, then fade it out
+                    setTimeout(() => {
+                        loader.classList.remove('active');
+                    }, 2000);
+                }
             }
         });
 
