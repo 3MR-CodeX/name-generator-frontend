@@ -2917,15 +2917,16 @@ body[data-tier="business"] .surprise-btn:hover {
 }
 
 /* --- UPDATED Diagram Container Styling --- */
+/* --- UPDATED Diagram Container Styling --- */
 .diagram-container {
     position: relative;
     width: 100%;
-    max-width: 400px; /* Control max size */
+    max-width: 400px;
     display: grid;
     place-items: center;
 }
 
-.diagram-underlay,
+.diagram-bg,
 .diagram-image {
     grid-area: 1 / 1;
     width: 100%;
@@ -2933,14 +2934,35 @@ body[data-tier="business"] .surprise-btn:hover {
     object-fit: contain;
 }
 
-.diagram-underlay {
-    filter: blur(20px) brightness(1.2) saturate(1.5);
-    opacity: 0.5;
-    transform: scale(1.1);
-    /* This creates the color tint effect */
-    -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
-    mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
-    background: var(--primary-accent);
+/* Background image: 5% bigger, shiny, and animated */
+.diagram-bg {
+    transform: scale(1.05);
+    z-index: 1;
+    filter: brightness(1.1) saturate(1.2);
+    animation: diagram-shiny-pulse 5s infinite alternate ease-in-out;
+}
+
+/* Foreground pattern: 100% solid (no transparency) */
+.diagram-image {
+    z-index: 2;
+    opacity: 1;
+    filter: none;
+}
+
+/* Shiny Animation for the DB backgrounds */
+@keyframes diagram-shiny-pulse {
+    0% {
+        filter: brightness(1) drop-shadow(0 0 5px var(--primary-accent));
+        transform: scale(1.05);
+    }
+    50% {
+        filter: brightness(1.3) drop-shadow(0 0 20px var(--line-accent-glow));
+        transform: scale(1.06);
+    }
+    100% {
+        filter: brightness(1.1) drop-shadow(0 0 10px var(--line-accent-default));
+        transform: scale(1.05);
+    }
 }
 /* End of Diagram Update */
 
@@ -3089,4 +3111,5 @@ body[data-tier="business"] .surprise-btn:hover {
 .tool-anim-svg {
     /* No animation properties */
 }
+
 
