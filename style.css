@@ -2917,7 +2917,6 @@ body[data-tier="business"] .surprise-btn:hover {
 }
 
 /* --- UPDATED Diagram Container Styling --- */
-/* --- UPDATED Diagram Container Styling --- */
 .diagram-container {
     position: relative;
     width: 100%;
@@ -2934,35 +2933,34 @@ body[data-tier="business"] .surprise-btn:hover {
     object-fit: contain;
 }
 
-/* Background image: 2% bigger, full-body color shift, and shiny */
+/* Background image: 2% bigger, full-body color shift, no glow */
 .diagram-bg {
-    /* Changed from 1.05 to 1.02 as requested */
     transform: scale(1.02); 
     z-index: 1;
     /* Base brightness and saturation to make colors pop */
     filter: brightness(1.1) saturate(1.3);
-    /* New full-color-shift animation */
+    /* Pure color-shift animation without glow */
     animation: diagram-full-chroma 8s infinite linear;
 }
 
-/* Foreground pattern: 100% solid (solid color) */
+/* Foreground pattern: 100% solid */
 .diagram-image {
     z-index: 2;
     opacity: 1;
     filter: none;
 }
 
-/* NEW: Animation that shifts the actual color of the background image */
+/* Animation that shifts the actual color of the background image without glow */
 @keyframes diagram-full-chroma {
     0% {
-        filter: hue-rotate(0deg) brightness(1.1) drop-shadow(0 0 10px var(--primary-accent));
+        filter: hue-rotate(0deg) brightness(1.1);
     }
     50% {
-        /* Pulse the brightness for the "shiny" effect */
-        filter: hue-rotate(180deg) brightness(1.4) drop-shadow(0 0 25px var(--line-accent-glow));
+        /* Pulse the brightness for the "shiny" effect while shifting hue */
+        filter: hue-rotate(180deg) brightness(1.4);
     }
     100% {
-        filter: hue-rotate(360deg) brightness(1.1) drop-shadow(0 0 10px var(--primary-accent));
+        filter: hue-rotate(360deg) brightness(1.1);
     }
 }
 /* End of Diagram Update */
@@ -3112,6 +3110,7 @@ body[data-tier="business"] .surprise-btn:hover {
 .tool-anim-svg {
     /* No animation properties */
 }
+
 
 
 
