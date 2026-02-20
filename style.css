@@ -1,3 +1,4 @@
+
 /* style.css */
 :root {
     --top-bar-height: 60px;
@@ -3031,116 +3032,59 @@ body[data-tier="business"] .surprise-btn:hover {
 }
 
 
-/* --- REWORKED SVG ANIMATIONS --- */
-.wgnm-svg { overflow: visible; font-family: 'Poppins', sans-serif; font-weight: 500;}
+/* --- REWORKED SVG ANIMATIONS (Refined) --- */
+.wgnm-svg { 
+    overflow: visible; 
+    font-family: 'Poppins', sans-serif; 
+    font-weight: 500;
+}
+
 .wgnm-bg-pulse {
     fill: var(--bg-color-3);
-    animation: wgnm-pulse 6s ease-in-out infinite;
+    /* Removed pulse animation for a cleaner look */
+    opacity: 1;
 }
+
 .wgnm-path {
     stroke: var(--secondary-accent);
     stroke-dasharray: 315;
-    stroke-dashoffset: 315;
-    animation: wgnm-draw 6s ease-in-out infinite;
+    /* Static fully drawn path */
+    stroke-dashoffset: 0; 
 }
+
 .wgnm-spark {
     fill: var(--line-accent-default);
     filter: url(#wgnm-glow);
+    /* Keep the sparkle moving */
     animation: wgnm-spark-move 6s ease-in-out infinite;
 }
+
 .wgnm-text {
     fill: var(--primary-accent);
     font-size: 20px;
     opacity: 0;
+    /* Keep the fading animation for the cycling text */
     animation: wgnm-text-fade 6s ease-in-out infinite;
 }
 
-@keyframes wgnm-pulse {
-    0%, 100% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1); opacity: 1; }
-}
-@keyframes wgnm-draw {
-    0%, 15%, 100% { stroke-dashoffset: 315; }
-    50%, 85% { stroke-dashoffset: 0; }
-}
+/* Sparkle movement logic */
 @keyframes wgnm-spark-move {
     0%, 100% { motion-offset: 0%; offset-distance: 0%; opacity: 0;}
     15% { opacity: 1; }
     85% { motion-offset: 100%; offset-distance: 100%; opacity: 1; }
     90% { opacity: 0;}
 }
+
 .wgnm-spark {
     offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100");
 }
-@keyframes wgnm-text-fade {
-    0%, 40%, 100% { opacity: 0; }
-    60%, 90% { opacity: 1; }
-}
 
+/* Text fading logic */
+@keyframes wgnm-text-fade {
+    0%, 40%, 100% { opacity: 0; transform: translateY(5px); }
+    60%, 90% { opacity: 1; transform: translateY(0); }
+}
 /* Remove all other tool animations */
 .tool-anim-svg {
     /* No animation properties */
-}
-
-/* =========================================
-   Hero Subheadline
-   ========================================= */
-.hero-subheadline {
-    font-size: 1.6em; 
-    font-weight: 400;
-    margin-top: -5px;
-    margin-bottom: 25px;
-    color: #cccccc;
-    letter-spacing: 1px;
-}
-
-/* =========================================
-   Dynamic Background Glow Layers
-   ========================================= */
-#background-glow-layer {
-    position: absolute;
-    top: 0; 
-    left: 0;
-    width: 100%; 
-    height: 100%;
-    z-index: 1; /* Sandwiched safely under background-pattern */
-    
-    /* Auto-color shifts based on your active theme! */
-    background-color: var(--primary-accent);
-    
-    -webkit-mask-size: cover;
-    -webkit-mask-position: center center;
-    -webkit-mask-repeat: no-repeat;
-    mask-size: cover;
-    mask-position: center center;
-    mask-repeat: no-repeat;
-    
-    opacity: 0; /* Hidden by default until a DB class is added */
-    transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out, -webkit-mask-image 0.5s ease;
-    pointer-events: none;
-    
-    /* Gentle breathing animation */
-    animation: bgGlowPulse 6s infinite alternate ease-in-out;
-}
-
-/* The specific DB layers */
-#background-glow-layer.glow-db12 {
-    -webkit-mask-image: url('DB12.png');
-    mask-image: url('DB12.png');
-    opacity: 0.7; /* Adjust brightness here */
-}
-#background-glow-layer.glow-db34 {
-    -webkit-mask-image: url('DB34.png');
-    mask-image: url('DB34.png');
-    opacity: 0.7;
-}
-#background-glow-layer.glow-db56 {
-    -webkit-mask-image: url('DB56.png');
-    mask-image: url('DB56.png');
-    opacity: 0.7;
-}
-
-@keyframes bgGlowPulse {
-    0% { transform: scale(1); filter: brightness(1); }
-    100% { transform: scale(1.02); filter: brightness(1.3); }
 }
