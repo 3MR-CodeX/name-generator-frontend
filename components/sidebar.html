@@ -1,28 +1,26 @@
-<!-- components/sidebar.html -->
-<div id="sidebar">
-    <div class="sidebar-content">
-        <h2>Menu</h2>
-        <ul>
-            <li><a href="#" id="main-page-link">Home</a></li>
-            <li><a href="#" id="go-premium-link" class="premium-link">✨ Go Premium</a></li>
-            <li><a href="#" id="buy-credits-link" class="animated-cta">💰 Buy Credits</a></li>
-            <li id="nav-generator"><a href="#" id="home-link">Name Generator</a></li>
-            <li id="nav-refiner"><a href="#" id="custom-refine-link">Custom Name Refining</a></li>
-            
-            <!-- Premium Features -->
-            <li id="nav-checker"><a href="#" id="availability-check-link">Name Availability Check<i class="fas fa-lock premium-lock-icon"></i></a></li>
-            <li id="nav-analyzer"><a href="#" id="name-analyzer-link">Name Analyzer<i class="fas fa-lock premium-lock-icon"></i></a></li>
-            <li id="nav-summarizer"><a href="#" id="summarizer-link">Text Summarizer<i class="fas fa-lock premium-lock-icon"></i></a></li>
-            <li id="nav-combiner"><a href="#" id="word-combiner-link">Word Combiner<i class="fas fa-lock premium-lock-icon"></i></a></li>
-
-            <!-- Standard Links -->
-            <li><a href="#" id="settings-link">Settings</a></li>
-            <li id="full-history-li" class="hidden"><a href="#" onclick="openHistoryModal(); return false;">Full History</a></li>
-            <li id="sign-out-li" class="hidden"><a href="#" id="sign-out-link">Sign Out</a></li>
-            <li><a href="#" id="contact-link">Contact</a></li>
-            <li><a href="#" id="about-link">About</a></li>
-            <li><a href="#" id="terms-link">Terms of Service</a></li>
-            <li><a href="#" id="privacy-link">Privacy Policy</a></li>
-        </ul>
-    </div>
+<div class="sidebar-header">
+    <img src="Hexagon_starter.png" alt="NameIT Logo" class="sidebar-logo" style="width: 40px; height: auto;">
+    <h2>NameIT</h2>
+</div>
+<div class="sidebar-content">
+    <ul>
+        <li><a href="#" class="sidebar-btn active" data-view="main-page"><i class="fas fa-home sidebar-icon"></i> Home</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="main-generator"><i class="fas fa-robot sidebar-icon"></i> Name Generator</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="custom-refiner"><i class="fas fa-drafting-compass sidebar-icon"></i> Custom Refiner</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="availability-checker"><i class="fas fa-search-dollar sidebar-icon"></i> Availability Checker</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="name-analyzer"><i class="fas fa-microscope sidebar-icon"></i> Name Analyzer</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="summarizer"><i class="fas fa-cut sidebar-icon"></i> Text Summarizer</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="word-combiner"><i class="fas fa-magic sidebar-icon"></i> Word Combiner</a></li>
+        
+        <li class="sidebar-divider" style="height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;"></li>
+        
+        <li><a href="#" class="sidebar-btn premium-link" data-view="premium"><i class="fas fa-crown sidebar-icon" style="color: gold;"></i> Premium Plans</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="credits"><i class="fas fa-coins sidebar-icon"></i> Buy Credits</a></li>
+        
+        <li class="sidebar-divider" style="height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;"></li>
+        
+        <li><a href="#" class="sidebar-btn" data-view="settings"><i class="fas fa-cog sidebar-icon"></i> Settings</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="about"><i class="fas fa-info-circle sidebar-icon"></i> About</a></li>
+        <li><a href="#" class="sidebar-btn" data-view="contact"><i class="fas fa-envelope sidebar-icon"></i> Contact</a></li>
+    </ul>
 </div>
