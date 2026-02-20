@@ -15,27 +15,52 @@ function initializeSidebar() {
         overlay.addEventListener('click', window.toggleSidebar);
 
         // Close sidebar and trigger loading screen if a link inside is clicked
+        // Close sidebar and trigger loading screen if a link inside is clicked
+        // We use 'true' at the end to trigger the Capture Phase (runs before main.js)
         sidebarLinks.addEventListener('click', (event) => {
-            const link = event.target.closest('a'); // Ensure we target the link element
+            const link = event.target.closest('a');
             
             if (link) {
+                // STOP main.js from instantly switching the page
+                event.preventDefault();
+                event.stopImmediatePropagation(); 
+
                 // 1. Close the sidebar immediately
                 if (window.isSidebarOpen) {
                     closeSidebar();
                 }
 
-                // 2. Trigger the page transition loader
+                // 2. Figure out which page we are trying to go to
+                let targetView = link.getAttribute('data-view');
+                if (!targetView && link.getAttribute('href')) {
+                    targetView = link.getAttribute('href').replace('#', '');
+                }
+
+                // 3. Trigger the page transition loader
                 const loader = document.getElementById('page-transition-loader');
-                if (loader) {
+                if (loader && targetView) {
                     loader.classList.add('active');
                     
-                    // 3. Keep the loader on screen for 2 seconds, then fade it out
+                    // 4. WAIT 500ms for the fade-in to finish, THEN switch the view
                     setTimeout(() => {
-                        loader.classList.remove('active');
-                    }, 2000);
+                        // Switch the view behind the loading screen
+                        if (typeof window.showView === 'function') {
+                            window.showView(targetView);
+                        }
+                        
+                        // 5. Keep the loader on screen for 1.5 more seconds, then fade out
+                        setTimeout(() => {
+                            loader.classList.remove('active');
+                        }, 1500);
+
+                    }, 500); // 500ms matches the CSS fade transition time
+
+                } else if (typeof window.showView === 'function' && targetView) {
+                     // Fallback just in case
+                     window.showView(targetView);
                 }
             }
-        });
+        }, true); // <-- 'true' is crucial here. It forces this to run before main.js
 
 
         // Close sidebar if clicking anywhere outside sidebar and topbar
