@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateDropdown("style", STYLE_OPTIONS);
     populateDropdown("pattern", PATTERN_OPTIONS);
     populateFontDropdowns();
-    
+    initializeWGNMWordCycle();
     setupEventListeners();
     initializeAvailabilityDropdowns();
 
@@ -2179,6 +2179,24 @@ function applyBusinessShiftingSetting(enabled, save = true) {
     document.body.classList.toggle('business-shifting-disabled', !enabled);
 }
 
+ /* Cycles words in the "Why a Great Name Matters" SVG to show variety.
+ */
+function initializeWGNMWordCycle() {
+    const textElement = document.querySelector('.wgnm-text');
+    if (!textElement) return;
+
+    const words = ["Brand", "Startup", "App", "Product", "Game", "Idea", "Website", "Service"];
+    let index = 0;
+
+    // The CSS animation duration is 6s. We change the word when it's invisible.
+    // In the CSS (wgnm-text-fade), it's visible roughly between 60% and 90%.
+    // We change the word at the start of every cycle (0ms).
+    setInterval(() => {
+        index = (index + 1) % words.length;
+        textElement.textContent = words[index];
+    }, 6000); 
+}
+
 async function exportHistory() {
     const token = await getUserToken();
     if (!token) {
@@ -2277,3 +2295,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
