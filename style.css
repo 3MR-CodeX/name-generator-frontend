@@ -2929,20 +2929,47 @@ body[data-tier="business"] .surprise-btn:hover {
     justify-content: center;
 }
 
-/* The custom-made background shape */
+/* The custom-made background shape using CSS Masks */
 .diagram-bg-shape {
     position: absolute;
-    /* Exactly 2% larger than the pattern's intended size */
+    /* Exactly 2% larger than the pattern */
     width: 102%;
     height: 102%;
-    /* Creating a soft, brand-aligned shape */
+    
+    /* Solid color based strictly on your color theme */
     background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Organic, fluid shape */
-    opacity: 0.15; /* Subtle background presence */
+    opacity: 1; /* Made fully solid */
     z-index: 1;
     
-    /* Pure color-shift animation */
-    animation: diagram-css-chroma 10s infinite linear;
+    /* Setup mask to cut the gradient into the exact DB shapes */
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    
+    /* Pure color-shift animation only (no spinning) */
+    animation: diagram-color-shift 8s infinite linear;
+}
+
+/* Automatically apply the correct DB shape to the right tools */
+.tool-showcase-item:nth-child(1) .diagram-bg-shape,
+.tool-showcase-item:nth-child(2) .diagram-bg-shape {
+    -webkit-mask-image: url('diagrams/DB12.png');
+    mask-image: url('diagrams/DB12.png');
+}
+
+.tool-showcase-item:nth-child(3) .diagram-bg-shape,
+.tool-showcase-item:nth-child(4) .diagram-bg-shape {
+    -webkit-mask-image: url('diagrams/DB34.png');
+    mask-image: url('diagrams/DB34.png');
+}
+
+.tool-showcase-item:nth-child(5) .diagram-bg-shape,
+.tool-showcase-item:nth-child(6) .diagram-bg-shape {
+    -webkit-mask-image: url('diagrams/DB56.png');
+    mask-image: url('diagrams/DB56.png');
 }
 
 /* The foreground pattern images */
@@ -2956,24 +2983,10 @@ body[data-tier="business"] .surprise-btn:hover {
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
 
-/* Full color-shift logic for the CSS shape */
-@keyframes diagram-css-chroma {
-    0% {
-        filter: hue-rotate(0deg);
-        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-        transform: rotate(0deg) scale(1);
-    }
-    33% {
-        border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%;
-    }
-    66% {
-        border-radius: 67% 33% 47% 53% / 37% 20% 80% 63%;
-    }
-    100% {
-        filter: hue-rotate(360deg);
-        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-        transform: rotate(360deg) scale(1);
-    }
+/* Full color-shift logic ONLY (no spinning or shape changing) */
+@keyframes diagram-color-shift {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
 }
 /* End of Diagram Update */
 
@@ -3122,6 +3135,7 @@ body[data-tier="business"] .surprise-btn:hover {
 .tool-anim-svg {
     /* No animation properties */
 }
+
 
 
 
