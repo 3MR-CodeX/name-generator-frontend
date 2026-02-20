@@ -3148,6 +3148,7 @@ body[data-tier="business"] .surprise-btn:hover {
     stroke-width: 1.5;
     opacity: 0.3;
 }
+
 .orbit-ring-1 { animation: pulse-ring 4s infinite alternate ease-in-out; }
 .orbit-ring-2 { animation: pulse-ring 3s infinite alternate-reverse ease-in-out; }
 
@@ -3181,8 +3182,11 @@ body[data-tier="business"] .surprise-btn:hover {
     animation: ai-text-decode 6s ease-in-out infinite;
 }
 
-/* Neural Core Keyframes */
-@keyframes rotate-nodes { 100% { transform: rotate(360deg); } }
+/* --- Neural Core Keyframes --- */
+@keyframes rotate-nodes { 
+    100% { transform: rotate(360deg); } 
+}
+
 @keyframes draw-neural {
     0% { stroke-dashoffset: 300; opacity: 0; }
     20% { opacity: 0.8; }
@@ -3190,11 +3194,18 @@ body[data-tier="business"] .surprise-btn:hover {
     80% { stroke-dashoffset: -300; opacity: 0; }
     100% { stroke-dashoffset: -300; }
 }
+
 @keyframes breath-core {
     0% { transform: scale(0.9); filter: brightness(1); }
     100% { transform: scale(1.1); filter: brightness(1.5) drop-shadow(0 0 20px var(--primary-accent)); }
 }
-@keyframes pulse-ring { 100% { transform: scale(1.05); opacity: 0.6; } }
+
+/* UPDATED: Ring pulse without zooming (only fades in and out) */
+@keyframes pulse-ring { 
+    0% { opacity: 0.2; }
+    100% { opacity: 0.6; } 
+}
+
 @keyframes ai-text-decode {
     0% { opacity: 0; transform: scale(0.8); filter: blur(8px); }
     25% { opacity: 1; transform: scale(1); filter: blur(0px); }
@@ -3244,75 +3255,6 @@ body[data-tier="business"] .surprise-btn:hover {
     to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* --- NEW WGNM AI NEURAL NETWORK ANIMATION --- */
-.wgnm-svg { 
-    overflow: visible; 
-    font-family: 'Orbitron', sans-serif; /* Match the future vibe */
-    font-weight: 700;
-}
-
-.wgnm-node-bg {
-    fill: var(--primary-accent);
-    opacity: 0.1;
-    transform-origin: center;
-    animation: ai-core-pulse 6s ease-in-out infinite;
-}
-
-.wgnm-data-lines line {
-    stroke: var(--line-accent-default);
-    stroke-width: 2;
-    stroke-dasharray: 40;
-    stroke-dashoffset: 40;
-    opacity: 0.6;
-    animation: ai-data-flow 6s ease-in-out infinite;
-}
-
-.wgnm-hex-draw {
-    fill: none;
-    stroke: var(--secondary-accent);
-    stroke-width: 3;
-    stroke-dasharray: 340;
-    stroke-dashoffset: 340;
-    filter: url(#wgnm-glow);
-    animation: ai-hex-assemble 6s ease-in-out infinite;
-}
-
-.wgnm-text {
-    fill: #ffffff;
-    font-size: 20px;
-    letter-spacing: 2px;
-    opacity: 0;
-    transform-origin: center;
-    animation: ai-text-decode 6s ease-in-out infinite;
-}
-
-@keyframes ai-core-pulse {
-    0%, 100% { transform: scale(0.9); opacity: 0.1; }
-    50% { transform: scale(1.1); opacity: 0.25; filter: drop-shadow(0 0 15px var(--primary-accent)); }
-}
-
-@keyframes ai-data-flow {
-    0% { stroke-dashoffset: 40; opacity: 0; }
-    20% { opacity: 0.8; }
-    80% { stroke-dashoffset: 0; opacity: 0.8; }
-    100% { stroke-dashoffset: -40; opacity: 0; }
-}
-
-@keyframes ai-hex-assemble {
-    0% { stroke-dashoffset: 340; opacity: 0; }
-    20% { opacity: 1; }
-    50% { stroke-dashoffset: 0; }
-    80% { opacity: 1; stroke-dashoffset: -340; }
-    100% { stroke-dashoffset: -340; opacity: 0; }
-}
-
-@keyframes ai-text-decode {
-    0% { opacity: 0; transform: scale(0.8); filter: blur(8px); }
-    25% { opacity: 1; transform: scale(1); filter: blur(0px); }
-    75% { opacity: 1; transform: scale(1); filter: blur(0px); }
-    100% { opacity: 0; transform: scale(1.2); filter: blur(8px); }
-}
-
 /* --- PAGE TRANSITION LOADER --- */
 .page-transition-loader {
     position: fixed;
@@ -3360,6 +3302,7 @@ body[data-tier="business"] .surprise-btn:hover {
     0%, 100% { transform: scale(1); opacity: 0.8; }
     50% { transform: scale(1.05); opacity: 1; }
 }
+
 
 
 
