@@ -2919,6 +2919,7 @@ body[data-tier="business"] .surprise-btn:hover {
 /* --- UPDATED Diagram Container Styling --- */
 
 /* --- CSS-GENERATED DIAGRAM BACKGROUNDS --- */
+/* --- CSS-GENERATED DIAGRAM BACKGROUNDS --- */
 .diagram-container {
     position: relative;
     width: 100%;
@@ -2937,7 +2938,8 @@ body[data-tier="business"] .surprise-btn:hover {
     height: 102%;
     
     /* Solid color based strictly on your color theme */
-    background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+    background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent), var(--primary-accent));
+    background-size: 200% 200%;
     opacity: 1; /* Made fully solid */
     z-index: 1;
     
@@ -2949,8 +2951,8 @@ body[data-tier="business"] .surprise-btn:hover {
     mask-repeat: no-repeat;
     mask-position: center;
     
-    /* Pure color-shift animation only (no spinning) */
-    animation: diagram-color-shift 8s infinite linear;
+    /* Pure color-shift animation strictly within theme colors */
+    animation: diagram-color-shift 8s ease-in-out infinite;
 }
 
 /* Automatically apply the correct DB shape to the right tools */
@@ -2983,10 +2985,11 @@ body[data-tier="business"] .surprise-btn:hover {
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
 
-/* Full color-shift logic ONLY (no spinning or shape changing) */
+/* Full color-shift logic strictly between theme colors */
 @keyframes diagram-color-shift {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 /* End of Diagram Update */
 
@@ -3135,6 +3138,7 @@ body[data-tier="business"] .surprise-btn:hover {
 .tool-anim-svg {
     /* No animation properties */
 }
+
 
 
 
