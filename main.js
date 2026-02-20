@@ -192,8 +192,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof initializeAuth === 'function') initializeAuth();
     if (typeof initializePaymentSystem === 'function') initializePaymentSystem();
     
-    // (Removed the duplicated topbar and sidebar initializations here)
-    
     initializeUI();
     handleHashChange(); 
     initializeSettings();
@@ -202,19 +200,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateDropdown("pattern", PATTERN_OPTIONS);
     populateFontDropdowns();
     
-    initializeWGNMWordCycle(); // Your word cycle
-    initScrollShadows();       // Your new scroll shadows
+    initializeWGNMWordCycle();
+    initScrollShadows();
     
     setupEventListeners();
     initializeAvailabilityDropdowns();
 
+    // Loader timeout logic updated to handle both loaders
     setTimeout(() => {
-        const loader = document.getElementById('loader-wrapper');
-        if (loader) {
-            loader.classList.add('fade-out');
-            loader.addEventListener('transitionend', () => loader.style.display = 'none');
+        const oldLoader = document.getElementById('loader-wrapper');
+        if (oldLoader) {
+            oldLoader.classList.add('fade-out');
+            oldLoader.addEventListener('transitionend', () => oldLoader.style.display = 'none');
         }
-    }, 5000);
+
+        const newLoader = document.getElementById('page-transition-loader');
+        if (newLoader) {
+            newLoader.classList.add('fade-out');
+            newLoader.addEventListener('transitionend', () => newLoader.style.display = 'none');
+        }
+    }, 3000); // Wait 3 seconds to clear loaders to improve perceived speed
 });
 
 // **UPDATED** Feature Lock Logic
@@ -592,7 +597,7 @@ function populateFontDropdowns() {
                 const option = document.createElement('option');
                 option.value = FONT_OPTIONS[fontName];
                 option.textContent = fontName;
-  
+ 
                  selector.appendChild(option);
             }
         }
@@ -1032,7 +1037,7 @@ function renderHistory(history, renderToModal = false) {
             dailyContainer.appendChild(dateHeading);
             groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
        
-                  const button = document.createElement('button');
+                 const button = document.createElement('button');
                 button.className = 'history-item';
                 button.title = (entry.category.includes("Refined")) ? `Refine Instruction: ${entry.prompt}` : createTooltip(entry);
                 button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
@@ -1778,7 +1783,7 @@ async function fetchHistoryForImport() {
                     const targetInput = document.getElementById(targetInputId);
                     if (targetInput) {
                         targetInput.value = cleanNames(name);
-      
+       
                      }
                     closeHistoryImportModal();
                 };
