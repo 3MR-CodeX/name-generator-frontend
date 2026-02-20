@@ -136,6 +136,17 @@
     display: inline-block;
 }
 
+/* Sidebar Icon coloring */
+.sidebar-icon {
+    /* Uses the theme color dynamically */
+    color: var(--primary-accent);
+    margin-right: 12px;
+    font-size: 1.1em;
+    width: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
 /* --- Tier Specific Sidebar Designs --- */
 
 /* Pro Tier (Gold) */
