@@ -2798,6 +2798,18 @@ body[data-tier="business"] .surprise-btn:hover {
     transition: color 0.3s ease;
 }
 
+.hero-sub {
+    display: block;
+    font-family: 'Playfair Display', serif; /* Fancier serif font */
+    font-size: 0.55em; /* Slightly smaller */
+    font-style: italic;
+    font-weight: 500;
+    color: var(--primary-accent);
+    margin-top: 15px;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
 .main-page-cta {
     margin-top: 30px;
     padding: 18px 35px;
@@ -3082,6 +3094,34 @@ body[data-tier="business"] .surprise-btn:hover {
 
 
 /* --- REWORKED SVG ANIMATIONS (Refined) --- */
+
+/* --- HOME PAGE SCROLL SHADOWS --- */
+.scroll-shadow-top, .scroll-shadow-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 80px;
+    pointer-events: none;
+    z-index: 50; /* Stays above content, below topbar */
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.scroll-shadow-top {
+    top: 60px; /* Adjust if your top-bar height is different */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, transparent 100%);
+}
+
+.scroll-shadow-bottom {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 100%);
+}
+
+.scroll-shadow-top.active, .scroll-shadow-bottom.active {
+    opacity: 1;
+}
+
+/* --- REFINED WGNM ANIMATIONS (PROFESSIONAL GRADE) --- */
 .wgnm-svg { 
     overflow: visible; 
     font-family: 'Poppins', sans-serif; 
@@ -3090,53 +3130,61 @@ body[data-tier="business"] .surprise-btn:hover {
 
 .wgnm-bg-pulse {
     fill: var(--bg-color-3);
-    /* Set to half transparent as requested */
-    opacity: 0.5;
+    opacity: 0.2;
+    transform-origin: center;
+    animation: wgnm-pulse-soft 6s ease-in-out infinite;
 }
 
 .wgnm-path {
     stroke: var(--secondary-accent);
     stroke-dasharray: 315;
-    stroke-dashoffset: 0; 
+    stroke-linecap: round;
+    /* Draws the ring dynamically */
+    animation: wgnm-path-draw 6s ease-in-out infinite;
 }
 
 .wgnm-spark {
     fill: var(--line-accent-default);
     filter: url(#wgnm-glow);
-    /* Synced duration */
+    transform-origin: center;
     animation: wgnm-spark-move 6s ease-in-out infinite;
 }
 
 .wgnm-text {
-    fill: var(--primary-accent);
-    font-size: 20px;
+    fill: var(--text-color-1); /* Cleaner, solid text color */
+    font-size: 22px;
+    font-weight: 600;
     opacity: 0;
-    /* Synced duration */
-    animation: wgnm-text-fade 6s ease-in-out infinite;
+    transform-origin: center;
+    /* Scales and blurs elegantly */
+    animation: wgnm-text-fade-scale 6s ease-in-out infinite;
 }
 
-/* Synced Sparkle: Fades in/out at the same percentage as text */
+@keyframes wgnm-pulse-soft {
+    0%, 100% { transform: scale(0.95); opacity: 0.2; }
+    50% { transform: scale(1.05); opacity: 0.5; }
+}
+
+@keyframes wgnm-path-draw {
+    0% { stroke-dashoffset: 315; opacity: 0; }
+    15% { opacity: 1; }
+    50% { stroke-dashoffset: 0; }
+    85% { opacity: 1; stroke-dashoffset: -315; }
+    100% { opacity: 0; stroke-dashoffset: -315; }
+}
+
 @keyframes wgnm-spark-move {
-    0% { motion-offset: 0%; offset-distance: 0%; opacity: 0;}
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { motion-offset: 100%; offset-distance: 100%; opacity: 0; }
+    0% { offset-distance: 0%; opacity: 0; transform: scale(0.5); }
+    15% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 10px var(--line-accent-glow)); }
+    85% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 10px var(--line-accent-glow)); }
+    100% { offset-distance: 100%; opacity: 0; transform: scale(0.5); }
 }
 
-.wgnm-spark {
-    offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100");
-}
-
-/* Synced Text: Fades in/out exactly with the sparkle */
-@keyframes wgnm-text-fade {
-    0% { opacity: 0; transform: translateY(5px); }
-    20% { opacity: 1; transform: translateY(0); }
-    80% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-5px); }
-}
-/* Remove all other tool animations */
-.tool-anim-svg {
-    /* No animation properties */
+@keyframes wgnm-text-fade-scale {
+    0% { opacity: 0; transform: scale(0.85); filter: blur(4px); }
+    15% { opacity: 1; transform: scale(1); filter: blur(0px); }
+    85% { opacity: 1; transform: scale(1); filter: blur(0px); }
+    100% { opacity: 0; transform: scale(1.15); filter: blur(4px); }
 }
 
 /* --- PAGE TRANSITION LOADER --- */
@@ -3186,6 +3234,7 @@ body[data-tier="business"] .surprise-btn:hover {
     0%, 100% { transform: scale(1); opacity: 0.8; }
     50% { transform: scale(1.05); opacity: 1; }
 }
+
 
 
 
