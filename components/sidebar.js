@@ -11,7 +11,6 @@ function initializeSidebar() {
     if (sidebar && overlay && hexagonButton && sidebarLinks) {
         overlay.addEventListener('click', window.toggleSidebar);
 
-        // Array of 10+ helpful tips for the loading screen
         const appTips = [
             "Use the Custom Refiner to iterate and perfect your existing names.",
             "Check domain availability instantly to secure your brand's digital presence.",
@@ -25,44 +24,54 @@ function initializeSidebar() {
             "Try combining the 'Invented Word' pattern with the 'Tech' category for startups."
         ];
 
-        let isRouting = false; 
-
         sidebarLinks.addEventListener('click', (event) => {
             const link = event.target.closest('a');
             
             if (link) {
-                if (!isRouting) {
-                    event.preventDefault();
-                    event.stopImmediatePropagation(); 
+                // Instantly stop standard link behavior
+                event.preventDefault();
+                event.stopImmediatePropagation(); 
 
-                    if (window.isSidebarOpen) {
-                        closeSidebar();
-                    }
+                if (window.isSidebarOpen) {
+                    closeSidebar();
+                }
 
-                    const loader = document.getElementById('page-transition-loader');
-                    if (loader) {
-                        // Pick a random tip and apply it
-                        const randomTip = appTips[Math.floor(Math.random() * appTips.length)];
-                        const tipElement = document.getElementById('loading-tip-text');
-                        if (tipElement) tipElement.textContent = randomTip;
+                // Get the target page
+                let targetView = link.getAttribute('data-view');
+                if (!targetView && link.getAttribute('href')) {
+                    targetView = link.getAttribute('href').replace('#', '');
+                }
+
+                const loader = document.getElementById('page-transition-loader');
+                
+                if (loader && targetView) {
+                    // Update the tip
+                    const randomTip = appTips[Math.floor(Math.random() * appTips.length)];
+                    const tipElement = document.getElementById('loading-tip-text');
+                    if (tipElement) tipElement.textContent = randomTip;
+                    
+                    // Show loader
+                    loader.classList.add('active');
+                    
+                    setTimeout(() => {
+                        // FIX: Safely trigger main.js routing by changing the URL Hash
+                        window.location.hash = targetView;
                         
-                        loader.classList.add('active');
+                        // Fallback just in case hash listener misses it
+                        if (typeof window.showView === 'function') {
+                            window.showView(targetView);
+                        }
                         
+                        // Remove loader after page changes
                         setTimeout(() => {
-                            isRouting = true;
-                            link.click(); 
-                            isRouting = false;
-                            
-                            setTimeout(() => {
-                                loader.classList.remove('active');
-                            }, 1500);
+                            loader.classList.remove('active');
+                        }, 1500);
 
-                        }, 500); 
-                    } else {
-                        isRouting = true;
-                        link.click();
-                        isRouting = false;
-                    }
+                    }, 500); // Wait 500ms for loader to cover screen
+                } else if (targetView) {
+                    // Fallback if loader is completely missing
+                    window.location.hash = targetView;
+                    if (typeof window.showView === 'function') window.showView(targetView);
                 }
             }
         }, true);
