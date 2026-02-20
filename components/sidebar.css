@@ -70,6 +70,19 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* --- NEW: Active State --- */
+.sidebar-content ul li a.active {
+    background-color: var(--primary-accent);
+    color: white;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-content ul li a:hover .sidebar-icon,
+.sidebar-content ul li a.active .sidebar-icon {
+    color: white; /* Make the icon white when hovered or active */
+}
+
 #overlay {
     position: fixed;
     top: 0;
@@ -95,7 +108,8 @@
     color: var(--line-accent-glow);
 }
 
-.sidebar-content ul li a.premium-link:hover {
+.sidebar-content ul li a.premium-link:hover,
+.sidebar-content ul li a.premium-link.active {
     background-color: var(--line-accent-glow);
     color: white;
 }
@@ -116,7 +130,9 @@
 .sidebar-content ul li.locked > a {
     color: #a0a0a0;
     background-color: #2f2f2f;
+    border-color: #4a4a4a;
     cursor: default; /* Change cursor to default, not 'not-allowed' */
+    position: relative;
 }
 
 .sidebar-content ul li.locked > a:hover {
@@ -124,16 +140,15 @@
     transform: translateX(5px);
 }
 
-/* Show the lock icon only on locked items */
-.sidebar-content ul li .premium-lock-icon {
-    display: none;
-    margin-left: 8px;
+/* Auto-inject the lock icon on locked items */
+.sidebar-content ul li.locked > a::after {
+    content: '\f023'; /* FontAwesome Lock Icon */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    right: 15px;
     color: #f1fa8c;
-    font-size: 0.8em;
-}
-
-.sidebar-content ul li.locked .premium-lock-icon {
-    display: inline-block;
+    font-size: 0.9em;
 }
 
 /* Sidebar Icon coloring */
@@ -145,6 +160,7 @@
     width: 20px;
     text-align: center;
     display: inline-block;
+    transition: color 0.3s ease-in-out;
 }
 
 /* --- Tier Specific Sidebar Designs --- */
@@ -162,4 +178,3 @@ body[data-tier="business"] #sidebar {
     /* **FIXED** Add 'left' to the transition property */
     transition: left 0.5s ease-in-out, border-color 1.5s linear;
 }
-
