@@ -192,6 +192,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof initializeAuth === 'function') initializeAuth();
     if (typeof initializePaymentSystem === 'function') initializePaymentSystem();
     
+    // (Removed the duplicated topbar and sidebar initializations here)
+    
     initializeUI();
     handleHashChange(); 
     initializeSettings();
@@ -199,7 +201,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateDropdown("style", STYLE_OPTIONS);
     populateDropdown("pattern", PATTERN_OPTIONS);
     populateFontDropdowns();
-    initializeWGNMWordCycle();
+    
+    initializeWGNMWordCycle(); // Your word cycle
+    initScrollShadows();       // Your new scroll shadows
+    
     setupEventListeners();
     initializeAvailabilityDropdowns();
 
@@ -2296,3 +2301,45 @@ function showAlternativesLoadingPlaceholder(targetElement) {
 }
 
 
+function initScrollShadows() {
+    if (!document.querySelector('.scroll-shadow-top')) {
+        const topShadow = document.createElement('div');
+        topShadow.className = 'scroll-shadow-top';
+        document.body.appendChild(topShadow);
+
+        const bottomShadow = document.createElement('div');
+        bottomShadow.className = 'scroll-shadow-bottom';
+        document.body.appendChild(bottomShadow);
+    }
+
+    const topShadow = document.querySelector('.scroll-shadow-top');
+    const bottomShadow = document.querySelector('.scroll-shadow-bottom');
+
+    function updateShadows() {
+        const mainPage = document.getElementById('main-page-view');
+        if (!mainPage || mainPage.classList.contains('hidden')) {
+            topShadow.classList.remove('active');
+            bottomShadow.classList.remove('active');
+            return;
+        }
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+
+        if (scrollTop > 20) topShadow.classList.add('active');
+        else topShadow.classList.remove('active');
+
+        if (scrollTop + clientHeight < scrollHeight - 20) bottomShadow.classList.add('active');
+        else bottomShadow.classList.remove('active');
+    }
+
+    window.addEventListener('scroll', updateShadows, { passive: true });
+    window.addEventListener('resize', updateShadows, { passive: true });
+    
+    const observer = new MutationObserver(updateShadows);
+    const mainPage = document.getElementById('main-page-view');
+    if (mainPage) observer.observe(mainPage, { attributes: true, attributeFilter: ['class'] });
+
+    setTimeout(updateShadows, 100);
+}
