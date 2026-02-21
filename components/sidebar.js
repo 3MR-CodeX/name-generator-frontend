@@ -41,6 +41,7 @@ function initializeSidebar() {
                 }
 
                 // Get the target page
+                // Get the target page
                 let targetView = link.getAttribute('data-view');
                 if (!targetView && link.getAttribute('href') && link.getAttribute('href') !== '#') {
                     targetView = link.getAttribute('href').replace('#', '');
@@ -54,7 +55,9 @@ function initializeSidebar() {
                     const tipElement = document.getElementById('loading-tip-text');
                     if (tipElement) tipElement.textContent = randomTip;
                     
-                    // Show loader
+                    // FIX: Remove 'display: none' and 'fade-out' applied by main.js initial load
+                    loader.style.display = 'flex'; 
+                    loader.classList.remove('fade-out');
                     loader.classList.add('active');
                     
                     setTimeout(() => {
@@ -69,7 +72,9 @@ function initializeSidebar() {
                         // Remove loader after page changes
                         setTimeout(() => {
                             loader.classList.remove('active');
-                        }, 1500);
+                            loader.classList.add('fade-out');
+                            setTimeout(() => { loader.style.display = 'none'; }, 500); // hide completely after fade
+                        }, 1000);
 
                     }, 500); // Wait 500ms for loader to cover screen
                 } else if (targetView) {
