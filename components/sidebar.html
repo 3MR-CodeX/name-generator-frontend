@@ -1,16 +1,15 @@
 <div id="sidebar">
-    <div class="sidebar-header" style="justify-content: center; width: 100%;">
-        <h2 style="margin: 0;">Menu</h2>
-    </div>
     <div class="sidebar-content">
+        <!-- MOVED: Now inside sidebar-content so it scrolls. Added margin-top & margin-bottom for spacing -->
+        <div class="sidebar-header" style="text-align: center; margin-top: 30px; margin-bottom: 30px; width: 100%;">
+            <h2 style="margin: 0; font-size: 1.8em;">Menu</h2>
+        </div>
+        
         <ul>
             <li><a href="#" class="sidebar-btn active" data-view="main-page"><i class="fas fa-home sidebar-icon"></i> Home</a></li>
-            
-            <!-- FIXED: data-view changed to match main.js -->
             <li><a href="#" class="sidebar-btn" data-view="generator"><i class="fas fa-robot sidebar-icon"></i> Name Generator</a></li>
             <li><a href="#" class="sidebar-btn" data-view="refiner"><i class="fas fa-drafting-compass sidebar-icon"></i> Custom Refiner</a></li>
             
-            <!-- FIXED: Added IDs for the Premium Feature Lock logic from main.js -->
             <li id="nav-checker"><a href="#" class="sidebar-btn" data-view="availability-checker"><i class="fas fa-search-dollar sidebar-icon"></i> Availability Checker</a></li>
             <li id="nav-analyzer"><a href="#" class="sidebar-btn" data-view="name-analyzer"><i class="fas fa-microscope sidebar-icon"></i> Name Analyzer</a></li>
             <li id="nav-summarizer"><a href="#" class="sidebar-btn" data-view="summarizer"><i class="fas fa-cut sidebar-icon"></i> Text Summarizer</a></li>
@@ -19,7 +18,8 @@
             <li class="sidebar-divider" style="height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;"></li>
             
             <li><a href="#" class="sidebar-btn premium-link" data-view="premium"><i class="fas fa-crown sidebar-icon" style="color: gold;"></i> Premium Plans</a></li>
-            <li><a href="#" class="sidebar-btn" data-view="credits"><i class="fas fa-coins sidebar-icon"></i> Buy Credits</a></li>
+            <!-- ADDED: 'credits-link' class for the new color shift animation -->
+            <li><a href="#" class="sidebar-btn credits-link" data-view="credits"><i class="fas fa-coins sidebar-icon"></i> Buy Credits</a></li>
             
             <li class="sidebar-divider" style="height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;"></li>
             
