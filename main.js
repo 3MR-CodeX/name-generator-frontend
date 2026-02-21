@@ -193,6 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof initializePaymentSystem === 'function') initializePaymentSystem();
     
     initializeUI();
+    window.updateCreditCostsUI('Anonymous'); // FIX: Initialize credit UI for logged out users on load
     handleHashChange(); 
     initializeSettings();
     populateDropdown("category", CATEGORY_OPTIONS);
@@ -2348,3 +2349,4 @@ function initScrollShadows() {
 
     setTimeout(updateShadows, 100);
 }
+
