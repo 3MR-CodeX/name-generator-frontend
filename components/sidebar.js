@@ -32,7 +32,7 @@ function initializeSidebar() {
                 event.preventDefault();
                 event.stopImmediatePropagation(); 
 
-                // FIX: Update active visual state for the sidebar buttons
+                // Update active visual state for the sidebar buttons
                 document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
                 link.classList.add('active');
 
@@ -41,7 +41,6 @@ function initializeSidebar() {
                 }
 
                 // Get the target page
-                // Get the target page
                 let targetView = link.getAttribute('data-view');
                 if (!targetView && link.getAttribute('href') && link.getAttribute('href') !== '#') {
                     targetView = link.getAttribute('href').replace('#', '');
@@ -49,10 +48,8 @@ function initializeSidebar() {
 
                 const loader = document.getElementById('page-transition-loader');
                 
-                const loader = document.getElementById('page-transition-loader');
-                
                 if (loader && targetView) {
-                    // 1. Update the tip text (emoji removed from HTML)
+                    // 1. Update the tip text
                     const randomTip = appTips[Math.floor(Math.random() * appTips.length)];
                     const tipElement = document.getElementById('loading-tip-text');
                     if (tipElement) tipElement.textContent = randomTip;
@@ -61,7 +58,7 @@ function initializeSidebar() {
                     loader.style.display = 'flex'; 
                     loader.classList.remove('fade-out');
                     
-                    // 3. Force DOM Reflow (THIS IS THE SECRET TO FIXING THE FADE-IN)
+                    // 3. Force DOM Reflow to trigger fade-in animation
                     void loader.offsetWidth;
                     
                     // 4. Trigger fade-in transition
@@ -74,25 +71,25 @@ function initializeSidebar() {
                             window.showView(targetView);
                         }
                         
-                        // 5. Wait 2.5 seconds so user can read the tip and enjoy the animation
+                        // 5. Wait 2.5 seconds so user can read the tip
                         setTimeout(() => {
                             loader.classList.remove('active'); // Fade out starts
                             
-                            // Wait for fade-out to finish (0.5s) before completely hiding
+                            // Wait for fade-out to finish before hiding
                             setTimeout(() => { 
                                 loader.style.display = 'none'; 
                             }, 500); 
                             
-                        }, 2500); // 2.5 seconds total loading screen time
+                        }, 2500); 
 
-                    }, 500); // Wait 500ms for loader to fully fade in before changing pages
+                    }, 500); // Wait 500ms for loader to cover screen
                 } else if (targetView) {
+                    // Fallback if loader is completely missing
                     window.location.hash = targetView;
                     if (typeof window.showView === 'function') window.showView(targetView);
                 }
             }
         }, true);
-
 
         // Close sidebar if clicking anywhere outside sidebar and topbar
         document.body.addEventListener('click', (event) => {
