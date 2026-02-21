@@ -49,36 +49,44 @@ function initializeSidebar() {
 
                 const loader = document.getElementById('page-transition-loader');
                 
+                const loader = document.getElementById('page-transition-loader');
+                
                 if (loader && targetView) {
-                    // Update the tip
+                    // 1. Update the tip text (emoji removed from HTML)
                     const randomTip = appTips[Math.floor(Math.random() * appTips.length)];
                     const tipElement = document.getElementById('loading-tip-text');
                     if (tipElement) tipElement.textContent = randomTip;
                     
-                    // FIX: Remove 'display: none' and 'fade-out' applied by main.js initial load
+                    // 2. Make visible but transparent
                     loader.style.display = 'flex'; 
                     loader.classList.remove('fade-out');
+                    
+                    // 3. Force DOM Reflow (THIS IS THE SECRET TO FIXING THE FADE-IN)
+                    void loader.offsetWidth;
+                    
+                    // 4. Trigger fade-in transition
                     loader.classList.add('active');
                     
                     setTimeout(() => {
-                        // FIX: Safely trigger main.js routing by changing the URL Hash
                         window.location.hash = targetView;
                         
-                        // Fallback just in case hash listener misses it
                         if (typeof window.showView === 'function') {
                             window.showView(targetView);
                         }
                         
-                        // Remove loader after page changes
+                        // 5. Wait 2.5 seconds so user can read the tip and enjoy the animation
                         setTimeout(() => {
-                            loader.classList.remove('active');
-                            loader.classList.add('fade-out');
-                            setTimeout(() => { loader.style.display = 'none'; }, 500); // hide completely after fade
-                        }, 1000);
+                            loader.classList.remove('active'); // Fade out starts
+                            
+                            // Wait for fade-out to finish (0.5s) before completely hiding
+                            setTimeout(() => { 
+                                loader.style.display = 'none'; 
+                            }, 500); 
+                            
+                        }, 2500); // 2.5 seconds total loading screen time
 
-                    }, 500); // Wait 500ms for loader to cover screen
+                    }, 500); // Wait 500ms for loader to fully fade in before changing pages
                 } else if (targetView) {
-                    // Fallback if loader is completely missing
                     window.location.hash = targetView;
                     if (typeof window.showView === 'function') window.showView(targetView);
                 }
