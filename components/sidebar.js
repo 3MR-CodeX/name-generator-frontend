@@ -60,31 +60,28 @@ function initializeSidebar() {
                     
                     // 3. Force DOM Reflow to trigger fade-in animation
                     void loader.offsetWidth;
-                    
-                    // 4. Trigger fade-in transition
                     loader.classList.add('active');
                     
+                    // 4. Wait 500ms for it to fully fade in
                     setTimeout(() => {
                         window.location.hash = targetView;
-                        
                         if (typeof window.showView === 'function') {
                             window.showView(targetView);
                         }
                         
-                        // 5. Wait 2.5 seconds so user can read the tip
+                        // 5. Keep loader on screen for 2s (Total 2.5s)
                         setTimeout(() => {
                             loader.classList.remove('active'); // Fade out starts
                             
-                            // Wait for fade-out to finish before hiding
+                            // 6. Wait for fade-out to finish before hiding completely
                             setTimeout(() => { 
                                 loader.style.display = 'none'; 
                             }, 500); 
                             
-                        }, 2500); 
+                        }, 2000); 
 
-                    }, 500); // Wait 500ms for loader to cover screen
+                    }, 500); 
                 } else if (targetView) {
-                    // Fallback if loader is completely missing
                     window.location.hash = targetView;
                     if (typeof window.showView === 'function') window.showView(targetView);
                 }
