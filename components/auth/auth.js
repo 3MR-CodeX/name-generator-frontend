@@ -1,12 +1,13 @@
 // components/auth/auth.js
 
 function initializeAuth() {
-    // REVERTED to your original, working variables!
     const auth = window.auth;
     const db = window.db;
 
+    // CRITICAL FIX: If Firebase hasn't loaded yet, wait 100ms and try again. 
+    // This stops the script from crashing and permanently hiding the Top Bar!
     if (!auth || !db) {
-        console.warn("Auth initialization waiting for Firebase...");
+        setTimeout(initializeAuth, 100);
         return;
     }
 
@@ -46,14 +47,12 @@ function initializeAuth() {
 
     let unsubscribeUserDoc = null;
 
-    // Default Credit limits based on Tier
     const TIER_LIMITS = {
         "Free Tier": 25,
         "Pro Tier": 2000,
         "Business Tier": 50000 
     };
 
-    // Make modals globally accessible
     window.openSignInModal = () => {
         if(signInModal) signInModal.classList.add('active');
         if(signUpModal) signUpModal.classList.remove('active');
@@ -71,7 +70,6 @@ function initializeAuth() {
         if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = '';
     };
 
-    // Update UI functions for global access
     window.updateGenerationCountUI = (credits) => {
         if (generationsCount) generationsCount.textContent = `${credits} Credits left`;
         
@@ -90,7 +88,6 @@ function initializeAuth() {
         }
     };
 
-    // Event Listeners for auth buttons
     if (signInBtn) signInBtn.addEventListener('click', window.openSignInModal);
     if (signUpBtnTop) signUpBtnTop.addEventListener('click', window.openSignUpModal);
     
@@ -103,7 +100,6 @@ function initializeAuth() {
     if (signInGoogle) signInGoogle.addEventListener('click', signInWithGoogle);
     if (signUpGoogle) signUpGoogle.addEventListener('click', signInWithGoogle);
 
-    // Profile and Tier Dropdown Togglers
     if (userProfileContainer) {
         userProfileContainer.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -118,7 +114,6 @@ function initializeAuth() {
         });
     }
 
-    // Close dropdowns when clicking outside
     document.addEventListener('click', () => {
         if(accountDropdown) accountDropdown.classList.remove('visible');
         if(tierDropdown) tierDropdown.classList.remove('visible');
@@ -127,13 +122,11 @@ function initializeAuth() {
     const signOutBtn = document.getElementById('sign-out-btn');
     if (signOutBtn) signOutBtn.addEventListener('click', signOut);
 
-    // Switch between Sign In / Sign Up
     const switchToSignUp = document.getElementById('switch-to-sign-up');
     const switchToSignIn = document.getElementById('switch-to-sign-in');
     if(switchToSignUp) switchToSignUp.addEventListener('click', (e) => { e.preventDefault(); window.openSignUpModal(); });
     if(switchToSignIn) switchToSignIn.addEventListener('click', (e) => { e.preventDefault(); window.openSignInModal(); });
 
-    // Handle Resend Verification Email
     document.body.addEventListener('click', (e) => {
         if (e.target && e.target.id === 'resend-verification-link') {
             e.preventDefault();
@@ -146,17 +139,14 @@ function initializeAuth() {
         }
     });
 
-    // --- Firebase Auth State Observer --- //
     auth.onAuthStateChanged(user => {
         if (unsubscribeUserDoc) {
             unsubscribeUserDoc();
         }
 
         if (user) {
-            // User is signed in.
             const userRef = db.collection('users').doc(user.uid);
 
-            // SAFELY UPDATE UI Elements to prevent crash if DOM isn't fully loaded
             if (authButtons) authButtons.classList.add('hidden');
             if (userProfileContainer) userProfileContainer.classList.remove('hidden');
             if (userStatusContainer) userStatusContainer.classList.remove('hidden');
@@ -165,7 +155,6 @@ function initializeAuth() {
             if (userNameDisplay) userNameDisplay.textContent = user.displayName || 'User';
             if (userEmailDisplay) userEmailDisplay.textContent = user.email;
 
-            // Handle Email Verification Banner
             if (!user.emailVerified) {
                 if (verificationNotice) {
                     verificationNotice.classList.remove('hidden');
@@ -179,7 +168,6 @@ function initializeAuth() {
                 if (verificationNotice) verificationNotice.classList.add('hidden');
             }
 
-            // Listen to User Document in Firestore
             unsubscribeUserDoc = userRef.onSnapshot(doc => {
                 let tier = 'Free Tier';
                 let credits = 25;
@@ -215,7 +203,6 @@ function initializeAuth() {
                 if (window.updateFeatureLocks) window.updateFeatureLocks(tier);
                 if (window.updatePremiumPage) window.updatePremiumPage(tier);
                 
-                // Show dropdown limits based on tier
                 document.querySelectorAll('.tier-specific-limit').forEach(el => el.classList.add('hidden'));
                 const specificLimit = document.getElementById(`limit-${tier.split(' ')[0].toLowerCase()}`);
                 if (specificLimit) specificLimit.classList.remove('hidden');
@@ -223,7 +210,6 @@ function initializeAuth() {
             });
 
         } else {
-            // User is signed out.
             if (authButtons) authButtons.classList.remove('hidden');
             if (userProfileContainer) userProfileContainer.classList.add('hidden');
             if (userStatusContainer) userStatusContainer.classList.add('hidden');
@@ -239,7 +225,6 @@ function initializeAuth() {
         }
     });
 
-    // --- Authentication Functions ---
     function signUpWithEmail() {
         auth.createUserWithEmailAndPassword(signUpEmail.value, signUpPassword.value)
             .then((userCredential) => {
