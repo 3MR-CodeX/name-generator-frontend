@@ -500,3 +500,27 @@ body[data-tier="business"] #user-status-container .tier-badge {
     font-weight: bold;
     border: none;
 }
+
+
+/* --- ABSOLUTE OVERRIDE FOR MISSING TOPBAR ELEMENTS --- */
+.topbar-content-wrapper {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+#auth-section {
+    position: relative !important;
+    right: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    margin-left: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#user-status-container {
+    display: flex !important;
+}
