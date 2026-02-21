@@ -1,277 +1,261 @@
-/// components/auth/auth.js
-
-// These functions are now globally accessible
-function openSignInModal() {
-    const signInModal = document.getElementById("sign-in-modal");
-    closeAllAuthModals();
-    if (signInModal) signInModal.classList.add('active');
-}
-
-function openSignUpModal() {
-    const signUpModal = document.getElementById("sign-up-modal");
-    closeAllAuthModals();
-    if (signUpModal) signUpModal.classList.add('active');
-}
-
-function closeAllAuthModals() {
-    const signInModal = document.getElementById("sign-in-modal");
-    const signUpModal = document.getElementById("sign-up-modal");
-    const authErrorMessageSignIn = document.getElementById("auth-error-message-signin");
-    const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
-
-    if(signInModal) signInModal.classList.remove('active');
-    if(signUpModal) signUpModal.classList.remove('active');
-    if(authErrorMessageSignIn) authErrorMessageSignIn.textContent = '';
-    if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = '';
-}
-
+// components/auth/auth.js
 
 function initializeAuth() {
-    if (!window.env || !window.env.FIREBASE_CONFIG) {
-        console.error("Firebase config not found.");
-        return;
-    }
-    firebase.initializeApp(window.env.FIREBASE_CONFIG);
-    window.auth = firebase.auth();
-    window.googleProvider = new firebase.auth.GoogleAuthProvider();
+    const auth = window.auth;
+    const db = window.db;
 
-    // --- DOM Element References ---
-    const signInModal = document.getElementById("sign-in-modal");
-    const signUpModal = document.getElementById("sign-up-modal");
-    const authButtonsContainer = document.getElementById("auth-buttons");
-    const userProfileContainer = document.getElementById("user-profile");
-    const signInBtn = document.getElementById("top-bar-signin-btn");
-    const signUpBtn = document.getElementById("top-bar-signup-btn");
-    const userPfp = document.getElementById("user-pfp");
-    const userName = document.getElementById("user-name");
-    const userEmail = document.getElementById("user-email");
-    const signOutLi = document.getElementById("sign-out-li");
-    const signOutLink = document.getElementById("sign-out-link");
-    const fullHistoryLi = document.getElementById("full-history-li");
-    const verificationNotice = document.getElementById("verification-notice");
-    const userStatusContainer = document.getElementById("user-status-container");
-    const tierBadge = document.getElementById("tier-badge");
-    const generationCounter = document.getElementById("generation-counter");
-    const generationProgressBar = document.getElementById("generation-progress-bar");
-    const accountDropdown = document.getElementById("account-dropdown");
-    const tierDropdown = document.getElementById("tier-dropdown");
-    const dropdownSignOutBtn = document.getElementById("dropdown-signout-btn");
-    const signInEmail = document.getElementById("signin-email");
-    const signInPassword = document.getElementById("signin-password");
-    const signInSubmit = document.getElementById("signin-submit-btn");
-    const signInGoogle = document.getElementById("signin-google-btn");
-    const authErrorMessageSignIn = document.getElementById("auth-error-message-signin");
-    const signUpEmail = document.getElementById("signup-email");
-    const signUpPassword = document.getElementById("signup-password");
-    const signUpConfirmPassword = document.getElementById("signup-confirm-password");
-    const signUpSubmit = document.getElementById("signup-submit-btn");
-    const signUpGoogle = document.getElementById("signup-google-btn");
-    const authErrorMessageSignUp = document.getElementById("auth-error-message-signup");
+    // Elements - Safely queried
+    const authButtons = document.getElementById('auth-buttons');
+    const userProfileContainer = document.getElementById('user-profile');
+    const userStatusContainer = document.getElementById('user-status-container');
+    const userProfilePic = document.getElementById('user-profile-pic');
+    const userNameDisplay = document.getElementById('user-name-display');
+    const userEmailDisplay = document.getElementById('user-email-display');
+    const tierBadge = document.getElementById('user-tier-badge');
+    const generationsCount = document.getElementById('generations-count');
+    const progressBarInner = document.getElementById('progress-bar-inner');
 
-    // --- UI Update Functions ---
-    window.updateGenerationCountUI = (count) => {
-        if (generationCounter) {
-            generationCounter.textContent = `${count.toLocaleString()} Credits`;
-        }
-        if (generationProgressBar) {
-            generationProgressBar.style.width = `100%`;
-        }
+    const signInBtn = document.getElementById('sign-in-btn');
+    const signUpBtnTop = document.getElementById('sign-up-btn');
+    const accountDropdown = document.getElementById('account-dropdown');
+    const tierDropdown = document.getElementById('tier-dropdown');
+    
+    const signInModal = document.getElementById('sign-in-modal');
+    const signUpModal = document.getElementById('sign-up-modal');
+    
+    const signInEmail = document.getElementById('sign-in-email');
+    const signInPassword = document.getElementById('sign-in-password');
+    const signInSubmit = document.getElementById('sign-in-submit');
+    const signInGoogle = document.getElementById('sign-in-google');
+    
+    const signUpName = document.getElementById('sign-up-name');
+    const signUpEmail = document.getElementById('sign-up-email');
+    const signUpPassword = document.getElementById('sign-up-password');
+    const signUpSubmit = document.getElementById('sign-up-submit');
+    const signUpGoogle = document.getElementById('sign-up-google');
+
+    const authErrorMessageSignIn = document.getElementById('auth-error-message-signin');
+    const authErrorMessageSignUp = document.getElementById('auth-error-message-signup');
+    const verificationNotice = document.getElementById('verification-notice');
+
+    let unsubscribeUserDoc = null;
+
+    // Default Credit limits based on Tier
+    const TIER_LIMITS = {
+        "Free Tier": 25,
+        "Pro Tier": 2000,
+        "Business Tier": 50000 
+    };
+
+    // Make modals globally accessible
+    window.openSignInModal = () => {
+        if(signInModal) signInModal.classList.add('active');
+        if(signUpModal) signUpModal.classList.remove('active');
     };
     
-    // UPDATED to handle new dropdown content
-    function updateSubscriptionDisplay(data) {
-        if (tierBadge) {
-            tierBadge.innerHTML = `<span>${data.tier}</span>`;
-            tierBadge.className = 'tier-badge'; // Reset classes
-            const tierClassMap = { 
-                "Anonymous": 'free-tier', 
-                "Free Tier": 'free-tier', 
-                "Pro Tier": 'pro-tier-badge', 
-                "Business Tier": 'business-tier-badge' 
-            };
-            if (tierClassMap[data.tier]) {
-                tierBadge.classList.add(tierClassMap[data.tier]);
-            }
-        }
+    window.openSignUpModal = () => {
+        if(signUpModal) signUpModal.classList.add('active');
+        if(signInModal) signInModal.classList.remove('active');
+    };
+
+    window.closeAllAuthModals = () => {
+        if(signInModal) signInModal.classList.remove('active');
+        if(signUpModal) signUpModal.classList.remove('active');
+        if(authErrorMessageSignIn) authErrorMessageSignIn.textContent = '';
+        if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = '';
+    };
+
+    // Update UI functions for global access
+    window.updateGenerationCountUI = (credits) => {
+        if (generationsCount) generationsCount.textContent = `${credits} Credits left`;
         
-        if (tierDropdown) {
-             let dropdownHTML = '';
-             if (data.tier === 'Pro Tier') {
-                dropdownHTML = `
-                    <div class="tier-item">
-                        <div class="tier-badge free-tier">Free Tier</div>
-                        <p>Core access to the Name Generator and Custom Refiner.</p>
-                    </div>
-                    <div class="tier-item">
-                        <button id="go-business-from-dropdown-btn" class="tier-badge business-tier-badge">💼 Go Business</button>
-                        <p>Upgrade to unlock Persona Analysis, Exclusive Styling, and our Ultra Smart AI model.</p>
-                    </div>`;
-            } else if (data.tier === 'Business Tier') {
-                dropdownHTML = `
-                    <div class="tier-item">
-                        <div class="tier-badge business-tier-badge">Business Tier</div>
-                        <p>All features unlocked. Thank you for being a power user!</p>
-                    </div>`;
-            } else { // Free or Anonymous
-                dropdownHTML = `
-                    <div class="tier-item">
-                        <div class="tier-badge free-tier">Free Tier</div>
-                        <p>Core access to the Name Generator and Custom Refiner.</p>
-                    </div>
-                    <div class="tier-item">
-                        <button id="go-premium-from-dropdown-btn" class="tier-badge pro-tier-badge animated-glow">✨ Go Pro</button>
-                        <p>Unlock advanced tools, analysis, and higher credit limits.</p>
-                    </div>`;
-            }
-            tierDropdown.innerHTML = dropdownHTML;
-        }
+        const currentTier = document.body.dataset.tier;
+        let limit = TIER_LIMITS["Free Tier"];
+        if (currentTier === "pro") limit = TIER_LIMITS["Pro Tier"];
+        if (currentTier === "business") limit = TIER_LIMITS["Business Tier"];
 
-        window.updateGenerationCountUI(data.credits);
-    }
-    
-    window.updateUserStatusUI = (user) => {
-        const generateBtn = document.querySelector(".generate-btn");
-        const surpriseBtn = document.querySelector(".surprise-btn");
-        const errorDiv = document.getElementById("error");
-
-        userStatusContainer.classList.add('hidden');
-        verificationNotice.classList.add('hidden');
-        authButtonsContainer.classList.add('hidden');
-        userProfileContainer.classList.add('hidden');
-        signOutLi.classList.add('hidden');
-        fullHistoryLi.classList.add('hidden');
-        if (accountDropdown) accountDropdown.classList.remove('visible');
-        if (tierDropdown) tierDropdown.classList.remove('visible');
-
-        if (user) { // --- USER IS LOGGED IN ---
-            userProfileContainer.classList.remove('hidden');
-            signOutLi.classList.remove('hidden');
-            fullHistoryLi.classList.remove('hidden');
-            userName.textContent = user.displayName || user.email;
-            userPfp.src = user.photoURL || `https://placehold.co/40x40/800080/FFFFFF?text=${(user.email?.[0] || 'U').toUpperCase()}`;
+        if (progressBarInner) {
+            const percentage = Math.max(0, Math.min(100, (credits / limit) * 100));
+            progressBarInner.style.width = `${percentage}%`;
             
-            document.getElementById('account-name-detail').textContent = user.displayName || 'Not set';
-            document.getElementById('account-email-detail').textContent = user.email;
-            const creationDate = new Date(user.metadata.creationTime).toLocaleDateString();
-            document.getElementById('account-created-detail').textContent = creationDate;
-            
-            user.reload().then(() => {
-                if (user.emailVerified) {
-                    if(generateBtn) generateBtn.disabled = false;
-                    if(surpriseBtn) surpriseBtn.disabled = false;
-                    userStatusContainer.classList.remove('hidden');
-                    
-                    user.getIdToken().then(token => {
-                        fetch(`${BACKEND_URL}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
-                        .then(res => res.json())
-                        .then(status => {
-                            updateSubscriptionDisplay({
-                                tier: status.tier,
-                                credits: status.credits
-                            });
-                            document.body.dataset.tier = status.tier.toLowerCase().replace(' tier', '').replace(' ', '-');
-                            if (typeof window.updateFeatureLocks === 'function') window.updateFeatureLocks(status.tier);
-                            if (typeof window.updatePremiumPage === 'function') window.updatePremiumPage(status.tier);
-                            if (typeof window.updateCreditCostsUI === 'function') window.updateCreditCostsUI(status.tier);
-                        });
-                    });
-                } else {
-                    if(generateBtn) generateBtn.disabled = true;
-                    if(surpriseBtn) surpriseBtn.disabled = true;
-                    if(errorDiv) errorDiv.textContent = "";
-                    verificationNotice.classList.remove('hidden');
-                    verificationNotice.innerHTML = `Please check your inbox to verify your email address. <a id="resend-verification">Resend verification email.</a>`;
-                    document.getElementById('resend-verification').addEventListener('click', resendVerificationEmail);
-                }
-            });
-        } else { // --- USER IS NOT LOGGED IN (ANONYMOUS) ---
-            if(generateBtn) generateBtn.disabled = false;
-            if(surpriseBtn) surpriseBtn.disabled = false;
-            authButtonsContainer.classList.remove('hidden');
-            
-            const anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
-            userStatusContainer.classList.remove('hidden');
-            updateSubscriptionDisplay({
-                tier: "Anonymous",
-                credits: Math.max(0, 25 - anonGenerations)
-            });
-            delete document.body.dataset.tier; 
-            if (typeof window.updateFeatureLocks === 'function') window.updateFeatureLocks('Anonymous');
-            if (typeof window.updatePremiumPage === 'function') window.updatePremiumPage('Anonymous');
-            if (typeof window.updateCreditCostsUI === 'function') window.updateCreditCostsUI('Anonymous');
+            if (percentage < 20) progressBarInner.style.backgroundColor = '#ff5555';
+            else if (percentage < 50) progressBarInner.style.backgroundColor = '#f1fa8c';
+            else progressBarInner.style.backgroundColor = 'var(--progress-bar-color)';
         }
     };
 
-    // --- Core Auth State Management ---
-    auth.onAuthStateChanged(user => {
-        window.updateUserStatusUI(user);
-        if (typeof window.fetchHistory === 'function') window.fetchHistory(false);
+    // Event Listeners for auth buttons
+    if (signInBtn) signInBtn.addEventListener('click', window.openSignInModal);
+    if (signUpBtnTop) signUpBtnTop.addEventListener('click', window.openSignUpModal);
+    
+    document.querySelectorAll('.close-button').forEach(btn => {
+        btn.addEventListener('click', window.closeAllAuthModals);
     });
 
-    // --- Event Listeners and other functions ---
-    if (signInBtn) signInBtn.addEventListener('click', openSignInModal);
-    if (signUpBtn) signUpBtn.addEventListener('click', openSignUpModal);
-    if (signOutLink) signOutLink.addEventListener('click', signOut);
     if (signInSubmit) signInSubmit.addEventListener('click', signInWithEmail);
     if (signUpSubmit) signUpSubmit.addEventListener('click', signUpWithEmail);
     if (signInGoogle) signInGoogle.addEventListener('click', signInWithGoogle);
     if (signUpGoogle) signUpGoogle.addEventListener('click', signInWithGoogle);
-    if (userProfileContainer) userProfileContainer.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(accountDropdown); });
-    if (tierBadge) tierBadge.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(tierDropdown); });
-    if (dropdownSignOutBtn) dropdownSignOutBtn.addEventListener('click', signOut);
-    document.querySelectorAll('.auth-modal .close-button').forEach(btn => btn.addEventListener('click', closeAllAuthModals));
+
+    // Profile and Tier Dropdown Togglers
+    if (userProfileContainer) {
+        userProfileContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown(accountDropdown);
+        });
+    }
+
+    if (tierBadge) {
+        tierBadge.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown(tierDropdown);
+        });
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+        if(accountDropdown) accountDropdown.classList.remove('visible');
+        if(tierDropdown) tierDropdown.classList.remove('visible');
+    });
     
-    document.addEventListener('click', (event) => {
-        if (accountDropdown && userProfileContainer && !userProfileContainer.contains(event.target)) {
-            accountDropdown.classList.remove('visible');
-        }
-        if (tierDropdown && userStatusContainer && !userStatusContainer.contains(event.target)) {
-            tierDropdown.classList.remove('visible');
-        }
-        if (event.target === signInModal || event.target === signUpModal) {
-            closeAllAuthModals();
+    const signOutBtn = document.getElementById('sign-out-btn');
+    if (signOutBtn) signOutBtn.addEventListener('click', signOut);
+
+    // Switch between Sign In / Sign Up
+    const switchToSignUp = document.getElementById('switch-to-sign-up');
+    const switchToSignIn = document.getElementById('switch-to-sign-in');
+    if(switchToSignUp) switchToSignUp.addEventListener('click', (e) => { e.preventDefault(); window.openSignUpModal(); });
+    if(switchToSignIn) switchToSignIn.addEventListener('click', (e) => { e.preventDefault(); window.openSignInModal(); });
+
+    // Handle Resend Verification Email
+    document.body.addEventListener('click', (e) => {
+        if (e.target && e.target.id === 'resend-verification-link') {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (user) {
+                user.sendEmailVerification()
+                    .then(() => alert('Verification email sent! Please check your inbox.'))
+                    .catch((error) => alert('Error sending email: ' + error.message));
+            }
         }
     });
 
-    function resendVerificationEmail() {
-        const user = auth.currentUser;
+    // --- Firebase Auth State Observer --- //
+    auth.onAuthStateChanged(user => {
+        if (unsubscribeUserDoc) {
+            unsubscribeUserDoc();
+        }
+
         if (user) {
-            user.sendEmailVerification()
-                .then(() => {
-                    if(verificationNotice) verificationNotice.innerHTML = `Verification email sent! Please check your inbox (and spam folder).`;
-                })
-                .catch(error => {
-                    if(verificationNotice) verificationNotice.innerHTML = `Error: ${error.message}`;
-                });
+            // User is signed in.
+            const userRef = db.collection('users').doc(user.uid);
+
+            // SAFELY UPDATE UI Elements to prevent null crashes
+            if (authButtons) authButtons.classList.add('hidden');
+            if (userProfileContainer) userProfileContainer.classList.remove('hidden');
+            if (userStatusContainer) userStatusContainer.classList.remove('hidden');
+
+            if (userProfilePic && user.photoURL) userProfilePic.src = user.photoURL;
+            if (userNameDisplay) userNameDisplay.textContent = user.displayName || 'User';
+            if (userEmailDisplay) userEmailDisplay.textContent = user.email;
+
+            // Handle Email Verification Banner
+            if (!user.emailVerified) {
+                if (verificationNotice) {
+                    verificationNotice.classList.remove('hidden');
+                    verificationNotice.innerHTML = `Please verify your email address to unlock name refinement. <a id="resend-verification-link">Resend email</a>`;
+                }
+                const refineSection = document.getElementById("refine_section");
+                const refineBtnSection = document.querySelector(".refine-button-section");
+                if(refineSection) refineSection.classList.add("hidden");
+                if(refineBtnSection) refineBtnSection.classList.add("hidden");
+            } else {
+                if (verificationNotice) verificationNotice.classList.add('hidden');
+            }
+
+            // Listen to User Document in Firestore
+            unsubscribeUserDoc = userRef.onSnapshot(doc => {
+                let tier = 'Free Tier';
+                let credits = 25;
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    tier = data.tier || 'Free Tier';
+                    credits = data.credits !== undefined ? data.credits : 25;
+                } else {
+                    userRef.set({
+                        email: user.email,
+                        displayName: user.displayName || '',
+                        tier: 'Free Tier',
+                        credits: 25,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                if (tierBadge) {
+                    tierBadge.innerHTML = `<span>${tier}</span>`;
+                    tierBadge.className = 'tier-badge'; 
+                    if (tier === 'Free Tier') tierBadge.classList.add('free-tier');
+                    if (tier === 'Pro Tier') tierBadge.classList.add('pro-tier', 'animated-glow');
+                    if (tier === 'Business Tier') tierBadge.classList.add('business-tier', 'animated-glow');
+                }
+
+                if (tier === 'Free Tier') document.body.dataset.tier = 'free';
+                if (tier === 'Pro Tier') document.body.dataset.tier = 'pro';
+                if (tier === 'Business Tier') document.body.dataset.tier = 'business';
+
+                window.updateGenerationCountUI(credits);
+                if (window.updateCreditCostsUI) window.updateCreditCostsUI(tier);
+                if (window.updateFeatureLocks) window.updateFeatureLocks(tier);
+                if (window.updatePremiumPage) window.updatePremiumPage(tier);
+                
+                // Show dropdown limits based on tier
+                document.querySelectorAll('.tier-specific-limit').forEach(el => el.classList.add('hidden'));
+                const specificLimit = document.getElementById(`limit-${tier.split(' ')[0].toLowerCase()}`);
+                if (specificLimit) specificLimit.classList.remove('hidden');
+
+            });
+
+        } else {
+            // User is signed out.
+            if (authButtons) authButtons.classList.remove('hidden');
+            if (userProfileContainer) userProfileContainer.classList.add('hidden');
+            if (userStatusContainer) userStatusContainer.classList.add('hidden');
+            if (verificationNotice) verificationNotice.classList.add('hidden');
+            
+            document.body.dataset.tier = 'free';
+            
+            let anonGenerations = parseInt(localStorage.getItem('anonGenerations') || '0');
+            window.updateGenerationCountUI(Math.max(0, 25 - anonGenerations));
+            if (window.updateCreditCostsUI) window.updateCreditCostsUI('Anonymous');
+            if (window.updateFeatureLocks) window.updateFeatureLocks('Free Tier');
+            if (window.updatePremiumPage) window.updatePremiumPage('Free Tier');
         }
-    }
-    
+    });
+
+    // --- Authentication Functions ---
     function signUpWithEmail() {
-        const email = signUpEmail.value;
-        const password = signUpPassword.value;
-        const confirmPassword = signUpConfirmPassword.value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            authErrorMessageSignUp.textContent = "Please enter a valid email address format.";
-            return;
-        }
-        if (password !== confirmPassword) {
-            authErrorMessageSignUp.textContent = "Passwords do not match.";
-            return;
-        }
-        auth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(signUpEmail.value, signUpPassword.value)
             .then((userCredential) => {
-                userCredential.user.sendEmailVerification();
-                authErrorMessageSignUp.textContent = "Account created! A verification link has been sent to your email.";
-                setTimeout(closeAllAuthModals, 3000);
+                const user = userCredential.user;
+                return user.updateProfile({ displayName: signUpName.value }).then(() => {
+                    user.sendEmailVerification();
+                    db.collection('users').doc(user.uid).set({
+                        email: user.email,
+                        displayName: signUpName.value,
+                        tier: 'Free Tier',
+                        credits: 25,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    closeAllAuthModals();
+                    alert("Account created successfully! Please check your email to verify your account.");
+                });
             })
             .catch(error => {
-                if (error.code == 'auth/email-already-in-use') {
-                    authErrorMessageSignUp.textContent = "This email address is already in use.";
-                } else if (error.code == 'auth/weak-password') {
-                    authErrorMessageSignUp.textContent = "Password should be at least 6 characters.";
+                if (error.code === 'auth/weak-password') {
+                    if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = "Password should be at least 6 characters.";
                 } else {
-                    authErrorMessageSignUp.textContent = error.message;
+                    if(authErrorMessageSignUp) authErrorMessageSignUp.textContent = error.message;
                 }
             });
     }
@@ -279,7 +263,7 @@ function initializeAuth() {
     function signInWithEmail() {
         auth.signInWithEmailAndPassword(signInEmail.value, signInPassword.value)
             .then(() => closeAllAuthModals())
-            .catch(error => { authErrorMessageSignIn.textContent = error.message; });
+            .catch(error => { if(authErrorMessageSignIn) authErrorMessageSignIn.textContent = error.message; });
     }
 
     function signInWithGoogle() {
@@ -308,4 +292,3 @@ function initializeAuth() {
         }
     }
 }
-
