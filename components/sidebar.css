@@ -178,3 +178,34 @@ body[data-tier="business"] #sidebar {
     /* **FIXED** Add 'left' to the transition property */
     transition: left 0.5s ease-in-out, border-color 1.5s linear;
 }
+
+/* 4. Special handling for the Premium & Credits Links */
+.sidebar-content ul li a.premium-link,
+.sidebar-content ul li a.credits-link {
+    background-color: transparent;
+    color: var(--line-accent-glow);
+    /* Apply the new animation to shift border colors based on the theme */
+    animation: theme-color-shift 3s infinite alternate ease-in-out;
+}
+
+.sidebar-content ul li a.premium-link:hover,
+.sidebar-content ul li a.premium-link.active,
+.sidebar-content ul li a.credits-link:hover,
+.sidebar-content ul li a.credits-link.active {
+    background-color: var(--line-accent-glow);
+    color: white;
+    border-color: var(--line-accent-glow);
+    animation: none; /* Pause animation on hover for a solid feel */
+}
+
+/* Shift between primary and glow theme colors */
+@keyframes theme-color-shift {
+    0% {
+        border-color: var(--primary-accent);
+        box-shadow: inset 0 0 5px rgba(0,0,0,0);
+    }
+    100% {
+        border-color: var(--line-accent-glow);
+        box-shadow: inset 0 0 10px var(--line-accent-glow);
+    }
+}
