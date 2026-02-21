@@ -21,14 +21,12 @@
 
     <!-- NEW PAGE TRANSITION LOADER WITH LOGO & TIPS -->
     <!-- UPDATED Page Transition Loader -->
+    <!-- UPDATED Page Transition Loader -->
     <div id="page-transition-loader">
         <div class="loader-logo-container">
             <div class="loader-glow"></div>
-            <!-- Make sure this src points to your actual logo image -->
-            <img src="logo.png" alt="Logo" class="loader-logo-img">
-        </div>
-        <div class="loader-tip-container">
-            <span id="loading-tip-text">Loading...</span>
+            <!-- Pure CSS Glowing Hexagon (No images = No 404 errors!) -->
+            <div style="width: 80px; height: 80px; background-color: var(--primary-accent); clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%); z-index: 2; animation: pulse-hexagon 2s infinite ease-in-out;"></div>
         </div>
         <div class="loader-tip-container">
             <span id="loading-tip-text">Loading...</span>
@@ -1226,6 +1224,7 @@
     <script src="main.js"></script>
 </body>
 </html>
+
 
 
 
