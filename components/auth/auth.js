@@ -1,9 +1,14 @@
 // components/auth/auth.js
 
 function initializeAuth() {
-    // FIX: Reverted to standard Firebase v8 variables to prevent the 'undefined' crash
-    const auth = typeof firebase !== 'undefined' ? firebase.auth() : window.auth;
-    const db = typeof firebase !== 'undefined' ? firebase.firestore() : window.db;
+    // REVERTED to your original, working variables!
+    const auth = window.auth;
+    const db = window.db;
+
+    if (!auth || !db) {
+        console.warn("Auth initialization waiting for Firebase...");
+        return;
+    }
 
     // Elements - Safely queried
     const authButtons = document.getElementById('auth-buttons');
@@ -151,7 +156,7 @@ function initializeAuth() {
             // User is signed in.
             const userRef = db.collection('users').doc(user.uid);
 
-            // SAFELY UPDATE UI Elements
+            // SAFELY UPDATE UI Elements to prevent crash if DOM isn't fully loaded
             if (authButtons) authButtons.classList.add('hidden');
             if (userProfileContainer) userProfileContainer.classList.remove('hidden');
             if (userStatusContainer) userStatusContainer.classList.remove('hidden');
@@ -189,7 +194,7 @@ function initializeAuth() {
                         displayName: user.displayName || '',
                         tier: 'Free Tier',
                         credits: 25,
-                        createdAt: typeof firebase !== 'undefined' ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 }
 
@@ -246,7 +251,7 @@ function initializeAuth() {
                         displayName: signUpName.value,
                         tier: 'Free Tier',
                         credits: 25,
-                        createdAt: typeof firebase !== 'undefined' ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     closeAllAuthModals();
                     alert("Account created successfully! Please check your email to verify your account.");
@@ -268,13 +273,7 @@ function initializeAuth() {
     }
 
     function signInWithGoogle() {
-        const provider = window.googleProvider || (typeof firebase !== 'undefined' ? new firebase.auth.GoogleAuthProvider() : null);
-        if(!provider) {
-            console.error("Google Auth Provider not initialized");
-            return;
-        }
-        
-        auth.signInWithPopup(provider)
+        auth.signInWithPopup(window.googleProvider)
             .then(() => closeAllAuthModals())
             .catch(error => {
                 if(authErrorMessageSignIn) authErrorMessageSignIn.textContent = error.message;
