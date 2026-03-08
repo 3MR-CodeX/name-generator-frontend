@@ -44,43 +44,20 @@
     margin-bottom: 8px;
 }
 
-/* Modified sidebar.css for "Ghost Button" style */
 .sidebar-content ul li a {
     display: block;
     padding: 8px 12px;
-    /* 1. Ghost Effect: Transparent background and a border frame */
-    background-color: transparent; 
-    border: 2px solid var(--primary-accent); 
-    color: var(--primary-accent); /* Text matches the frame */
-    
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 0.95em;
-    font-weight: 600;
-    
-    /* 2. Smooth Transition for the hover fill */
-    transition: all 0.3s ease-in-out; 
-}
-
-/* 3. Hover Effect: Fills the button completely */
-.sidebar-content ul li a:hover {
-    background-color: var(--primary-accent);
-    color: white; /* Text turns white for contrast */
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* --- NEW: Active State --- */
-.sidebar-content ul li a.active {
     background-color: var(--primary-accent);
     color: white;
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 0.95em;
 }
 
-.sidebar-content ul li a:hover .sidebar-icon,
-.sidebar-content ul li a.active .sidebar-icon {
-    color: white; /* Make the icon white when hovered or active */
+.sidebar-content ul li a:hover {
+    background-color: var(--secondary-accent);
+    transform: translateX(5px);
 }
 
 #overlay {
@@ -101,17 +78,16 @@
     visibility: visible;
 }
 
-/* 4. Special handling for the Premium Link */
+/* Style for the eye-catching premium link */
 .sidebar-content ul li a.premium-link {
-    background-color: transparent;
-    border-color: var(--line-accent-glow);
-    color: var(--line-accent-glow);
+    background-color: var(--line-accent-glow);
+    animation: premium-color-shift 3s infinite ease-in-out;
 }
 
-.sidebar-content ul li a.premium-link:hover,
-.sidebar-content ul li a.premium-link.active {
-    background-color: var(--line-accent-glow);
-    color: white;
+.sidebar-content ul li a.premium-link:hover {
+    transform: translateX(5px) scale(1.02);
+    animation-play-state: paused;
+    background-color: var(--line-accent-default);
 }
 
 @keyframes premium-color-shift {
@@ -130,9 +106,7 @@
 .sidebar-content ul li.locked > a {
     color: #a0a0a0;
     background-color: #2f2f2f;
-    border-color: #4a4a4a;
     cursor: default; /* Change cursor to default, not 'not-allowed' */
-    position: relative;
 }
 
 .sidebar-content ul li.locked > a:hover {
@@ -140,27 +114,16 @@
     transform: translateX(5px);
 }
 
-/* Auto-inject the lock icon on locked items */
-.sidebar-content ul li.locked > a::after {
-    content: '\f023'; /* FontAwesome Lock Icon */
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    position: absolute;
-    right: 15px;
+/* Show the lock icon only on locked items */
+.sidebar-content ul li .premium-lock-icon {
+    display: none;
+    margin-left: 8px;
     color: #f1fa8c;
-    font-size: 0.9em;
+    font-size: 0.8em;
 }
 
-/* Sidebar Icon coloring */
-.sidebar-icon {
-    /* Uses the theme color dynamically */
-    color: var(--primary-accent);
-    margin-right: 12px;
-    font-size: 1.1em;
-    width: 20px;
-    text-align: center;
+.sidebar-content ul li.locked .premium-lock-icon {
     display: inline-block;
-    transition: color 0.3s ease-in-out;
 }
 
 /* --- Tier Specific Sidebar Designs --- */
@@ -177,35 +140,4 @@ body[data-tier="business"] #sidebar {
     border-right: 2px solid var(--current-theme-color);
     /* **FIXED** Add 'left' to the transition property */
     transition: left 0.5s ease-in-out, border-color 1.5s linear;
-}
-
-/* 4. Special handling for the Premium & Credits Links */
-.sidebar-content ul li a.premium-link,
-.sidebar-content ul li a.credits-link {
-    background-color: transparent;
-    color: var(--line-accent-glow);
-    /* Apply the new animation to shift border colors based on the theme */
-    animation: theme-color-shift 3s infinite alternate ease-in-out;
-}
-
-.sidebar-content ul li a.premium-link:hover,
-.sidebar-content ul li a.premium-link.active,
-.sidebar-content ul li a.credits-link:hover,
-.sidebar-content ul li a.credits-link.active {
-    background-color: var(--line-accent-glow);
-    color: white;
-    border-color: var(--line-accent-glow);
-    animation: none; /* Pause animation on hover for a solid feel */
-}
-
-/* Shift between primary and glow theme colors */
-@keyframes theme-color-shift {
-    0% {
-        border-color: var(--primary-accent);
-        box-shadow: inset 0 0 5px rgba(0,0,0,0);
-    }
-    100% {
-        border-color: var(--line-accent-glow);
-        box-shadow: inset 0 0 10px var(--line-accent-glow);
-    }
 }
