@@ -1,3 +1,4 @@
+
 /* style.css */
 :root {
     --top-bar-height: 60px;
@@ -2797,30 +2798,6 @@ body[data-tier="business"] .surprise-btn:hover {
     transition: color 0.3s ease;
 }
 
-/* --- UPDATED HERO HEADLINE (FUTURISTIC & REFLECTIVE WHITE) --- */
-.hero-sub {
-    display: inline-block;
-    font-family: 'Orbitron', sans-serif; /* Futuristic Font */
-    font-size: 0.55em;
-    font-weight: 700;
-    color: #ffffff; /* Explicitly white text */
-    margin-top: 15px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    position: relative;
-    /* Clean white-to-accent reflection */
-    background: linear-gradient(90deg, #ffffff 0%, #ffffff 40%, var(--primary-accent) 50%, #ffffff 60%, #ffffff 100%);
-    background-size: 300% 100%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: text-shine 5s infinite linear;
-}
-
-@keyframes text-shine {
-    0% { background-position: 100% 50%; }
-    100% { background-position: -50% 50%; }
-}
-
 .main-page-cta {
     margin-top: 30px;
     padding: 18px 35px;
@@ -3105,238 +3082,59 @@ body[data-tier="business"] .surprise-btn:hover {
 
 
 /* --- REWORKED SVG ANIMATIONS (Refined) --- */
-
-/* --- HOME PAGE SCROLL SHADOWS --- */
-/* --- HOME PAGE SCROLL SHADOWS (DARKER & TALLER) --- */
-.scroll-shadow-top, .scroll-shadow-bottom {
-    position: fixed;
-    left: 0;
-    right: 0;
-    height: 120px; /* Taller shadow */
-    pointer-events: none;
-    z-index: 50; 
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out;
-}
-
-.scroll-shadow-top {
-    display: none !important; /* FIXED: Removes the shadow completely */
-    top: 60px; /* Adjust if your top-bar height is different */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
-}
-
-.scroll-shadow-bottom {
-    bottom: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
-}
-
-.scroll-shadow-top.active, .scroll-shadow-bottom.active {
-    opacity: 1; /* More visible */
-}
-
-/* --- REFINED WGNM ANIMATIONS (PROFESSIONAL GRADE) --- */
-/* --- NEW WGNM AI NEURAL NETWORK ANIMATION --- */
 .wgnm-svg { 
     overflow: visible; 
-    font-family: 'Orbitron', sans-serif; 
-    font-weight: 700;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: 500;
 }
 
-.orbit-ring {
-    fill: none;
-    stroke: var(--bg-color-3);
-    stroke-width: 1.5;
-    opacity: 0.3;
-}
-
-.orbit-ring-1 { animation: pulse-ring 4s infinite alternate ease-in-out; }
-.orbit-ring-2 { animation: pulse-ring 3s infinite alternate-reverse ease-in-out; }
-
-.orbit-nodes {
-    transform-origin: center;
-    animation: rotate-nodes 15s linear infinite;
-}
-
-.neural-lines {
-    fill: none;
-    stroke: var(--primary-accent);
-    stroke-width: 1.5;
+.wgnm-bg-pulse {
+    fill: var(--bg-color-3);
+    /* Set to half transparent as requested */
     opacity: 0.5;
-    stroke-dasharray: 300;
-    stroke-dashoffset: 300;
-    animation: draw-neural 6s ease-in-out infinite;
 }
 
-.ai-core-hex {
-    transform-origin: center;
-    animation: breath-core 3s infinite alternate ease-in-out;
+.wgnm-path {
+    stroke: var(--secondary-accent);
+    stroke-dasharray: 315;
+    stroke-dashoffset: 0; 
+}
+
+.wgnm-spark {
+    fill: var(--line-accent-default);
+    filter: url(#wgnm-glow);
+    /* Synced duration */
+    animation: wgnm-spark-move 6s ease-in-out infinite;
 }
 
 .wgnm-text {
-    fill: #ffffff; /* Pure white inside the glowing core */
-    font-size: 16px;
-    letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(255,255,255,0.7);
+    fill: var(--primary-accent);
+    font-size: 20px;
     opacity: 0;
-    transform-origin: center;
-    animation: ai-text-decode 6s ease-in-out infinite;
+    /* Synced duration */
+    animation: wgnm-text-fade 6s ease-in-out infinite;
 }
 
-/* --- Neural Core Keyframes --- */
-@keyframes rotate-nodes { 
-    100% { transform: rotate(360deg); } 
+/* Synced Sparkle: Fades in/out at the same percentage as text */
+@keyframes wgnm-spark-move {
+    0% { motion-offset: 0%; offset-distance: 0%; opacity: 0;}
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { motion-offset: 100%; offset-distance: 100%; opacity: 0; }
 }
 
-@keyframes draw-neural {
-    0% { stroke-dashoffset: 300; opacity: 0; }
-    20% { opacity: 0.8; }
-    50% { stroke-dashoffset: 0; opacity: 0.8; }
-    80% { stroke-dashoffset: -300; opacity: 0; }
-    100% { stroke-dashoffset: -300; }
+.wgnm-spark {
+    offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100");
 }
 
-@keyframes breath-core {
-    0% { transform: scale(0.9); filter: brightness(1); }
-    100% { transform: scale(1.1); filter: brightness(1.5) drop-shadow(0 0 20px var(--primary-accent)); }
+/* Synced Text: Fades in/out exactly with the sparkle */
+@keyframes wgnm-text-fade {
+    0% { opacity: 0; transform: translateY(5px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-5px); }
 }
-
-/* UPDATED: Ring pulse without zooming (only fades in and out) */
-@keyframes pulse-ring { 
-    0% { opacity: 0.2; }
-    100% { opacity: 0.6; } 
+/* Remove all other tool animations */
+.tool-anim-svg {
+    /* No animation properties */
 }
-
-@keyframes ai-text-decode {
-    0% { opacity: 0; transform: scale(0.8); filter: blur(8px); }
-    25% { opacity: 1; transform: scale(1); filter: blur(0px); }
-    75% { opacity: 1; transform: scale(1); filter: blur(0px); }
-    100% { opacity: 0; transform: scale(1.2); filter: blur(8px); }
-}
-
-
-/* --- LOADER UPDATES --- */
-.loader-logo-img {
-    width: 80px;
-    height: auto;
-    /* FIXED: Using the heartbeat hexagon animation from the intro */
-    animation: pulse-hexagon 2s infinite ease-in-out !important;
-}
-
-@keyframes loader-spin-slow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.loading-tip-container {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    width: 80%;
-    max-width: 500px;
-    font-family: 'Nunito', sans-serif;
-    color: var(--text-color-2);
-    background: rgba(0, 0, 0, 0.4);
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.1);
-    animation: fade-in-up 0.5s ease-out forwards 0.3s;
-    opacity: 0;
-}
-
-.tip-label {
-    font-weight: bold;
-    color: var(--primary-accent);
-    margin-right: 5px;
-}
-
-@keyframes fade-in-up {
-    from { opacity: 0; transform: translate(-50%, 10px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-/* --- PAGE TRANSITION LOADER --- */
-/* --- PAGE TRANSITION LOADER (ENHANCED) --- */
-#page-transition-loader {
-    position: fixed;
-    top: 0; 
-    left: 0; 
-    width: 100vw; 
-    height: 100vh;
-    background-color: rgba(18, 18, 18, 0.95); /* Deep dark background */
-    backdrop-filter: blur(10px);
-    z-index: 99999;
-    display: none; /* Controlled by JS */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-#page-transition-loader.active {
-    opacity: 1; /* Fade in */
-}
-
-.loader-logo-container {
-    position: relative;
-    width: 140px;
-    height: 140px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: loader-float 4s ease-in-out infinite; /* Smooth float */
-}
-
-.loader-glow {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    /* Uses your theme's primary color for the aura */
-    background: radial-gradient(circle, var(--primary-accent, #6a5acd) 0%, transparent 70%);
-    border-radius: 50%;
-    opacity: 0;
-    filter: blur(25px);
-    animation: loader-pulse 2.5s ease-in-out infinite alternate; /* Powerful pulse */
-}
-
-.loader-logo-img {
-    width: 90px;
-    height: auto;
-    z-index: 2;
-    filter: drop-shadow(0 0 15px var(--line-accent-glow, #fff));
-    animation: pulse-hexagon 2s infinite ease-in-out !important; /* Heartbeat pulse */
-}
-
-.loader-tip-container {
-    margin-top: 40px;
-    font-size: 1.1em;
-    color: #e0e0e0;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-align: center;
-    max-width: 80%;
-    opacity: 0;
-    transform: translateY(15px);
-    /* Syncs perfectly with the main loader fade-in */
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    transition-delay: 0.2s; /* Waits just a fraction of a second for dramatic effect */
-}
-
-#page-transition-loader.active .loader-tip-container {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* 2x Better Keyframe Animations */
-@keyframes loader-float {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-20px) scale(1.05); } /* Floats up and slightly scales */
-}
-
-@keyframes loader-pulse {
-    0% { transform: scale(0.8); opacity: 0.3; }
-    100% { transform: scale(1.5); opacity: 0.9; } /* Expands massively */
-}
-
