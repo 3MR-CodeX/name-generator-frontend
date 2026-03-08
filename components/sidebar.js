@@ -1,99 +1,36 @@
 // sidebar.js
 
+// Make isSidebarOpen globally accessible
 window.isSidebarOpen = false; 
 
+// This function will be called by main.js after the HTML is loaded
 function initializeSidebar() {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("overlay");
-    const hexagonButton = document.getElementById("hexagon-button"); 
+    const hexagonButton = document.getElementById("hexagon-button"); // Get button from topbar
     const sidebarLinks = document.querySelector("#sidebar .sidebar-content ul");
+
 
     if (sidebar && overlay && hexagonButton && sidebarLinks) {
         overlay.addEventListener('click', window.toggleSidebar);
 
-        const appTips = [
-            "Use the Custom Refiner to iterate and perfect your existing names.",
-            "Check domain availability instantly to secure your brand's digital presence.",
-            "The Name Analyzer gives you a detailed AI brandability score.",
-            "Use the Word Combiner to magically merge multiple keywords into one.",
-            "Try mixing different styles like 'Futuristic' or 'Minimal' for diverse results.",
-            "You can export your entire generation history anytime from the Settings menu.",
-            "Clicking the 'Surprise Me' button uses randomized parameters for unexpected genius.",
-            "Use the Text Summarizer to extract core concepts from long, complex descriptions.",
-            "Click on any generated name or explanation to instantly copy it to your clipboard.",
-            "Try combining the 'Invented Word' pattern with the 'Tech' category for startups."
-        ];
-
+        // Close sidebar if a link inside is clicked
         sidebarLinks.addEventListener('click', (event) => {
-            const link = event.target.closest('a');
-            
-            if (link) {
-                // Instantly stop standard link behavior
-                event.preventDefault();
-                event.stopImmediatePropagation(); 
-
-                // Update active visual state for the sidebar buttons
-                document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
-                link.classList.add('active');
-
-                if (window.isSidebarOpen) {
-                    closeSidebar();
-                }
-
-                // Get the target page
-                let targetView = link.getAttribute('data-view');
-                if (!targetView && link.getAttribute('href') && link.getAttribute('href') !== '#') {
-                    targetView = link.getAttribute('href').replace('#', '');
-                }
-
-                const loader = document.getElementById('page-transition-loader');
-                
-                if (loader && targetView) {
-                    // 1. Update the tip text
-                    const randomTip = appTips[Math.floor(Math.random() * appTips.length)];
-                    const tipElement = document.getElementById('loading-tip-text');
-                    if (tipElement) tipElement.textContent = randomTip;
-                    
-                    // 2. Make visible but transparent
-                    loader.style.display = 'flex'; 
-                    loader.classList.remove('fade-out');
-                    
-                    // 3. Force DOM Reflow to trigger fade-in animation
-                    void loader.offsetWidth;
-                    loader.classList.add('active');
-                    
-                    // 4. Wait 500ms for it to fully fade in
-                    setTimeout(() => {
-                        window.location.hash = targetView;
-                        if (typeof window.showView === 'function') {
-                            window.showView(targetView);
-                        }
-                        
-                        // 5. Keep loader on screen for 2s (Total 2.5s)
-                        setTimeout(() => {
-                            loader.classList.remove('active'); // Fade out starts
-                            
-                            // 6. Wait for fade-out to finish before hiding completely
-                            setTimeout(() => { 
-                                loader.style.display = 'none'; 
-                            }, 500); 
-                            
-                        }, 2000); 
-
-                    }, 500); 
-                } else if (targetView) {
-                    window.location.hash = targetView;
-                    if (typeof window.showView === 'function') window.showView(targetView);
-                }
+            if (event.target.tagName === 'A' && window.isSidebarOpen) {
+                // We don't call toggleSidebar() directly to avoid race conditions with main.js listeners
+                // Instead, we just ensure it closes.
+                closeSidebar();
             }
-        }, true);
+        });
+
 
         // Close sidebar if clicking anywhere outside sidebar and topbar
         document.body.addEventListener('click', (event) => {
+            // Check if the click target is NOT within the sidebar, hexagon button, or top bar
             if (window.isSidebarOpen && 
                 !sidebar.contains(event.target) && 
                 !hexagonButton.contains(event.target) &&
-                (!document.getElementById('top-bar') || !document.getElementById('top-bar').contains(event.target))) {
+                !document.getElementById('top-bar').contains(event.target)) {
                 window.toggleSidebar();
             }
         });
@@ -115,11 +52,12 @@ function openSidebar() {
     hexagonButton.classList.add('button-rotated');
     overlay.classList.add('overlay-active');
     
+    // Apply paddingLeft based on tier for smooth animation
     const tier = body.dataset.tier || 'free';
     if (tier === 'business' && !body.classList.contains('business-shifting-disabled')) {
-        // Handled visually in CSS
+        // For business tier, we let the CSS transition handle it.
     } else {
-        const sidebarWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width') || '250px';
+        const sidebarWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width');
         body.style.paddingLeft = sidebarWidth;
     }
 }
@@ -137,21 +75,29 @@ function closeSidebar() {
     hexagonButton.classList.remove('button-rotated');
     overlay.classList.remove('overlay-active');
     
+    // Reset paddingLeft based on tier
     const tier = body.dataset.tier || 'free';
      if (tier === 'business' && !body.classList.contains('business-shifting-disabled')) {
-         // Handled visually in CSS
+        // For business tier, we let the CSS transition handle it.
     } else {
         body.style.paddingLeft = '0';
     }
 }
 
-window.toggleSidebar = function() {
+
+/**
+ * Toggles the sidebar open/closed state and animates the hexagon button.
+ * This function is made global so topbar.js can call it.
+ */
+window.toggleSidebar = function() { // Attach to window for global access
     if (window.isSidebarOpen) {
         closeSidebar();
     } else {
         openSidebar();
     }
 
+    // After toggling, refresh history if sidebar is opening, or just ensure it's up to date
+    // Check if fetchHistory is defined globally (from main.js)
     if (window.isSidebarOpen && typeof window.fetchHistory === 'function') {
         window.fetchHistory(); 
     }
