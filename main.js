@@ -183,43 +183,33 @@ window.updateCreditCostsUI = (tier) => {
 };
 
 
-document.addEventListener("DOMContentLoaded", async () => { 
-    await loadComponent('top-bar-placeholder', 'components/topbar.html'); 
-    await loadComponent('sidebar-placeholder', 'components/sidebar.html'); 
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadComponent('top-bar-placeholder', 'components/topbar.html');
+    await loadComponent('sidebar-placeholder', 'components/sidebar.html');
     
-    if (typeof initializeTopbar === 'function') initializeTopbar(); 
-    if (typeof initializeSidebar === 'function') initializeSidebar(); 
-    if (typeof initializeAuth === 'function') initializeAuth(); 
-    if (typeof initializePaymentSystem === 'function') initializePaymentSystem(); 
+    if (typeof initializeTopbar === 'function') initializeTopbar();
+    if (typeof initializeSidebar === 'function') initializeSidebar();
+    if (typeof initializeAuth === 'function') initializeAuth();
+    if (typeof initializePaymentSystem === 'function') initializePaymentSystem();
     
-    initializeUI(); 
-    window.updateCreditCostsUI('Anonymous'); // FIX: Initialize credit UI for logged out users on load 
+    initializeUI();
     handleHashChange(); 
-    initializeSettings(); 
-    populateDropdown("category", CATEGORY_OPTIONS); 
-    populateDropdown("style", STYLE_OPTIONS); 
-    populateDropdown("pattern", PATTERN_OPTIONS); 
-    populateFontDropdowns(); 
-    initializeWGNMWordCycle(); 
-    
-    // initScrollShadows(); // <-- COMMENTED OUT TO PREVENT THE CRASH
-    
-    setupEventListeners(); 
-    initializeAvailabilityDropdowns(); 
-    
-    // Loader timeout logic updated to handle both loaders 
-    setTimeout(() => { 
-        const oldLoader = document.getElementById('loader-wrapper');
-        if (oldLoader) { 
-            oldLoader.classList.add('fade-out'); 
-            oldLoader.addEventListener('transitionend', () => oldLoader.style.display = 'none'); 
-        } 
-        const newLoader = document.getElementById('page-transition-loader'); 
-        if (newLoader) { 
-            newLoader.classList.add('fade-out');
-            newLoader.addEventListener('transitionend', () => newLoader.style.display = 'none'); 
-        } 
-    }, 3000); // Wait 3 seconds to clear loaders to improve perceived speed 
+    initializeSettings();
+    populateDropdown("category", CATEGORY_OPTIONS);
+    populateDropdown("style", STYLE_OPTIONS);
+    populateDropdown("pattern", PATTERN_OPTIONS);
+    populateFontDropdowns();
+    initializeWGNMWordCycle();
+    setupEventListeners();
+    initializeAvailabilityDropdowns();
+
+    setTimeout(() => {
+        const loader = document.getElementById('loader-wrapper');
+        if (loader) {
+            loader.classList.add('fade-out');
+            loader.addEventListener('transitionend', () => loader.style.display = 'none');
+        }
+    }, 5000);
 });
 
 // **UPDATED** Feature Lock Logic
@@ -597,7 +587,7 @@ function populateFontDropdowns() {
                 const option = document.createElement('option');
                 option.value = FONT_OPTIONS[fontName];
                 option.textContent = fontName;
- 
+  
                  selector.appendChild(option);
             }
         }
@@ -1037,7 +1027,7 @@ function renderHistory(history, renderToModal = false) {
             dailyContainer.appendChild(dateHeading);
             groupedHistory[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(entry => {
        
-                 const button = document.createElement('button');
+                  const button = document.createElement('button');
                 button.className = 'history-item';
                 button.title = (entry.category.includes("Refined")) ? `Refine Instruction: ${entry.prompt}` : createTooltip(entry);
                 button.innerHTML = `${entry.names.map(name => `<strong>${cleanNames(name)}</strong>`).join(", ")}`;
@@ -1783,7 +1773,7 @@ async function fetchHistoryForImport() {
                     const targetInput = document.getElementById(targetInputId);
                     if (targetInput) {
                         targetInput.value = cleanNames(name);
-       
+      
                      }
                     closeHistoryImportModal();
                 };
@@ -2026,56 +2016,12 @@ function initializeSettings() {
 }
 
 
-async function handleHashChange() {
-    const hash = window.location.hash || '#name-generator';
-    const pageId = hash.substring(1);
-
-    // 1. Show page transition loader
-    const transitionLoader = document.getElementById('page-transition-loader');
-    if (transitionLoader) {
-        transitionLoader.style.display = 'flex';
-        // Force a tiny reflow before applying opacity for smooth animation
-        transitionLoader.offsetHeight; 
-        transitionLoader.style.opacity = '1';
-        transitionLoader.classList.remove('fade-out');
-    }
-
-    // 2. Hide all pages
-    document.querySelectorAll('.page-section').forEach(page => {
-        page.classList.remove('active');
-        page.style.display = 'none'; // Ensure it's hidden from layout
-    });
-
-    // 3. Update sidebar links
-    document.querySelectorAll('.sidebar-nav a').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === hash) {
-            link.classList.add('active');
-        }
-    });
-
-    // 4. Wait for 2 seconds (simulate loading and allow animation)
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // 5. Show target page
-    const targetPage = document.getElementById(pageId);
-    if (targetPage) {
-        targetPage.style.display = 'block'; 
-        // Small delay to ensure display: block is processed before opacity transition
-        setTimeout(() => {
-            targetPage.classList.add('active');
-        }, 50);
-    }
-
-    // Re-initialize UI elements for the new page
-    if (typeof initializeUI === 'function') initializeUI();
-
-    // 6. Hide page transition loader smoothly
-    if (transitionLoader) {
-        transitionLoader.style.opacity = '0';
-        setTimeout(() => {
-            transitionLoader.style.display = 'none';
-        }, 500); // Wait for the CSS fade to finish before hiding display
+function handleHashChange() {
+    const hash = window.location.hash;
+    if (hash === '#terms') {
+        showView('terms');
+    } else if (hash === '#privacy') {
+        showView('privacy');
     }
 }
 
@@ -2348,50 +2294,3 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
-
-
-function initScrollShadows() {
-    if (!document.querySelector('.scroll-shadow-top')) {
-        const topShadow = document.createElement('div');
-        topShadow.className = 'scroll-shadow-top';
-        document.body.appendChild(topShadow);
-
-        const bottomShadow = document.createElement('div');
-        bottomShadow.className = 'scroll-shadow-bottom';
-        document.body.appendChild(bottomShadow);
-    }
-
-    const topShadow = document.querySelector('.scroll-shadow-top');
-    const bottomShadow = document.querySelector('.scroll-shadow-bottom');
-
-    function updateShadows() {
-        const mainPage = document.getElementById('main-page-view');
-        if (!mainPage || mainPage.classList.contains('hidden')) {
-            topShadow.classList.remove('active');
-            bottomShadow.classList.remove('active');
-            return;
-        }
-
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight;
-        const clientHeight = document.documentElement.clientHeight;
-
-        if (scrollTop > 20) topShadow.classList.add('active');
-        else topShadow.classList.remove('active');
-
-        if (scrollTop + clientHeight < scrollHeight - 20) bottomShadow.classList.add('active');
-        else bottomShadow.classList.remove('active');
-    }
-
-    window.addEventListener('scroll', updateShadows, { passive: true });
-    window.addEventListener('resize', updateShadows, { passive: true });
-    
-    const observer = new MutationObserver(updateShadows);
-    const mainPage = document.getElementById('main-page-view');
-    if (mainPage) observer.observe(mainPage, { attributes: true, attributeFilter: ['class'] });
-
-    setTimeout(updateShadows, 100);
-}
-
-
-
