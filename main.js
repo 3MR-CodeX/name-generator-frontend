@@ -2026,12 +2026,56 @@ function initializeSettings() {
 }
 
 
-function handleHashChange() {
-    const hash = window.location.hash;
-    if (hash === '#terms') {
-        showView('terms');
-    } else if (hash === '#privacy') {
-        showView('privacy');
+async function handleHashChange() {
+    const hash = window.location.hash || '#name-generator';
+    const pageId = hash.substring(1);
+
+    // 1. Show page transition loader
+    const transitionLoader = document.getElementById('page-transition-loader');
+    if (transitionLoader) {
+        transitionLoader.style.display = 'flex';
+        // Force a tiny reflow before applying opacity for smooth animation
+        transitionLoader.offsetHeight; 
+        transitionLoader.style.opacity = '1';
+        transitionLoader.classList.remove('fade-out');
+    }
+
+    // 2. Hide all pages
+    document.querySelectorAll('.page-section').forEach(page => {
+        page.classList.remove('active');
+        page.style.display = 'none'; // Ensure it's hidden from layout
+    });
+
+    // 3. Update sidebar links
+    document.querySelectorAll('.sidebar-nav a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === hash) {
+            link.classList.add('active');
+        }
+    });
+
+    // 4. Wait for 2 seconds (simulate loading and allow animation)
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // 5. Show target page
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.style.display = 'block'; 
+        // Small delay to ensure display: block is processed before opacity transition
+        setTimeout(() => {
+            targetPage.classList.add('active');
+        }, 50);
+    }
+
+    // Re-initialize UI elements for the new page
+    if (typeof initializeUI === 'function') initializeUI();
+
+    // 6. Hide page transition loader smoothly
+    if (transitionLoader) {
+        transitionLoader.style.opacity = '0';
+        setTimeout(() => {
+            transitionLoader.style.display = 'none';
+        }, 500); // Wait for the CSS fade to finish before hiding display
     }
 }
 
@@ -2348,5 +2392,6 @@ function initScrollShadows() {
 
     setTimeout(updateShadows, 100);
 }
+
 
 
