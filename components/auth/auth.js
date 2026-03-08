@@ -5,28 +5,12 @@ function initializeAuth() {
     const db = window.db;
 
     // CRITICAL FIX: If Firebase hasn't loaded yet, wait 100ms and try again. 
-    // This stops the script from crashing and permanently hiding the Top Bar!
     if (!auth || !db) {
         setTimeout(initializeAuth, 100);
         return;
     }
 
-    // Elements - Safely queried
-    const authButtons = document.getElementById('auth-buttons');
-    const userProfileContainer = document.getElementById('user-profile');
-    const userStatusContainer = document.getElementById('user-status-container');
-    const userProfilePic = document.getElementById('user-profile-pic');
-    const userNameDisplay = document.getElementById('user-name-display');
-    const userEmailDisplay = document.getElementById('user-email-display');
-    const tierBadge = document.getElementById('user-tier-badge');
-    const generationsCount = document.getElementById('generations-count');
-    const progressBarInner = document.getElementById('progress-bar-inner');
-
-    const signInBtn = document.getElementById('sign-in-btn');
-    const signUpBtnTop = document.getElementById('sign-up-btn');
-    const accountDropdown = document.getElementById('account-dropdown');
-    const tierDropdown = document.getElementById('tier-dropdown');
-    
+    // Modal Elements (These are static and safe to query here)
     const signInModal = document.getElementById('sign-in-modal');
     const signUpModal = document.getElementById('sign-up-modal');
     
@@ -43,7 +27,6 @@ function initializeAuth() {
 
     const authErrorMessageSignIn = document.getElementById('auth-error-message-signin');
     const authErrorMessageSignUp = document.getElementById('auth-error-message-signup');
-    const verificationNotice = document.getElementById('verification-notice');
 
     let unsubscribeUserDoc = null;
 
@@ -53,6 +36,7 @@ function initializeAuth() {
         "Business Tier": 50000 
     };
 
+    // --- Window Functions ---
     window.openSignInModal = () => {
         if(signInModal) signInModal.classList.add('active');
         if(signUpModal) signUpModal.classList.remove('active');
@@ -71,6 +55,10 @@ function initializeAuth() {
     };
 
     window.updateGenerationCountUI = (credits) => {
+        // FETCHED DYNAMICALLY to ensure the Topbar elements exist
+        const generationsCount = document.getElementById('generations-count');
+        const progressBarInner = document.getElementById('progress-bar-inner');
+
         if (generationsCount) generationsCount.textContent = `${credits} Credits left`;
         
         const currentTier = document.body.dataset.tier;
@@ -88,9 +76,7 @@ function initializeAuth() {
         }
     };
 
-    if (signInBtn) signInBtn.addEventListener('click', window.openSignInModal);
-    if (signUpBtnTop) signUpBtnTop.addEventListener('click', window.openSignUpModal);
-    
+    // --- Static Event Listeners ---
     document.querySelectorAll('.close-button').forEach(btn => {
         btn.addEventListener('click', window.closeAllAuthModals);
     });
@@ -100,34 +86,26 @@ function initializeAuth() {
     if (signInGoogle) signInGoogle.addEventListener('click', signInWithGoogle);
     if (signUpGoogle) signUpGoogle.addEventListener('click', signInWithGoogle);
 
-    if (userProfileContainer) {
-        userProfileContainer.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleDropdown(accountDropdown);
-        });
-    }
-
-    if (tierBadge) {
-        tierBadge.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleDropdown(tierDropdown);
-        });
-    }
-
-    document.addEventListener('click', () => {
-        if(accountDropdown) accountDropdown.classList.remove('visible');
-        if(tierDropdown) tierDropdown.classList.remove('visible');
-    });
-    
-    const signOutBtn = document.getElementById('sign-out-btn');
-    if (signOutBtn) signOutBtn.addEventListener('click', signOut);
-
     const switchToSignUp = document.getElementById('switch-to-sign-up');
     const switchToSignIn = document.getElementById('switch-to-sign-in');
     if(switchToSignUp) switchToSignUp.addEventListener('click', (e) => { e.preventDefault(); window.openSignUpModal(); });
     if(switchToSignIn) switchToSignIn.addEventListener('click', (e) => { e.preventDefault(); window.openSignInModal(); });
 
+    // --- Dynamic Topbar Event Listeners using Event Delegation ---
     document.body.addEventListener('click', (e) => {
+        // Sign Out
+        if (e.target && (e.target.id === 'sign-out-btn' || e.target.closest('#sign-out-btn'))) {
+            signOut(e);
+        }
+        // Open Sign In
+        if (e.target && (e.target.id === 'sign-in-btn' || e.target.closest('#sign-in-btn'))) {
+            window.openSignInModal();
+        }
+        // Open Sign Up
+        if (e.target && (e.target.id === 'sign-up-btn' || e.target.closest('#sign-up-btn'))) {
+            window.openSignUpModal();
+        }
+        // Resend Verification
         if (e.target && e.target.id === 'resend-verification-link') {
             e.preventDefault();
             const user = auth.currentUser;
@@ -137,12 +115,42 @@ function initializeAuth() {
                     .catch((error) => alert('Error sending email: ' + error.message));
             }
         }
+        
+        // Handle dropdowns clicking
+        const userProfileContainer = e.target.closest('#user-profile');
+        const tierBadgeClick = e.target.closest('#user-tier-badge');
+        
+        const accountDropdown = document.getElementById('account-dropdown');
+        const tierDropdown = document.getElementById('tier-dropdown');
+
+        if (userProfileContainer) {
+            e.stopPropagation();
+            toggleDropdown(accountDropdown);
+        } else if (tierBadgeClick) {
+            e.stopPropagation();
+            toggleDropdown(tierDropdown);
+        } else {
+            // Click outside closes dropdowns
+            if(accountDropdown) accountDropdown.classList.remove('visible');
+            if(tierDropdown) tierDropdown.classList.remove('visible');
+        }
     });
 
+    // --- Auth State Listener ---
     auth.onAuthStateChanged(user => {
         if (unsubscribeUserDoc) {
             unsubscribeUserDoc();
         }
+
+        // CRITICAL FIX: Fetch Topbar Elements HERE dynamically so they are guaranteed to exist
+        const authButtons = document.getElementById('auth-buttons');
+        const userProfileContainer = document.getElementById('user-profile');
+        const userStatusContainer = document.getElementById('user-status-container');
+        const userProfilePic = document.getElementById('user-profile-pic');
+        const userNameDisplay = document.getElementById('user-name-display');
+        const userEmailDisplay = document.getElementById('user-email-display');
+        const tierBadge = document.getElementById('user-tier-badge');
+        const verificationNotice = document.getElementById('verification-notice');
 
         if (user) {
             const userRef = db.collection('users').doc(user.uid);
@@ -225,6 +233,7 @@ function initializeAuth() {
         }
     });
 
+    // --- Authentication Actions ---
     function signUpWithEmail() {
         auth.createUserWithEmailAndPassword(signUpEmail.value, signUpPassword.value)
             .then((userCredential) => {
@@ -267,7 +276,7 @@ function initializeAuth() {
     }
 
     function signOut(event) {
-        event.preventDefault();
+        if(event) event.preventDefault();
         if (window.confirm("Are you sure you want to sign out?")) {
             auth.signOut().catch(error => console.error("Sign out error:", error));
         }
@@ -275,6 +284,10 @@ function initializeAuth() {
 
     function toggleDropdown(dropdown) {
         if (!dropdown) return;
+        
+        const accountDropdown = document.getElementById('account-dropdown');
+        const tierDropdown = document.getElementById('tier-dropdown');
+        
         const isVisible = dropdown.classList.contains('visible');
         if (accountDropdown) accountDropdown.classList.remove('visible');
         if (tierDropdown) tierDropdown.classList.remove('visible');
