@@ -183,44 +183,43 @@ window.updateCreditCostsUI = (tier) => {
 };
 
 
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadComponent('top-bar-placeholder', 'components/topbar.html');
-    await loadComponent('sidebar-placeholder', 'components/sidebar.html');
+document.addEventListener("DOMContentLoaded", async () => { 
+    await loadComponent('top-bar-placeholder', 'components/topbar.html'); 
+    await loadComponent('sidebar-placeholder', 'components/sidebar.html'); 
     
-    if (typeof initializeTopbar === 'function') initializeTopbar();
-    if (typeof initializeSidebar === 'function') initializeSidebar();
-    if (typeof initializeAuth === 'function') initializeAuth();
-    if (typeof initializePaymentSystem === 'function') initializePaymentSystem();
+    if (typeof initializeTopbar === 'function') initializeTopbar(); 
+    if (typeof initializeSidebar === 'function') initializeSidebar(); 
+    if (typeof initializeAuth === 'function') initializeAuth(); 
+    if (typeof initializePaymentSystem === 'function') initializePaymentSystem(); 
     
-    initializeUI();
-    window.updateCreditCostsUI('Anonymous'); // FIX: Initialize credit UI for logged out users on load
+    initializeUI(); 
+    window.updateCreditCostsUI('Anonymous'); // FIX: Initialize credit UI for logged out users on load 
     handleHashChange(); 
-    initializeSettings();
-    populateDropdown("category", CATEGORY_OPTIONS);
-    populateDropdown("style", STYLE_OPTIONS);
-    populateDropdown("pattern", PATTERN_OPTIONS);
-    populateFontDropdowns();
+    initializeSettings(); 
+    populateDropdown("category", CATEGORY_OPTIONS); 
+    populateDropdown("style", STYLE_OPTIONS); 
+    populateDropdown("pattern", PATTERN_OPTIONS); 
+    populateFontDropdowns(); 
+    initializeWGNMWordCycle(); 
     
-    initializeWGNMWordCycle();
-    initScrollShadows();
+    // initScrollShadows(); // <-- COMMENTED OUT TO PREVENT THE CRASH
     
-    setupEventListeners();
-    initializeAvailabilityDropdowns();
-
-    // Loader timeout logic updated to handle both loaders
-    setTimeout(() => {
+    setupEventListeners(); 
+    initializeAvailabilityDropdowns(); 
+    
+    // Loader timeout logic updated to handle both loaders 
+    setTimeout(() => { 
         const oldLoader = document.getElementById('loader-wrapper');
-        if (oldLoader) {
-            oldLoader.classList.add('fade-out');
-            oldLoader.addEventListener('transitionend', () => oldLoader.style.display = 'none');
-        }
-
-        const newLoader = document.getElementById('page-transition-loader');
-        if (newLoader) {
+        if (oldLoader) { 
+            oldLoader.classList.add('fade-out'); 
+            oldLoader.addEventListener('transitionend', () => oldLoader.style.display = 'none'); 
+        } 
+        const newLoader = document.getElementById('page-transition-loader'); 
+        if (newLoader) { 
             newLoader.classList.add('fade-out');
-            newLoader.addEventListener('transitionend', () => newLoader.style.display = 'none');
-        }
-    }, 3000); // Wait 3 seconds to clear loaders to improve perceived speed
+            newLoader.addEventListener('transitionend', () => newLoader.style.display = 'none'); 
+        } 
+    }, 3000); // Wait 3 seconds to clear loaders to improve perceived speed 
 });
 
 // **UPDATED** Feature Lock Logic
@@ -2349,4 +2348,5 @@ function initScrollShadows() {
 
     setTimeout(updateShadows, 100);
 }
+
 
