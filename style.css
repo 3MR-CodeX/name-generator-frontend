@@ -410,20 +410,6 @@ body.animations-disabled #banner-background-effect {
     z-index: 1;
 }
 
-/* --- NEW: Scroll Shadow --- */
-.scroll-shadow {
-    position: fixed;
-    bottom: 0;
-    left: 0; 
-    width: 100%;
-    height: 80px;
-    background: linear-gradient(to top, var(--bg-color-1) 10%, transparent);
-    pointer-events: none;
-    z-index: 500;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
 .banner-col {
     text-align: center;
     margin-top: 20px;
@@ -1871,25 +1857,6 @@ body.light-theme {
     opacity: 0;
 }
 
-/* --- NEW: Page Transition Screen --- */
-#page-transition {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: var(--bg-color-1);
-    z-index: 10000;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-#page-transition .loader-hexagon {
-    width: 100px;
-    height: 100px;
-    animation: pulse-hexagon 1.5s infinite ease-in-out;
-}
-
 /* --- About Page Styles --- */
 .about-section {
     background-color: rgba(42, 42, 42, 0.75);
@@ -3115,66 +3082,130 @@ body[data-tier="business"] .surprise-btn:hover {
 
 
 /* --- REWORKED SVG ANIMATIONS (Refined) --- */
-.wgnm-svg { 
-    overflow: visible; 
-    font-family: 'Poppins', sans-serif; 
-    font-weight: 500;
+.wgnm-card {
+    /* Keep your existing .wgnm-card properties, but add these 3: */
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
 }
 
-.wgnm-bg-pulse {
-    fill: var(--bg-color-3);
-    /* Set to half transparent as requested */
-    opacity: 0.5;
+.wgnm-card:hover {
+    animation: glitch-skew 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+    background-color: #0b0c10;
 }
 
-.wgnm-path {
-    stroke: var(--secondary-accent);
-    stroke-dasharray: 315;
-    stroke-dashoffset: 0; 
+.wgnm-card:hover i {
+    transform: scale(1.1);
+    text-shadow: 2px 2px 0px #ff00c8, -2px -2px 0px #00ffff;
 }
 
-.wgnm-spark {
-    fill: var(--line-accent-default);
-    filter: url(#wgnm-glow);
-    /* Synced duration */
-    animation: wgnm-spark-move 6s ease-in-out infinite;
-}
-
-.wgnm-text {
-    fill: var(--primary-accent);
-    font-size: 20px;
+.wgnm-card::before, .wgnm-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--primary-color);
     opacity: 0;
-    /* Synced duration */
-    animation: wgnm-text-fade 6s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* Synced Sparkle: Fades in/out at the same percentage as text */
-@keyframes wgnm-spark-move {
-    0% { motion-offset: 0%; offset-distance: 0%; opacity: 0;}
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { motion-offset: 100%; offset-distance: 100%; opacity: 0; }
+.wgnm-card:hover::before {
+    opacity: 0.1;
+    animation: glitch-anim-1 0.2s linear infinite alternate-reverse;
 }
 
-.wgnm-spark {
-    offset-path: path("M 50,100 A 50,50 0 1,1 150,100 A 50,50 0 1,1 50,100");
+.wgnm-card:hover::after {
+    opacity: 0.1;
+    animation: glitch-anim-2 0.3s linear infinite alternate-reverse;
 }
 
-/* Synced Text: Fades in/out exactly with the sparkle */
-@keyframes wgnm-text-fade {
-    0% { opacity: 0; transform: translateY(5px); }
-    20% { opacity: 1; transform: translateY(0); }
-    80% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-5px); }
+@keyframes glitch-skew {
+    0% { transform: skew(0deg) translate(0); }
+    20% { transform: skew(-1deg) translate(-1px, 1px); }
+    40% { transform: skew(1deg) translate(1px, -1px); }
+    60% { transform: skew(-0.5deg) translate(-1px, -1px); }
+    80% { transform: skew(0.5deg) translate(1px, 1px); }
+    100% { transform: skew(0deg) translate(0); }
+}
+
+@keyframes glitch-anim-1 {
+    0% { clip-path: polygon(0 20%, 100% 20%, 100% 30%, 0 30%); transform: translate(-2px); }
+    100% { clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%); transform: translate(2px); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); transform: translate(2px); }
+    100% { clip-path: polygon(0 80%, 100% 80%, 100% 90%, 0 90%); transform: translate(-2px); }
 }
 /* Remove all other tool animations */
 .tool-anim-svg {
     /* No animation properties */
 }
 
-/* --- NEW: Topbar Link Fix --- */
-.topbar-title-link {
-    text-decoration: none !important;
-    cursor: pointer;
+.scroll-shadow {
+    position: fixed;
+    bottom: 0;
+    left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    height: 100px;
+    background: linear-gradient(to top, rgba(11, 12, 16, 1) 0%, rgba(11, 12, 16, 0) 100%);
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .scroll-shadow {
+        left: 0;
+        width: 100%;
+        height: 60px;
+    }
+}
+
+.hero h1 .line1 { color: #ffffff; }
+.hero h1 .highlight-white {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.hero h1 .line2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.55em;
+    color: var(--primary-color);
+    position: relative;
     display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 10px;
+    animation: glow-text 2s infinite alternate;
+}
+
+/*reflection animation*/
+.hero h1 .line2::after {
+    content: "Powered by AI";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    transform: scaleY(-0.4) translateY(-10px);
+    opacity: 0.3;
+    background: linear-gradient(to bottom, var(--primary-color), transparent);
+    -webkit-background-clip: text;
+    color: transparent;
+    pointer-events: none;
+    filter: blur(1px);
+    animation: reflect-flicker 3s infinite;
+}
+
+@keyframes glow-text {
+    0% { text-shadow: 0 0 5px var(--primary-color); }
+    100% { text-shadow: 0 0 20px var(--primary-color); }
+}
+
+@keyframes reflect-flicker {
+    0%, 100% { opacity: 0.1; transform: scaleY(-0.4) translateY(-10px) skewX(0deg); }
+    50% { opacity: 0.5; transform: scaleY(-0.4) translateY(-10px) skewX(-3deg); }
 }
