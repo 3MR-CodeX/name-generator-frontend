@@ -203,6 +203,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     setupEventListeners();
     initializeAvailabilityDropdowns();
 
+    // --- NEW: Attach scroll listeners ---
+    const mainContentWrapper = document.querySelector('.main-content-wrapper');
+    if (mainContentWrapper) {
+        mainContentWrapper.addEventListener('scroll', updateScrollShadow);
+        window.addEventListener('resize', updateScrollShadow);
+    }
+    setTimeout(updateScrollShadow, 500); // Check shadow on initial load
+    
+
     setTimeout(() => {
         const loader = document.getElementById('loader-wrapper');
         if (loader) {
@@ -298,7 +307,7 @@ async function loadComponent(placeholderId, componentUrl) {
 }
 
 function initializeUI() {
-    showView('main-page'); // Default to the new main page
+    showView('main-page', true); // Added 'true' to bypass transition on load
     if (promptInput && !promptInput.dataset.originalPlaceholder) promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     if (editBox && !editBox.dataset.originalPlaceholder) editBox.dataset.originalPlaceholder = editBox.placeholder;
 }
@@ -493,7 +502,32 @@ function setupEventListeners() {
     }, 500);
 }
 
-function showView(viewName) {
+function showView(viewName, bypassTransition = false) {
+    const trans = document.getElementById('page-transition');
+    
+    // If we want a transition and the transmitter exists
+    if (!bypassTransition && trans) {
+        trans.style.display = 'flex';
+        setTimeout(() => trans.style.opacity = '1', 10);
+        
+        // Wait halfway to swap the content
+        setTimeout(() => {
+            executeShowView(viewName);
+            updateScrollShadow(); // Update shadow for new page length
+        }, 750);
+        
+        // Fade out
+        setTimeout(() => {
+            trans.style.opacity = '0';
+            setTimeout(() => trans.style.display = 'none', 300);
+        }, 1200);
+    } else {
+        executeShowView(viewName);
+        setTimeout(updateScrollShadow, 100);
+    }
+}
+
+function executeShowView(viewName) {
     const allViews = [mainPageView, mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView];
     allViews.forEach(view => {
         if (view) view.classList.add('hidden');
@@ -557,7 +591,7 @@ function showView(viewName) {
             loginPromptElement.classList.add('hidden');
             contactFormElement.classList.remove('hidden');
             emailDisplayElement.textContent = user.email;
-            hiddenEmailInputElement.value = user.email;
+            if(hiddenEmailInputElement) hiddenEmailInputElement.value = user.email;
         } else {
             loginPromptElement.classList.remove('hidden');
             contactFormElement.classList.add('hidden');
@@ -2293,4 +2327,18 @@ function showAlternativesLoadingPlaceholder(targetElement) {
         </div>
     `;
     targetElement.innerHTML = loadingHtml;
+}
+
+// --- NEW: Scroll Shadow Function ---
+function updateScrollShadow() {
+    const mainContent = document.querySelector('.main-content-wrapper'); 
+    const scrollShadow = document.querySelector('.scroll-shadow');
+    if (!mainContent || !scrollShadow) return;
+
+    const maxScroll = mainContent.scrollHeight - mainContent.clientHeight;
+    if (maxScroll > 0 && mainContent.scrollTop < maxScroll - 15) {
+        scrollShadow.style.opacity = '1';
+    } else {
+        scrollShadow.style.opacity = '0';
+    }
 }
