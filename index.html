@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NameIT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lato&family=Montserrat&family=Oswald&family=Raleway&family=Poppins&family=Nunito&family=Merriweather&family=Playfair+Display&family=Source+Code+Pro&family=Ubuntu&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.png">
     
     <link rel="stylesheet" href="style.css">
@@ -15,19 +15,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-    <!-- Page Transition Transmitter Screen -->
-    <div id="page-transition" class="page-transmitter" style="display: none; opacity: 0; z-index: 9998; transition: opacity 0.3s ease;">
-        <div class="transmitter-content">
-            <!-- Ensure "logo.png" matches the exact file name of your logo -->
-            <img src="logo.png" alt="NameIt Logo" class="transmitter-logo">
-            <div class="transmitter-bar">
-                <div class="transmitter-progress"></div>
-            </div>
-            <p class="transmitter-text">TRANSMITTING...</p>
-        </div>
-    </div>
+    
     <div id="loader-wrapper">
-        <img src="Hexagon_starter.png" alt="Loading..." ="loader-hexagon">
+        <img src="Hexagon_starter.png" alt="Loading..." class="loader-hexagon">
+    </div>
+        <!-- PAGE TRANSMITTER SCREEN -->
+    <div id="transmitter-screen" class="transmitter-screen">
+        <img src="hexagon_starter.png" alt="Transition Hexagon" class="transmitter-hexagon">
     </div>
 
     <div id="background-container">
@@ -153,10 +147,7 @@
         
         <div id="main-page-view" class="hidden">
             <div class="main-page-hero">
-                <h1>
-                    <span class="line1">The Future of <span class="highlight-white">Naming</span></span><br>
-                    <span class="line2">Powered by AI</span>
-                </h1>
+                <h1>The Future of <span class="highlight-word">Naming</span>, Powered by AI</h1>
                 <p class="description">Go from a spark of an idea to the perfect, brandable name in seconds. NameIT is your creative partner for naming anything and everything.</p>
                 <button id="go-to-generator-btn" class="generate-btn main-page-cta">
                     <i class="fas fa-play-circle"></i> Start Generating
@@ -1191,7 +1182,7 @@
             <div id="error" class="error"></div>
         </div>
     </div>
-    <div class="scroll-shadow"></div>
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="config.js"></script>
@@ -1202,4 +1193,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
