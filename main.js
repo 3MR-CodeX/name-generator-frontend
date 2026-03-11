@@ -299,7 +299,7 @@ async function loadComponent(placeholderId, componentUrl) {
 }
 
 function initializeUI() {
-    showView('main-page'); // Default to the new main page
+    showView('main-page', false); // Default to the new main page, skip transition on boot
     if (promptInput && !promptInput.dataset.originalPlaceholder) promptInput.dataset.originalPlaceholder = promptInput.placeholder;
     if (editBox && !editBox.dataset.originalPlaceholder) editBox.dataset.originalPlaceholder = editBox.placeholder;
 }
@@ -494,75 +494,96 @@ function setupEventListeners() {
     }, 500);
 }
 
-function showView(viewName) {
-    const allViews = [mainPageView, mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView];
-    allViews.forEach(view => {
-        if (view) view.classList.add('hidden');
-    });
-    
-    // Hide all main page content by default
-    const backgroundContainer = document.getElementById('background-container');
-    if(backgroundContainer) backgroundContainer.classList.remove('main-page-mode');
 
-    if (viewName === 'main-page') {
-        if(backgroundContainer) backgroundContainer.classList.add('main-page-mode');
-    }
+function showView(viewName, useTransmitter = true) {
+    const transmitter = document.getElementById('transmitter-screen');
 
-    // Logic to hide generator-specific elements when not on the generator page
-    const generatorSpecificElements = [outputContainer, refineSection, refineButtonSection, refinedOutputs, recentHistorySection];
-    if (viewName !== 'generator') {
-        generatorSpecificElements.forEach(el => { if (el) el.classList.add('hidden'); });
-    } else {
-        // Only show generator results if they exist
-        if (namesPre && namesPre.innerHTML.trim() !== "") {
-            if (outputContainer) outputContainer.classList.remove('hidden');
-            if (recentHistorySection) recentHistorySection.classList.remove('hidden');
-            if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
-                if (refineSection) refineSection.classList.remove('hidden');
-                if (refineButtonSection) refineButtonSection.classList.remove('hidden');
+    // Wrap the existing view-swapping logic inside a function
+    const swapPagesLogic = () => {
+        const allViews = [mainPageView, mainGeneratorView, customRefinerView, availabilityCheckerView, nameAnalyzerView, settingsView, aboutView, premiumView, creditsView, summarizerView, wordCombinerView, termsView, privacyView, contactView];
+        allViews.forEach(view => {
+            if (view) view.classList.add('hidden');
+        });
+        
+        // Hide all main page content by default
+        const backgroundContainer = document.getElementById('background-container');
+        if(backgroundContainer) backgroundContainer.classList.remove('main-page-mode');
+
+        if (viewName === 'main-page') {
+            if(backgroundContainer) backgroundContainer.classList.add('main-page-mode');
+        }
+
+        // Logic to hide generator-specific elements when not on the generator page
+        const generatorSpecificElements = [outputContainer, refineSection, refineButtonSection, refinedOutputs, recentHistorySection];
+        if (viewName !== 'generator') {
+            generatorSpecificElements.forEach(el => { if (el) el.classList.add('hidden'); });
+        } else {
+            // Only show generator results if they exist
+            if (namesPre && namesPre.innerHTML.trim() !== "") {
+                if (outputContainer) outputContainer.classList.remove('hidden');
+                if (recentHistorySection) recentHistorySection.classList.remove('hidden');
+                if (window.auth.currentUser && window.auth.currentUser.emailVerified) {
+                    if (refineSection) refineSection.classList.remove('hidden');
+                    if (refineButtonSection) refineButtonSection.classList.remove('hidden');
+                }
             }
         }
-    }
 
-    // Show the selected view
-    const viewMap = {
-        'main-page': mainPageView,
-        'generator': mainGeneratorView,
-        'refiner': customRefinerView,
-        'availability-checker': availabilityCheckerView,
-        'name-analyzer': nameAnalyzerView,
-        'settings': settingsView,
-        'about': aboutView,
-        'premium': premiumView,
-        'credits': creditsView,
-        'summarizer': summarizerView,
-        'word-combiner': wordCombinerView,
-        'terms': termsView,
-        'privacy': privacyView,
-        'contact': contactView
+        // Show the selected view
+        const viewMap = {
+            'main-page': mainPageView,
+            'generator': mainGeneratorView,
+            'refiner': customRefinerView,
+            'availability-checker': availabilityCheckerView,
+            'name-analyzer': nameAnalyzerView,
+            'settings': settingsView,
+            'about': aboutView,
+            'premium': premiumView,
+            'credits': creditsView,
+            'summarizer': summarizerView,
+            'word-combiner': wordCombinerView,
+            'terms': termsView,
+            'privacy': privacyView,
+            'contact': contactView
+        };
+
+        if (viewMap[viewName]) {
+            viewMap[viewName].classList.remove('hidden');
+        }
+
+        // Special logic for the contact page
+        if (viewName === 'contact') {
+            const user = window.auth.currentUser;
+            const contactFormElement = document.getElementById('contact-form');
+            const loginPromptElement = document.getElementById('contact-login-prompt');
+            const emailDisplayElement = document.getElementById('contact-user-email-display');
+            const hiddenEmailInputElement = document.getElementById('contact-email');
+
+            if (user) {
+                loginPromptElement.classList.add('hidden');
+                contactFormElement.classList.remove('hidden');
+                emailDisplayElement.textContent = user.email;
+                hiddenEmailInputElement.value = user.email;
+            } else {
+                loginPromptElement.classList.remove('hidden');
+                contactFormElement.classList.add('hidden');
+            }
+        }
     };
 
-    if (viewMap[viewName]) {
-        viewMap[viewName].classList.remove('hidden');
-    }
+    // Trigger the animation if requested
+    if (useTransmitter && transmitter) {
+        transmitter.classList.add('active'); // Fade in
 
-    // Special logic for the contact page
-    if (viewName === 'contact') {
-        const user = window.auth.currentUser;
-        const contactFormElement = document.getElementById('contact-form');
-        const loginPromptElement = document.getElementById('contact-login-prompt');
-        const emailDisplayElement = document.getElementById('contact-user-email-display');
-        const hiddenEmailInputElement = document.getElementById('contact-email');
+        setTimeout(() => {
+            swapPagesLogic(); // Swap content while screen is covered
+        }, 1000);
 
-        if (user) {
-            loginPromptElement.classList.add('hidden');
-            contactFormElement.classList.remove('hidden');
-            emailDisplayElement.textContent = user.email;
-            hiddenEmailInputElement.value = user.email;
-        } else {
-            loginPromptElement.classList.remove('hidden');
-            contactFormElement.classList.add('hidden');
-        }
+        setTimeout(() => {
+            transmitter.classList.remove('active'); // Fade out
+        }, 2000);
+    } else {
+        swapPagesLogic(); // Jump instantly (used for boot sequence)
     }
 }
 
@@ -2295,3 +2316,4 @@ function showAlternativesLoadingPlaceholder(targetElement) {
     `;
     targetElement.innerHTML = loadingHtml;
 }
+
